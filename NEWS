@@ -15,4 +15,14 @@ switches.  That said, I suspect that there may be a few significant bugs
 in this release that I haven't uncovered yet.  Please let me know ASAP if
 you find any.
 
+2/6/04 - Another big release: 0.9.7.  First is a bugfix submitted by 
+Matthias Stiller that specializes the _extractValue method in a couple of
+places that allows strings with spaces to be correctly read by tclap.  A
+second bug found by John Ling has been fixed so that exceptions are thrown 
+if more than one value is parsed from a single arg or if the second value 
+parsed is invalid.   A big new feature has been added that allows args to
+be xor'd.  This means that two (or more) args can be specified such that
+one and only one of the args is required.  If a second arg is found an
+exception is thrown.  See the manual for details.  As always, let me know
+if you run into any problems.
 
