@@ -58,3 +58,7 @@ the README file in the msc directory for more details
 
 And so we have release 1.0!
 
+10/30/04 - A few bugfixes.  Now checking for include.h before including it. 
+This will help Windows users who don't have it.  Also changed test1 so that 
+it doesn't use toupper, which apparently causes problem for non-ASCII 
+character sets.
