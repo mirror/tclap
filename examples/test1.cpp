@@ -1,4 +1,7 @@
 #include <string>
+#include <cctype>
+#include <iostream>
+#include <algorithm>
 #include <tclap/CmdLine.h>
 
 using namespace TCLAP;
