@@ -1,9 +1,2 @@
-PARSE ERROR: Argument: -*s
-             Couldn't find match for argument
-
-Brief USAGE: 
-   ../examples/test4  [-A] [-B] -s <string> [--] [-v] [-h]
-
-For complete USAGE and HELP type: 
-   ../examples/test4 --help
-
+My special failure message for: 
+-*s -- Couldn't find match for argument
