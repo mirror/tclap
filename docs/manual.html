@@ -149,7 +149,7 @@ of "-s asdf", you can do so.
 <li>If a required argument isn't provided, the program exits and displays
 the USAGE, along with an error message.</li>
 </ul>
-<h3>Basic Properties</h3>
+<h3><i>Basic Properties</i></h3>
 Arguments, whatever their type, have a few common basic properties.  First
 is the flag or the character preceeded by a dash(-) that signals the beginning
 of the argument.  Arguments also have names, which can, if desired also be
@@ -215,7 +215,7 @@ More <a href="manual.html#VISITORS">later</a> on how we get this to work.
 <a name="COMPLICATIONS"></a>
 <h2>Complications</h2>
 Naturally, what we have seen to this point doesn't satisfy all of our needs.
-<h3>I tried passing multiple values on the command line with the same flag and it didn't work...</h3>
+<h3><i>I tried passing multiple values on the command line with the same flag and it didn't work...</i></h3>
 Correct.  You can neither specify mulitple <b>ValueArg</b>s or 
 <b>SwitchArg</b>s with the same flag in the code nor on the command line. 
 Exceptions will occur in either case.  For <b>SwitchArg</b>s it simply doesn't
@@ -250,7 +250,7 @@ A <b>MultiArg</b> is declared much like a <b>ValueArg</b>:
 Note that <b>MultiArg</b>s can be added to the <b>CmdLine</b> in any
 order (unlike <a href="manual.html#UNLABELED_MULTI_ARG">UnlabeledMultiArg</a>s).
 
-<h3>But I don't like labelling all of my arguments... </h3>
+<h3><i>But I don't like labelling all of my arguments...</i> </h3>
 To this point all of our arguments have had labels (flags) indentifying them
 on the command line, but
 there are some situations where flags are burdensome and not worth the effort.
@@ -287,7 +287,7 @@ is important for unlabeled arguments.
 
 
 <a name="UNLABELED_MULTI_ARG"></a>
-<h3>But I want an arbitrary number of arguments to be accepted...</h3>
+<h3><i>But I want an arbitrary number of arguments to be accepted...</i></h3>
 Don't worry, we've got you covered.  Say you want a strange command that
 searches each file specified for a given string (lets call it <i>grep</i>), 
 but you don't want to have to type in all of the file names or write a 
@@ -348,7 +348,7 @@ floats, etc.) then just declare the <b>UnlabeledMultiArg</b> as type
 and parse the different values yourself.  
 
 <a name="XOR"></a>
-<h3>I want one argument or the other, but not both...</h3>
+<h3><i>I want one argument or the other, but not both...</i></h3>
 <b>New Feature!</b> Suppose you have a command that must read input from one
 of two possible locations, either a local file or a URL.  The command 
 <i>must</i> read something, so <i>one</i> argument is required, but not both, 
@@ -403,6 +403,30 @@ was not xor'd and wasn't matched, it will also return <b>FALSE</b>.)
 
 </pre>
 <br> <br>
+<a name="NO_FLAG"></a>
+<h3><i>I have more arguments than single flags make sense for...</i></h3>
+<b>New Feature!</b> Some commands have so many options that single flags
+no longer map sensibly to the available options.  In this case, it is 
+desirable to specify <b>Arg</b>s using only long options.
+This one is easy to accomplish, just make the flag value blank in
+the <b>Arg</b> constructor.  This will tell the <b>Arg</b> that only the 
+long option should be matched and will force users to specify the long
+option on the command line</b>.  
+The help output is updated accordingly.
+<br> <br>
+<pre>
+
+	...
+
+	ValueArg < string >  fileArg("","file","File name",true,"homer","filename");
+
+	SwitchArg  caseSwitch("","upperCase","Print in upper case",false);
+
+	...
+
+</pre>
+<br> <br>
+
 <a name="VISITORS"></a>
 <h2>Visitors</h2>
 Disclaimer: Almost no one will have any use for Visitors, they were added
@@ -467,7 +491,7 @@ processing any further (as specified in the <i>visit()</i> method).
 <a name="EXCEPTIONS"></a>
 <h2>Exceptions</h2>
 Like all good rules, there are many exceptions....
-<h3>Ignoring arguments...</h3>
+<h3><i>Ignoring arguments...</i></h3>
 The <i>--</i> flag is automatically included in the <b>CmdLine</b>.  As (almost)
 per POSIX and GNU standards, any argument specified after the <i>--</i> flag
 is ignored.  <i>Almost</i> because if an <b>UnlabeledValueArg</b> that has
@@ -484,7 +508,7 @@ ignore arguments after the <i>--</i>.  To accomodate this, we can make both
 <b>UnlabeledValueArg</b>s and <b>UnlabeledMultiArg</b>s ignoreable in 
 their constructors.  See
 the  <a href="html/index.html">API Documentation</a> for details. 
-<h3>Multiple Identical Switches</h3>
+<h3><i>Multiple Identical Switches</i></h3>
 If you absolutely must allow for multiple, identical switches to be allowed,
 don't use a <b>SwitchArg</b>, instead use a <b>MultiArg</b> of type 
 <i>bool</i>.  This means you'll need to specify
@@ -492,7 +516,7 @@ a 1 or 0 on the command line with the switch (as values are required), but
 this should allow you to turn your favorite switch on and off to your hearts 
 content.
 <a name="DESCRIPTION_EXCEPTIONS"></a>
-<h3>Type Descriptions</h3>
+<h3><i>Type Descriptions</i></h3>
 Ideally this library would use RTTI to return a human readable name of the
 type declared for a particular argument.  Unfortunately, at least for g++, 
 the names returned aren't particularly useful.  
