@@ -32,7 +32,7 @@
 
 namespace TCLAP {
 
-	class CmdLine;
+class CmdLine;
 
 /** 
  * A base class that defines the essential data for all arguments.
@@ -131,6 +131,26 @@ class Arg
 		 */
 		void _checkWithVisitor() const;
 
+		/**
+		 * Primary constructor. YOU (yes you) should NEVER construct an Arg 
+		 * directly, this is a base class that is extended by various children
+		 * that are meant to be used.  Use SwitchArg, ValueArg, MultiArg, 
+		 * UnlabeledValueArg, or UnlabeledMultiArg instead.
+		 *
+		 * \param flag - The flag identifying the argument.
+		 * \param name - The name identifying the argument.
+		 * \param desc - The description of the argument, used in the usage.
+		 * \param req - Whether the argument is required.
+		 * \param valreq - Whether the a value is required for the argument.
+		 * \param v - The visitor checked by the argument. Defaults to NULL.
+		 */
+ 		Arg( const std::string& flag, 
+			 const std::string& name, 
+			 const std::string& desc, 
+			 bool req, 
+			 bool valreq,
+			 Visitor* v = NULL );
+
 	public:
 
 		/**
@@ -185,41 +205,6 @@ class Arg
 		static void setDelimiter( char c ) { Arg::_delimiter = c; }
 
 		/**
-		 * Primary constructor.
-		 * \param flag - The flag identifying the argument.
-		 * \param name - The name identifying the argument.
-		 * \param desc - The description of the argument, used in the usage.
-		 * \param req - Whether the argument is required.
-		 * \param valreq - Whether the a value is required for the argument.
-		 * \param v - The visitor checked by the argument. Defaults to NULL.
-		 */
-		Arg(const std::string& flag, 
-			const std::string& name, 
-			const std::string& desc, 
-			bool req, 
-			bool valreq,
-			Visitor* v = NULL);
-			
-		/**
-		 * Constructor with default parser, the argument is automatically added 
-		 * to a parser (i.e. no subsequent call to add() is requried).
-		 *
-		 * \param flag - The flag identifying the argument.
-		 * \param name - The name identifying the argument.
-		 * \param desc - The description of the argument, used in the usage.
-		 * \param req - Whether the argument is required.
-		 * \param valreq - Whether the a value is required for the argument.
-		 * \param parser - A CmdLine parser object to add this Arg to
-		 * \param v - The visitor checked by the argument. Defaults to NULL.
-		 */
- 		Arg(const std::string& flag, 
-			const std::string& name, 
-			const std::string& desc, 
-			bool req, 
-			bool valreq,
-   		     CmdLine &parser,
-			Visitor* v = NULL);
-		/**
 		 * Null constructor.
 		 * Everything set to null/blank/0 values.
 		 */
@@ -255,7 +240,6 @@ class Arg
 		 * passed in from main.
 		 */
 		virtual bool processArg(int *i, std::vector<std::string>& args); 
-
 
 		/**
 		 * Operator ==.
@@ -363,8 +347,7 @@ class Arg
 		 * \param s - Set the requireLabel to this value.
 		 */
 		void setRequireLabel( const std::string& s );
-private:
- 		void init();
+
 };
 
 /**

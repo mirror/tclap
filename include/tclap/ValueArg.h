@@ -107,13 +107,13 @@ class ValueArg : public Arg
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		ValueArg(const std::string& flag, 
-				 const std::string& name, 
-			     const std::string& desc, 
-				 bool req, 
-				 T value,
-				 const std::string& typeDesc,
-				 Visitor* v = NULL);
+		ValueArg( const std::string& flag, 
+				  const std::string& name, 
+			      const std::string& desc, 
+				  bool req, 
+				  T value,
+				  const std::string& typeDesc,
+				  Visitor* v = NULL);
 				 
 				 
 		 /**
@@ -140,14 +140,14 @@ class ValueArg : public Arg
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		ValueArg(const std::string& flag, 
-				 const std::string& name, 
-			     const std::string& desc, 
-				 bool req, 
-				 T value,
-				 const std::string& typeDesc,
-				 CmdLine &parser,
-				 Visitor* v = NULL);
+		ValueArg( const std::string& flag, 
+				  const std::string& name, 
+			      const std::string& desc, 
+				  bool req, 
+				  T value,
+				  const std::string& typeDesc,
+				  CmdLine& parser,
+				  Visitor* v = NULL );
 				 
 		 /**
 		 * Labeled ValueArg constructor.
@@ -167,18 +167,18 @@ class ValueArg : public Arg
 		 * is not present on the command line.
 		 * \param allowed - A vector of type T that where the values in the 
 		 * vector are the only values allowed for the arg.
-		 * \param parser - A CmdLine parser object to add this Arg to
+		 * \param parser - A CmdLine parser object to add this Arg to.
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		 ValueArg(const std::string& flag, 
-				      const std::string& name, 
-					  const std::string& desc, 
-					  bool req, 
-					  T val,
-					  const std::vector<T>& allowed,
-					  CmdLine &parser,
-					  Visitor* v);
+		 ValueArg( const std::string& flag, 
+				   const std::string& name, 
+				   const std::string& desc, 
+				   bool req, 
+				   T value,
+				   const std::vector<T>& allowed,
+				   CmdLine& parser,
+				   Visitor* v = NULL );
 					  
 		/**
 		 * Labeled ValueArg constructor.
@@ -201,13 +201,13 @@ class ValueArg : public Arg
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		ValueArg(const std::string& flag, 
-				 const std::string& name, 
-			     const std::string& desc, 
-				 bool req, 
-				 T value,
-				 const std::vector<T>& allowed,
-				 Visitor* v = NULL);
+		ValueArg( const std::string& flag, 
+				  const std::string& name, 
+			      const std::string& desc, 
+				  bool req, 
+				  T value,
+				  const std::vector<T>& allowed,
+				  Visitor* v = NULL );
 
 		/**
 		 * Destructor.
@@ -242,13 +242,18 @@ class ValueArg : public Arg
 		 */
 		virtual std::string longID(const std::string& val = "val") const;
 
-private: 
-		void init();
+	private: 
+		
+		/**
+		 * Common initialization code for constructors with allowed vectors.
+		 */
+		void allowedInit();
 
 };
 
+
 template<class T>
-void ValueArg<T>::init()
+void ValueArg<T>::allowedInit()
 {
 	for ( unsigned int i = 0; i < _allowed.size(); i++ )
 	{
@@ -292,7 +297,7 @@ ValueArg<T>::ValueArg(const std::string& flag,
   _value( val ),
   _typeDesc( typeDesc )
 { 
-	parser.add(*this);
+	parser.add( this );
 }
 
 /**
@@ -310,7 +315,7 @@ ValueArg<T>::ValueArg(const std::string& flag,
   _value( val ),
   _allowed( allowed )
 { 
-	init();
+	allowedInit();
 }
 
 template<class T>
@@ -320,17 +325,14 @@ ValueArg<T>::ValueArg(const std::string& flag,
 					  bool req, 
 					  T val,
 					  const std::vector<T>& allowed,
-					  CmdLine &parser,
+					  CmdLine& parser,
 					  Visitor* v)
 : Arg(flag, name, desc, req, true, v),
   _value( val ),
   _allowed( allowed )
 { 
-	init();
-	//Do explicit add here instead of using Args parser constructor
-	//becase then we can not initialize first. Perhaps init would like
-	//to throw an exception or something in the future.
-	parser.add();
+	allowedInit();
+	parser.add( this );
 }
 
 

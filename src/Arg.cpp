@@ -36,7 +36,22 @@ const string Arg::flagStartString = "-";
 const string Arg::nameStartString = "--";
 const string Arg::ignoreNameString = "ignore_rest";
 
-void Arg::init()
+Arg::Arg(const std::string& flag, 
+         const std::string& name, 
+         const std::string& desc, 
+         bool req, 
+         bool valreq,
+         Visitor* v) :
+  _flag(flag),
+  _name(name),
+  _description(desc),
+  _required(req),
+  _requireLabel("required"),
+  _valueRequired(valreq),
+  _alreadySet(false),
+  _visitor( v ),
+  _ignoreable(true),
+  _xorSet(false)
 {
 	if ( _flag.length() > 1 ) 
 		throw(ArgException("Argument flag can only be one character long",
@@ -58,60 +73,7 @@ void Arg::init()
 							Arg::flagStartString + "' or '" + 
 							Arg::nameStartString + "' or space.",
 							toString() ) );
-  
-}
 
-Arg::Arg( const string& flag, 
-		 const string& name, 
-		 const string& desc, 
-		 bool req,
-		 bool valreq,
-		 Visitor* v)
-: 
-  _flag(flag),
-  _name(name),
-  _description(desc),
-  _required(req),
-  _requireLabel("required"),
-  _valueRequired(valreq),
-  _alreadySet(false),
-  _visitor( v ),
-  _ignoreable(true),
-  _xorSet(false)
-{
-	try { 
-		init(); //< initialize the object
-	} catch (ArgException ae) {
-		throw(ae); //< and forward any exceptions
-	}
-};
-
-Arg::Arg(const std::string& flag, 
-    const std::string& name, 
-    const std::string& desc, 
-    bool req, 
-    bool valreq,
-    CmdLine &parser,
-    Visitor* v) :
-  _flag(flag),
-  _name(name),
-  _description(desc),
-  _required(req),
-  _requireLabel("required"),
-  _valueRequired(valreq),
-  _alreadySet(false),
-  _visitor( v ),
-  _ignoreable(true),
-  _xorSet(false)
-{
-	try { 
-		init(); //< initialize the object
-	} catch (ArgException ae) {
-		throw(ae); //< and forward any exceptions
-	}
-	
-	//Add to the parser, what about exceptions
-	parser.add(*this);
 }
 
 Arg::Arg()

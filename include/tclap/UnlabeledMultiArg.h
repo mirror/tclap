@@ -84,38 +84,19 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * type that this object expects.  This is used in the generation
 		 * of the USAGE statement.  The goal is to be helpful to the end user
 		 * of the program.
+		 * \param parser - A CmdLine parser object to add this Arg to
 		 * \param ignoreable - Whether or not this argument can be ignored
 		 * using the "--" flag.
-		 * \param parser - A CmdLine parser object to add this Arg to
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
 		UnlabeledMultiArg( const std::string& name,
 				           const std::string& desc,
 				           const std::string& typeDesc,
+						   CmdLine& parser,
 						   bool ignoreable = false,
-						   CmdLine &parser,
 				           Visitor* v = NULL );
 						 
-			/**
-			 * Constructor.  
-			 * \param name - The name of the Arg. Note that this is used for
-			 * identification, not as a long flag.
-			 * \param desc - A description of what the argument is for or
-			 * does.
-			 * \param allowed - A vector of type T that where the values in the
-			 * vector are the only values allowed for the arg.
-			 * \param ignoreable - Whether or not this argument can be ignored
-			 * using the "--" flag.
-			 * \param v - An optional visitor.  You probably should not
-			 * use this unless you have a very good reason.
-			 */
-			UnlabeledMultiArg( const std::string& name,
-							 const std::string& desc,
-							 const std::vector<T>& allowed,
-							   bool ignoreable = false,
-							 Visitor* v = NULL );
-
 		/**
 		 * Constructor.  
 		 * \param name - The name of the Arg. Note that this is used for
@@ -126,16 +107,35 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * vector are the only values allowed for the arg.
 		 * \param ignoreable - Whether or not this argument can be ignored
 		 * using the "--" flag.
-		 * \param parser - A CmdLine parser object to add this Arg to
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		UnlabeledMultiArg(const std::string& name, 
-							    const std::string& desc, 
-								const std::vector<T>& allowed,
-								bool ignoreable,
-								CmdLine &parser,
-								Visitor* v);
+		UnlabeledMultiArg( const std::string& name,
+						   const std::string& desc,
+						   const std::vector<T>& allowed,
+						   bool ignoreable = false,
+						   Visitor* v = NULL );
+
+		/**
+		 * Constructor.  
+		 * \param name - The name of the Arg. Note that this is used for
+		 * identification, not as a long flag.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param allowed - A vector of type T that where the values in the
+		 * vector are the only values allowed for the arg.
+		 * \param parser - A CmdLine parser object to add this Arg to
+		 * \param ignoreable - Whether or not this argument can be ignored
+		 * using the "--" flag.
+		 * \param v - An optional visitor.  You probably should not
+		 * use this unless you have a very good reason.
+		 */
+		UnlabeledMultiArg( const std::string& name, 
+						   const std::string& desc, 
+						   const std::vector<T>& allowed,
+						   CmdLine& parser,
+						   bool ignoreable = false,
+						   Visitor* v = NULL );
 						 
 		/**
 		 * Handles the processing of the argument.
@@ -187,13 +187,13 @@ template<class T>
 UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name, 
 				                        const std::string& desc, 
 					                    const std::string& typeDesc,
+										CmdLine& parser,
 										bool ignoreable,
-										CmdLine &parser,
 					                    Visitor* v)
 : MultiArg<T>("", name, desc,  false, typeDesc, v)
 { 
 	_ignoreable = ignoreable;
-	parser.add(*this);
+	parser.add( this );
 }
 
 
@@ -206,19 +206,19 @@ UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name,
 : MultiArg<T>("", name, desc,  false, allowed, v)
 { 
 	_ignoreable = ignoreable;
-};
+}
 
 template<class T>
 UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name, 
 				                        const std::string& desc, 
 					                    const std::vector<T>& allowed,
+										CmdLine& parser,
 										bool ignoreable,
-										CmdLine &parser,
 					                    Visitor* v)
 : MultiArg<T>("", name, desc,  false, allowed, v)
 { 
 	_ignoreable = ignoreable;
-	parser.add(*this);
+	parser.add( this );
 }
 
 

@@ -118,13 +118,13 @@ class MultiArg : public Arg
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		 MultiArg(const std::string& flag, 
-				      const std::string& name,
-				      const std::string& desc,
-					  bool req,
-					  const std::string& typeDesc,
-					  CmdLine &parser,
-				      Visitor* v);
+		 MultiArg( const std::string& flag, 
+				   const std::string& name,
+				   const std::string& desc,
+				   bool req,
+				   const std::string& typeDesc,
+				   CmdLine& parser,
+				   Visitor* v = NULL );
 		/**
 		 * Constructor.
 		 * \param flag - The one character flag that identifies this
@@ -145,7 +145,7 @@ class MultiArg : public Arg
 				  const std::string& desc,
 				  bool req,
 				  const std::vector<T>& allowed,
-				  Visitor* v = NULL);
+				  Visitor* v = NULL );
 		  
 		/**
 		 * Constructor.
@@ -163,13 +163,13 @@ class MultiArg : public Arg
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		MultiArg(const std::string& flag, 
-				      const std::string& name,
-				      const std::string& desc,
-					  bool req,
-					  const std::vector<T>& allowed,
-					  CmdLine &parser,
-				      Visitor* v);
+		MultiArg( const std::string& flag, 
+				  const std::string& name,
+				  const std::string& desc,
+				  bool req,
+				  const std::vector<T>& allowed,
+				  CmdLine& parser,
+				  Visitor* v = NULL );
 		  
 		  /**
 		 * Destructor.
@@ -209,12 +209,17 @@ class MultiArg : public Arg
 		 * required.
 		 */
 		virtual bool isRequired() const;
-private:
-		void init();
+
+	private:
+
+		/**
+         * Common initialization code for constructors with allowed vectors.
+         */
+		void allowedInit();
 };
 
 template<class T>
-void MultiArg<T>::init()
+void MultiArg<T>::allowedInit()
 {
 	for ( unsigned int i = 0; i < _allowed.size(); i++ )
 	{
@@ -241,7 +246,7 @@ MultiArg<T>::MultiArg(const std::string& flag,
 				      Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
   _typeDesc( typeDesc )
-{ };
+{ }
 
 template<class T>
 MultiArg<T>::MultiArg(const std::string& flag, 
@@ -249,15 +254,12 @@ MultiArg<T>::MultiArg(const std::string& flag,
 				      const std::string& desc,
 					  bool req,
 					  const std::string& typeDesc,
-					  CmdLine &parser,
+					  CmdLine& parser,
 				      Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
   _typeDesc( typeDesc )
 { 
-	//Do explicit add here instead of using Args parser constructor
-	//becase then we can not initialize first. Perhaps init would like
-	//to throw an exception or something in the future.
-	parser.add(*this);
+	parser.add( this );
 }
 
 /**
@@ -273,8 +275,8 @@ MultiArg<T>::MultiArg(const std::string& flag,
 : Arg( flag, name, desc, req, true, v ),
   _allowed( allowed )
 { 
-	init();
-};
+	allowedInit();
+}
 
 template<class T>
 MultiArg<T>::MultiArg(const std::string& flag, 
@@ -282,16 +284,13 @@ MultiArg<T>::MultiArg(const std::string& flag,
 				      const std::string& desc,
 					  bool req,
 					  const std::vector<T>& allowed,
-					  CmdLine &parser,
+					  CmdLine& parser,
 				      Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
   _allowed( allowed )
 { 
-	init();
-	//Do explicit add here instead of using Args parser constructor
-	//becase then we can not initialize first. Perhaps init would like
-	//to throw an exception or something in the future.
-	parser.add(*this);
+	allowedInit();
+	parser.add( this );
 }
 
 /**

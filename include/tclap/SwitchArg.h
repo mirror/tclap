@@ -75,8 +75,8 @@ class SwitchArg : public Arg
 		 * used as a long flag on the command line.
 		 * \param desc - A description of what the argument is for or
 		 * does.
-		 * \param def - The default value for this Switch.
 		 * \param parser - A CmdLine parser object to add this Arg to
+		 * \param def - The default value for this Switch.
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
@@ -84,7 +84,7 @@ class SwitchArg : public Arg
 			      const std::string& name, 
 			      const std::string& desc,
 			      bool def,
-				 CmdLine &parser,
+				  CmdLine& parser,
 				  Visitor* v = NULL);
 				  
 				  
