@@ -144,8 +144,8 @@ work.</li><li>If there is an error parsing the command line (e.g. a required
 argument isn't provided), the program exits and displays a brief
 USAGE and an error message.</li><li>The program name is assumed to always be argv[0], so it isn't
 specified directly.</li><li>A delimiter character can be specified. This means that if you
-prefer arguments of the style &quot;-s=asdf&quot; instead of &quot;-s asdf&quot;, you
-can do so.</li><li><span class="emphasis"><em>Always wrap everything in a try block that catches
+prefer arguments of the style <i class="parameter"><tt>-s=asdf</tt></i> instead of 
+<i class="parameter"><tt>-s asdf</tt></i>, you can do so.</li><li><span class="emphasis"><em>Always wrap everything in a try block that catches
 ArgExceptions!</em></span> Any problems found in constructing the
 <tt class="classname">CmdLine</tt> or the <tt class="classname">Arg</tt>s will 
 throw an <tt class="classname">ArgException</tt>.</li></ul></div><p>
@@ -155,7 +155,7 @@ These properties are set in the constructors of the arguments.
 </p><div class="itemizedlist"><ul type="disc"><li>First is the flag or the character preceeded by a dash(-) that
 signals the beginning of the argument on the command line.</li><li>Arguments also have names, which can, if desired also be used
 as a flag on the command line, this time preceeded by two dashes
-(--) [like the familiar getopt_long()].</li><li>Next is the description of the argument. This is a short
+(--) [like the familiar <tt class="function">getopt_long()</tt>].</li><li>Next is the description of the argument. This is a short
 description of the argument displayed in the help/usage message
 when needed.</li><li>The boolean value in <tt class="classname">ValueArg</tt>s 
 indicates whether the
@@ -226,7 +226,7 @@ to work on Windows, Sun and Alpha platforms. We've made every
 effort to keep the library compliant with the ANSI C++ standard so
 if your compiler meets the standard, then this library should work
 for you. Please let us know if this is not the case! 
-</p><div class="sect2" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id2853418"></a>Windows Note</h3></div></div><div></div></div><p>
+</p><div class="sect2" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id2853439"></a>Windows Note</h3></div></div><div></div></div><p>
 As we understand things, Visual C++ does not have the file 
 <tt class="filename">config.h</tt> which is used to make platform
 specific definitions.  In this situation, we assume that you
@@ -411,13 +411,14 @@ This is called &quot;exclusive or&quot; or &quot;XOR&quot;. To accomodate this
 situation, there is now an option to add two or more 
 <tt class="classname">Arg</tt>s to
 a <tt class="classname">CmdLine</tt> that are exclusively or'd with one another:
-xorAdd(). This means that exactly one of the 
+<tt class="methodname">xorAdd()</tt>. This means that exactly one of the 
 <tt class="classname">Arg</tt>s must be set and no more.
 </p><p>
-xorAdd() comes in two flavors, either xorAdd(Arg&amp; a, Arg&amp; b) 
+<tt class="methodname">xorAdd()</tt> comes in two flavors, either 
+<tt class="methodname">xorAdd(Arg&amp; a, Arg&amp; b)</tt>
 to add just two <tt class="classname">Arg</tt>s to be xor'd and 
-xorAdd( vector&lt;Arg*&gt; xorList ) to add more than two 
-<tt class="classname">Arg</tt>s.
+<tt class="methodname">xorAdd( vector&lt;Arg*&gt; xorList )</tt> 
+to add more than two <tt class="classname">Arg</tt>s.
 
 </p><pre class="programlisting">
 
@@ -438,10 +439,11 @@ marked as set. The question then, is how to determine which of the
 <tt class="classname">Arg</tt>s has been set? This is accomplished by calling the
 isSet() method for each <tt class="classname">Arg</tt>. If the 
 <tt class="classname">Arg</tt> has been
-matched on the command line, the isSet() will return 
+matched on the command line, the <tt class="methodname">isSet()</tt> will return 
 <tt class="constant">TRUE</tt>, whereas if the <tt class="classname">Arg</tt> 
 has been set as a result of matching the other <tt class="classname">Arg</tt> 
-that was xor'd isSet() will return <tt class="constant">FALSE</tt>.
+that was xor'd <tt class="methodname">isSet()</tt> will 
+return <tt class="constant">FALSE</tt>.
 (Of course, if the <tt class="classname">Arg</tt> was not xor'd and 
 wasn't matched, it will also return <tt class="constant">FALSE</tt>.)
 
@@ -508,7 +510,8 @@ be relatively small, although there is no limit on this.
 Obviously, a list of allowed values isn't always the best way to
 constrain things. For instance, one might wish to allow only
 integers greater than 0. In this case, the best strategy is for you
-to evaluate the value returned from the getValue() call and if it
+to evaluate the value returned from the <tt class="methodname">getValue()</tt> 
+call and if it
 isn't valid, throw an <tt class="classname">ArgException</tt>. Be sure that the
 description provided with the <tt class="classname">Arg</tt> reflects 
 the constraint you choose.

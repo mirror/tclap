@@ -192,8 +192,8 @@ USAGE and an error message.</listitem>
 specified directly.</listitem>
 
 <listitem>A delimiter character can be specified. This means that if you
-prefer arguments of the style "-s=asdf" instead of "-s asdf", you
-can do so.</listitem>
+prefer arguments of the style <parameter>-s=asdf</parameter> instead of 
+<parameter>-s asdf</parameter>, you can do so.</listitem>
 
 <listitem><emphasis>Always wrap everything in a try block that catches
 ArgExceptions!</emphasis> Any problems found in constructing the
@@ -214,7 +214,7 @@ signals the beginning of the argument on the command line.</listitem>
 
 <listitem>Arguments also have names, which can, if desired also be used
 as a flag on the command line, this time preceeded by two dashes
-(--) [like the familiar getopt_long()].</listitem>
+(--) [like the familiar <function>getopt_long()</function>].</listitem>
 
 <listitem>Next is the description of the argument. This is a short
 description of the argument displayed in the help/usage message
@@ -540,15 +540,16 @@ This is called "exclusive or" or "XOR". To accomodate this
 situation, there is now an option to add two or more 
 <classname>Arg</classname>s to
 a <classname>CmdLine</classname> that are exclusively or'd with one another:
-xorAdd(). This means that exactly one of the 
+<methodname>xorAdd()</methodname>. This means that exactly one of the 
 <classname>Arg</classname>s must be set and no more.
 </para>
 
 <para>
-xorAdd() comes in two flavors, either xorAdd(Arg&amp; a, Arg&amp; b) 
+<methodname>xorAdd()</methodname> comes in two flavors, either 
+<methodname>xorAdd(Arg&amp; a, Arg&amp; b)</methodname>
 to add just two <classname>Arg</classname>s to be xor'd and 
-xorAdd( vector&lt;Arg*&gt; xorList ) to add more than two 
-<classname>Arg</classname>s.
+<methodname>xorAdd( vector&lt;Arg*&gt; xorList )</methodname> 
+to add more than two <classname>Arg</classname>s.
 
 <programlisting>
 
@@ -569,10 +570,11 @@ marked as set. The question then, is how to determine which of the
 <classname>Arg</classname>s has been set? This is accomplished by calling the
 isSet() method for each <classname>Arg</classname>. If the 
 <classname>Arg</classname> has been
-matched on the command line, the isSet() will return 
+matched on the command line, the <methodname>isSet()</methodname> will return 
 <constant>TRUE</constant>, whereas if the <classname>Arg</classname> 
 has been set as a result of matching the other <classname>Arg</classname> 
-that was xor'd isSet() will return <constant>FALSE</constant>.
+that was xor'd <methodname>isSet()</methodname> will 
+return <constant>FALSE</constant>.
 (Of course, if the <classname>Arg</classname> was not xor'd and 
 wasn't matched, it will also return <constant>FALSE</constant>.)
 
@@ -653,7 +655,8 @@ be relatively small, although there is no limit on this.
 Obviously, a list of allowed values isn't always the best way to
 constrain things. For instance, one might wish to allow only
 integers greater than 0. In this case, the best strategy is for you
-to evaluate the value returned from the getValue() call and if it
+to evaluate the value returned from the <methodname>getValue()</methodname> 
+call and if it
 isn't valid, throw an <classname>ArgException</classname>. Be sure that the
 description provided with the <classname>Arg</classname> reflects 
 the constraint you choose.
@@ -752,7 +755,8 @@ heart's content.
 <para>
 Ideally this library would use RTTI to return a human readable name
 of the type declared for a particular argument. Unfortunately, at
-least for g++, the names returned aren't particularly useful.
+least for <command>g++</command>, the names returned aren't 
+particularly useful.
 </para>
 </sect1>
 </chapter>

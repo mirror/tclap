@@ -86,13 +86,9 @@ tt.classname {
 }
 
 tt.constant {
-	font-style:italic;
 	font-weight:bold;
 }
 
-tt.methodname {
-	font-style:italic;
-}
 
 p {
 	line-height: 1.5em;
