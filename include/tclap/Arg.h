@@ -151,12 +151,11 @@ class Arg
 			 bool valreq,
 			 Visitor* v = NULL );
 
+	public:
 		/**
 		 * Destructor.
 		 */
 		virtual ~Arg();
-
-	public:
 
 		/**
 		 * Adds this to the specified list of Args.
