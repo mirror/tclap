@@ -3,7 +3,7 @@ dnl
 dnl If the compiler can prevent names clashes using namespaces, define
 dnl HAVE_NAMESPACES.
 dnl
-dnl @version $Id: ac_cxx_namespaces.m4,v 1.1 2003/03/19 02:40:00 mes5k Exp $
+dnl @version $Id: ac_cxx_namespaces.m4,v 1.1.1.1 2003/03/19 02:40:00 mes5k Exp $
 dnl @author Luc Maisonobe
 dnl
 AC_DEFUN([AC_CXX_NAMESPACES],

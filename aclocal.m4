@@ -563,7 +563,7 @@ dnl
 dnl If the C++ library has a working stringstream, define HAVE_SSTREAM.
 dnl
 dnl @author Ben Stanley
-dnl @version $Id: aclocal.m4,v 1.1 2003/03/19 02:40:00 mes5k Exp $
+dnl @version $Id: aclocal.m4,v 1.1.1.1 2003/03/19 02:40:00 mes5k Exp $
 dnl
 AC_DEFUN([AC_CXX_HAVE_SSTREAM],
 [AC_CACHE_CHECK(whether the compiler has stringstream,
@@ -588,7 +588,7 @@ dnl
 dnl If the compiler can prevent names clashes using namespaces, define
 dnl HAVE_NAMESPACES.
 dnl
-dnl @version $Id: aclocal.m4,v 1.1 2003/03/19 02:40:00 mes5k Exp $
+dnl @version $Id: aclocal.m4,v 1.1.1.1 2003/03/19 02:40:00 mes5k Exp $
 dnl @author Luc Maisonobe
 dnl
 AC_DEFUN([AC_CXX_NAMESPACES],
