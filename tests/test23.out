@@ -1,10 +1,10 @@
-PARSE ERROR:  
-             One or more required arguments missing!
+PARSE ERROR: Argument: -d
+             Couldn't find match for argument
 
 
 USAGE: 
 
-    ../examples/test5 {-a <string>|-b <string>} {--eee <string>|--fff <string>|-g <string>} [-d <string>] -c <string> [--] [-v] [-h]
+    ../examples/test5 {-a <string>|-b <string>} {--eee <string>|--fff <string>|-g <string>} -c <string> [--] [-v] [-h] [--ddd]
 
 Where: 
 
@@ -25,9 +25,6 @@ Where:
      (OR required)  (value required)  g test
 
 
-   -d <string>,  --ddd <string>
-     (value required)  d test
-
    -c <string>,  --ccc <string>
      (required)  (value required)  c test
 
@@ -39,6 +36,9 @@ Where:
 
    -h,  --help
      Displays usage information and exits.
+
+   --ddd
+     d test
 
 
 
