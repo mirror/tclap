@@ -24,12 +24,15 @@
 
 namespace TCLAP {
 
-CmdLine::CmdLine(char *progName, const string& m, const string& v )
-: _progName(progName),
+CmdLine::CmdLine(const string& m, char delim, const string& v )
+: _progName("not_set_yet"),
   _message(m),
   _version(v),
-  _numRequired(0)
+  _numRequired(0),
+  _delimiter(delim)
 { 
+	Arg::setDelimiter( _delimiter );
+
 	SwitchArg* help = new SwitchArg("h","help",
 					                "Displays usage information and exits.",
 									false, new HelpVisitor( this ) );
@@ -92,6 +95,8 @@ void CmdLine::parse(int argc, char** argv)
 {
 	try {
 
+	_progName = argv[0]; 
+
 	// this step is necessary so that we have easy access to mutable strings.
 	vector<string> args;
   	for (int i = 1; i < argc; i++)
@@ -99,14 +104,15 @@ void CmdLine::parse(int argc, char** argv)
 
 	int requiredCount = 0;
 
-  	for (int i = 0; i < args.size(); i++)
+  	for (int i = 0; (unsigned int)i < args.size(); i++)
 	{
 		bool matched = false;
 		for (ArgIterator it = _argList.begin(); it != _argList.end(); it++)
         {
 			if ( (*it)->processArg( &i, args ) )
 			{
-				if ( (*it)->isRequired() ) requiredCount++;	
+				if ( (*it)->isRequired() ) 
+					requiredCount++;	
 				matched = true;
 				break;
 			}
@@ -124,7 +130,7 @@ void CmdLine::parse(int argc, char** argv)
 
 	} catch ( ArgException e )
 	{
-		cerr << "PARSE ERROR: for argument:   " << e.argId() << endl
+		cerr << "PARSE ERROR: " << e.argId() << endl
 			 << "             " << e.error() << endl << endl;
 
 		usage(1);

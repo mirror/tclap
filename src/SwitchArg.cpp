@@ -52,7 +52,7 @@ bool SwitchArg::combinedSwitchesMatch(string& combinedSwitches )
 
 	// ok, we're not specifying a ValueArg, so we know that we have
 	// a combined switch list.  
-	for ( int i = 1; i < combinedSwitches.length(); i++ )
+	for ( unsigned int i = 1; i < combinedSwitches.length(); i++ )
 		if ( combinedSwitches[i] == _flag[0] ) 
 		{
 			// update the combined switches so this one is no longer present

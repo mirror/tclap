@@ -24,7 +24,9 @@
 
 namespace TCLAP {
 
+// defaults
 bool Arg::_ignoreRest = false;
+char Arg::_delimiter = ' ';
 
 Arg::Arg( const string& flag, 
 		 const string& name, 
@@ -32,14 +34,15 @@ Arg::Arg( const string& flag,
 		 bool req,
 		 bool valreq,
 		 Visitor* v)
-: _name(name),
-  _description(desc),
+: 
   _flag(flag),
+  _name(name),
+  _description(desc),
   _required(req),
   _valueRequired(valreq),
   _alreadySet(false),
-  _ignoreable(true),
-  _visitor( v )
+  _visitor( v ),
+  _ignoreable(true)
 { 
 	if ( _flag.length() > 1 ) 
 		throw(ArgException("Argument flag can only be one character long",
@@ -47,18 +50,20 @@ Arg::Arg( const string& flag,
 };
 
 Arg::Arg()
-: _name(""),
-  _description(""),
+: 
   _flag(""),
+  _name(""),
+  _description(""),
   _required(false),
   _valueRequired(false),
   _alreadySet(false)
 { };
 
 Arg::Arg(const Arg& a)
-: _name(a._name),
-  _description(a._description),
+: 
   _flag(a._flag),
+  _name(a._name),
+  _description(a._description),
   _required(a._required),
   _valueRequired(a._valueRequired),
   _alreadySet(a._alreadySet)
@@ -70,9 +75,9 @@ Arg& Arg::operator=(const Arg& a)
 {
 	if ( this != &a )
 	{
+		_flag = a._flag;
 		_name = a._name;
 		_description = a._description;
-		_flag = a._flag;
 		_required = a._required;
 		_valueRequired = a._valueRequired;
 		_alreadySet = a._alreadySet;
@@ -85,9 +90,12 @@ string Arg::shortID( const string& valueId ) const
 	string id = "";
 
 	id = "-" + _flag;
+
+	string delim = " "; 
+	delim[0] = Arg::_delimiter; // ugly!!!
 	
 	if ( _valueRequired )
-		id += " <" + valueId  + ">";
+		id += delim + "<" + valueId  + ">";
 
 	if ( !_required )
 		id = "[" + id + "]";
@@ -125,7 +133,7 @@ bool Arg::operator==(const Arg& a)
 }
 
 // should be overridden
-bool Arg::processArg(int* i, vector<string>& args )
+bool Arg::processArg(int* i, vector<string>& args)
 {
 	cerr << "WARNING:   Ignoring unknown argument: " << args[*i] << endl;	
 	return false;
@@ -171,6 +179,28 @@ void Arg::_checkWithVisitor() const
 {
 	if ( _visitor != NULL )
 		_visitor->visit();
+}
+
+/**
+ * Implementation of trimFlag.
+ */
+void Arg::trimFlag(string& flag, string& value) const
+{
+	int stop = 0;
+	for ( int i = 0; (unsigned int)i < flag.length(); i++ )
+		if ( flag[i] == Arg::_delimiter )
+		{
+			stop = i;
+			break;
+		}
+
+	if ( stop > 1 )
+	{
+		value = flag.substr(stop+1);
+		flag = flag.substr(0,stop);
+	}
+
+	cout << "flag: " << flag << endl << "value: " << value << endl;
 }
 
 }
