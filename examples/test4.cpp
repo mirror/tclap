@@ -8,28 +8,18 @@ using namespace TCLAP;
 using namespace std; 
 
 
-// This exemplifies how the CmdLine class can be overridden to provide
+// This exemplifies how the output class can be overridden to provide
 // user defined output.
-class MyCmdLine : public CmdLine
+class MyOutput : public StdOutput
 {
 	public:
 
-        MyCmdLine(const std::string& name,
-                const std::string& message,
-                const std::string& version = "none" )
-		: CmdLine(name,message,version) { }
-
-		MyCmdLine(const std::string& message,
-	            const char delimiter = ' ',
-	             const std::string& version = "none" )
-		: CmdLine(message,delimiter,version) { }
-
-		virtual void failure(const ArgException& e)
+		virtual void failure(CmdLineInterface& c, ArgException& e)
 		{
 			cerr << "My special failure message for: " << endl
 			     << e.what() << endl; 
-			exit(1);
 		}
+
 };
 
 
@@ -55,7 +45,11 @@ void parseOptions(int argc, char** argv)
 {
 	try {
 
-	MyCmdLine cmd("this is a message", ' ', "0.99" );
+	CmdLine cmd("this is a message", ' ', "0.99" );
+
+	// set the output
+	MyOutput my;
+	cmd.setOutput(&my);
 
 	// 
 	// Define arguments
