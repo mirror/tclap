@@ -45,7 +45,15 @@ TESTS = test1.sh \
 		test43.sh \
 		test44.sh \
 		test45.sh \
-		test46.sh 
+		test46.sh \
+		test47.sh \
+		test48.sh \
+		test49.sh \
+		test50.sh \
+		test51.sh \
+		test52.sh \
+		test53.sh \
+		test54.sh
 
 EXTRA_DIST = $(TESTS) \
 			 test1.out \
@@ -93,5 +101,13 @@ EXTRA_DIST = $(TESTS) \
 			 test43.out \
 			 test44.out \
 			 test45.out \
-			 test46.out
+			 test46.out \
+			 test47.out \
+			 test48.out \
+			 test49.out \
+			 test50.out \
+			 test51.out \
+			 test52.out \
+			 test53.out \
+			 test54.out
 
