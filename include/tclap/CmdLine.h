@@ -175,7 +175,7 @@ class CmdLine : public CmdLineInterface
 		/**
 		 * Deletes any resources allocated by a CmdLine object.
 		 */
-		~CmdLine();
+		virtual ~CmdLine();
 
 		/**
 		 * Adds an argument to the list of arguments to be parsed.
