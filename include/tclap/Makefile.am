@@ -10,5 +10,6 @@ libtclapinclude_HEADERS = ArgException.h \
 			 Visitor.h Arg.h \
 			 HelpVisitor.h \
 			 SwitchArg.h \
-			 VersionVisitor.h
+			 VersionVisitor.h \
+			 IgnoreRestVisitor.h
 
