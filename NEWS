@@ -79,3 +79,6 @@ that generated a (bad) Docbook command summary when used.
 long args and unlabeled args were used together and weren't working properly.
 Now they can be used together. Fixed another bug in spacePrint where long 
 program names caused an infinite loop.  Finally, fixed a small memory leak.
+
+1/5/05 - Fixed a bug where setting the output object for a CmdLine didn't
+register for version or usage generation. Doh! 
