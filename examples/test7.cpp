@@ -67,6 +67,8 @@ int main(int argc, char** argv)
 	ValueArg<int> limit("l","limit","Max number of alignments allowed",
 		false, 1000,"int");
 	cmd.add( limit );
+
+	argv[0] = "ThisIsAVeryLongProgramNameDesignedToTestSpacePrintWhichUsedToHaveProblemsWithLongProgramNamesIThinkItIsNowLongEnough";
 	
 	// Parse the args.
 	cmd.parse( argc, argv );
