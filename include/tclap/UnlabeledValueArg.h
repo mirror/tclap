@@ -55,14 +55,12 @@ class UnlabeledValueArg : public ValueArg<T>
 
 		/**
 		 * UnlabeledValueArg constructor.
-		 * Note that this constructor does not have a required flag. Any 
-		 * unlabeled argument added to the CmdLine is by default required.
-		 * If you want optional, unlabeled arguments then use an 
-		 * UnlabeledMultiArg.
 		 * \param name - A one word name for the argument.  Can be
 		 * used as a long flag on the command line.
 		 * \param desc - A description of what the argument is for or
 		 * does.
+		 * \param req - Whether the argument is required on the command
+		 * line.
 		 * \param value - The default value assigned to this argument if it
 		 * is not present on the command line.
 		 * \param typeDesc - A short, human readable description of the
@@ -78,6 +76,7 @@ class UnlabeledValueArg : public ValueArg<T>
 		 */
 		UnlabeledValueArg( const std::string& name, 
 			               const std::string& desc, 
+						   bool req,
 				           T value,
 				           const std::string& typeDesc,
 						   bool ignoreable = false,
@@ -85,14 +84,12 @@ class UnlabeledValueArg : public ValueArg<T>
 
 		/**
 		 * UnlabeledValueArg constructor.
-		 * Note that this constructor does not have a required flag. Any 
-		 * unlabeled argument added to the CmdLine is by default required.
-		 * If you want optional, unlabeled arguments then use an 
-		 * UnlabeledMultiArg.
 		 * \param name - A one word name for the argument.  Can be
 		 * used as a long flag on the command line.
 		 * \param desc - A description of what the argument is for or
 		 * does.
+		 * \param req - Whether the argument is required on the command
+		 * line.
 		 * \param value - The default value assigned to this argument if it
 		 * is not present on the command line.
 		 * \param typeDesc - A short, human readable description of the
@@ -109,6 +106,7 @@ class UnlabeledValueArg : public ValueArg<T>
 		 */
 		UnlabeledValueArg( const std::string& name, 
 			               const std::string& desc, 
+						   bool req,
 				           T value,
 				           const std::string& typeDesc,
 						   CmdLineInterface& parser,
@@ -117,14 +115,12 @@ class UnlabeledValueArg : public ValueArg<T>
 						
 		/**
 		 * UnlabeledValueArg constructor.
-		 * Note that this constructor does not have a required flag. Any 
-		 * unlabeled argument added to the CmdLine is by default required.
-		 * If you want optional, unlabeled arguments then use an 
-		 * UnlabeledMultiArg.
 		 * \param name - A one word name for the argument.  Can be
 		 * used as a long flag on the command line.
 		 * \param desc - A description of what the argument is for or
 		 * does.
+		 * \param req - Whether the argument is required on the command
+		 * line.
 		 * \param value - The default value assigned to this argument if it
 		 * is not present on the command line.
 		 * \param constraint - A pointer to a Constraint object used
@@ -138,6 +134,7 @@ class UnlabeledValueArg : public ValueArg<T>
 		 */
 		UnlabeledValueArg( const std::string& name, 
 			               const std::string& desc, 
+						   bool req,
 				           T value,
 				           Constraint<T>* constraint,
 						   bool ignoreable = false,
@@ -146,14 +143,12 @@ class UnlabeledValueArg : public ValueArg<T>
 		
 		/**
 		 * UnlabeledValueArg constructor.
-		 * Note that this constructor does not have a required flag. Any 
-		 * unlabeled argument added to the CmdLine is by default required.
-		 * If you want optional, unlabeled arguments then use an 
-		 * UnlabeledMultiArg.
 		 * \param name - A one word name for the argument.  Can be
 		 * used as a long flag on the command line.
 		 * \param desc - A description of what the argument is for or
 		 * does.
+		 * \param req - Whether the argument is required on the command
+		 * line.
 		 * \param value - The default value assigned to this argument if it
 		 * is not present on the command line.
 		 * \param constraint - A pointer to a Constraint object used
@@ -168,6 +163,7 @@ class UnlabeledValueArg : public ValueArg<T>
 		 */
 		UnlabeledValueArg( const std::string& name, 
 			               const std::string& desc, 
+						   bool req,
 				           T value,
 				           Constraint<T>* constraint,
 						   CmdLineInterface& parser,
@@ -212,11 +208,12 @@ class UnlabeledValueArg : public ValueArg<T>
 template<class T>
 UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name, 
 					                    const std::string& desc, 
+										bool req,
 					                    T val,
 					                    const std::string& typeDesc,
 					                    bool ignoreable,
 					                    Visitor* v)
-: ValueArg<T>("", name, desc, true, val, typeDesc, v)
+: ValueArg<T>("", name, desc, req, val, typeDesc, v)
 { 
 	_ignoreable = ignoreable;
 }
@@ -224,12 +221,13 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name,
 template<class T>
 UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name, 
 					                    const std::string& desc, 
+										bool req,
 					                    T val,
 					                    const std::string& typeDesc,
 					                    CmdLineInterface& parser,
 					                    bool ignoreable,
 					                    Visitor* v)
-: ValueArg<T>("", name, desc, true, val, typeDesc, v)
+: ValueArg<T>("", name, desc, req, val, typeDesc, v)
 { 
 	_ignoreable = ignoreable;
 	parser.add( this );
@@ -240,12 +238,13 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name,
  */
 template<class T>
 UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name, 
-					  const std::string& desc, 
-					  T val,
-					  Constraint<T>* constraint,
-					  bool ignoreable,
-					  Visitor* v)
-: ValueArg<T>("", name, desc, true, val, constraint, v)
+                                        const std::string& desc, 
+										bool req,
+                                        T val,
+                                        Constraint<T>* constraint,
+                                        bool ignoreable,
+                                        Visitor* v)
+: ValueArg<T>("", name, desc, req, val, constraint, v)
 { 
 	_ignoreable = ignoreable;
 }
@@ -253,12 +252,13 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name,
 template<class T>
 UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name, 
 					                    const std::string& desc, 
+										bool req,
 					                    T val,
 					                    Constraint<T>* constraint,
 					                    CmdLineInterface& parser,
 					                    bool ignoreable,
 					                    Visitor* v)
-: ValueArg<T>("", name, desc, true, val, constraint,  v)
+: ValueArg<T>("", name, desc, req, val, constraint,  v)
 { 
 	_ignoreable = ignoreable;
 	parser.add( this );
