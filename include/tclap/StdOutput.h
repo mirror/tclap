@@ -98,8 +98,8 @@ class StdOutput : public CmdLineOutput
 		void spacePrint( std::ostream& os, 
 						 const std::string& s, 
 						 int maxWidth, 
-						 int indentSpaces=0, 
-						 int secondLineOffset=0 ) const;
+						 int indentSpaces, 
+						 int secondLineOffset ) const;
 
 };
 
@@ -171,7 +171,12 @@ inline void StdOutput::_shortUsage( CmdLineInterface& _cmd,
 		if ( !xorHandler.contains( (*it) ) )
 			s += " " + (*it)->shortID();
 
-	spacePrint( std::cout, s, 75, 3, (int)(progName.length()) + 2 );
+	// if the program name is too long, then adjust the second line offset 
+	int secondLineOffset = (int)(progName.length()) + 2;
+	if ( secondLineOffset > 75/2 )
+			secondLineOffset = (int)(75/2);
+
+	spacePrint( std::cout, s, 75, 3, secondLineOffset );
 }
 
 inline void StdOutput::_longUsage( CmdLineInterface& _cmd, 
@@ -193,7 +198,7 @@ inline void StdOutput::_longUsage( CmdLineInterface& _cmd,
 			spacePrint( os, (*it)->getDescription(), 75, 5, 0 );
 
 			if ( it+1 != xorList[i].end() )
-				spacePrint(os, "-- OR --", 75, 9);
+				spacePrint(os, "-- OR --", 75, 9, 0);
 		}
 		os << std::endl << std::endl;
 	}
@@ -233,9 +238,15 @@ inline void StdOutput::spacePrint( std::ostream& os,
 			if ( stringLen == allowedLen )
 				while ( s[stringLen+start] != ' ' && 
 			   	        s[stringLen+start] != ',' &&
-			   	        s[stringLen+start] != '|' )
+			   	        s[stringLen+start] != '|' &&
+						stringLen >= 0 )
 					stringLen--;
-			
+	
+			// ok, the word is longer than the line, so just split in the 
+			// wherever the line ends
+			if ( stringLen <= 0 )
+				stringLen = allowedLen;
+
 			// check for newlines
 			for ( int i = 0; i < stringLen; i++ )
 				if ( s[start+i] == '\n' )
@@ -253,11 +264,11 @@ inline void StdOutput::spacePrint( std::ostream& os,
 				// adjust allowed len
 				allowedLen -= secondLineOffset;
 			}
-			
+
 			os << s.substr(start,stringLen) << std::endl;
 
 			// so we don't start a line with a space
-			if ( s[stringLen+start] == ' ' )
+			while ( s[stringLen+start] == ' ' && start < len )
 				start++;
 			
 			start += stringLen;
