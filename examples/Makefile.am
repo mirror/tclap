@@ -10,15 +10,6 @@ test6_SOURCES = test6.cpp
 test7_SOURCES = test7.cpp
 test8_SOURCES = test8.cpp
 
-test1_LDADD = $(top_builddir)/src/libtclap.a
-test2_LDADD = $(top_builddir)/src/libtclap.a
-test3_LDADD = $(top_builddir)/src/libtclap.a
-test4_LDADD = $(top_builddir)/src/libtclap.a
-test5_LDADD = $(top_builddir)/src/libtclap.a
-test6_LDADD = $(top_builddir)/src/libtclap.a
-test7_LDADD = $(top_builddir)/src/libtclap.a
-test8_LDADD = $(top_builddir)/src/libtclap.a
-
 INCLUDES = -I$(top_builddir)/include
 
 AM_CXXFLAGS = -Wall
