@@ -127,8 +127,8 @@ class UnlabeledValueArg : public ValueArg<T>
 		 * does.
 		 * \param value - The default value assigned to this argument if it
 		 * is not present on the command line.
-		 * \param allowed - A vector of type T that where the values in the
-		 * vector are the only values allowed for the arg.
+		 * \param constraint - A pointer to a Constraint object used
+		 * to constrain this Arg.
 		 * \param ignoreable - Allows you to specify that this argument can be
 		 * ignored if the '--' flag is set.  This defaults to false (cannot
 		 * be ignored) and should  generally stay that way unless you have 
@@ -139,7 +139,7 @@ class UnlabeledValueArg : public ValueArg<T>
 		UnlabeledValueArg( const std::string& name, 
 			               const std::string& desc, 
 				           T value,
-				           const std::vector<T>& allowed,
+				           Constraint<T>* constraint,
 						   bool ignoreable = false,
 				           Visitor* v = NULL ); 
 
@@ -156,8 +156,8 @@ class UnlabeledValueArg : public ValueArg<T>
 		 * does.
 		 * \param value - The default value assigned to this argument if it
 		 * is not present on the command line.
-		 * \param allowed - A vector of type T that where the values in the
-		 * vector are the only values allowed for the arg.
+		 * \param constraint - A pointer to a Constraint object used
+		 * to constrain this Arg.
 		 * \param parser - A CmdLine parser object to add this Arg to
 		 * \param ignoreable - Allows you to specify that this argument can be
 		 * ignored if the '--' flag is set.  This defaults to false (cannot
@@ -169,7 +169,7 @@ class UnlabeledValueArg : public ValueArg<T>
 		UnlabeledValueArg( const std::string& name, 
 			               const std::string& desc, 
 				           T value,
-				           const std::vector<T>& allowed,
+				           Constraint<T>* constraint,
 						   CmdLineInterface& parser,
 						   bool ignoreable = false,
 				           Visitor* v = NULL);
@@ -242,10 +242,10 @@ template<class T>
 UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name, 
 					  const std::string& desc, 
 					  T val,
-					  const std::vector<T>& allowed,
+					  Constraint<T>* constraint,
 					  bool ignoreable,
 					  Visitor* v)
-: ValueArg<T>("", name, desc, true, val, allowed, v)
+: ValueArg<T>("", name, desc, true, val, constraint, v)
 { 
 	_ignoreable = ignoreable;
 }
@@ -254,11 +254,11 @@ template<class T>
 UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name, 
 					                    const std::string& desc, 
 					                    T val,
-					                    const std::vector<T>& allowed,
+					                    Constraint<T>* constraint,
 					                    CmdLineInterface& parser,
 					                    bool ignoreable,
 					                    Visitor* v)
-: ValueArg<T>("", name, desc, true, val, allowed,  v)
+: ValueArg<T>("", name, desc, true, val, constraint,  v)
 { 
 	_ignoreable = ignoreable;
 	parser.add( this );

@@ -99,8 +99,8 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * identification, not as a long flag.
 		 * \param desc - A description of what the argument is for or
 		 * does.
-		 * \param allowed - A vector of type T that where the values in the
-		 * vector are the only values allowed for the arg.
+		 * \param constraint - A pointer to a Constraint object used
+		 * to constrain this Arg.
 		 * \param ignoreable - Whether or not this argument can be ignored
 		 * using the "--" flag.
 		 * \param v - An optional visitor.  You probably should not
@@ -108,7 +108,7 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 */
 		UnlabeledMultiArg( const std::string& name,
 						   const std::string& desc,
-						   const std::vector<T>& allowed,
+						   Constraint<T>* constraint,
 						   bool ignoreable = false,
 						   Visitor* v = NULL );
 
@@ -118,8 +118,8 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * identification, not as a long flag.
 		 * \param desc - A description of what the argument is for or
 		 * does.
-		 * \param allowed - A vector of type T that where the values in the
-		 * vector are the only values allowed for the arg.
+		 * \param constraint - A pointer to a Constraint object used
+		 * to constrain this Arg.
 		 * \param parser - A CmdLine parser object to add this Arg to
 		 * \param ignoreable - Whether or not this argument can be ignored
 		 * using the "--" flag.
@@ -128,7 +128,7 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 */
 		UnlabeledMultiArg( const std::string& name, 
 						   const std::string& desc, 
-						   const std::vector<T>& allowed,
+						   Constraint<T>* constraint,
 						   CmdLineInterface& parser,
 						   bool ignoreable = false,
 						   Visitor* v = NULL );
@@ -196,10 +196,10 @@ UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name,
 template<class T>
 UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name, 
 				                        const std::string& desc, 
-					                    const std::vector<T>& allowed,
+					                    Constraint<T>* constraint,
 										bool ignoreable,
 					                    Visitor* v)
-: MultiArg<T>("", name, desc,  false, allowed, v)
+: MultiArg<T>("", name, desc,  false, constraint, v)
 { 
 	_ignoreable = ignoreable;
 }
@@ -207,11 +207,11 @@ UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name,
 template<class T>
 UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name, 
 				                        const std::string& desc, 
-					                    const std::vector<T>& allowed,
+					                    Constraint<T>* constraint,
 										CmdLineInterface& parser,
 										bool ignoreable,
 					                    Visitor* v)
-: MultiArg<T>("", name, desc,  false, allowed, v)
+: MultiArg<T>("", name, desc,  false, constraint, v)
 { 
 	_ignoreable = ignoreable;
 	parser.add( this );
