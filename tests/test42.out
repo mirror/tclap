@@ -1,9 +1,9 @@
 
 USAGE: 
 
-   ../examples/test3  [-f=<float>] ...  [-i=<int>] ...  -s=<string> [-B]
-                      [--] [-v] [-h] <string> <string> <fileNameString>
-                      ...
+   ../examples/test3  [-f=<float>] ...  [-i=<int>] ... 
+                      --stringTest=<string> [-B] [--] [-v] [-h] <string>
+                      <string> <fileNameString> ...
 
 
 Where: 
@@ -14,7 +14,7 @@ Where:
    -i <int>,  --intTest <int>  (accepted multiple times)
      (value required)  multi int test
 
-   -s <string>,  --stringTest <string>
+   --stringTest <string>
      (required)  (value required)  string test
 
    -B,  --existTestB
