@@ -1,5 +1,5 @@
 PARSE ERROR: Argument: -n (--name)
-             Couldn't find 'mike' in allowed list.
+             Value 'mike' does not meet constraint: homer|marge|bart|lisa|maggie
 
 Brief USAGE: 
    ../examples/test6  -n <homer|marge|bart|lisa|maggie> [--] [-v] [-h] <1|2

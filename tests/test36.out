@@ -1,5 +1,5 @@
 PARSE ERROR: Argument: (--times)
-             Couldn't find '6' in allowed list.
+             Value '6' does not meet constraint: 1|2|3
 
 Brief USAGE: 
    ../examples/test6  -n <homer|marge|bart|lisa|maggie> [--] [-v] [-h] <1|2
