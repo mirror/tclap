@@ -45,7 +45,6 @@ class SwitchArg : public Arg
 		 */
 		bool _value;
 
-
 	public:
 
         /**
@@ -108,6 +107,7 @@ class SwitchArg : public Arg
 		 * Returns bool, whether or not the switch has been set.
 		 */
 		bool getValue();
+
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -179,7 +179,7 @@ inline bool SwitchArg::processArg(int *i, std::vector<std::string>& args)
 		if ( argMatches( args[*i] ) )
 			ret = true;
 
-		if ( _alreadySet )
+		if ( _alreadySet || ( !ret && combinedSwitchesMatch( args[*i] ) ) )
 			throw(CmdLineParseException("Argument already set!", toString()));	
 
 		_alreadySet = true;
