@@ -20,7 +20,7 @@
  *****************************************************************************/ 
 
 
-#include <tclap/CmdLine.h>
+#include <tclap/CommandLine.h>
 
 namespace TCLAP {
 
@@ -62,23 +62,50 @@ void CmdLine::_constructor()
                "Ignores the rest of the labeled arguments following this flag.",
 			   false, new IgnoreRestVisitor() );
 	add( *ignore );
+
+}
+
+void CmdLine::xorAdd( vector<Arg*>& ors )
+{
+	_xorHandler.add( ors );
+
+	for (ArgVectorIterator it = ors.begin(); it != ors.end(); it++)
+	{
+		(*it)->forceRequired();
+		(*it)->setRequireLabel( "OR required" );
+
+		add( *it );
+	}
+}
+
+void CmdLine::xorAdd( Arg& a, Arg& b ) 
+{
+    vector<Arg*> ors;
+    ors.push_back( &a );
+    ors.push_back( &b );
+	xorAdd( ors );
 }
 
 void CmdLine::add( Arg& a ) 
 { 
-	if ( find(_argList.begin(),_argList.end(), &a) != _argList.end() ) 
+	add( &a );
+}
+
+void CmdLine::add( Arg* a ) 
+{ 
+	if ( find(_argList.begin(),_argList.end(), a) != _argList.end() ) 
 	{
 		cerr << "ADD ERROR:  Argument with same flag/name already exists: "
-			 << a.toString() << "  Ignoring!" << endl;
+			 << a->toString() << "  Ignoring!" << endl;
 		return;
 	}
 
-	if ( a.getFlag() == "" )
-		_argList.push_back( &a );
+	if ( a->getFlag() == "" )
+		_argList.push_back( a );
 	else
-		_argList.push_front( &a );
+		_argList.push_front( a );
 
-	if ( a.isRequired() ) _numRequired++;	
+	if ( a->isRequired() ) _numRequired++;	
 
 }
 
@@ -93,14 +120,20 @@ void CmdLine::usage( int exitVal )
 {
 	cout << endl << "USAGE: " << endl << endl << "    " << _progName ;
 
+	_xorHandler.shortUsage();
+
 	for (ArgIterator it = _argList.begin(); it != _argList.end(); it++)
-		cout << " " << (*it)->shortID();
+		if ( !_xorHandler.contains( (*it) ) )
+			cout << " " << (*it)->shortID();
 
 	cout << endl << endl << "Where: " << endl << endl;
 
+	_xorHandler.longUsage();
+
 	for (ArgIterator it = _argList.begin(); it != _argList.end(); it++)
-		cout << "   " << (*it)->longID() << endl << "     " 
-			 << (*it)->getDescription() << endl << endl;
+		if ( !_xorHandler.contains( (*it) ) )
+			cout << "   " << (*it)->longID() << endl << "     " 
+				 << (*it)->getDescription() << endl << endl;
 
 	cout << endl << endl << _message << endl << endl;
 	exit( exitVal );
@@ -126,8 +159,7 @@ void CmdLine::parse(int argc, char** argv)
         {
 			if ( (*it)->processArg( &i, args ) )
 			{
-				if ( (*it)->isRequired() ) 
-					requiredCount++;	
+				requiredCount += _xorHandler.check( *it );
 				matched = true;
 				break;
 			}

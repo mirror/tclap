@@ -43,10 +43,12 @@ Arg::Arg( const string& flag,
   _name(name),
   _description(desc),
   _required(req),
+  _requireLabel("required"),
   _valueRequired(valreq),
   _alreadySet(false),
   _visitor( v ),
-  _ignoreable(true)
+  _ignoreable(true),
+  _xorSet(false)
 { 
 	if ( _flag.length() > 1 ) 
 		throw(ArgException("Argument flag can only be one character long",
@@ -59,8 +61,12 @@ Arg::Arg()
   _name(""),
   _description(""),
   _required(false),
+  _requireLabel("required"),
   _valueRequired(false),
-  _alreadySet(false)
+  _alreadySet(false),
+  _visitor( NULL ),
+  _ignoreable(false),
+  _xorSet(false)
 { };
 
 Arg::Arg(const Arg& a)
@@ -69,8 +75,12 @@ Arg::Arg(const Arg& a)
   _name(a._name),
   _description(a._description),
   _required(a._required),
+  _requireLabel(a._requireLabel),
   _valueRequired(a._valueRequired),
-  _alreadySet(a._alreadySet)
+  _alreadySet(a._alreadySet),
+  _visitor( a._visitor ),
+  _ignoreable(a._ignoreable),
+  _xorSet(a._xorSet)
 { };
 
 Arg::~Arg() { };
@@ -83,8 +93,12 @@ Arg& Arg::operator=(const Arg& a)
 		_name = a._name;
 		_description = a._description;
 		_required = a._required;
+		_requireLabel = a._requireLabel;
 		_valueRequired = a._valueRequired;
 		_alreadySet = a._alreadySet;
+  		_visitor = a._visitor; 
+  		_ignoreable = a._ignoreable;
+  		_xorSet = a._xorSet;
 	} 
 	return *this;
 };
@@ -149,7 +163,7 @@ string Arg::getDescription() const
 {
 	string desc = "";
 	if ( _required )
-		desc = "(required)  ";
+		desc = "(" + _requireLabel + ")  ";
 
 	if ( _valueRequired )
 		desc += "(value required)  ";
@@ -161,8 +175,21 @@ string Arg::getDescription() const
 const string& Arg::getFlag() const { return _flag; };
 bool Arg::isRequired() const { return _required; }
 bool Arg::isValueRequired() const { return _valueRequired; }
-bool Arg::isAlreadySet() const { return _alreadySet; }
+
+bool Arg::isSet() const 
+{ 
+	if ( _alreadySet && !_xorSet )
+		return true;
+	else
+		return false;
+}
+
 bool Arg::isIgnoreable() const { return _ignoreable; }
+
+void Arg::setRequireLabel( const string& s) 
+{ 
+	_requireLabel = s;
+}
 
 bool Arg::argMatches( const string& argFlag ) const
 {
@@ -216,6 +243,17 @@ bool Arg::_hasBlanks( const string& s ) const
 			return true;
 
 	return false;
+}
+
+void Arg::forceRequired()
+{
+	_required = true;
+}
+
+void Arg::xorSet()
+{
+	_alreadySet = true;
+	_xorSet = true;
 }
 
 }
