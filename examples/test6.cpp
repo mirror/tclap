@@ -19,17 +19,20 @@ int main(int argc, char** argv)
 	allowed.push_back("bart");
 	allowed.push_back("lisa");
 	allowed.push_back("maggie");
+	ValuesConstraint<string> allowedVals( allowed );
 
-	ValueArg<string> nameArg("n","name","Name to print",true,"homer",allowed);
+	ValueArg<string> nameArg("n","name","Name to print",true,"homer",
+					         &allowedVals);
 	cmd.add( nameArg );
 
 	vector<int> iallowed;
 	iallowed.push_back(1);
 	iallowed.push_back(2);
 	iallowed.push_back(3);
+	ValuesConstraint<int> iallowedVals( iallowed );
 
 	UnlabeledValueArg<int> intArg("times","Number of times to print",1,
-					      iallowed,false);
+					      &iallowedVals,false);
 	cmd.add( intArg );
 
 	// Parse the args.
