@@ -1,5 +1,5 @@
 PARSE ERROR: Argument: -f (--floatTest)
-             Couldn't read argument value!
+             Couldn't read argument value from string 'nine'
 
 
 USAGE: 
