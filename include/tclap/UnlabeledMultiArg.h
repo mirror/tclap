@@ -47,6 +47,7 @@ class UnlabeledMultiArg : public MultiArg<T>
 	using MultiArg<T>::_typeDesc;
 	using MultiArg<T>::_name;
 	using MultiArg<T>::_description;
+	using MultiArg<T>::_alreadySet;
 
 	public:
 		
