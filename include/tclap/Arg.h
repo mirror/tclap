@@ -439,9 +439,7 @@ inline std::string Arg::longID( const std::string& valueId ) const
 
 inline bool Arg::operator==(const Arg& a)
 {
-	if ( ( _flag != "" && _flag == a._flag ) || 
-		 _name == a._name || 
-		 _description == a._description )
+	if ( ( _flag != "" && _flag == a._flag ) || _name == a._name)
 		return true;
 	else
 		return false;
