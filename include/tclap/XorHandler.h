@@ -103,7 +103,8 @@ inline int XorHandler::check( const Arg* a )
 	for ( int i = 0; (unsigned int)i < _orList.size(); i++ )
 	{
 		// if the XOR list contains the arg..
-		ArgVectorIterator ait = find( _orList[i].begin(), _orList[i].end(), a );
+		ArgVectorIterator ait = std::find( _orList[i].begin(), 
+		                                   _orList[i].end(), a );
 		if ( ait != _orList[i].end() )
 		{
 			// go through and set each arg that is not a
