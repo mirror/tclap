@@ -31,15 +31,16 @@ void spacePrint( ostream& os,
 	             int indentSpaces, 
 	             int secondLineOffset )
 {
-	if ( (s.length() + indentSpaces > (unsigned int) maxWidth) && 
-	     maxWidth > 0 )
+	int len = (int)(s.length());
+
+	if ( (len + indentSpaces > maxWidth) && maxWidth > 0 )
 	{
 		int allowedLen = maxWidth - indentSpaces;
 		int start = 0;
-		while ( (unsigned int)start < s.length() )
+		while ( start < len )
 		{
 			// find the substring length
-			int stringLen = min( s.length() - start, (unsigned int)allowedLen );
+			int stringLen = min( len - start, allowedLen );
 
 			// trim the length so it doesn't end in middle of a word
 			if ( stringLen == allowedLen )
