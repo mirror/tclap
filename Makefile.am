@@ -1,2 +1,2 @@
 
-SUBDIRS = src include examples docs
+SUBDIRS = src include examples docs tests
