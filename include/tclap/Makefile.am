@@ -16,5 +16,6 @@ libtclapinclude_HEADERS = \
 			 VersionVisitor.h \
 			 IgnoreRestVisitor.h \
 			 CmdLineOutput.h \
-			 StdOutput.h
+			 StdOutput.h \
+			 DocBookOutput.h
 
