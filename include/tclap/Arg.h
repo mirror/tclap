@@ -453,8 +453,8 @@ inline std::string Arg::getDescription() const
 	if ( _required )
 		desc = "(" + _requireLabel + ")  ";
 
-	if ( _valueRequired )
-		desc += "(value required)  ";
+//	if ( _valueRequired )
+//		desc += "(value required)  ";
 
 	desc += _description;
 	return desc; 
