@@ -96,17 +96,14 @@ void CmdLine::add( Arg& a )
 
 void CmdLine::add( Arg* a ) 
 { 
-	if ( find(_argList.begin(),_argList.end(), a) != _argList.end() ) 
-	{
-		cerr << "ADD ERROR:  Argument with same flag/name already exists: "
-			 << a->toString() << "  Ignoring!" << endl;
-		return;
-	}
+	for( ArgIterator iter = _argList.begin(); iter != _argList.end(); iter++ ) 
+		if ( *a == *(*iter) ) 
+			throw( ArgException( "Argument with same flag/name already exists!",
+			                     a->longID() ) );
 
 	a->addToList( _argList );
 
 	if ( a->isRequired() ) _numRequired++;	
-
 }
 
 void CmdLine::version(int exitVal)
