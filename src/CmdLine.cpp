@@ -101,10 +101,7 @@ void CmdLine::add( Arg* a )
 		return;
 	}
 
-	if ( a->getFlag() == "" )
-		_argList.push_back( a );
-	else
-		_argList.push_front( a );
+	a->addToList( _argList );
 
 	if ( a->isRequired() ) _numRequired++;	
 
@@ -201,4 +198,5 @@ bool CmdLine::_emptyCombined(const string& s)
 
 	return true;
 }
+
 }

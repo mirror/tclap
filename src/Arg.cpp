@@ -290,4 +290,12 @@ void Arg::xorSet()
 	_xorSet = true;
 }
 
+/**
+ * Overridden by Args that need to added to the end of the list.
+ */
+void Arg::addToList( list<Arg*>& argList ) const
+{
+	argList.push_front( (Arg*)this );
+}
+
 }
