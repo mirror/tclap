@@ -43,9 +43,13 @@ namespace TCLAP {
 class Arg
 {
 	private: 
+
 		static bool _ignoreRest;
 
+
 	protected:
+
+		static char _delimiter; 
 
 		/** 
 		 * The single char flag used to identify the argument.
@@ -99,19 +103,24 @@ class Arg
 		Visitor* _visitor;
 
 		/**
-		 * Performs the special handling described by the Vistitor.
-		 */
-		void _checkWithVisitor() const;
-
-		/**
 		 * Whether this argument can be ignored, if desired.
 		 */
 		bool _ignoreable;
+
+		/**
+		 * Performs the special handling described by the Vistitor.
+		 */
+		void _checkWithVisitor() const;
 
 	public:
 
 		static void beginIgnoring() { Arg::_ignoreRest = true; }
 		static bool ignoreRest() { return Arg::_ignoreRest; }
+
+		/**
+		 * Sets the delimiter for all arguments.
+		 */
+		static void setDelimiter( char c ) { Arg::_delimiter = c; }
 
 		/**
 		 * Primary constructor.
@@ -143,7 +152,7 @@ class Arg
 		/**
 		 * Destructor.
 		 */
-		~Arg();
+		virtual ~Arg();
 
 		/**
 		 * Processes the argument.
@@ -223,6 +232,12 @@ class Arg
 		 * Returns a long ID for the usage.
 		 */
 		virtual string longID( const string& valueId = "val" ) const;
+
+		/**
+		 * Trims a value off of the flag.
+		 */
+		virtual void trimFlag( string& flag, string& value ) const;
+
 
 };
 

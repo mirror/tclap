@@ -54,7 +54,13 @@ class ArgException
 		};
 
 		string error() { return ( _errorText ); };
-		string argId() { return ( _argId ); };
+		string argId() 
+		{ 
+			if ( _argId == "undefined" )
+				return " ";
+			else
+				return ( "Argument: " + _argId ); 
+		};
 
 	private:
 

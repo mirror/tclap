@@ -83,7 +83,7 @@ class UnlabeledValueArg : public ValueArg<T>
 		 * \param i - Pointer the the current argument in the list.
 		 * \param args - Mutable list of strings. 
 		 */
-		virtual bool processArg(int* i, vector<string>& args ); 
+		virtual bool processArg(int* i, vector<string>& args); 
 
 		/**
 		 * Overrides shortID for specific behavior.
@@ -128,7 +128,7 @@ bool UnlabeledValueArg<T>::processArg(int *i, vector<string>& args)
 	if ( _alreadySet )
 		return false;
 
-	_extractValue( *i, args );
+	_extractValue( args[*i] );
 	_alreadySet = true;
 	return true;
 }

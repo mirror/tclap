@@ -51,10 +51,11 @@ class CmdLine
 		string _version;
 		int _maxLength;
 		int _numRequired;
+		char _delimiter;
 
 	public:
-		CmdLine(char* progName, 
-				const string& message, 
+		CmdLine(const string& message, 
+				const char delimiter = ' ',
 				const string& version = "none" );
 
 		void add( Arg& a );

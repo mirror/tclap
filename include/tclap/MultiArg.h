@@ -41,7 +41,7 @@ class MultiArg : public Arg
 
 		string _typeDesc;
 
-		void _extractValue(int i, vector<string>& args); 
+		void _extractValue( const string& val ); 
   
 	public:
 
@@ -87,27 +87,40 @@ bool MultiArg<T>::processArg(int *i, vector<string>& args)
 	if ( _ignoreable && Arg::ignoreRest() )
 		return false;
 
-	if ( argMatches( args[*i] ) )
+	string flag = args[*i];
+	string value = "";
+
+	trimFlag( flag, value );
+
+	if ( argMatches( flag ) )
 	{
-		(*i)++;
-		if ( *i < args.size() )
+		if ( Arg::_delimiter != ' ' && value == "" )
+			throw( ArgException( "Couldn't find delimiter for this argument!",
+           	                          toString() ) );
+
+		if ( value == "" )
 		{
-			_extractValue( *i, args );
-			return true;
+			(*i)++;
+			if ( (unsigned int)*i < args.size() )
+				_extractValue( args[*i] );
+			else
+				throw( ArgException("Missing a value for this argument!",
+           	                          toString() ) );
 		}
 		else
-			throw( ArgException("Missing a value for this argument!",
-                                     toString() ) );
+			_extractValue( value );
+
+		return true;
 	}
 	else
 		return false;
 }
 
 template<class T>
-void MultiArg<T>::_extractValue(int i, vector<string>& args)
+void MultiArg<T>::_extractValue( const string& val )
 {
 	T temp;
-	istringstream is(args[i]);
+	istringstream is(val);
 	is >> temp; 
 	if ( is.fail() ) 
 		throw( ArgException("Couldn't read argument value!", toString()));

@@ -63,13 +63,12 @@ class ValueArg : public Arg
 		string _typeDesc;
 
 		/**
-		 * Extracts the string at position i from the args list.
+		 * Extracts the value from the string.
 		 * Attempts to parse string as type T, if this fails an exception
 		 * is thrown.
-		 * \param i - The index of the argument to extract.
-		 * \param args - Mutable list of strings.
+		 * \param val - string value to be parsed. 
 		 */
-		void _extractValue( int i, vector<string>& args ); 
+		void _extractValue( const string& val ); 
  
 	public:
 
@@ -118,7 +117,7 @@ class ValueArg : public Arg
 		 * \param args - Mutable list of strings. Passed 
 		 * in from main().
 		 */
-		virtual bool processArg(int* i, vector<string>& args ); 
+		virtual bool processArg(int* i, vector<string>& args); 
 
 		/**
 		 * Returns the value of the argument.
@@ -171,44 +170,52 @@ T& ValueArg<T>::getValue() { return _value; };
  * Implementation of processArg().
  */
 template<class T>
-bool ValueArg<T>::processArg(int *i, vector<string>& args) 
+bool ValueArg<T>::processArg(int *i, vector<string>& args)
 {
-		if ( _ignoreable && Arg::ignoreRest() )
-			return false;
+	if ( _ignoreable && Arg::ignoreRest() )
+		return false;
 
-		string flag = args[*i];
+	string flag = args[*i];
 
-		if ( argMatches( flag ) )
+	string value = "";
+	trimFlag( flag, value );
+
+	if ( argMatches( flag ) )
+	{
+		if ( _alreadySet )
+			throw( ArgException("Argument already set!", toString()) );
+
+		if ( Arg::_delimiter != ' ' && value == "" )
+			throw( ArgException( "Couldn't find delimiter for this argument!",
+									 toString() ) );
+
+		if ( value == "" )
 		{
-			if ( _alreadySet )
-				throw( ArgException("Argument already set!", toString()) );
-
 			(*i)++;
-			if (*i < args.size() ) 
-			{
-				_extractValue( *i, args);
-				
-				_alreadySet = true;
-
-				_checkWithVisitor();
-
-				return true;
-			}
+			if ( (unsigned int)*i < args.size() ) 
+				_extractValue( args[*i] );
 			else
 				throw( ArgException("Missing a value for this argument!",
-									 toString() ) );
-		}	
+							 toString() ) );
+		}
 		else
-			return false;
+			_extractValue( value );
+				
+		_alreadySet = true;
+		_checkWithVisitor();
+		return true;
+	}	
+	else
+		return false;
 }
 
 /**
  * Implementation of _extractValue.
  */
 template<class T>
-void ValueArg<T>::_extractValue(int i, vector<string>& args) 
+void ValueArg<T>::_extractValue( const string& val ) 
 {
-	istringstream is(args[i]);
+	istringstream is(val);
 	is >> _value;
 	if ( is.fail() ) 
 		throw( ArgException("Couldn't read argument value!", toString() ) );
@@ -231,7 +238,6 @@ string ValueArg<T>::longID(const string& val) const
 {
 	return Arg::longID( _typeDesc );	
 }
-
 
 }
 #endif
