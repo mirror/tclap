@@ -1,0 +1,26 @@
+PARSE ERROR: Argument: -r (--reverse)
+             Argument already set!
+
+
+USAGE: 
+
+   ../examples/test9  [-N] ...  [-V] ...  [-r] [--]
+
+
+Where: 
+
+   -N,  --noise  (accepted multiple times)
+     Level of noise
+
+   -V,  --verbose  (accepted multiple times)
+     Level of verbosity
+
+   -r,  --reverse
+     REVERSE instead of FORWARDS
+
+   --,  --ignore_rest
+     Ignores the rest of the labeled arguments following this flag.
+
+
+   Command description message
+
