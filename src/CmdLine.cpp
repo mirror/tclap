@@ -28,18 +28,22 @@ CmdLine::CmdLine(char *progName, const string& m, const string& v )
 : _progName(progName),
   _message(m),
   _version(v),
-  _numRequired(0),
-  _maxLength(0)
+  _numRequired(0)
 { 
 	SwitchArg* help = new SwitchArg("h","help",
-					                "displays usage information and exits",
+					                "Displays usage information and exits.",
 									false, new HelpVisitor( this ) );
 	add( *help );
 
 	SwitchArg* vers = new SwitchArg("v","version", 
-					                "displays version information and exits",
+					                "Displays version information and exits.",
 									false, new VersionVisitor( this ) );
 	add( *vers );
+
+	SwitchArg* ignore  = new SwitchArg("-","ignore_rest",
+               "Ignores the rest of the labeled arguments following this flag.",
+			   false, new IgnoreRestVisitor() );
+	add( *ignore );
 }
 
 void CmdLine::add( Arg& a ) 
@@ -51,12 +55,11 @@ void CmdLine::add( Arg& a )
 		return;
 	}
 
-	if ( a.isLabeled() )
-		_argList.push_front( &a ); 
-	else
+	if ( a.getFlag() == "" )
 		_argList.push_back( &a );
+	else
+		_argList.push_front( &a );
 
-	_maxLength = max( _maxLength, (int)((a.getName()).length()) );
 	if ( a.isRequired() ) _numRequired++;	
 
 }
@@ -73,45 +76,13 @@ void CmdLine::usage( int exitVal )
 	cout << endl << "USAGE: " << endl << endl << "    " << _progName ;
 
 	for (ArgIterator it = _argList.begin(); it != _argList.end(); it++)
-	{
-
-		cout << " ";
-		if ( !(*it)->isRequired() ) cout << "[";
-		if ( (*it)->isLabeled() )
-			cout << "-" << ((*it))->getFlag(); 
-		if ( (*it)->isValueRequired() ) 
-		{
-			if ( (*it)->isLabeled() ) cout << " ";
-			cout << (*it)->getName();
-		}
-		if ( !(*it)->isRequired() ) cout << "]";
-	}
+		cout << " " << (*it)->shortID();
 
 	cout << endl << endl << "Where: " << endl << endl;
 
 	for (ArgIterator it = _argList.begin(); it != _argList.end(); it++)
-	{
-		cout.setf(ios::left);
-
-		string s; 
-
-		if ( !(*it)->isRequired() ) s += "[";
-		else s += " ";
-
-		if ( (*it)->isLabeled() )
-			s = s + "-" + (*it)->getFlag(); 
-
-		if ( (*it)->isValueRequired() ) 
-		{
-			if ( (*it)->isLabeled() ) s += " ";
-			s += (*it)->getName();
-		}
-			
-		if ( !(*it)->isRequired() ) s += "]";
-
-		cout << "  " << setw(_maxLength + 5) << s.c_str() << "  = " 
-		     << (*it)->getDescription() << endl;
-	}
+		cout << "   " << (*it)->longID() << endl << "     " 
+			 << (*it)->getDescription() << endl << endl;
 
 	cout << endl << endl << _message << endl << endl;
 	exit( exitVal );
@@ -121,14 +92,19 @@ void CmdLine::parse(int argc, char** argv)
 {
 	try {
 
+	// this step is necessary so that we have easy access to mutable strings.
+	vector<string> args;
+  	for (int i = 1; i < argc; i++)
+		args.push_back(argv[i]);
+
 	int requiredCount = 0;
 
-  	for (int i = 1; i < argc; i++)
+  	for (int i = 0; i < args.size(); i++)
 	{
 		bool matched = false;
 		for (ArgIterator it = _argList.begin(); it != _argList.end(); it++)
         {
-			if ( (*it)->processArg( &i, argc, argv ) )
+			if ( (*it)->processArg( &i, args ) )
 			{
 				if ( (*it)->isRequired() ) requiredCount++;	
 				matched = true;
@@ -136,8 +112,8 @@ void CmdLine::parse(int argc, char** argv)
 			}
         }
 
-		if ( !matched )
-			throw( ArgException("Couldn't find match for argument",argv[i]));
+		if ( !matched && !Arg::ignoreRest() )
+			throw( ArgException("Couldn't find match for argument",args[i]));
     }
 
 	if ( requiredCount < _numRequired )

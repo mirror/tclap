@@ -24,6 +24,8 @@
 
 namespace TCLAP {
 
+bool Arg::_ignoreRest = false;
+
 Arg::Arg( const string& flag, 
 		 const string& name, 
 		 const string& desc, 
@@ -36,12 +38,12 @@ Arg::Arg( const string& flag,
   _required(req),
   _valueRequired(valreq),
   _alreadySet(false),
+  _ignoreable(true),
   _visitor( v )
 { 
-	if ( _flag == "" )
-		_labeled = false;
-	else
-		_labeled = true;
+	if ( _flag.length() > 1 ) 
+		throw(ArgException("Argument flag can only be one character long",
+							toString() ) );
 };
 
 Arg::Arg()
@@ -50,8 +52,7 @@ Arg::Arg()
   _flag(""),
   _required(false),
   _valueRequired(false),
-  _alreadySet(false),
-  _labeled(false)
+  _alreadySet(false)
 { };
 
 Arg::Arg(const Arg& a)
@@ -60,8 +61,7 @@ Arg::Arg(const Arg& a)
   _flag(a._flag),
   _required(a._required),
   _valueRequired(a._valueRequired),
-  _alreadySet(a._alreadySet),
-  _labeled(a._labeled)
+  _alreadySet(a._alreadySet)
 { };
 
 Arg::~Arg() { };
@@ -76,62 +76,81 @@ Arg& Arg::operator=(const Arg& a)
 		_required = a._required;
 		_valueRequired = a._valueRequired;
 		_alreadySet = a._alreadySet;
-		_labeled = a._labeled;
 	} 
 	return *this;
 };
 
-/*
-bool Arg::operator<(const Arg& a) const
+string Arg::shortID( const string& valueId ) const
 {
-	if ( _required && !a._required )
-		return false;
+	string id = "";
 
-	if ( !_required && a._required )
-		return true;
+	id = "-" + _flag;
+	
+	if ( _valueRequired )
+		id += " <" + valueId  + ">";
 
-	if ( _labeled && !a._labeled )
-		return false;
+	if ( !_required )
+		id = "[" + id + "]";
 
-	if ( !_labeled && a._labeled )
-		return true;
-
-	return false;
+	return id;
 }
-*/
+
+string Arg::longID( const string& valueId ) const
+{
+	string id = "";
+
+	id = "-" + _flag;
+
+	if ( _valueRequired )
+		id += " <" + valueId + ">";
+
+
+	id += ",  --" + _name;
+
+	if ( _valueRequired )
+		id += " <" + valueId + ">";
+			
+	return id;
+
+}
 
 bool Arg::operator==(const Arg& a)
 {
-	if ( _labeled )
-	{
-		if ( _flag == a._flag || _name == a._name )
-			return true;
-		else
-			return false;
-	}
+	if ( _flag == a._flag || 
+		 _name == a._name || 
+		 _description == a._description )
+		return true;
 	else
-	{
-		if ( _name == a._name || _description == a._description )
-			return true;
-		else
-			return false;
-	}
+		return false;
 }
 
 // should be overridden
-bool Arg::processArg(int* i, int argc, char** argv)
+bool Arg::processArg(int* i, vector<string>& args )
 {
-	cerr << "WARNING:   Ignoring unknown argument: " << argv[*i] << endl;	
+	cerr << "WARNING:   Ignoring unknown argument: " << args[*i] << endl;	
 	return false;
 }
 
 const string& Arg::getName() const { return _name; } ;
-const string& Arg::getDescription() const { return _description; };
+
+string Arg::getDescription() const 
+{
+	string desc = "";
+	if ( _required )
+		desc = "(required)  ";
+
+	if ( _valueRequired )
+		desc += "(value required)  ";
+
+	desc += _description;
+	return desc; 
+};
+
 const string& Arg::getFlag() const { return _flag; };
 bool Arg::isRequired() const { return _required; }
 bool Arg::isValueRequired() const { return _valueRequired; }
 bool Arg::isAlreadySet() const { return _alreadySet; }
-bool Arg::isLabeled() const { return _labeled; }
+bool Arg::isIgnoreable() const { return _ignoreable; }
 
 bool Arg::argMatches( const string& argFlag ) const
 {

@@ -40,10 +40,47 @@ SwitchArg::~SwitchArg() { };
 
 bool SwitchArg::getValue() { return _value; };
 
-bool SwitchArg::processArg(int *i, int argc, char** argv)
+bool SwitchArg::combinedSwitchesMatch(string& combinedSwitches )
 {
-	if ( argMatches( argv[*i] ) )
+	// make sure this is actually a combined switch
+	if ( combinedSwitches[0] != '-' )
+		return false;
+
+	// make sure it isn't a long name 
+	if ( combinedSwitches[1] == '-' )
+		return false;
+
+	// ok, we're not specifying a ValueArg, so we know that we have
+	// a combined switch list.  
+	for ( int i = 1; i < combinedSwitches.length(); i++ )
+		if ( combinedSwitches[i] == _flag[0] ) 
+		{
+			// update the combined switches so this one is no longer present
+			// this is necessary so that no unlabeled args are matched
+			// later in the processing.
+			combinedSwitches.erase(i,1);
+			return true;
+		}
+
+	// none of the switches passed in the list match. 
+	return false;	
+}
+
+
+bool SwitchArg::processArg(int *i, vector<string>& args)
+{
+	if ( _ignoreable && Arg::ignoreRest() )
+		return false;
+
+	if ( argMatches( args[*i] ) || combinedSwitchesMatch( args[*i] ) )
 	{
+		// If we match on a combined switch, then we want to return false
+		// so that other switches in the combination will also have a
+		// chance to match.
+		bool ret = false;
+		if ( argMatches( args[*i] ) )
+			ret = true;
+
 		if ( _alreadySet )
 			throw(ArgException("Argument already set!", toString()));	
 
@@ -56,7 +93,7 @@ bool SwitchArg::processArg(int *i, int argc, char** argv)
 
 		_checkWithVisitor();
 
-		return true;
+		return ret;
 	}
 	else
 		return false;
