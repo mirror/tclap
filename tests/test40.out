@@ -1,7 +1,7 @@
 
 USAGE: 
 
-   ../examples/test1  [-r] -n <string> [--] [-v] [-h]
+   ../examples/test1  [-r] -n <string> [--] [--version] [-h]
 
 
 Where: 
@@ -10,12 +10,12 @@ Where:
      Print name backwards
 
    -n <string>,  --name <string>
-     (required)  (value required)  Name to print
+     (required)  Name to print
 
    --,  --ignore_rest
      Ignores the rest of the labeled arguments following this flag.
 
-   -v,  --version
+   --version
      Displays version information and exits.
 
    -h,  --help

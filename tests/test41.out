@@ -2,19 +2,19 @@
 USAGE: 
 
    ../examples/test2  [-f <float>] -i <int> -s <string> [-A] [-C] [-B] [--]
-                      [-v] [-h] <string> <string> ...
+                      [--version] [-h] <string> <string> ...
 
 
 Where: 
 
    -f <float>,  --floatTest <float>
-     (value required)  float test
+     float test
 
    -i <int>,  --intTest <int>
-     (required)  (value required)  integer test
+     (required)  integer test
 
    -s <string>,  --stringTest <string>
-     (required)  (value required)  string test
+     (required)  string test
 
    -A,  --existTestA
      tests for the existence of A
@@ -28,17 +28,17 @@ Where:
    --,  --ignore_rest
      Ignores the rest of the labeled arguments following this flag.
 
-   -v,  --version
+   --version
      Displays version information and exits.
 
    -h,  --help
      Displays usage information and exits.
 
    <string>
-     (required)  (value required)  unlabeld test
+     (required)  unlabeld test
 
    <string>  (accepted multiple times)
-     (value required)  file names
+     file names
 
 
    this is a message

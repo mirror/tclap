@@ -4,7 +4,7 @@ PARSE ERROR: Argument: -d
 Brief USAGE: 
    ../examples/test5  {-a <string>|-b <string>} {--eee <string>|--fff
                       <string>|-g <string>} {-i <string> ... |-j <string>
-                      ... } [--ddd] -c <string> [--] [-v] [-h]
+                      ... } [--ddd] -c <string> [--] [--version] [-h]
 
 For complete USAGE and HELP type: 
    ../examples/test5 --help

@@ -10,7 +10,7 @@ Brief USAGE:
                                         <name string>] [-d] [-g <negative
                                         int>] [-f <negative int>] -n <homer
                                         |marge|bart|lisa|maggie> ...  [--]
-                                        [-v] [-h] <1|2|3> ...
+                                        [--version] [-h] <1|2|3> ...
 
 For complete USAGE and HELP type: 
    ThisIsAVeryLongProgramNameDesignedToTestSpacePrintWhichUsedToHaveProblemsWithLongProgramNamesIThinkItIsNowLongEnough --help

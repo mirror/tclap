@@ -4,7 +4,7 @@ PARSE ERROR: Argument: -r (--reverse)
 
 USAGE: 
 
-   ../examples/test9  [-N] ...  [-V] ...  [-r] [--]
+   ../examples/test9  [-N] ...  [-V] ...  [-r] [--] <won't see this>
 
 
 Where: 
@@ -20,6 +20,9 @@ Where:
 
    --,  --ignore_rest
      Ignores the rest of the labeled arguments following this flag.
+
+   <won't see this>
+     a random word
 
 
    Command description message

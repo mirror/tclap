@@ -9,54 +9,54 @@ USAGE:
                                         <name string>] [-d] [-g <negative
                                         int>] [-f <negative int>] -n <homer
                                         |marge|bart|lisa|maggie> ...  [--]
-                                        [-v] [-h] <1|2|3> ...
+                                        [--version] [-h] <1|2|3> ...
 
 
 Where: 
 
    -l <int>,  --limit <int>
-     (value required)  Max number of alignments allowed
+     Max number of alignments allowed
 
    -u <float lte 1>,  --upperBound <float lte 1>
-     (value required)  upper percentage bound
+     upper percentage bound
 
    -b <float lte 1>,  --lowerBound <float lte 1>
-     (value required)  lower percentage bound
+     lower percentage bound
 
    -z <filename>,  --filename2 <filename>
-     (value required)  Sequence 2 filename (FASTA format)
+     Sequence 2 filename (FASTA format)
 
    -x <filename>,  --filename1 <filename>
-     (value required)  Sequence 1 filename (FASTA format)
+     Sequence 1 filename (FASTA format)
 
    -s <name string>,  --scoringMatrix <name string>
-     (value required)  Scoring Matrix name
+     Scoring Matrix name
 
    -d,  --isDna
      The input sequences are DNA
 
    -g <negative int>,  --gapExtend <negative int>
-     (value required)  The cost for each extension of a gap
+     The cost for each extension of a gap
 
    -f <negative int>,  --gapCreate <negative int>
-     (value required)  The cost of creating a gap
+     The cost of creating a gap
 
    -n <homer|marge|bart|lisa|maggie>,  --name <homer|marge|bart|lisa
       |maggie>  (accepted multiple times)
-     (required)  (value required)  Name to print. This is a long,
-     nonsensical message to test line wrapping.  Hopefully it works.
+     (required)  Name to print. This is a long, nonsensical message to test
+     line wrapping.  Hopefully it works.
 
    --,  --ignore_rest
      Ignores the rest of the labeled arguments following this flag.
 
-   -v,  --version
+   --version
      Displays version information and exits.
 
    -h,  --help
      Displays usage information and exits.
 
    <1|2|3>  (accepted multiple times)
-     (value required)  Number of times to print
+     Number of times to print
 
 
    Command description message. This is a long multi-line message meant to

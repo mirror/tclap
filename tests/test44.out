@@ -3,45 +3,45 @@ USAGE:
 
    ../examples/test5  {-a <string>|-b <string>} {--eee <string>|--fff
                       <string>|-g <string>} {-i <string> ... |-j <string>
-                      ... } [--ddd] -c <string> [--] [-v] [-h]
+                      ... } [--ddd] -c <string> [--] [--version] [-h]
 
 
 Where: 
 
    -a <string>,  --aaa <string>
-     (OR required)  (value required)  or test a
+     (OR required)  or test a
          -- OR --
    -b <string>,  --bbb <string>
-     (OR required)  (value required)  or test b
+     (OR required)  or test b
 
 
    --eee <string>
-     (OR required)  (value required)  e test
+     (OR required)  e test
          -- OR --
    --fff <string>
-     (OR required)  (value required)  f test
+     (OR required)  f test
          -- OR --
    -g <string>,  --ggg <string>
-     (OR required)  (value required)  g test
+     (OR required)  g test
 
 
    -i <string>,  --iii <string>  (accepted multiple times)
-     (OR required)  (value required)  or test i
+     (OR required)  or test i
          -- OR --
    -j <string>,  --jjj <string>  (accepted multiple times)
-     (OR required)  (value required)  or test j
+     (OR required)  or test j
 
 
    --ddd
      d test
 
    -c <string>,  --ccc <string>
-     (required)  (value required)  c test
+     (required)  c test
 
    --,  --ignore_rest
      Ignores the rest of the labeled arguments following this flag.
 
-   -v,  --version
+   --version
      Displays version information and exits.
 
    -h,  --help
