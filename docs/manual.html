@@ -281,8 +281,8 @@ special cases of <b>ValueArg</b>s and are described below. All
 <b>ValueArg</b>s are <a href=
 "manual.html#FOOTNOTES">templatized**</a> and will attempt to parse
 the string its flag matches on the command line as the type it is
-specified as. <b>ValueArg&lt; int &gt;</b> will attempt to parse an
-int, <b>ValueArg&lt; float &gt;</b> will attempt to parse a float,
+specified as. <b>ValueArg&lt;int&gt;</b> will attempt to parse an
+int, <b>ValueArg&lt;float&gt;</b> will attempt to parse a float,
 etc. If <i>operator&gt;&gt;</i> for the specified type doesn't
 recognize the string on the command line as its defined type, then
 an exception will be thrown.</li>
@@ -292,7 +292,7 @@ an exception will be thrown.</li>
 <em>TCLAP</em> is implemented entirely in header files which means you only
 need to include CmdLine.h to use the library.
 <pre>
-        #include &lt; tclap/CmdLine.h &gt;
+        #include &lt;tclap/CmdLine.h&gt;
 </pre>
 You'll need to make sure that your compiler can see the header
 files. If you do the usual "make install" then your compiler should
@@ -363,7 +363,7 @@ a single value is returned. A <b>MultiArg</b> is declared much like
 a <b>ValueArg</b>:
 <pre>
 
-                MultiArg &lt; int &gt; itest("i", "intTest", "multi int test", false,"int" );
+                MultiArg &lt;int&gt; itest("i", "intTest", "multi int test", false,"int" );
                 cmd.add( itest );
 
 </pre>
@@ -384,7 +384,7 @@ the <b>CmdLine</b> object to treat them accordingly. The code would
 look like this:
 <pre>
 
-                UnlabeledValueArg &lt; float &gt;  nolabel( "name", "unlabeled test", 3.14,
+                UnlabeledValueArg &lt;float&gt;  nolabel( "name", "unlabeled test", 3.14,
                                                   "nameString"  );
                 cmd.add( nolabel );
 
@@ -432,11 +432,11 @@ CmdLine!</b>. Here is what a declaration looks like:
                 //
                 // UnlabeledMultiArg must be the LAST argument added!
                 //
-                UnlabeledMultiArg &lt; string &gt; multi("file names");
+                UnlabeledMultiArg &lt;string&gt; multi("file names");
                 cmd.add( multi );
                 cmd.parse(argc, argv);
 
-                vector &lt; string &gt;  fileNames = multi.getValue();
+                vector &lt;string&gt;  fileNames = multi.getValue();
 
 </pre>
 You must only ever specify one (1) <b>UnlabeledMultiArg</b>. One
@@ -464,14 +464,14 @@ xorAdd(). This means that exactly one of the <b>Arg</b>s must be
 set and no more.<br />
 <br />
 xorAdd() comes in two flavors, either xorAdd(Arg&amp; a, Arg&amp;
-b) to add just two <b>Arg</b>s to be xor'd and xorAdd( vector&lt;
-Arg* &gt; xorList ) to add more than two <b>Arg</b>s.
+b) to add just two <b>Arg</b>s to be xor'd and xorAdd( vector&lt;Arg*&gt; 
+xorList ) to add more than two <b>Arg</b>s.
 <pre>
 
 
-        ValueArg &lt; string &gt;  fileArg("f","file","File name to read",true,"homer",
+        ValueArg &lt;string&gt;  fileArg("f","file","File name to read",true,"homer",
                                  "filename");
-        ValueArg &lt; string &gt;  urlArg("u","url","URL to load",true, 
+        ValueArg &lt;string&gt;  urlArg("u","url","URL to load",true, 
                                     "http://example.com", "URL");
 
         cmd.xorAdd( fileArg, urlArg );
@@ -515,7 +515,7 @@ option on the command line. The help output is updated accordingly.
 <pre>
 
 
-        ValueArg &lt; string &gt;  fileArg("","file","File name",true,"homer","filename");
+        ValueArg &lt;string&gt;  fileArg("","file","File name",true,"homer","filename");
 
         SwitchArg  caseSwitch("","upperCase","Print in upper case",false);
 
@@ -532,14 +532,14 @@ constructor. If the value is in the list then it is accepted. If
 not, then an exception is thrown. Here is a simple example:
 <pre>
 
-        vector&lt; string &gt; allowed;
+        vector&lt;string&gt; allowed;
         allowed.push_back("homer");
         allowed.push_back("marge");
         allowed.push_back("bart");
         allowed.push_back("lisa");
         allowed.push_back("maggie");
         
-        ValueArg&lt; string &gt; nameArg("n","name","Name to print",true,"homer",allowed);
+        ValueArg&lt;string&gt; nameArg("n","name","Name to print",true,"homer",allowed);
         cmd.add( nameArg );
 
 </pre>
@@ -575,10 +575,10 @@ example:
         // Note that the following args take the "cmd" object as arguments.
         SwitchArg btest("B","existTestB", "exist Test B", false, cmd );
 
-        ValueArg&lt; string &gt; stest("s", "stringTest", "string test", true, "homer", 
+        ValueArg&lt;string&gt; stest("s", "stringTest", "string test", true, "homer", 
                                                "string", cmd );
 
-        UnlabeledValueArg&lt; string &gt; utest("unTest1","unlabeled test one", 
+        UnlabeledValueArg&lt;string&gt; utest("unTest1","unlabeled test one", 
                                                         "default","string", cmd );
         
         // NO add() calls!
@@ -654,8 +654,8 @@ prints the names of the authors when present. First subclass
 <b>Visitor</b>:
 <pre>
 #include "Visitor.h"
-#include &lt; string &gt;
-#include &lt; iostream &gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
 
 class AuthorVisitor : public Visitor
 {
