@@ -6,3 +6,13 @@ args.  I've also changed things a bit by subclassing MultiArg and ValueArg
 to get unlabeled versions of these classes.  I think this is a bit cleaner
 design, despite two new classes.
 
+1/7/04 - ... and with great trepidation, I release 0.9.6.  Loads of changes.  
+The big change is that you can now define the delimiter used to separate 
+argument flags and argument values. So if you prefer arguments of the style 
+"-s=asdf"  instead of "-s asdf", you can do so.  I've also fixed a number of 
+warnings generated and fixed a few pathologic bugs related to combined
+switches.  That said, I suspect that there may be a few significant bugs
+in this release that I haven't uncovered yet.  Please let me know ASAP if
+you find any.
+
+
