@@ -363,7 +363,7 @@ a single value is returned. A <b>MultiArg</b> is declared much like
 a <b>ValueArg</b>:
 <pre>
 
-                MultiArg &lt;int&gt; itest("i", "intTest", "multi int test", false,"int" );
+                MultiArg&lt;int&gt; itest("i", "intTest", "multi int test", false,"int" );
                 cmd.add( itest );
 
 </pre>
@@ -384,7 +384,7 @@ the <b>CmdLine</b> object to treat them accordingly. The code would
 look like this:
 <pre>
 
-                UnlabeledValueArg &lt;float&gt;  nolabel( "name", "unlabeled test", 3.14,
+                UnlabeledValueArg&lt;float&gt;  nolabel( "name", "unlabeled test", 3.14,
                                                   "nameString"  );
                 cmd.add( nolabel );
 
@@ -432,11 +432,11 @@ CmdLine!</b>. Here is what a declaration looks like:
                 //
                 // UnlabeledMultiArg must be the LAST argument added!
                 //
-                UnlabeledMultiArg &lt;string&gt; multi("file names");
+                UnlabeledMultiArg&lt;string&gt; multi("file names");
                 cmd.add( multi );
                 cmd.parse(argc, argv);
 
-                vector &lt;string&gt;  fileNames = multi.getValue();
+                vector&lt;string&gt;  fileNames = multi.getValue();
 
 </pre>
 You must only ever specify one (1) <b>UnlabeledMultiArg</b>. One
@@ -469,9 +469,9 @@ xorList ) to add more than two <b>Arg</b>s.
 <pre>
 
 
-        ValueArg &lt;string&gt;  fileArg("f","file","File name to read",true,"homer",
+        ValueArg&lt;string&gt;  fileArg("f","file","File name to read",true,"homer",
                                  "filename");
-        ValueArg &lt;string&gt;  urlArg("u","url","URL to load",true, 
+        ValueArg&lt;string&gt;  urlArg("u","url","URL to load",true, 
                                     "http://example.com", "URL");
 
         cmd.xorAdd( fileArg, urlArg );
@@ -515,7 +515,7 @@ option on the command line. The help output is updated accordingly.
 <pre>
 
 
-        ValueArg &lt;string&gt;  fileArg("","file","File name",true,"homer","filename");
+        ValueArg&lt;string&gt;  fileArg("","file","File name",true,"homer","filename");
 
         SwitchArg  caseSwitch("","upperCase","Print in upper case",false);
 
