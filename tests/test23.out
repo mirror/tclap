@@ -4,7 +4,7 @@ PARSE ERROR: Argument: -d
 
 USAGE: 
 
-    ../examples/test5 {-a <string>|-b <string>} {--eee <string>|--fff <string>|-g <string>} -c <string> [--] [-v] [-h] [--ddd]
+    ../examples/test5 {-a <string>|-b <string>} {--eee <string>|--fff <string>|-g <string>} [--ddd] -c <string> [--] [-v] [-h]
 
 Where: 
 
@@ -25,6 +25,9 @@ Where:
      (OR required)  (value required)  g test
 
 
+   --ddd
+     d test
+
    -c <string>,  --ccc <string>
      (required)  (value required)  c test
 
@@ -36,9 +39,6 @@ Where:
 
    -h,  --help
      Displays usage information and exits.
-
-   --ddd
-     d test
 
 
 
