@@ -205,16 +205,25 @@ class CmdLine : public CmdLineInterface
 		void xorAdd( std::vector<Arg*>& xors );
 
 		/**
-		 * Prints the usage to stdout and exits.
+		 * Prints the usage to stdout and exits.  Can be overridden to 
+		 * produce alternative behavior.
 		 * \param exitVal - Value to exit with. 
 		 */
-		void usage( int exitVal = 0 );
+		virtual void usage( int exitVal = 0 );
 
 		/**
-		 * Prints the version to stdout and exits.
+		 * Prints the version to stdout and exits. Can be overridden 
+		 * to produce alternative behavior.
 		 * \param exitVal - Value to exit with. 
 		 */
-		void version( int exitVal = 0 );
+		virtual void version( int exitVal = 0 );
+
+		/**
+		 * Prints (to stderr) an error message, short usage and exits with a 
+		 * value of 1. Can be overridden to produce alternative behavior.
+		 * \param e - The ArgException that caused the failure. 
+		 */
+		virtual void failure( const ArgException& e );
 
 		/**
 		 * Parses the command line.
@@ -389,6 +398,22 @@ inline void CmdLine::usage( int exitVal )
 	exit( exitVal );
 }
 
+inline void CmdLine::failure( const ArgException& e )
+{
+	std::cerr << "PARSE ERROR: " << e.argId() << std::endl
+		      << "             " << e.error() << std::endl << std::endl;
+
+	std::cerr << "Brief USAGE: " << std::endl;
+
+	_shortUsage( std::cerr );	
+
+	std::cerr << std::endl << "For complete USAGE and HELP type: " 
+		      << std::endl << "   " << _progName << " --help" 
+			  << std::endl << std::endl;
+
+	exit(1);
+}
+
 inline void CmdLine::parse(int argc, char** argv)
 {
 	try {
@@ -431,21 +456,7 @@ inline void CmdLine::parse(int argc, char** argv)
 	if ( requiredCount > _numRequired )
 		throw(CmdLineParseException("Too many arguments!"));
 
-	} catch ( ArgException e )
-	{
-		std::cerr << "PARSE ERROR: " << e.argId() << std::endl
-			      << "             " << e.error() << std::endl << std::endl;
-
-		std::cerr << "Brief USAGE: " << std::endl;
-
-		_shortUsage( std::cerr );	
-
-		std::cerr << std::endl << "For complete USAGE and HELP type: " 
-			      << std::endl << "   " << _progName << " --help" 
-				  << std::endl << std::endl;
-
-		exit(1);
-	}
+	} catch ( ArgException e ) { failure(e); }
 }
 
 inline bool CmdLine::_emptyCombined(const std::string& s)
