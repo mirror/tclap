@@ -1,0 +1,11 @@
+[-i] 0  9
+[-i] 1  8
+[  ] 0  marge
+[  ] 1  bart
+for float we got : 0
+for int we got : 0
+for string we got : bill
+for ulabeled we got : homer
+for bool A we got : 0
+for bool B we got : 1
+for bool C we got : 0
