@@ -91,6 +91,13 @@ class CmdLineInterface
 		 */
 		virtual void version( int exitVal = 0 )=0;
 
+        /**
+		 * Prints (to stderr) an error message, short usage and exits with a 
+		 * value of 1. Can be overridden to produce alternative behavior.
+		 * \param e - The ArgException that caused the failure. 
+		 */
+		virtual void failure( const ArgException& e )=0;
+
 		/**
 		 * Parses the command line.
 		 * \param argc - Number of arguments.
