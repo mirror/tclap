@@ -15,4 +15,4 @@ test5_LDADD = $(top_builddir)/src/libtclap.a
 
 INCLUDES = -I$(top_builddir)/include
 
-CXXFLAGS = -Wall
+AM_CXXFLAGS = -Wall
