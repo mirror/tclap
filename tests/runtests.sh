@@ -6,9 +6,11 @@ let "fail = 0"
 for tnam in `ls test*.sh`
   do 
   echo "Running test $tnam"
-  if ./$tnam && echo "OK" || echo "FAIL" ; then
+  if ./$tnam; then 
+  	  echo "OK" 
       let "suc = $(($suc + 1))"
   else
+	  echo "FAIL" 
       let "fail = $(($fail + 1))"
   fi
 done

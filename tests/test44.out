@@ -2,8 +2,8 @@
 USAGE: 
 
    ../examples/test5  {-a <string>|-b <string>} {--eee <string>|--fff
-                      <string>|-g <string>} [--ddd] -c <string> [--] [-v]
-                      [-h]
+                      <string>|-g <string>} {-i <string> ... |-j <string>
+                      ... } [--ddd] -c <string> [--] [-v] [-h]
 
 
 Where: 
@@ -23,6 +23,13 @@ Where:
          -- OR --
    -g <string>,  --ggg <string>
      (OR required)  (value required)  g test
+
+
+   -i <string>,  --iii <string>  (accepted multiple times)
+     (OR required)  (value required)  or test i
+         -- OR --
+   -j <string>,  --jjj <string>  (accepted multiple times)
+     (OR required)  (value required)  or test j
 
 
    --ddd

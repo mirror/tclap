@@ -1,3 +1,6 @@
+for I:
+ 0  one
+ 1  two
 for A OR B we got : asdf
 for string C we got : fdas
 for string D we got : 0

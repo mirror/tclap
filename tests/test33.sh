@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # success
-../examples/test5 -a asdf -c fdas --eee blah --ddd > tmp.out 2>&1
+../examples/test5 -a asdf -c fdas --eee blah --ddd -j o --jjj t > tmp.out 2>&1
 
 if cmp -s tmp.out test33.out; then
 	exit 0

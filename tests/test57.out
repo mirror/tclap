@@ -1,5 +1,5 @@
-PARSE ERROR: Argument: -d
-             Couldn't find match for argument
+PARSE ERROR:  
+             Too many arguments!
 
 Brief USAGE: 
    ../examples/test5  {-a <string>|-b <string>} {--eee <string>|--fff
