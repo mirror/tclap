@@ -32,7 +32,7 @@ void XorHandler::add( vector<Arg*>& ors )
 	_orList.push_back( ors );
 }
 
-void XorHandler::shortUsage()
+string XorHandler::shortUsage()
 {
 	string out = "";
 	for ( int i = 0; (unsigned int)i < _orList.size(); i++ )
@@ -45,10 +45,10 @@ void XorHandler::shortUsage()
 		out[out.length()-1] = '}';
 	}
 
-	cout << out;
+	return out;
 }
 
-void XorHandler::longUsage()
+void XorHandler::printLongUsage( ostream& os )
 {
 	for ( int i = 0; (unsigned int)i < _orList.size(); i++ )
 	{
@@ -56,13 +56,13 @@ void XorHandler::longUsage()
 			  it != _orList[i].end(); 
 			  it++ )
 		{
-			cout << "   " << (*it)->longID() << endl
-				 << "     " << (*it)->getDescription() << endl; 
+			spacePrint( os, (*it)->longID(), 75, 3, 3 );
+			spacePrint( os, (*it)->getDescription(), 75, 5, 0 );
 
 			if ( it+1 != _orList[i].end() )
-				cout << "       -- OR -- " << endl;
+				spacePrint(os, "-- OR --", 75, 9);
 		}
-		cout << endl << endl;
+		os << endl << endl;
 	}
 }
 

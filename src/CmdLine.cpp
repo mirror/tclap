@@ -113,27 +113,45 @@ void CmdLine::version(int exitVal)
 	exit( exitVal );
 }
 
+void CmdLine::_shortUsage( ostream& os ) 
+{
+	string s = _progName + " " + _xorHandler.shortUsage();
+
+	for (ArgIterator it = _argList.begin(); it != _argList.end(); it++)
+		if ( !_xorHandler.contains( (*it) ) )
+			s += " " + (*it)->shortID();
+
+	spacePrint( os, s, 75, 3, _progName.length() + 2 );
+}
+
+void CmdLine::_longUsage( ostream& os )
+{
+	_xorHandler.printLongUsage( os );
+
+	for (ArgIterator it = _argList.begin(); it != _argList.end(); it++)
+		if ( !_xorHandler.contains( (*it) ) )
+		{
+			spacePrint( os, (*it)->longID(), 75, 3, 3 ); 
+			spacePrint( os, (*it)->getDescription(), 75, 5, 0 ); 
+			os << endl;
+		}
+
+	os << endl;
+	spacePrint( os, _message, 75, 3, 0 );
+}
 
 void CmdLine::usage( int exitVal )
 {
-	cout << endl << "USAGE: " << endl << endl << "    " << _progName ;
+	cout << endl << "USAGE: " << endl << endl; 
 
-	_xorHandler.shortUsage();
-
-	for (ArgIterator it = _argList.begin(); it != _argList.end(); it++)
-		if ( !_xorHandler.contains( (*it) ) )
-			cout << " " << (*it)->shortID();
+	_shortUsage( cout );
 
 	cout << endl << endl << "Where: " << endl << endl;
 
-	_xorHandler.longUsage();
+	_longUsage( cout );
 
-	for (ArgIterator it = _argList.begin(); it != _argList.end(); it++)
-		if ( !_xorHandler.contains( (*it) ) )
-			cout << "   " << (*it)->longID() << endl << "     " 
-				 << (*it)->getDescription() << endl << endl;
+	cout << endl; 
 
-	cout << endl << endl << _message << endl << endl;
 	exit( exitVal );
 }
 
@@ -183,7 +201,14 @@ void CmdLine::parse(int argc, char** argv)
 		cerr << "PARSE ERROR: " << e.argId() << endl
 			 << "             " << e.error() << endl << endl;
 
-		usage(1);
+		cerr << "Brief USAGE: " << endl;
+
+		_shortUsage( cerr );	
+
+		cerr << endl << "For complete USAGE and HELP type: " 
+			 << endl << "   " << _progName << " --help" << endl << endl;
+
+		exit(1);
 	}
 }
 
