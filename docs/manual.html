@@ -347,6 +347,62 @@ floats, etc.) then just declare the <b>UnlabeledMultiArg</b> as type
 <i>string</i>
 and parse the different values yourself.  
 
+<a name="XOR"></a>
+<h3>I want one argument or the other, but not both...</h3>
+<b>New Feature!</b> Suppose you have a command that must read input from one
+of two possible locations, either a local file or a URL.  The command 
+<i>must</i> read something, so <i>one</i> argument is required, but not both, 
+yet neither argument is strictly necessary by itself.  This is called 
+"exclusive or" or "XOR".  To accomodate this situation, there is now an 
+option to add two or more <b>Arg</b>s to a <b>CmdLine</b> that are exclusively 
+or'd with one another: xorAdd().  This means that at exactly one of 
+the <b>Arg</b>s must be set and no more.  
+<br> <br>
+xorAdd() comes in two flavors, either xorAdd(Arg& a, Arg& b) to add just
+two <b>Arg</b>s to be xor'd and xorAdd( vector<Arg*> xorList ) to add more 
+than two <b>Arg</b>s.
+<br> <br>
+<pre>
+
+	...
+
+	ValueArg < string >  fileArg("f","file","File name to read",true,"homer",
+                                 "filename");
+	ValueArg < string >  urlArg("u","url","URL to load",true, 
+	                            "http://example.com", "URL");
+
+	cmd.xorAdd( fileArg, urlArg );
+	cmd.parse(argc, argv);
+
+	...
+</pre>
+<br> <br>
+Once one <b>Arg</b> in the xor list is matched on the <b>CmdLine</b> then
+the others in the xor list will be marked as set.  The question then, is how to
+determine which of the <b>Arg</b>s has been set?  This is accomplished by
+calling the isSet() method for each <b>Arg</b>.  If the <b>Arg</b> has been
+matched on the command line, the isSet() will return <b>TRUE</b>, whereas
+if the <b>Arg</b> has been set as a result of matching the other <b>Arg</b> 
+that was xor'd isSet() will return <b>FALSE</b>. (Of course, if the <b>Arg</b>
+was not xor'd and wasn't matched, it will also return <b>FALSE</b>.)
+<br> <br>
+<pre>
+
+	...
+
+	if ( fileArg.isSet() )
+		readFile( fileArg.getValue() );
+	else if ( urlArg.isSet() )
+		readURL( urlArg.getValue() );
+	else
+		// Should never get here because TCLAP will note that one of the
+		// required args above has not been set.
+		throw("Very bad things...");
+
+	...
+
+</pre>
+<br> <br>
 <a name="VISITORS"></a>
 <h2>Visitors</h2>
 Disclaimer: Almost no one will have any use for Visitors, they were added
