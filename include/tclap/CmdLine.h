@@ -35,6 +35,9 @@
 #include <tclap/CmdLineOutput.h>
 #include <tclap/StdOutput.h>
 
+#include <tclap/Constraint.h>
+#include <tclap/ValuesConstraint.h>
+
 #include <string>
 #include <vector>
 #include <list>
