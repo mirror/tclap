@@ -26,5 +26,9 @@ one and only one of the args is required.  If a second arg is found an
 exception is thrown.  See the manual for details.  As always, let me know
 if you run into any problems.
 
-
+2/10/04 - A minor release: 0.9.8.  A couple of bug fixes for 0.9.7 are
+included and a feature has been added that allows Args to be specified 
+without short options, meaning the user is forced to use only long options.
+This is useful for programs with more options than map sensibly to single
+chars.
 
