@@ -76,7 +76,7 @@ class ArgException : public std::exception
 		/**
 		 * Returns the arg id and error text. 
 		 */
-		const char* what() throw() 
+		const char* what() const throw() 
 		{
 			std::string ex = _argId + " -- " + _errorText;
 			return ex.c_str();
