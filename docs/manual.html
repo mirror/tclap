@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Templatized C++ Command Line Parser Manual</title><link rel="stylesheet" href="style.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.61.3" /></head><body><div class="book" lang="en" xml:lang="en"><div class="titlepage"><div><div><h1 class="title"><a id="id2868300"></a>Templatized C++ Command Line Parser Manual</h1></div><div><div class="author"><h3 class="author"><span class="firstname">Michael</span> <span class="othername">E</span> <span class="surname">Smoot</span></h3></div></div><div><p class="copyright">Copyright © 2003,2004 Michael E. Smoot</p></div></div><div></div><hr /></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1. <a href="#id2868084">Basic Usage</a></dt><dd><dl><dt><a href="#ARG_PROPERTIES">Argument Properties</a></dt><dt><a href="#ARGUMENT_TYPES">Types of Arguments</a></dt><dt><a href="#COMPILING">Compiling</a></dt></dl></dd><dt>2. <a href="#COMPLICATIONS">Complications</a></dt><dd><dl><dt><a href="#COMBINE_SWITCHES">I want to combine multiple switches into one argument...</a></dt><dt><a href="#MULTI_ARG">I tried passing multiple values on the command line with the
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Templatized C++ Command Line Parser Manual</title><link rel="stylesheet" href="style.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.61.3" /></head><body><div class="book" lang="en" xml:lang="en"><div class="titlepage"><div><div><h1 class="title"><a id="id2868300"></a>Templatized C++ Command Line Parser Manual</h1></div><div><div class="author"><h3 class="author"><span class="firstname">Michael</span> <span class="othername">E</span> <span class="surname">Smoot</span></h3></div></div><div><p class="copyright">Copyright © 2003,2004,2005 Michael E. Smoot</p></div></div><div></div><hr /></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1. <a href="#id2868084">Basic Usage</a></dt><dd><dl><dt><a href="#ARG_PROPERTIES">Argument Properties</a></dt><dt><a href="#ARGUMENT_TYPES">Types of Arguments</a></dt><dt><a href="#COMPILING">Compiling</a></dt></dl></dd><dt>2. <a href="#COMPLICATIONS">Complications</a></dt><dd><dl><dt><a href="#COMBINE_SWITCHES">I want to combine multiple switches into one argument...</a></dt><dt><a href="#MULTI_ARG">I tried passing multiple values on the command line with the
 same flag and it didn't work...</a></dt><dt><a href="#UNLABELED_VALUE_ARG">I don't like labelling all of my arguments...</a></dt><dt><a href="#UNLABELED_MULTI_ARG">I want an arbitrary number of unlabeled arguments to be accepted...</a></dt><dt><a href="#XOR">I want one argument or the other, but not both...</a></dt><dt><a href="#NO_FLAG">I have more arguments than single flags make sense for...</a></dt><dt><a href="#CONSTRAINT">I want to constrain the values allowed for a particular 
-argument...</a></dt><dt><a href="#ARG_ADD_CMDLINE">I want the Args to add themselves to the CmdLine...</a></dt><dt><a href="#CHANGE_OUTPUT">I want different output than what is provided...</a></dt></dl></dd><dt>3. <a href="#EXCEPTIONS">Exceptions to the Rules</a></dt><dd><dl><dt><a href="#IGNORE_ARGS">Ignoring arguments</a></dt><dt><a href="#COMBINED_SWITCHES">Multiple Identical Switches</a></dt><dt><a href="#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></dt></dl></dd><dt>4. <a href="#VISITORS">Visitors</a></dt><dt>5. <a href="#MORE_INFO">More Information</a></dt></dl></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="id2868084"></a>Chapter 1. Basic Usage</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="#ARG_PROPERTIES">Argument Properties</a></dt><dt><a href="#ARGUMENT_TYPES">Types of Arguments</a></dt><dt><a href="#COMPILING">Compiling</a></dt></dl></div><p>
+argument...</a></dt><dt><a href="#ARG_ADD_CMDLINE">I want the Args to add themselves to the CmdLine...</a></dt><dt><a href="#CHANGE_OUTPUT">I want different output than what is provided...</a></dt></dl></dd><dt>3. <a href="#EXCEPTIONS">Exceptions to the Rules</a></dt><dd><dl><dt><a href="#IGNORE_ARGS">Ignoring arguments</a></dt><dt><a href="#MULTIPLE_IDENTICAL_SWITCHES">Multiple Identical Switches</a></dt><dt><a href="#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></dt></dl></dd><dt>4. <a href="#VISITORS">Visitors</a></dt><dt>5. <a href="#MORE_INFO">More Information</a></dt></dl></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="id2868084"></a>Chapter 1. Basic Usage</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="#ARG_PROPERTIES">Argument Properties</a></dt><dt><a href="#ARGUMENT_TYPES">Types of Arguments</a></dt><dt><a href="#COMPILING">Compiling</a></dt></dl></div><p>
 <span class="emphasis"><em>TCLAP</em></span> has a few key classes to be aware of. 
 The first is the
 <tt class="classname">CmdLine</tt> (command line) class. This class parses
 the command line passed to it according to the arguments that it
 contains. Arguments are separate objects that are added to the
-<tt class="classname">CmdLine</tt> object one at a time. The five 
+<tt class="classname">CmdLine</tt> object one at a time. The six 
 argument classes are: <tt class="classname">ValueArg</tt>, 
 <tt class="classname">UnlabeledValueArg</tt>,
-<tt class="classname">SwitchArg</tt>, <tt class="classname">MultiArg</tt> and 
+<tt class="classname">SwitchArg</tt>, <tt class="classname">MultiSwitchArg</tt>, 
+<tt class="classname">MultiArg</tt> and 
 <tt class="classname">UnlabeledMultiArg</tt>.
 These classes are templatized, which means they can be defined to parse
 a value of any <a href="#FOOTNOTES"> type**</a>. Once you add the 
@@ -228,7 +229,7 @@ to work on Windows, Sun and Alpha platforms. We've made every
 effort to keep the library compliant with the ANSI C++ standard so
 if your compiler meets the standard, then this library should work
 for you. Please let us know if this is not the case! 
-</p><div class="sect2" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id2853438"></a>Windows Note</h3></div></div><div></div></div><p>
+</p><div class="sect2" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id2853441"></a>Windows Note</h3></div></div><div></div></div><p>
 As we understand things, Visual C++ does not have the file 
 <tt class="filename">config.h</tt> which is used to make platform
 specific definitions.  In this situation, we assume that you
@@ -241,7 +242,7 @@ then simply tell your compiler to define the variable
 <span class="emphasis"><em>should</em></span> work.  We think.  Alternatively, just edit
 the files <tt class="filename">ValueArg.h</tt> and <tt class="filename">MultiArg.h</tt>.
 </p></div><p>
-</p><div class="sect2" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id2853498"></a>Random Note</h3></div></div><div></div></div><p>
+</p><div class="sect2" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id2853501"></a>Random Note</h3></div></div><div></div></div><p>
 If your compiler doesn't support the <tt class="methodname">using</tt> syntax used
 in <tt class="classname">UnlabeledValueArg</tt> and 
 <tt class="classname">UnlabeledMultiArg</tt> to support two stage name lookup, 
@@ -317,6 +318,22 @@ a <tt class="classname">ValueArg</tt>:
 Note that <tt class="classname">MultiArg</tt>s can be added to the 
 <tt class="classname">CmdLine</tt> in any order (unlike 
 <a href="#UNLABELED_MULTI_ARG" title="I want an arbitrary number of unlabeled arguments to be accepted..."> UnlabeledMultiArg</a>). 
+</p><p>
+<span class="emphasis"><em>New Feature!</em></span> <tt class="classname">MultiSwitchArg</tt> now
+allows you to set a switch multiple times on the command line.  The call
+to <tt class="methodname">getValue()</tt> returns the number (int) of times 
+the switch
+has been found on the command line in addition to the default value. 
+Here is an example using the default initial value of 0:
+</p><pre class="programlisting">
+	MultiSwitchArg quiet(&quot;q&quot;,&quot;quiet&quot;,&quot;Reduce the volume of output&quot;);
+	cmd.add( quiet );
+</pre><p>
+Alternatively, you can specify your own initial value:
+</p><pre class="programlisting">
+	MultiSwitchArg quiet(&quot;q&quot;,&quot;quiet&quot;,&quot;Reduce the volume of output&quot;,5);
+	cmd.add( quiet );
+</pre><p>
 </p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="UNLABELED_VALUE_ARG"></a>I don't like labelling all of my arguments...</h2></div></div><div></div></div><p>
 To this point all of our arguments have had labels (flags)
 indentifying them on the command line, but there are some
@@ -621,7 +638,7 @@ example. <span class="emphasis"><em>NOTE</em></span>: if you supply your own Out
 will not delete it in the <tt class="classname">CmdLine</tt> destructor.  This 
 could lead to a (very small) memory leak if you don't take care of the object
 yourself.
-</p></div></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="EXCEPTIONS"></a>Chapter 3. Exceptions to the Rules</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="#IGNORE_ARGS">Ignoring arguments</a></dt><dt><a href="#COMBINED_SWITCHES">Multiple Identical Switches</a></dt><dt><a href="#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></dt></dl></div><p>
+</p></div></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="EXCEPTIONS"></a>Chapter 3. Exceptions to the Rules</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="#IGNORE_ARGS">Ignoring arguments</a></dt><dt><a href="#MULTIPLE_IDENTICAL_SWITCHES">Multiple Identical Switches</a></dt><dt><a href="#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></dt></dl></div><p>
 Like all good rules, there are many exceptions.... 
 </p><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="IGNORE_ARGS"></a>Ignoring arguments</h2></div></div><div></div></div><p>
 The <i class="parameter"><tt>--</tt></i> flag is automatically included in the 
@@ -645,14 +662,9 @@ ignore arguments after the <i class="parameter"><tt>--</tt></i>. To accomodate t
 we can make both <tt class="classname">UnlabeledValueArg</tt>s and 
 <tt class="classname">UnlabeledMultiArg</tt>s ignoreable in their constructors. 
 See the <a href="html/index.html" target="_top"> API Documentation</a> for details. 
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="COMBINED_SWITCHES"></a>Multiple Identical Switches</h2></div></div><div></div></div><p>
-If you absolutely must allow for multiple, identical switches, then
-don't use a <tt class="classname">SwitchArg</tt>, instead use a 
-<tt class="classname">MultiArg</tt> of type
-<tt class="classname">bool</tt>. This means you'll need to specify a 1 or 0 on the
-command line with the switch (as values are required), but this
-should allow you to turn your favorite switch on and off to your
-heart's content. 
+</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="MULTIPLE_IDENTICAL_SWITCHES"></a>Multiple Identical Switches</h2></div></div><div></div></div><p>
+No longer a problem!  Just use <tt class="classname">MultiSwitchArg</tt>. 
+There is a description <a href="#MULTI_ARG" title="I tried passing multiple values on the command line with the&#10;same flag and it didn't work...">here</a>. 
 </p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="DESCRIPTION_EXCEPTIONS"></a>Type Descriptions</h2></div></div><div></div></div><p>
 Ideally this library would use RTTI to return a human readable name
 of the type declared for a particular argument. Unfortunately, at

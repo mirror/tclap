@@ -30,7 +30,7 @@
 		<othername role='mi'>E</othername>
 	</author>
 	<copyright>
-		<year>2003,2004</year>
+		<year>2003,2004,2005</year>
 		<holder>Michael E. Smoot</holder>
 	</copyright>
 </bookinfo>
@@ -43,10 +43,11 @@ The first is the
 <classname>CmdLine</classname> (command line) class. This class parses
 the command line passed to it according to the arguments that it
 contains. Arguments are separate objects that are added to the
-<classname>CmdLine</classname> object one at a time. The five 
+<classname>CmdLine</classname> object one at a time. The six 
 argument classes are: <classname>ValueArg</classname>, 
 <classname>UnlabeledValueArg</classname>,
-<classname>SwitchArg</classname>, <classname>MultiArg</classname> and 
+<classname>SwitchArg</classname>, <classname>MultiSwitchArg</classname>, 
+<classname>MultiArg</classname> and 
 <classname>UnlabeledMultiArg</classname>.
 These classes are templatized, which means they can be defined to parse
 a value of any <link linkend="FOOTNOTES"> type**</link>. Once you add the 
@@ -430,6 +431,23 @@ a <classname>ValueArg</classname>:
 Note that <classname>MultiArg</classname>s can be added to the 
 <classname>CmdLine</classname> in any order (unlike 
 <link linkend="UNLABELED_MULTI_ARG"> UnlabeledMultiArg</link>). 
+</para>
+<para>
+<emphasis>New Feature!</emphasis> <classname>MultiSwitchArg</classname> now
+allows you to set a switch multiple times on the command line.  The call
+to <methodname>getValue()</methodname> returns the number (int) of times 
+the switch
+has been found on the command line in addition to the default value. 
+Here is an example using the default initial value of 0:
+<programlisting>
+	MultiSwitchArg quiet("q","quiet","Reduce the volume of output");
+	cmd.add( quiet );
+</programlisting>
+Alternatively, you can specify your own initial value:
+<programlisting>
+	MultiSwitchArg quiet("q","quiet","Reduce the volume of output",5);
+	cmd.add( quiet );
+</programlisting>
 </para>
 </sect1>
 
@@ -824,16 +842,11 @@ See the <ulink url="html/index.html"> API Documentation</ulink> for details.
 </sect1>
 
 
-<sect1 id="COMBINED_SWITCHES">
+<sect1 id="MULTIPLE_IDENTICAL_SWITCHES">
 <title>Multiple Identical Switches</title>
 <para>
-If you absolutely must allow for multiple, identical switches, then
-don't use a <classname>SwitchArg</classname>, instead use a 
-<classname>MultiArg</classname> of type
-<classname>bool</classname>. This means you'll need to specify a 1 or 0 on the
-command line with the switch (as values are required), but this
-should allow you to turn your favorite switch on and off to your
-heart's content. 
+No longer a problem!  Just use <classname>MultiSwitchArg</classname>. 
+There is a description <link linkend="MULTI_ARG">here</link>. 
 </para>
 </sect1>
 
