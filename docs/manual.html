@@ -591,7 +591,10 @@ int main(int argc, char** argv)
 </pre><p>
 
 See <tt class="filename">test4.cpp</tt> in the examples directory for the full
-example.
+example. <span class="emphasis"><em>NOTE</em></span>: if you supply your own Output object, we 
+will not delete it in the <tt class="classname">CmdLine</tt> destructor.  This 
+could lead to a (very small) memory leak if you don't take care of the object
+yourself.
 </p></div></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="EXCEPTIONS"></a>Chapter 3. Exceptions to the Rules</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="#IGNORE_ARGS">Ignoring arguments</a></dt><dt><a href="#COMBINED_SWITCHES">Multiple Identical Switches</a></dt><dt><a href="#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></dt></dl></div><p>
 Like all good rules, there are many exceptions.... 
 </p><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="IGNORE_ARGS"></a>Ignoring arguments</h2></div></div><div></div></div><p>

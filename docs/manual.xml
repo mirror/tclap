@@ -750,7 +750,10 @@ int main(int argc, char** argv)
 </programlisting>
 
 See <filename>test4.cpp</filename> in the examples directory for the full
-example.
+example. <emphasis>NOTE</emphasis>: if you supply your own Output object, we 
+will not delete it in the <classname>CmdLine</classname> destructor.  This 
+could lead to a (very small) memory leak if you don't take care of the object
+yourself.
 </para>
 </sect1>
 </chapter>

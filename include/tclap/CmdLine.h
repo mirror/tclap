@@ -136,6 +136,12 @@ class CmdLine : public CmdLineInterface
 		 */
 		void deleteOnExit(Visitor* ptr);
 
+		/**
+		 * Is set to true when a user sets the output object. We use this so
+		 * that we don't delete objects that are created outside of this lib.
+		 */
+		bool _userSetOutput;
+
 	public:
 
 		/**
@@ -258,7 +264,8 @@ inline CmdLine::CmdLine(const std::string& n,
   _message(m),
   _version(v),
   _numRequired(0),
-  _delimiter(' ')
+  _delimiter(' '),
+  _userSetOutput(false)
 { 
 	_constructor();
 }
@@ -270,7 +277,8 @@ inline CmdLine::CmdLine(const std::string& m,
   _message(m),
   _version(v),
   _numRequired(0),
-  _delimiter(delim)
+  _delimiter(delim),
+  _userSetOutput(false)
 {
 	_constructor();
 }
@@ -289,6 +297,9 @@ inline CmdLine::~CmdLine()
 		 visIter != _visitorDeleteOnExitList.end(); 
 		 ++visIter) 
 		delete *visIter;
+
+	if ( !_userSetOutput )
+		delete _output;
 }
 
 inline void CmdLine::_constructor()
@@ -439,6 +450,7 @@ inline CmdLineOutput* CmdLine::getOutput()
 
 inline void CmdLine::setOutput(CmdLineOutput* co)
 {
+	_userSetOutput = true;
 	_output = co;
 }
 
