@@ -23,6 +23,7 @@
 #ifndef TCLAP_VERSION_VISITOR_H
 #define TCLAP_VERSION_VISITOR_H
 
+#include <tclap/CmdLineInterface.h>
 #include <tclap/Visitor.h>
 
 namespace TCLAP {
@@ -38,7 +39,7 @@ class VersionVisitor: public Visitor
 		/**
 		 * The CmdLine of interest.
 		 */
-		CmdLine* _cmd;
+		CmdLineInterface* _cmd;
 		
 	public:
 
@@ -46,7 +47,7 @@ class VersionVisitor: public Visitor
 		 * Constructor.
 		 * \param cmd - The CmdLine whose version method will be called.
 		 */
-		VersionVisitor(CmdLine* cmd) : Visitor(), _cmd( cmd ) { }
+		VersionVisitor(CmdLineInterface* cmd) : Visitor(), _cmd( cmd ) { }
 
 		/**
 		 * Prints the version to stdout.

@@ -1,9 +1,10 @@
 
 libtclapincludedir = $(includedir)/tclap
 
-libtclapinclude_HEADERS = ArgException.h \
+libtclapinclude_HEADERS = \
+			 CmdLineInterface.h \
+			 ArgException.h \
 			 CmdLine.h \
-			 CommandLine.h \
 			 XorHandler.h \
 			 MultiArg.h \
 			 UnlabeledMultiArg.h \

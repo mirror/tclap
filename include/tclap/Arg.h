@@ -4,6 +4,7 @@
  *  file:  Arg.h
  * 
  *  Copyright (c) 2003, Michael E. Smoot .
+ *  Copyright (c) 2004, Michael E. Smoot, Daniel Aarno .
  *  All rights reverved.
  * 
  *  See the file COPYING in the top directory of this distribution for
@@ -27,12 +28,12 @@
 #include <vector>
 #include <list>
 #include <iostream>
+
 #include <tclap/ArgException.h>
 #include <tclap/Visitor.h>
+#include <tclap/CmdLineInterface.h>
 
 namespace TCLAP {
-
-class CmdLine;
 
 /** 
  * A base class that defines the essential data for all arguments.
@@ -47,7 +48,7 @@ class Arg
 		/**
 		 * Indicates whether the rest of the arguments should be ignored.
 		 */
-		static bool _ignoreRest;
+                static bool& ignoreRestRef() { static bool ign = false; return ign; }
 
 
 	protected:
@@ -56,7 +57,7 @@ class Arg
 		 * The delimiter that separates an argument flag/name from the
 		 * value.
 		 */
-		static char _delimiter; 
+		static char& delimiterRef() { static char delim = ' '; return delim; } 
 
 		/** 
 		 * The single char flag used to identify the argument.
@@ -166,47 +167,53 @@ class Arg
 		/**
 		 * Begin ignoring arguments since the "--" argument was specified.
 		 */
-		static void beginIgnoring() { Arg::_ignoreRest = true; }
+		static void beginIgnoring() { ignoreRestRef() = true; }
 		
 		/**
 		 * Whether to ignore the rest.
 		 */
-		static bool ignoreRest() { return Arg::_ignoreRest; }
+		static bool ignoreRest() { return ignoreRestRef(); }
+
+		/**
+		 * The delimiter that separates an argument flag/name from the
+		 * value.
+		 */
+		static char delimiter() { return delimiterRef(); } 
 		
 		/**
 		 * The char used as a place holder when SwitchArgs are combined.
 		 * Currently set to '*', which shouldn't cause many problems since
 		 * *'s are expanded by most shells on the command line.  
 		 */
-		static const char blankChar; 
+		static const char blankChar() { return '*'; }
 		
 		/**
 		 * The char that indicates the beginning of a flag.  Currently '-'.
 		 */
-		static const char flagStartChar; 
+		static const char flagStartChar() { return '-'; }
 		
 		/**
 		 * The sting that indicates the beginning of a flag.  Currently "-".
 		 * Should be identical to flagStartChar.
 		 */
-		static const std::string flagStartString;
+		static const std::string flagStartString() { return "-"; }
 		
 		/**
 		 * The sting that indicates the beginning of a name.  Currently "--".
 		 * Should be flagStartChar twice.
 		 */
-		static const std::string nameStartString;
+		static const std::string nameStartString() { return "--"; }
 
 		/**
 		 * The name used to identify the ignore rest argument.
 		 */
-		static const std::string ignoreNameString;
+		static const std::string ignoreNameString() { return "ignore_rest"; }
 
 		/**
 		 * Sets the delimiter for all arguments.
 		 * \param c - The character that delimits flags/names from values.
 		 */
-		static void setDelimiter( char c ) { Arg::_delimiter = c; }
+		static void setDelimiter( char c ) { delimiterRef() = c; }
 
 		/**
 		 * Processes the argument.
@@ -336,7 +343,233 @@ class Arg
 typedef std::list<Arg*>::iterator ArgIterator;
 typedef std::vector<Arg*>::iterator ArgVectorIterator;
 
+//////////////////////////////////////////////////////////////////////
+//BEGIN Arg.cpp
+//////////////////////////////////////////////////////////////////////
+
+inline Arg::Arg(const std::string& flag, 
+         const std::string& name, 
+         const std::string& desc, 
+         bool req, 
+         bool valreq,
+         Visitor* v) :
+  _flag(flag),
+  _name(name),
+  _description(desc),
+  _required(req),
+  _requireLabel("required"),
+  _valueRequired(valreq),
+  _alreadySet(false),
+  _visitor( v ),
+  _ignoreable(true),
+  _xorSet(false)
+{
+	if ( _flag.length() > 1 ) 
+		throw(ArgException("Argument flag can only be one character long",
+							toString() ) );
+
+	if ( _name != ignoreNameString() &&  
+		 ( _flag == Arg::flagStartString() || 
+		   _flag == Arg::nameStartString() || 
+		   _flag == " " ) )
+		throw(ArgException("Argument flag cannot be either '" + 
+							Arg::flagStartString() + "' or '" + 
+							Arg::nameStartString() + "' or a space.",
+							toString() ) );
+
+	if ( ( _name.find( Arg::flagStartString(), 0 ) != std::string::npos ) || 
+		 ( _name.find( Arg::nameStartString(), 0 ) != std::string::npos ) ||
+		 ( _name.find( " ", 0 ) != std::string::npos ) )
+		throw(ArgException("Argument name cannot contain either '" + 
+							Arg::flagStartString() + "' or '" + 
+							Arg::nameStartString() + "' or space.",
+							toString() ) );
+
 }
+
+inline Arg::~Arg() { }
+
+inline std::string Arg::shortID( const std::string& valueId ) const
+{
+	std::string id = "";
+
+	if ( _flag != "" )
+		id = Arg::flagStartString() + _flag;
+	else
+		id = Arg::nameStartString() + _name;
+
+	std::string delim = " "; 
+	delim[0] = Arg::delimiter(); // ugly!!!
+	
+	if ( _valueRequired )
+		id += delim + "<" + valueId  + ">";
+
+	if ( !_required )
+		id = "[" + id + "]";
+
+	return id;
+}
+
+inline std::string Arg::longID( const std::string& valueId ) const
+{
+	std::string id = "";
+
+	if ( _flag != "" )
+	{
+		id += Arg::flagStartString() + _flag;
+
+		if ( _valueRequired )
+			id += " <" + valueId + ">";
+		
+		id += ",  ";
+	}
+
+	id += Arg::nameStartString() + _name;
+
+	if ( _valueRequired )
+		id += " <" + valueId + ">";
+			
+	return id;
+
+}
+
+inline bool Arg::operator==(const Arg& a)
+{
+	if ( ( _flag != "" && _flag == a._flag ) || 
+		 _name == a._name || 
+		 _description == a._description )
+		return true;
+	else
+		return false;
+}
+
+// should be overridden
+inline bool Arg::processArg(int* i, std::vector<std::string>& args)
+{
+	std::cerr << "WARNING:   Ignoring unknown argument: " << args[*i] << std::endl;	
+	return false;
+}
+
+inline std::string Arg::getDescription() const 
+{
+	std::string desc = "";
+	if ( _required )
+		desc = "(" + _requireLabel + ")  ";
+
+	if ( _valueRequired )
+		desc += "(value required)  ";
+
+	desc += _description;
+	return desc; 
+}
+
+inline const std::string& Arg::getFlag() const { return _flag; }
+
+inline const std::string& Arg::getName() const { return _name; } 
+
+inline bool Arg::isRequired() const { return _required; }
+
+inline bool Arg::isValueRequired() const { return _valueRequired; }
+
+inline bool Arg::isSet() const 
+{ 
+	if ( _alreadySet && !_xorSet )
+		return true;
+	else
+		return false;
+}
+
+inline bool Arg::isIgnoreable() const { return _ignoreable; }
+
+inline void Arg::setRequireLabel( const std::string& s) 
+{ 
+	_requireLabel = s;
+}
+
+inline bool Arg::argMatches( const std::string& argFlag ) const
+{
+	if ( argFlag == Arg::flagStartString() + _flag ||
+		 argFlag == Arg::nameStartString() + _name )
+		return true;
+	else
+		return false;
+}
+
+inline std::string Arg::toString() const
+{
+	std::string s = "";
+
+	if ( _flag != "" )
+		s += Arg::flagStartString() + _flag + " ";
+
+	s += "(" + Arg::nameStartString() + _name + ")";
+
+	return s;
+}
+
+inline void Arg::_checkWithVisitor() const
+{
+	if ( _visitor != NULL )
+		_visitor->visit();
+}
+
+/**
+ * Implementation of trimFlag.
+ */
+inline void Arg::trimFlag(std::string& flag, std::string& value) const
+{
+	int stop = 0;
+	for ( int i = 0; (unsigned int)i < flag.length(); i++ )
+		if ( flag[i] == delimiter() )
+		{
+			stop = i;
+			break;
+		}
+
+	if ( stop > 1 )
+	{
+		value = flag.substr(stop+1);
+		flag = flag.substr(0,stop);
+	}
+
+}
+
+/**
+ * Implementation of _hasBlanks.
+ */
+inline bool Arg::_hasBlanks( const std::string& s ) const
+{
+	for ( int i = 1; (unsigned int)i < s.length(); i++ )
+		if ( s[i] == Arg::blankChar() )
+			return true;
+
+	return false;
+}
+
+inline void Arg::forceRequired()
+{
+	_required = true;
+}
+
+inline void Arg::xorSet()
+{
+	_alreadySet = true;
+	_xorSet = true;
+}
+
+/**
+ * Overridden by Args that need to added to the end of the list.
+ */
+inline void Arg::addToList( std::list<Arg*>& argList ) const
+{
+	argList.push_front( (Arg*)this );
+}
+
+//////////////////////////////////////////////////////////////////////
+//END Arg.cpp
+//////////////////////////////////////////////////////////////////////
+
+} //namespace TCLAP
 
 #endif
 

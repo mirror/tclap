@@ -22,6 +22,7 @@
 #ifndef TCLAP_HELP_VISITOR_H
 #define TCLAP_HELP_VISITOR_H
 
+#include <tclap/CmdLineInterface.h>
 #include <tclap/Visitor.h>
 
 namespace TCLAP {
@@ -36,7 +37,7 @@ class HelpVisitor: public Visitor
 		/**
 		 * The CmdLine that will be called for the usage method.
 		 */
-		CmdLine* _cmd;
+		CmdLineInterface* _cmd;
 
 	public:
 
@@ -44,7 +45,7 @@ class HelpVisitor: public Visitor
 		 * Constructor.
 		 * \param cmd - The CmdLine that will called for usage method.
 		 */
-		HelpVisitor(CmdLine* cmd) : Visitor(), _cmd( cmd ) { }
+		HelpVisitor(CmdLineInterface* cmd) : Visitor(), _cmd( cmd ) { }
 
 		/**
 		 * Calls the usage method of the CmdLine.

@@ -4,6 +4,7 @@
  *  file:  UnlabeledValueArg.h
  * 
  *  Copyright (c) 2003, Michael E. Smoot .
+ *  Copyright (c) 2004, Michael E. Smoot, Daniel Aarno.
  *  All rights reverved.
  * 
  *  See the file COPYING in the top directory of this distribution for
@@ -26,10 +27,8 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <tclap/Visitor.h>
-#include <tclap/Arg.h>
+
 #include <tclap/ValueArg.h>
-#include <tclap/CommandLine.h>
 
 namespace TCLAP {
 
@@ -115,7 +114,7 @@ class UnlabeledValueArg : public ValueArg<T>
 			               const std::string& desc, 
 				           T value,
 				           const std::string& typeDesc,
-						   CmdLine& parser,
+						   CmdLineInterface& parser,
 						   bool ignoreable = false,
 				           Visitor* v = NULL ); 					
 						
@@ -174,7 +173,7 @@ class UnlabeledValueArg : public ValueArg<T>
 			               const std::string& desc, 
 				           T value,
 				           const std::vector<T>& allowed,
-						   CmdLine& parser,
+						   CmdLineInterface& parser,
 						   bool ignoreable = false,
 				           Visitor* v = NULL);
 						
@@ -230,7 +229,7 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name,
 					                    const std::string& desc, 
 					                    T val,
 					                    const std::string& typeDesc,
-					                    CmdLine& parser,
+					                    CmdLineInterface& parser,
 					                    bool ignoreable,
 					                    Visitor* v)
 : ValueArg<T>("", name, desc, true, val, typeDesc, v)
@@ -259,7 +258,7 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name,
 					                    const std::string& desc, 
 					                    T val,
 					                    const std::vector<T>& allowed,
-					                    CmdLine& parser,
+					                    CmdLineInterface& parser,
 					                    bool ignoreable,
 					                    Visitor* v)
 : ValueArg<T>("", name, desc, true, val, allowed,  v)

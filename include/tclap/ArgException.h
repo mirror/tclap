@@ -32,7 +32,7 @@ namespace TCLAP {
  * A simple class that defines and argument exception.  Should be caught
  * whenever a CmdLine is created and parsed.
  */
-class ArgException : std::exception
+class ArgException : public std::exception
 {
 	public:
 	

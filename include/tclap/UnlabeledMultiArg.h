@@ -26,9 +26,8 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <tclap/Visitor.h>
 
-#include <tclap/CommandLine.h>
+#include <tclap/MultiArg.h>
 
 namespace TCLAP {
 
@@ -93,7 +92,7 @@ class UnlabeledMultiArg : public MultiArg<T>
 		UnlabeledMultiArg( const std::string& name,
 				           const std::string& desc,
 				           const std::string& typeDesc,
-						   CmdLine& parser,
+						   CmdLineInterface& parser,
 						   bool ignoreable = false,
 				           Visitor* v = NULL );
 						 
@@ -133,7 +132,7 @@ class UnlabeledMultiArg : public MultiArg<T>
 		UnlabeledMultiArg( const std::string& name, 
 						   const std::string& desc, 
 						   const std::vector<T>& allowed,
-						   CmdLine& parser,
+						   CmdLineInterface& parser,
 						   bool ignoreable = false,
 						   Visitor* v = NULL );
 						 
@@ -187,7 +186,7 @@ template<class T>
 UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name, 
 				                        const std::string& desc, 
 					                    const std::string& typeDesc,
-										CmdLine& parser,
+										CmdLineInterface& parser,
 										bool ignoreable,
 					                    Visitor* v)
 : MultiArg<T>("", name, desc,  false, typeDesc, v)
@@ -212,7 +211,7 @@ template<class T>
 UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name, 
 				                        const std::string& desc, 
 					                    const std::vector<T>& allowed,
-										CmdLine& parser,
+										CmdLineInterface& parser,
 										bool ignoreable,
 					                    Visitor* v)
 : MultiArg<T>("", name, desc,  false, allowed, v)
