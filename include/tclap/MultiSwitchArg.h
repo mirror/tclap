@@ -1,7 +1,7 @@
 
 /****************************************************************************** 
 *
-*  file:  SwitchArg.h
+*  file:  MultiSwitchArg.h
 *
 *  Copyright (c) 2003, Michael E. Smoot .
 *  Copyright (c) 2004, Michael E. Smoot, Daniel Aarno.
