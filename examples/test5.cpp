@@ -9,7 +9,7 @@ using namespace TCLAP;
 string _orTest;
 string _orTest2;
 string _testc;
-string _testd;
+bool _testd;
 
 void parseOptions(int argc, char** argv);
 
@@ -43,7 +43,7 @@ void parseOptions(int argc, char** argv)
 	ValueArg<string> ctest("c", "ccc", "c test", true, "homer", "string");
 	cmd.add( ctest );
 
-	ValueArg<string> dtest("d", "ddd", "d test", false, "homer", "string");
+	SwitchArg dtest("", "ddd", "d test", "homer", false);
 	cmd.add( dtest );
 
 	ValueArg<string> etest("", "eee", "e test", false, "homer", "string");
