@@ -16,10 +16,23 @@ class MyOutput : public StdOutput
 
 		virtual void failure(CmdLineInterface& c, ArgException& e)
 		{
-			cerr << "My special failure message for: " << endl
+			cerr << "my failure message: " << endl
 			     << e.what() << endl; 
 		}
 
+		virtual void usage(CmdLineInterface& c)
+		{
+			cout << "my usage message:" << endl;
+			list<Arg*> args = c.getArgList();
+			for (ArgListIterator it = args.begin(); it != args.end(); it++)
+				cout << (*it)->longID() 
+					 << "  (" << (*it)->getDescription() << ")" << endl;
+		}
+
+		virtual void version(CmdLineInterface& c)
+		{
+			cout << "my version message: 0.1" << endl;
+		}
 };
 
 
