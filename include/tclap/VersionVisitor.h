@@ -20,8 +20,8 @@
  *****************************************************************************/ 
 
 
-#ifndef __VERSION_VISITOR_H__
-#define __VERSION_VISITOR_H__
+#ifndef TCLAP_VERSION_VISITOR_H
+#define TCLAP_VERSION_VISITOR_H
 
 #include <tclap/Visitor.h>
 

@@ -19,8 +19,8 @@
  *  
  *****************************************************************************/ 
 
-#ifndef __PRINTSENSIBLY_HH__
-#define __PRINTSENSIBLY_HH__
+#ifndef TCLAP_PRINTSENSIBLY_H
+#define TCLAP_PRINTSENSIBLY_H
 
 #include <ostream>
 #include <algorithm>

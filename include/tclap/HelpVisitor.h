@@ -19,8 +19,8 @@
  *  
  *****************************************************************************/ 
 
-#ifndef __HELP_VISITOR_H__
-#define __HELP_VISITOR_H__
+#ifndef TCLAP_HELP_VISITOR_H
+#define TCLAP_HELP_VISITOR_H
 
 #include <tclap/Visitor.h>
 

@@ -20,8 +20,8 @@
  *****************************************************************************/ 
 
 
-#ifndef __SWITCH_ARG_HH__
-#define __SWITCH_ARG_HH__
+#ifndef TCLAP_SWITCH_ARG_H
+#define TCLAP_SWITCH_ARG_H
 
 #include <string>
 #include <vector>

@@ -19,8 +19,8 @@
  *  
  *****************************************************************************/ 
 
-#ifndef __COMMANDLINE_HH__
-#define __COMMANDLINE_HH__
+#ifndef TCLAP_COMMANDLINE_H
+#define TCLAP_COMMANDLINE_H
 
 //
 // Explanation of dumb naming.  Originally this file was used as the generic

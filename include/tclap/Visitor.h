@@ -20,8 +20,8 @@
  *****************************************************************************/ 
 
 
-#ifndef __VISITOR_H__
-#define __VISITOR_H__
+#ifndef TCLAP_VISITOR_H
+#define TCLAP_VISITOR_H
 
 namespace TCLAP {
 

@@ -20,8 +20,8 @@
  *****************************************************************************/ 
 
 
-#ifndef __ARG_EXCEPTION_H__
-#define __ARG_EXCEPTION_H__
+#ifndef TCLAP_ARG_EXCEPTION_H
+#define TCLAP_ARG_EXCEPTION_H
 
 #include <string>
 #include <exception>

@@ -19,8 +19,8 @@
  *  
  *****************************************************************************/ 
 
-#ifndef __ORHANDLER_HH__
-#define __ORHANDLER_HH__
+#ifndef TCLAP_XORHANDLER_H
+#define TCLAP_XORHANDLER_H
 
 #include <tclap/Arg.h>
 #include <tclap/PrintSensibly.h>

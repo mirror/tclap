@@ -19,8 +19,8 @@
  *  
  *****************************************************************************/ 
 
-#ifndef __CMDLINE_HH__
-#define __CMDLINE_HH__
+#ifndef TCLAP_CMDLINE_H
+#define TCLAP_CMDLINE_H
 
 #include <tclap/Arg.h>
 #include <tclap/SwitchArg.h>

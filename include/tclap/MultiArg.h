@@ -20,8 +20,8 @@
  *****************************************************************************/ 
 
 
-#ifndef __MULTIPLE_ARGUMENT_HH__
-#define __MULTIPLE_ARGUMENT_HH__
+#ifndef TCLAP_MULTIPLE_ARGUMENT_H
+#define TCLAP_MULTIPLE_ARGUMENT_H
 
 #include <string>
 #include <vector>

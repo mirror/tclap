@@ -20,8 +20,8 @@
  *****************************************************************************/ 
 
 
-#ifndef __UNLABELED_VALUE_ARGUMENT_HH__
-#define __UNLABELED_VALUE_ARGUMENT_HH__
+#ifndef TCLAP_UNLABELED_VALUE_ARGUMENT_H
+#define TCLAP_UNLABELED_VALUE_ARGUMENT_H
 
 #include <string>
 #include <vector>
