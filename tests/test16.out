@@ -17,7 +17,7 @@ Where:
    -s <string>,  --stringTest <string>
      (required)  (value required)  string test
 
-   -B,  --existTest B
+   -B,  --existTestB
      exist Test B
 
    --,  --ignore_rest

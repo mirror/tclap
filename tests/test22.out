@@ -4,7 +4,7 @@ PARSE ERROR: Argument: -b (--bbb)
 
 USAGE: 
 
-    ../examples/test5 {-a <string>|-b <string>} [-d <string>] -c <string> [--] [-v] [-h]
+    ../examples/test5 {-a <string>|-b <string>} {--eee <string>|--fff <string>|-g <string>} [-d <string>] -c <string> [--] [-v] [-h]
 
 Where: 
 
@@ -13,6 +13,16 @@ Where:
        -- OR -- 
    -b <string>,  --bbb <string>
      (OR required)  (value required)  or test b
+
+
+   --eee <string>
+     (OR required)  (value required)  e test
+       -- OR -- 
+   --fff <string>
+     (OR required)  (value required)  f test
+       -- OR -- 
+   -g <string>,  --ggg <string>
+     (OR required)  (value required)  g test
 
 
    -d <string>,  --ddd <string>
