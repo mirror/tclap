@@ -10,7 +10,7 @@ int main(int argc, char** argv)
 	try {  
 
 	// Define the command line object.
-	CmdLine cmd("Command description message", ' ', "0.9");
+	CmdLine cmd("Command description message. This is a long multi-line message meant to test line wrapping.  This is more text that doesn't really do anything besides take up lots of space that otherwise might be used for something real.  That should be enough, don't you think?", ' ', "0.9");
 
 	vector<string> allowed;
 	allowed.push_back("homer");
@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 	allowed.push_back("lisa");
 	allowed.push_back("maggie");
 
-	MultiArg<string> nameArg("n","name","Name to print",true,allowed);
+	MultiArg<string> nameArg("n","name","Name to print. This is a long, nonsensical message to test line wrapping.  Hopefully it works.",true,allowed);
 	cmd.add( nameArg );
 
 	vector<int> iallowed;
