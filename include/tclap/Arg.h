@@ -507,7 +507,7 @@ inline void Arg::trimFlag(std::string& flag, std::string& value) const
 {
 	int stop = 0;
 	for ( int i = 0; (unsigned int)i < flag.length(); i++ )
-		if ( flag[i] == delimiter() )
+		if ( flag[i] == Arg::delimiter() )
 		{
 			stop = i;
 			break;

@@ -24,7 +24,6 @@
 #define TCLAP_XORHANDLER_H
 
 #include <tclap/Arg.h>
-#include <tclap/PrintSensibly.h>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -85,6 +84,8 @@ class XorHandler
 		 */
 		bool contains( const Arg* a );
 
+		std::vector< std::vector<Arg*> >& getXorList(); 
+
 };
 
 
@@ -96,6 +97,7 @@ inline void XorHandler::add( std::vector<Arg*>& ors )
 	_orList.push_back( ors );
 }
 
+/*
 inline std::string XorHandler::shortUsage()
 {
         std::string out = "";
@@ -129,7 +131,7 @@ inline void XorHandler::printLongUsage( std::ostream& os )
 		os << std::endl << std::endl;
 	}
 }
-
+*/
 inline int XorHandler::check( const Arg* a ) 
 {
 	// iterate over each XOR list
@@ -168,6 +170,14 @@ inline bool XorHandler::contains( const Arg* a )
 
 	return false;
 }
+
+inline std::vector< std::vector<Arg*> >& XorHandler::getXorList() 
+{
+	return _orList;
+}
+
+
+
 //////////////////////////////////////////////////////////////////////
 //END XOR.cpp
 //////////////////////////////////////////////////////////////////////

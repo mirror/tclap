@@ -1,4 +1,3 @@
-/* -*- Mode: CC; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /****************************************************************************** 
  * 
@@ -30,9 +29,12 @@
 #include <iostream>
 #include <algorithm>
 
+
 namespace TCLAP {
      
 class Arg;
+class CmdLineOutput;
+class XorHandler;
 
 /**
  * The base class that manages the command line definition and passes
@@ -76,30 +78,51 @@ class CmdLineInterface
 		virtual void xorAdd( std::vector<Arg*>& xors )=0;
 
 		/**
-		 * Prints the usage to stdout and exits.
-		 * \param exitVal - Value to exit with. 
-		 */
-		virtual void usage( int exitVal = 0 )=0;
-
-		/**
-		 * Prints the version to stdout and exits.
-		 * \param exitVal - Value to exit with. 
-		 */
-		virtual void version( int exitVal = 0 )=0;
-
-        /**
-		 * Prints (to stderr) an error message, short usage and exits with a 
-		 * value of 1. Can be overridden to produce alternative behavior.
-		 * \param e - The ArgException that caused the failure. 
-		 */
-		virtual void failure( const ArgException& e )=0;
-
-		/**
 		 * Parses the command line.
 		 * \param argc - Number of arguments.
 		 * \param argv - Array of arguments.
 		 */
 		virtual void parse(int argc, char** argv)=0;
+
+		/**
+		 * Returns the CmdLineOutput object.
+		 */
+		virtual CmdLineOutput* getOutput()=0;
+
+		/**
+		 * \param co - CmdLineOutput object that we want to use instead. 
+		 */
+		virtual void setOutput(CmdLineOutput* co)=0;
+
+		/**
+		 * Returns the version string.
+		 */
+		virtual std::string& getVersion()=0;
+
+		/**
+		 * Returns the program name string.
+		 */
+		virtual std::string& getProgramName()=0;
+
+		/**
+		 * Returns the argList. 
+		 */
+		virtual std::list<Arg*>& getArgList()=0;
+
+		/**
+		 * Returns the XorHandler. 
+		 */
+		virtual XorHandler& getXorHandler()=0;
+
+		/**
+		 * Returns the delimiter string.
+		 */
+		virtual char getDelimiter()=0;
+
+		/**
+		 * Returns the message string.
+		 */
+		virtual std::string& getMessage()=0;
 };
 
 } //namespace

@@ -15,5 +15,6 @@ libtclapinclude_HEADERS = \
 			 SwitchArg.h \
 			 VersionVisitor.h \
 			 IgnoreRestVisitor.h \
-			 PrintSensibly.h
+			 CmdLineOutput.h \
+			 StdOutput.h
 

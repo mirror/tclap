@@ -32,10 +32,15 @@
 #include <tclap/VersionVisitor.h>
 #include <tclap/IgnoreRestVisitor.h>
 
+#include <tclap/CmdLineOutput.h>
+#include <tclap/StdOutput.h>
+
 #include <string>
 #include <vector>
 #include <list>
 #include <iostream>
+#include <ostream>
+#include <iomanip>
 #include <algorithm>
 
 namespace TCLAP {
@@ -100,7 +105,12 @@ class CmdLine : public CmdLineInterface
 		 * default Args.
 		 */
 		std::list<Visitor*> _visitorDeleteOnExitList;
-		
+
+		/**
+		 * Object that handles all output for the CmdLine.
+		 */
+		CmdLineOutput* _output;
+
 		/**
 		 * Checks whether a name/flag string matches entirely matches
 		 * the Arg::blankChar.  Used when multiple switches are combined
@@ -108,19 +118,6 @@ class CmdLine : public CmdLineInterface
 		 * \param s - The message to be used in the usage.
 		 */
 		bool _emptyCombined(const std::string& s);
-
-		/**
-		 * Writes a brief usage message with short args.
-		 * \param os - The stream to write the message to.
-		 */
-		void _shortUsage( std::ostream& os );
-
-		/**
-		 * Writes a longer usage message with long and short args, 
-		 * provides descriptions and prints message.
-		 * \param os - The stream to write the message to.
-		 */
-		void _longUsage( std::ostream& os );
 
 	private:
 
@@ -203,32 +200,51 @@ class CmdLine : public CmdLineInterface
 		void xorAdd( std::vector<Arg*>& xors );
 
 		/**
-		 * Prints the usage to stdout and exits.  Can be overridden to 
-		 * produce alternative behavior.
-		 * \param exitVal - Value to exit with. 
-		 */
-		virtual void usage( int exitVal = 0 );
-
-		/**
-		 * Prints the version to stdout and exits. Can be overridden 
-		 * to produce alternative behavior.
-		 * \param exitVal - Value to exit with. 
-		 */
-		virtual void version( int exitVal = 0 );
-
-		/**
-		 * Prints (to stderr) an error message, short usage and exits with a 
-		 * value of 1. Can be overridden to produce alternative behavior.
-		 * \param e - The ArgException that caused the failure. 
-		 */
-		virtual void failure( const ArgException& e );
-
-		/**
 		 * Parses the command line.
 		 * \param argc - Number of arguments.
 		 * \param argv - Array of arguments.
 		 */
 		void parse(int argc, char** argv);
+
+		/**
+		 *
+		 */
+		CmdLineOutput* getOutput();
+
+		/**
+		 *
+		 */
+		void setOutput(CmdLineOutput* co);
+
+		/**
+		 *
+		 */
+		std::string& getVersion();
+
+		/**
+		 *
+		 */
+		std::string& getProgramName();
+
+		/**
+		 *
+		 */
+		std::list<Arg*>& getArgList();
+
+		/**
+		 *
+		 */
+		XorHandler& getXorHandler();
+
+		/**
+		 *
+		 */
+		char getDelimiter();
+
+		/**
+		 *
+		 */
+		std::string& getMessage();
 };
 
 
@@ -278,23 +294,25 @@ inline CmdLine::~CmdLine()
 
 inline void CmdLine::_constructor()
 { 
+	_output = new StdOutput;
+
 	Visitor *v;
 	
 	Arg::setDelimiter( _delimiter );
 
-	v = new HelpVisitor( this );
+	v = new HelpVisitor( this, _output );
 	SwitchArg* help = new SwitchArg("h","help", 
 					"Displays usage information and exits.", 
 					false, v);
-	add( *help );
+	add( help );
 	deleteOnExit(help);
 	deleteOnExit(v);
 	
-	v = new VersionVisitor( this );
+	v = new VersionVisitor( this, _output );
 	SwitchArg* vers = new SwitchArg("v","version", 
 					"Displays version information and exits.", 
 					false, v);
-	add( *vers );
+	add( vers );
 	deleteOnExit(vers);
 	deleteOnExit(v);
 
@@ -303,7 +321,7 @@ inline void CmdLine::_constructor()
 					   Arg::ignoreNameString(),
 			   "Ignores the rest of the labeled arguments following this flag.",
 					   false, v);
-	add( *ignore );
+	add( ignore );
 	deleteOnExit(ignore);
 	deleteOnExit(v);
 }
@@ -344,72 +362,8 @@ inline void CmdLine::add( Arg* a )
 
 	a->addToList( _argList );
 
-	if ( a->isRequired() ) _numRequired++;	
-}
-
-inline void CmdLine::version(int exitVal)
-{
-	std::cout << std::endl << _progName << "  version: " 
-			  << _version << std::endl << std::endl;
-	exit( exitVal );
-}
-
-inline void CmdLine::_shortUsage( std::ostream& os ) 
-{
-	std::string s = _progName + " " + _xorHandler.shortUsage();
-
-	for (ArgIterator it = _argList.begin(); it != _argList.end(); it++)
-		if ( !_xorHandler.contains( (*it) ) )
-			s += " " + (*it)->shortID();
-
-	spacePrint( os, s, 75, 3, (int)(_progName.length()) + 2 );
-}
-
-inline void CmdLine::_longUsage( std::ostream& os )
-{
-	_xorHandler.printLongUsage( os );
-
-	for (ArgIterator it = _argList.begin(); it != _argList.end(); it++)
-		if ( !_xorHandler.contains( (*it) ) )
-		{
-			spacePrint( os, (*it)->longID(), 75, 3, 3 ); 
-			spacePrint( os, (*it)->getDescription(), 75, 5, 0 ); 
-			os << std::endl;
-		}
-
-	os << std::endl;
-	spacePrint( os, _message, 75, 3, 0 );
-}
-
-inline void CmdLine::usage( int exitVal )
-{
-	std::cout << std::endl << "USAGE: " << std::endl << std::endl; 
-
-	_shortUsage( std::cout );
-
-	std::cout << std::endl << std::endl << "Where: " << std::endl << std::endl;
-
-	_longUsage( std::cout );
-
-	std::cout << std::endl; 
-
-	exit( exitVal );
-}
-
-inline void CmdLine::failure( const ArgException& e )
-{
-	std::cerr << "PARSE ERROR: " << e.argId() << std::endl
-		      << "             " << e.error() << std::endl << std::endl;
-
-	std::cerr << "Brief USAGE: " << std::endl;
-
-	_shortUsage( std::cerr );	
-
-	std::cerr << std::endl << "For complete USAGE and HELP type: " 
-		      << std::endl << "   " << _progName << " --help" 
-			  << std::endl << std::endl;
-
-	exit(1);
+	if ( a->isRequired() ) 
+		_numRequired++;	
 }
 
 inline void CmdLine::parse(int argc, char** argv)
@@ -454,7 +408,7 @@ inline void CmdLine::parse(int argc, char** argv)
 	if ( requiredCount > _numRequired )
 		throw(CmdLineParseException("Too many arguments!"));
 
-	} catch ( ArgException& e ) { failure(e); }
+	} catch ( ArgException e ) { _output->failure(*this,e); exit(1); }
 }
 
 inline bool CmdLine::_emptyCombined(const std::string& s)
@@ -477,6 +431,46 @@ inline void CmdLine::deleteOnExit(Arg* ptr)
 inline void CmdLine::deleteOnExit(Visitor* ptr)
 {
 	_visitorDeleteOnExitList.push_back(ptr);
+}
+
+inline CmdLineOutput* CmdLine::getOutput()
+{
+	return _output;
+}
+
+inline void CmdLine::setOutput(CmdLineOutput* co)
+{
+	_output = co;
+}
+
+inline std::string& CmdLine::getVersion()
+{
+	return _version;
+}
+
+inline std::string& CmdLine::getProgramName()
+{
+	return _progName;
+}
+
+inline std::list<Arg*>& CmdLine::getArgList()
+{
+	return _argList;
+}
+
+inline XorHandler& CmdLine::getXorHandler()
+{
+	return _xorHandler;
+}
+
+inline char CmdLine::getDelimiter()
+{
+	return _delimiter;
+}
+
+inline std::string& CmdLine::getMessage()
+{
+	return _message;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
