@@ -59,10 +59,9 @@ void parseOptions(int argc, char** argv)
 	else if ( btest.isSet() )
 		_orTest = btest.getValue();
 	else
-	{
-		cout << "badness" << endl;
-		exit(1);
-	}
+		// Should never get here because TCLAP will note that one of the
+		// required args above has not been set.
+		throw("very bad things...");
 
 
 	_testc = ctest.getValue();
