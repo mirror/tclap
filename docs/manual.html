@@ -32,11 +32,14 @@
 
 <h2>Basic usage</h2>
 There are a few key classes to be aware of.  The first is the <b>CmdLine</b>
-or command line class.  This is the class that parses the command line
+(command line) class.  This is the class that parses the command line
 passed to it according to the arguments that it contains.  Arguments are
-separate objects that are added to <b>CmdLine</b> object one at a time. There
+separate objects that are added to the <b>CmdLine</b> object one at a time. 
+There
 are five types of arguments, <b>ValueArg</b>, <b>UnlabeledValueArg</b>, 
-<b>SwitchArg</b>, <b>MultiArg</b> and <b>UnlabeledMultiArg</b>.  
+<b>SwitchArg</b>, <b>MultiArg</b> and <b>UnlabeledMultiArg</b>.  These
+are templatized classes meaning they can be defined to parse a value of any 
+<a href="manual.html#FOOTNOTES">type**</a>.
 Once the arguments are added to the command line object,
 the command line is parsed which assigns the data on the command line to
 the specific argument objects.  The values are accessed by calls to 
@@ -138,21 +141,23 @@ Command description message
 <br><br><br>
 This example shows a number of different properties of the library...
 <ul>
+<li>Arguments can appear in any order (...mostly, <a href="manual.html#COMPLICATIONS">more</a> on this later).</li>
+<li>The version, help and -- arguments are specified automatically.</li>
+<li>If a required argument isn't provided, the program exits and displays
+the USAGE, along with an error message.</li>
 <li><b>New Feature!</b> Note that the creation of the CmdLine object is
 slightly different now.  The program name is assumed to always be
 argv[0], so it isn't specified directly (let me know if you don't like
 this).  More importantly, a delimiter character can now be specified.
 this means that if you prefer arguments of the style "-s=asdf" instead
 of "-s asdf", you can do so.  
-<li>Arguments can appear in any order (...mostly, <a href="manual.html#COMPLICATIONS">more</a> on this later).</li>
-<li>The version, help and -- arguments are specified automatically.</li>
-<li>If a required argument isn't provided, the program exits and displays
-the USAGE, along with an error message.</li>
 </ul>
 <h3><i>Basic Properties</i></h3>
-Arguments, whatever their type, have a few common basic properties.  First
+Arguments, whatever their type, have a few common basic properties.  These
+properties are set in the constructors of the arguments. First
 is the flag or the character preceeded by a dash(-) that signals the beginning
-of the argument.  Arguments also have names, which can, if desired also be
+of the argument on the command line.  
+Arguments also have names, which can, if desired also be
 used as a flag on the command line, this time preceeded by two dashes (--) 
 [like the familiar getopt_long()].
 Next is the description of the argument.  This is a short description of
@@ -174,15 +179,15 @@ valid to do either:
 <pre>
 		% command -a -b -c
 </pre>
-<br><br>
+<br>
 <i>or</i>
-<br><br>
+<br>
 <pre>
 		% command -abc
 </pre>
-<br><br>
+<br>
 <i>or</i>
-<br><br>
+<br>
 <pre>
 		% command -ba -c
 </pre>
@@ -426,6 +431,48 @@ The help output is updated accordingly.
 
 </pre>
 <br> <br>
+<h3><i>I want to constrain the values allowed for a particular argument...</i></h3>
+<b>New Feature!</b> There are new constructors for all of the <b>Arg</b>s that 
+take values that allow a list of values to be specified for that particular
+<b>Arg</b>.  When the value for the <b>Arg</b> is parsed, it is checked against
+the list of values specified in the constructor.  If the value is in the list
+then it is accepted.  If not, then an exception is thrown.  
+Here is a simple example:
+
+<pre>
+
+	...
+
+	vector<string> allowed;
+	allowed.push_back("homer");
+	allowed.push_back("marge");
+	allowed.push_back("bart");
+	allowed.push_back("lisa");
+	allowed.push_back("maggie");
+	
+	ValueArg<string> nameArg("n","name","Name to print",true,"homer",allowed);
+	cmd.add( nameArg );
+
+	...
+
+</pre>
+
+
+Instead of a type description being specified in the <b>Arg</b>, a type
+description is created by concatenating the values in the allowed list
+using the operator<< for the specified type.
+The help/usage for the <b>Arg</b> therefore lists the allowable values.  
+Because of this, it is assumed that list should be relatively small, 
+although there is no limit on this. 
+<br> <br>
+Obviously, a list of allowed values isn't always the best way to constrain
+things.  For instance, one might wish to allow only integers greater than 0. 
+In this case, the best strategy is for you to evaluate the value returned from
+the getValue() call and if it isn't valid, throw an <b>ArgException</b>. 
+Be sure that the description provided with the <b>Arg</b> reflects the 
+constraint you choose.
+<br><br>
+
 
 <a name="VISITORS"></a>
 <h2>Visitors</h2>
@@ -526,5 +573,11 @@ the <a href="html/index.html">API Documentation</a>
 and the examples included with the distribution.  
 <br><br>
 <b>Happy coding!</b>
+
+<br><br>
+<a name="FOOTNOTES"></a>
+<br>
+** In theory, any type that supports operator>> and operator<< should work, although I've really only tried things with basic types like int, float, string, etc.
+
 </body>
 </html>
