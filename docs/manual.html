@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Templatized C++ Command Line Parser Manual</title><link rel="stylesheet" href="style.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.61.3" /></head><body><div class="book" lang="en" xml:lang="en"><div class="titlepage"><div><div><h1 class="title"><a id="id2868300"></a>Templatized C++ Command Line Parser Manual</h1></div><div><div class="author"><h3 class="author"><span class="firstname">Michael</span> <span class="othername">E</span> <span class="surname">Smoot</span></h3></div></div><div><p class="copyright">Copyright © 2003,2004 Michael E. Smoot</p></div></div><div></div><hr /></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1. <a href="#id2868084">Basic Usage</a></dt><dd><dl><dt><a href="#ARG_PROPERTIES">Argument Properties</a></dt><dt><a href="#ARGUMENT_TYPES">Types of Arguments</a></dt><dt><a href="#COMPILING">Compiling</a></dt></dl></dd><dt>2. <a href="#COMPLICATIONS">Complications</a></dt><dd><dl><dt><a href="#COMBINE_SWITCHES">I want to combine multiple switches into one argument...</a></dt><dt><a href="#MULTI_ARG">I tried passing multiple values on the command line with the
 same flag and it didn't work...</a></dt><dt><a href="#UNLABELED_VALUE_ARG">I don't like labelling all of my arguments...</a></dt><dt><a href="#UNLABELED_MULTI_ARG">I want an arbitrary number of unlabeled arguments to be accepted...</a></dt><dt><a href="#XOR">I want one argument or the other, but not both...</a></dt><dt><a href="#NO_FLAG">I have more arguments than single flags make sense for...</a></dt><dt><a href="#ALLOWED_LIST">I want to constrain the values allowed for a particular 
-argument...</a></dt><dt><a href="#ARG_ADD_CMDLINE">I want the Args to add themselves to the CmdLine...</a></dt></dl></dd><dt>3. <a href="#EXCEPTIONS">Exceptions to the Rules</a></dt><dd><dl><dt><a href="#IGNORE_ARGS">Ignoring arguments</a></dt><dt><a href="#COMBINED_SWITCHES">Multiple Identical Switches</a></dt><dt><a href="#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></dt></dl></dd><dt>4. <a href="#VISITORS">Visitors</a></dt><dt>5. <a href="#MORE_INFO">More Information</a></dt></dl></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="id2868084"></a>Chapter 1. Basic Usage</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="#ARG_PROPERTIES">Argument Properties</a></dt><dt><a href="#ARGUMENT_TYPES">Types of Arguments</a></dt><dt><a href="#COMPILING">Compiling</a></dt></dl></div><p>
+argument...</a></dt><dt><a href="#ARG_ADD_CMDLINE">I want the Args to add themselves to the CmdLine...</a></dt><dt><a href="#CHANGE_OUTPUT">I want different output than what is provided...</a></dt></dl></dd><dt>3. <a href="#EXCEPTIONS">Exceptions to the Rules</a></dt><dd><dl><dt><a href="#IGNORE_ARGS">Ignoring arguments</a></dt><dt><a href="#COMBINED_SWITCHES">Multiple Identical Switches</a></dt><dt><a href="#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></dt></dl></dd><dt>4. <a href="#VISITORS">Visitors</a></dt><dt>5. <a href="#MORE_INFO">More Information</a></dt></dl></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="id2868084"></a>Chapter 1. Basic Usage</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="#ARG_PROPERTIES">Argument Properties</a></dt><dt><a href="#ARGUMENT_TYPES">Types of Arguments</a></dt><dt><a href="#COMPILING">Compiling</a></dt></dl></div><p>
 <span class="emphasis"><em>TCLAP</em></span> has a few key classes to be aware of. 
 The first is the
 <tt class="classname">CmdLine</tt> (command line) class. This class parses
@@ -163,13 +163,15 @@ argument is required to be present (<tt class="classname">SwitchArg</tt>s
 can't be required, as that would defeat the purpose).</li><li>Next, the default value the arg should assume if the arg isn't
 required or entered on the command line.</li><li>Last, for <tt class="classname">ValueArg</tt>s is a short 
 description of the type
-that the argument expects (yes its an ugly Note that the order of
+that the argument expects (yes its an ugly 
+<a href="#DESCRIPTION_EXCEPTIONS" title="Type Descriptions"> hack</a>).
+Note that the order of
 arguments on the command line (so far) doesn't matter. Any argument
 not matching an <tt class="classname">Arg</tt> added to the command 
 line will cause an
 exception to be thrown (<a href="#COMPLICATIONS" title="Chapter 2. Complications"> for the
 most part</a>, with some <a href="#EXCEPTIONS" title="Chapter 3. Exceptions to the Rules"> exceptions</a>). 
-<a href="#DESCRIPTION_EXCEPTIONS" title="Type Descriptions"> hack</a>).</li></ul></div><p>
+</li></ul></div><p>
 </p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="ARGUMENT_TYPES"></a>Types of Arguments</h2></div></div><div></div></div><p>
 There are two primary types of arguments:
 </p><p>
@@ -226,12 +228,12 @@ to work on Windows, Sun and Alpha platforms. We've made every
 effort to keep the library compliant with the ANSI C++ standard so
 if your compiler meets the standard, then this library should work
 for you. Please let us know if this is not the case! 
-</p><div class="sect2" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id2853439"></a>Windows Note</h3></div></div><div></div></div><p>
+</p><div class="sect2" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id2853438"></a>Windows Note</h3></div></div><div></div></div><p>
 As we understand things, Visual C++ does not have the file 
 <tt class="filename">config.h</tt> which is used to make platform
 specific definitions.  In this situation, we assume that you
-have access to <tt class="classname">sstream</tt>.  Our understanding is that,
-this should not be a problem for VC 7.x.  However, if this
+have access to <tt class="classname">sstream</tt>.  Our understanding is that
+this should not be a problem for VC++ 7.x.  However, if this
 is not the case and you need to use <tt class="classname">strstream</tt>,
 then simply tell your compiler to define the variable
 <tt class="constant">HAVE_STRSTREAM</tt> and undefine 
@@ -239,9 +241,20 @@ then simply tell your compiler to define the variable
 <span class="emphasis"><em>should</em></span> work.  We think.  Alternatively, just edit
 the files <tt class="filename">ValueArg.h</tt> and <tt class="filename">MultiArg.h</tt>.
 </p></div><p>
+</p><div class="sect2" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id2853498"></a>Random Note</h3></div></div><div></div></div><p>
+If your compiler doesn't support the <tt class="methodname">using</tt> syntax used
+in <tt class="classname">UnlabeledValueArg</tt> and 
+<tt class="classname">UnlabeledMultiArg</tt> to support two stage name lookup, 
+then you have two options. Either comment out the statements if you don't
+need two stage name lookup, or do a bunch of search and replace and use 
+the <tt class="methodname">this</tt> pointer syntax: e.g. 
+<tt class="methodname">this-&gt;_ignoreable</tt> instead
+of just <tt class="methodname">_ignorable</tt> (do this for each variable 
+or method referenced by <tt class="methodname">using</tt>).
+</p></div><p>
 </p></div></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="COMPLICATIONS"></a>Chapter 2. Complications</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="#COMBINE_SWITCHES">I want to combine multiple switches into one argument...</a></dt><dt><a href="#MULTI_ARG">I tried passing multiple values on the command line with the
 same flag and it didn't work...</a></dt><dt><a href="#UNLABELED_VALUE_ARG">I don't like labelling all of my arguments...</a></dt><dt><a href="#UNLABELED_MULTI_ARG">I want an arbitrary number of unlabeled arguments to be accepted...</a></dt><dt><a href="#XOR">I want one argument or the other, but not both...</a></dt><dt><a href="#NO_FLAG">I have more arguments than single flags make sense for...</a></dt><dt><a href="#ALLOWED_LIST">I want to constrain the values allowed for a particular 
-argument...</a></dt><dt><a href="#ARG_ADD_CMDLINE">I want the Args to add themselves to the CmdLine...</a></dt></dl></div><p>
+argument...</a></dt><dt><a href="#ARG_ADD_CMDLINE">I want the Args to add themselves to the CmdLine...</a></dt><dt><a href="#CHANGE_OUTPUT">I want different output than what is provided...</a></dt></dl></div><p>
 Naturally, what we have seen to this point doesn't satisfy all of
 our needs. 
 </p><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="COMBINE_SWITCHES"></a>I want to combine multiple switches into one argument...</h2></div></div><div></div></div><p>
@@ -546,6 +559,39 @@ is an example:
         cmd.parse(argc,argv);
 
 </pre><p>
+</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="CHANGE_OUTPUT"></a>I want different output than what is provided...</h2></div></div><div></div></div><p>
+It is straightforward to change the output generated by 
+<span class="emphasis"><em>TCLAP</em></span>.  Either subclass the 
+<tt class="classname">StdOutput</tt> class and re-implement the methods you choose,
+or write your own class that implements the 
+<tt class="classname">CmdLineOutput</tt> interface.  Once you have done this, 
+then use the <tt class="classname">CmdLine</tt> <tt class="methodname">setOutput</tt>
+method to tell the <tt class="classname">CmdLine</tt> to use your new output
+class. Here is a simple example:
+</p><pre class="programlisting">
+class MyOutput : public StdOutput
+{
+	public:
+		virtual void failure(CmdLineInterface&amp; c, ArgException&amp; e)
+		{ 
+			cerr &lt;&lt; &quot;My special failure message for: &quot; &lt;&lt; endl
+				 &lt;&lt; e.what() &lt;&lt; endl;
+		}
+};
+
+int main(int argc, char** argv)
+{
+	    CmdLine cmd(&quot;this is a message&quot;, ' ', &quot;0.99&quot; );
+
+	    // set the output
+	    MyOutput my;
+	    cmd.setOutput( &amp;my );
+
+		// proceed normally ...
+</pre><p>
+
+See <tt class="filename">test4.cpp</tt> in the examples directory for the full
+example.
 </p></div></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="EXCEPTIONS"></a>Chapter 3. Exceptions to the Rules</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="#IGNORE_ARGS">Ignoring arguments</a></dt><dt><a href="#COMBINED_SWITCHES">Multiple Identical Switches</a></dt><dt><a href="#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></dt></dl></div><p>
 Like all good rules, there are many exceptions.... 
 </p><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="IGNORE_ARGS"></a>Ignoring arguments</h2></div></div><div></div></div><p>
@@ -584,9 +630,11 @@ of the type declared for a particular argument. Unfortunately, at
 least for <b class="command">g++</b>, the names returned aren't 
 particularly useful.
 </p></div></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="VISITORS"></a>Chapter 4. Visitors</h2></div></div><div></div></div><p>
-Disclaimer: Almost no one will have any use for Visitors, they were
+Disclaimer: Almost no one will have any use for 
+<tt class="classname">Visitor</tt>s, they were
 added to provide special handling for default arguments. Nothing
-that Visitors do couldn't be accomplished by the user after the
+that <tt class="classname">Visitor</tt>s do couldn't be accomplished 
+by the user after the
 command line has been parsed. If you're still interested, keep
 reading...
 </p><p>
