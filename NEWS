@@ -74,3 +74,8 @@ lookup ifdefs which means that the software should work out of the box
 for gcc 3.4+.  Isolated output in a separate class that should make
 customization of output easier.  I also included a rudimentary output class
 that generated a (bad) Docbook command summary when used. 
+
+1/4/05 - Several bug fixes, but no new features. Fixed a bug when mandatory 
+long args and unlabeled args were used together and weren't working properly.
+Now they can be used together. Fixed another bug in spacePrint where long 
+program names caused an infinite loop.  Finally, fixed a small memory leak.
