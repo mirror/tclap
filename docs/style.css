@@ -34,11 +34,10 @@ pre {
 }
 
 ul {
-	list-style: square inside;
+	list-style: circle outside;
 }
 
 ul.menu { /* inherits from ul */
-	list-style: square outside;
 	padding-left: 1em; 
 }
 
