@@ -27,6 +27,10 @@ namespace TCLAP {
 // defaults
 bool Arg::_ignoreRest = false;
 char Arg::_delimiter = ' ';
+const char Arg::blankChar = '*';
+const char Arg::flagStartChar = '-';
+const string Arg::flagStartString = "-";
+const string Arg::nameStartString = "--";
 
 Arg::Arg( const string& flag, 
 		 const string& name, 
@@ -89,7 +93,7 @@ string Arg::shortID( const string& valueId ) const
 {
 	string id = "";
 
-	id = "-" + _flag;
+	id = Arg::flagStartString + _flag;
 
 	string delim = " "; 
 	delim[0] = Arg::_delimiter; // ugly!!!
@@ -107,13 +111,13 @@ string Arg::longID( const string& valueId ) const
 {
 	string id = "";
 
-	id = "-" + _flag;
+	id = Arg::flagStartString + _flag;
 
 	if ( _valueRequired )
 		id += " <" + valueId + ">";
 
 
-	id += ",  --" + _name;
+	id += ",  " + Arg::nameStartString + _name;
 
 	if ( _valueRequired )
 		id += " <" + valueId + ">";
@@ -162,8 +166,8 @@ bool Arg::isIgnoreable() const { return _ignoreable; }
 
 bool Arg::argMatches( const string& argFlag ) const
 {
-	if ( argFlag == "-" + _flag ||
-		 argFlag == "--" + _name )
+	if ( argFlag == Arg::flagStartString + _flag ||
+		 argFlag == Arg::nameStartString + _name )
 		return true;
 	else
 		return false;
@@ -171,7 +175,7 @@ bool Arg::argMatches( const string& argFlag ) const
 
 string Arg::toString() const
 {
-	string s = "-" + _flag + " (--" + _name + ")";
+	string s = Arg::flagStartString + _flag + " (" + Arg::nameStartString + _name + ")";
 	return s;
 }
 
@@ -200,6 +204,18 @@ void Arg::trimFlag(string& flag, string& value) const
 		flag = flag.substr(0,stop);
 	}
 
+}
+
+/**
+ * Implementation of _hasBlanks.
+ */
+bool Arg::_hasBlanks( const string& s ) const
+{
+	for ( int i = 1; i < s.length(); i++ )
+		if ( s[i] == Arg::blankChar )
+			return true;
+
+	return false;
 }
 
 }

@@ -43,7 +43,7 @@ CmdLine::CmdLine(const string& m, char delim, const string& v )
 									false, new VersionVisitor( this ) );
 	add( *vers );
 
-	SwitchArg* ignore  = new SwitchArg("-","ignore_rest",
+	SwitchArg* ignore  = new SwitchArg(Arg::flagStartString,"ignore_rest",
                "Ignores the rest of the labeled arguments following this flag.",
 			   false, new IgnoreRestVisitor() );
 	add( *ignore );
@@ -118,6 +118,11 @@ void CmdLine::parse(int argc, char** argv)
 			}
         }
 
+		// checks to see if the argument is an empty combined switch ...
+		// and if so, then we've actually matched it
+		if ( !matched && _emptyCombined( args[i] ) )
+			matched = true;
+
 		if ( !matched && !Arg::ignoreRest() )
 			throw( ArgException("Couldn't find match for argument",args[i]));
     }
@@ -137,4 +142,15 @@ void CmdLine::parse(int argc, char** argv)
 	}
 }
 
+bool CmdLine::_emptyCombined(const string& s)
+{
+	if ( s[0] != Arg::flagStartChar )
+		return false;
+
+	for ( int i = 1; (unsigned int)i < s.length(); i++ )
+		if ( s[i] != Arg::blankChar )
+			return false;
+
+	return true;
+}
 }

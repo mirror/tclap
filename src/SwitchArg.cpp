@@ -58,7 +58,8 @@ bool SwitchArg::combinedSwitchesMatch(string& combinedSwitches )
 			// update the combined switches so this one is no longer present
 			// this is necessary so that no unlabeled args are matched
 			// later in the processing.
-			combinedSwitches.erase(i,1);
+			//combinedSwitches.erase(i,1);
+			combinedSwitches[i] = Arg::blankChar; 
 			return true;
 		}
 
