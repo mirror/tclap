@@ -120,7 +120,7 @@ void CmdLine::_shortUsage( ostream& os )
 		if ( !_xorHandler.contains( (*it) ) )
 			s += " " + (*it)->shortID();
 
-	spacePrint( os, s, 75, 3, _progName.length() + 2 );
+	spacePrint( os, s, 75, 3, (int)(_progName.length()) + 2 );
 }
 
 void CmdLine::_longUsage( ostream& os )
