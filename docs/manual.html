@@ -3,7 +3,7 @@
   - 
   -  file:  manual.html
   - 
-  -  Copyright (c) 2003, Michael E. Smoot .
+  -  Copyright (c) 2003, 2004 Michael E. Smoot .
   -  All rights reverved.
   - 
   -  See the file COPYING in the top directory of this distribution for
@@ -22,7 +22,7 @@
 <html>
 <body>
 <table><tr><td align="left">
-<h1>Templatized C++ Command Line Parser Examples</h1>
+<h1>Templatized C++ Command Line Parser Manual</h1>
 </td><td align="right">
 <A href="http://sourceforge.net"> <IMG 
 		src="http://sourceforge.net/sflogo.php?group_id=76645&amp;type=4" 
@@ -51,6 +51,7 @@ Here is a simple <a href="test1.cpp">example</a> ...
 #include < string >
 #include < iostream >
 #include < tclap/CmdLine.h >
+using namespace std;
 
 int main(int argc, char** argv)
 {
@@ -109,34 +110,41 @@ My name is mike
 My name is mike
 
 % tester
-PARSE ERROR: for argument:   undefined
-             One or more required arguments missing!
+PARSE ERROR:
+	One or more required arguments missing!
 
+Brief USAGE:
+	tester  [-u] -n <string> [--] [-v] [-h]
+
+For complete USAGE and HELP type:
+	tester --help
+
+% tester --help
 
 USAGE:
 
-	test1 [-u] -n < nameString > [--] [-v] [-h]
+   tester  [-u] -n <string> [--] [-v] [-h]
+
 
 Where:
 
-	-u,  --upperCase
-	  Print in upper case
+   -u,  --upperCase
+     Print in upper case
 
-	-n < nameString >,  --name < nameString >
-	  (required)  (value required)  Name to print
+   -n <string>,  --name <string>
+     (required)  (value required)  Name to print
 
-	--,  --ignore_rest
-	  Ignores the rest of the labeled arguments following this flag.
+   --,  --ignore_rest
+     Ignores the rest of the labeled arguments following this flag.
 
-	-v,  --version
-	  Displays version information and exits.
+   -v,  --version
+     Displays version information and exits.
 
-	-h,  --help
-	  Displays usage information and exits.
+   -h,  --help
+     Displays usage information and exits.
 
 
-Command description message
-
+   Command description message
 </pre>
 <br><br><br>
 This example shows a number of different properties of the library...
@@ -145,12 +153,13 @@ This example shows a number of different properties of the library...
 <li>The version, help and -- arguments are specified automatically.</li>
 <li>If a required argument isn't provided, the program exits and displays
 the USAGE, along with an error message.</li>
-<li><b>New Feature!</b> Note that the creation of the CmdLine object is
+<li>Note that the creation of the CmdLine object is
 slightly different now.  The program name is assumed to always be
 argv[0], so it isn't specified directly (let me know if you don't like
 this).  More importantly, a delimiter character can now be specified.
 this means that if you prefer arguments of the style "-s=asdf" instead
 of "-s asdf", you can do so.  
+<li>Always wrap everything in a try block that catches <b>ArgException</b>s.
 </ul>
 <h3><i>Basic Properties</i></h3>
 Arguments, whatever their type, have a few common basic properties.  These
@@ -240,7 +249,7 @@ allows you to specify multiple directories to search for libraries...
 In situations like this, you will want to use a <b>MultiArg</b>.  A 
 <b>MultiArg</b> is essentially a <b>ValueArg</b> that appends any value
 that it matches and parses onto a vector of values.  When the <i>getValue()</i>
-method id called, a vector of values, instead of a single value is returned.
+method is called, a vector of values, instead of a single value is returned.
 A <b>MultiArg</b> is declared much like a <b>ValueArg</b>:
 <br><br>
 <pre>
@@ -255,7 +264,7 @@ A <b>MultiArg</b> is declared much like a <b>ValueArg</b>:
 Note that <b>MultiArg</b>s can be added to the <b>CmdLine</b> in any
 order (unlike <a href="manual.html#UNLABELED_MULTI_ARG">UnlabeledMultiArg</a>s).
 
-<h3><i>But I don't like labelling all of my arguments...</i> </h3>
+<h3><i>I don't like labelling all of my arguments...</i> </h3>
 To this point all of our arguments have had labels (flags) indentifying them
 on the command line, but
 there are some situations where flags are burdensome and not worth the effort.
@@ -292,7 +301,7 @@ is important for unlabeled arguments.
 
 
 <a name="UNLABELED_MULTI_ARG"></a>
-<h3><i>But I want an arbitrary number of arguments to be accepted...</i></h3>
+<h3><i>I want an arbitrary number of arguments to be accepted...</i></h3>
 Don't worry, we've got you covered.  Say you want a strange command that
 searches each file specified for a given string (lets call it <i>grep</i>), 
 but you don't want to have to type in all of the file names or write a 
@@ -350,11 +359,12 @@ argument, a <i>vector</i> will be returned.  If you can imagine a
 situation where there will be multiple args of multiple types (stings, ints,
 floats, etc.) then just declare the <b>UnlabeledMultiArg</b> as type 
 <i>string</i>
-and parse the different values yourself.  
+and parse the different values yourself or use several 
+<b>UnlabeledValueArg</b>s.
 
 <a name="XOR"></a>
 <h3><i>I want one argument or the other, but not both...</i></h3>
-<b>New Feature!</b> Suppose you have a command that must read input from one
+Suppose you have a command that must read input from one
 of two possible locations, either a local file or a URL.  The command 
 <i>must</i> read something, so <i>one</i> argument is required, but not both, 
 yet neither argument is strictly necessary by itself.  This is called 
@@ -410,7 +420,7 @@ was not xor'd and wasn't matched, it will also return <b>FALSE</b>.)
 <br> <br>
 <a name="NO_FLAG"></a>
 <h3><i>I have more arguments than single flags make sense for...</i></h3>
-<b>New Feature!</b> Some commands have so many options that single flags
+Some commands have so many options that single flags
 no longer map sensibly to the available options.  In this case, it is 
 desirable to specify <b>Arg</b>s using only long options.
 This one is easy to accomplish, just make the flag value blank in
@@ -432,8 +442,8 @@ The help output is updated accordingly.
 </pre>
 <br> <br>
 <h3><i>I want to constrain the values allowed for a particular argument...</i></h3>
-<b>New Feature!</b> There are new constructors for all of the <b>Arg</b>s that 
-take values that allow a list of values to be specified for that particular
+There are now constructors for all of the <b>Arg</b>s that 
+parse values that allow a list of values to be specified for that particular
 <b>Arg</b>.  When the value for the <b>Arg</b> is parsed, it is checked against
 the list of values specified in the constructor.  If the value is in the list
 then it is accepted.  If not, then an exception is thrown.  
@@ -472,7 +482,6 @@ the getValue() call and if it isn't valid, throw an <b>ArgException</b>.
 Be sure that the description provided with the <b>Arg</b> reflects the 
 constraint you choose.
 <br><br>
-
 
 <a name="VISITORS"></a>
 <h2>Visitors</h2>
@@ -556,7 +565,7 @@ ignore arguments after the <i>--</i>.  To accomodate this, we can make both
 their constructors.  See
 the  <a href="html/index.html">API Documentation</a> for details. 
 <h3><i>Multiple Identical Switches</i></h3>
-If you absolutely must allow for multiple, identical switches to be allowed,
+If you absolutely must allow for multiple, identical switches, then
 don't use a <b>SwitchArg</b>, instead use a <b>MultiArg</b> of type 
 <i>bool</i>.  This means you'll need to specify
 a 1 or 0 on the command line with the switch (as values are required), but 
