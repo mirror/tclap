@@ -1,29 +1,9 @@
 PARSE ERROR:  
              One or more required arguments missing!
 
+Brief USAGE: 
+   ../examples/test1  [-u] -n <string> [--] [-v] [-h]
 
-USAGE: 
-
-    ../examples/test1 [-u] -n <string> [--] [-v] [-h]
-
-Where: 
-
-   -u,  --upperCase
-     Print in upper case
-
-   -n <string>,  --name <string>
-     (required)  (value required)  Name to print
-
-   --,  --ignore_rest
-     Ignores the rest of the labeled arguments following this flag.
-
-   -v,  --version
-     Displays version information and exits.
-
-   -h,  --help
-     Displays usage information and exits.
-
-
-
-Command description message
+For complete USAGE and HELP type: 
+   ../examples/test1 --help
 

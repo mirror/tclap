@@ -1,0 +1,32 @@
+
+USAGE: 
+
+   ../examples/test7  -n <homer|marge|bart|lisa|maggie> ...  [--] [-v] [-h]
+                      <1|2|3> ...
+
+
+Where: 
+
+   -n <homer|marge|bart|lisa|maggie>,  --name <homer|marge|bart|lisa
+      |maggie>  (accepted multiple times)
+     (required)  (value required)  Name to print. This is a long,
+     nonsensical message to test line wrapping.  Hopefully it works.
+
+   --,  --ignore_rest
+     Ignores the rest of the labeled arguments following this flag.
+
+   -v,  --version
+     Displays version information and exits.
+
+   -h,  --help
+     Displays usage information and exits.
+
+   <1|2|3>  (accepted multiple times)
+     (value required)  Number of times to print
+
+
+   Command description message. This is a long multi-line message meant to
+   test line wrapping.  This is more text that doesn't really do anything
+   besides take up lots of space that otherwise might be used for something
+   real.  That should be enough, don't you think?
+

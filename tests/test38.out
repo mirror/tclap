@@ -1,29 +1,10 @@
 PARSE ERROR: Argument: -n (--name)
              Couldn't find 'mike' in allowed list.
 
+Brief USAGE: 
+   ../examples/test7  -n <homer|marge|bart|lisa|maggie> ...  [--] [-v] [-h]
+                      <1|2|3> ...
 
-USAGE: 
-
-    ../examples/test7 -n <homer,marge,bart,lisa,maggie> ...  [--] [-v] [-h] <1,2,3> ...
-
-Where: 
-
-   -n <homer,marge,bart,lisa,maggie>,  --name <homer,marge,bart,lisa,maggie>  (accepted multiple times)
-     (required)  (value required)  Name to print
-
-   --,  --ignore_rest
-     Ignores the rest of the labeled arguments following this flag.
-
-   -v,  --version
-     Displays version information and exits.
-
-   -h,  --help
-     Displays usage information and exits.
-
-   <1,2,3>  (accepted multiple times)
-     (value required)  Number of times to print
-
-
-
-Command description message
+For complete USAGE and HELP type: 
+   ../examples/test7 --help
 

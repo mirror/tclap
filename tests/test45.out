@@ -1,0 +1,28 @@
+
+USAGE: 
+
+   ../examples/test6  -n <homer|marge|bart|lisa|maggie> [--] [-v] [-h] <1|2
+                      |3>
+
+
+Where: 
+
+   -n <homer|marge|bart|lisa|maggie>,  --name <homer|marge|bart|lisa
+      |maggie>
+     (required)  (value required)  Name to print
+
+   --,  --ignore_rest
+     Ignores the rest of the labeled arguments following this flag.
+
+   -v,  --version
+     Displays version information and exits.
+
+   -h,  --help
+     Displays usage information and exits.
+
+   <1|2|3>
+     (required)  (value required)  Number of times to print
+
+
+   Command description message
+
