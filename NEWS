@@ -32,3 +32,7 @@ without short options, meaning the user is forced to use only long options.
 This is useful for programs with more options than map sensibly to single
 chars.
 
+7/3/04 - Added a new constructor and handling to the various value args
+that allows the user to provide a list of values that the input arg values 
+should be restricted to.  
+
