@@ -1,5 +1,5 @@
 
-noinst_PROGRAMS = test1 test2 test3
+noinst_PROGRAMS = test1 test2 test3 
 
 test1_SOURCES = test1.cpp
 
@@ -15,3 +15,4 @@ test3_LDADD = $(top_builddir)/src/libtclap.a
 
 INCLUDES = -I$(top_builddir)/include
 
+CXXFLAGS = -Wall
