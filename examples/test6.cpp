@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 	for ( int i = 0; i < num; i++ )
 		cout << "My name is " << name << endl;
 
-	} catch (ArgException e)  // catch any exceptions
+	} catch ( ArgException& e)  // catch any exceptions
 	{ cerr << "error: " << e.error() << " for arg " << e.argId() << endl; }
 }
 

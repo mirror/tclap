@@ -84,7 +84,7 @@ void parseOptions(int argc, char** argv)
 	_boolTestA = atest.getValue();
 
 
-	} catch ( ArgException e )
+	} catch ( ArgException& e )
 	{ cout << "ERROR: " << e.error() << " " << e.argId() << endl; }
 }
 

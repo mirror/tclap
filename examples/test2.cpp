@@ -89,7 +89,7 @@ void parseOptions(int argc, char** argv)
 	for ( int i = 0; (unsigned int)i < v.size(); i++ ) 
 		cout << i << "  " <<  v[i] << endl;
 
-	} catch ( ArgException e )
+	} catch ( ArgException& e )
 	{ cout << "ERROR: " << e.error() << " " << e.argId() << endl; }
 }
 

@@ -1,5 +1,4 @@
 #include <string>
-#include <cctype>
 #include <iostream>
 #include <algorithm>
 #include <tclap/CmdLine.h>
@@ -21,25 +20,27 @@ int main(int argc, char** argv)
 	cmd.add( nameArg );
 
 	// Define a switch and add it to the command line.
-	SwitchArg caseSwitch("u","upperCase","Print in upper case", false);
-	cmd.add( caseSwitch );
+	SwitchArg reverseSwitch("r","reverse","Print name backwards", false);
+	cmd.add( reverseSwitch );
 
 	// Parse the args.
 	cmd.parse( argc, argv );
 
 	// Get the value parsed by each arg. 
 	string name = nameArg.getValue();
-	bool upperCase = caseSwitch.getValue();
+	bool reverseName = reverseSwitch.getValue();
 
 	// Do what you intend too...
-	if ( upperCase )
-		transform(name.begin(),name.end(),name.begin(),::toupper);
+	if ( reverseName )
+	{
+		reverse(name.begin(),name.end());
+		cout << "My name (spelled backwards) is: " << name << endl;
+	}
 	else
-		transform(name.begin(),name.end(),name.begin(),::tolower);
+		cout << "My name is: " << name << endl;
 
-	cout << "My name is " << name << endl;
 
-	} catch (ArgException e)  // catch any exceptions
+	} catch (ArgException &e)  // catch any exceptions
 	{ cerr << "error: " << e.error() << " for arg " << e.argId() << endl; }
 }
 
