@@ -19,16 +19,18 @@ int main(int argc, char** argv)
 	allowed.push_back("bart");
 	allowed.push_back("lisa");
 	allowed.push_back("maggie");
+	ValuesConstraint<string> vallowed( allowed );
 
-	MultiArg<string> nameArg("n","name","Name to print. This is a long, nonsensical message to test line wrapping.  Hopefully it works.",true,allowed);
+	MultiArg<string> nameArg("n","name","Name to print. This is a long, nonsensical message to test line wrapping.  Hopefully it works.",true,&vallowed);
 	cmd.add( nameArg );
 
 	vector<int> iallowed;
 	iallowed.push_back(1);
 	iallowed.push_back(2);
 	iallowed.push_back(3);
+	ValuesConstraint<int> iiallowed( iallowed );
 
-	UnlabeledMultiArg<int> intArg("times","Number of times to print",iallowed);
+	UnlabeledMultiArg<int> intArg("times","Number of times to print",&iiallowed);
 	cmd.add( intArg );
 
 	// Ignore the names and comments!  These  args mean nothing (to this
