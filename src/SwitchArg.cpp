@@ -43,11 +43,12 @@ bool SwitchArg::getValue() { return _value; };
 bool SwitchArg::combinedSwitchesMatch(string& combinedSwitches )
 {
 	// make sure this is actually a combined switch
-	if ( combinedSwitches[0] != '-' )
+	if ( combinedSwitches[0] != Arg::flagStartString[0] )
 		return false;
 
 	// make sure it isn't a long name 
-	if ( combinedSwitches[1] == '-' )
+	if ( combinedSwitches.substr( 0, Arg::nameStartString.length() ) == 
+		 Arg::nameStartString )
 		return false;
 
 	// ok, we're not specifying a ValueArg, so we know that we have

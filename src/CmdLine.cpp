@@ -58,7 +58,8 @@ void CmdLine::_constructor()
 									false, new VersionVisitor( this ) );
 	add( *vers );
 
-	SwitchArg* ignore  = new SwitchArg(Arg::flagStartString,"ignore_rest",
+	SwitchArg* ignore  = new SwitchArg(Arg::flagStartString, 
+				Arg::ignoreNameString,
                "Ignores the rest of the labeled arguments following this flag.",
 			   false, new IgnoreRestVisitor() );
 	add( *ignore );

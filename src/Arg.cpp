@@ -31,6 +31,7 @@ const char Arg::blankChar = '*';
 const char Arg::flagStartChar = '-';
 const string Arg::flagStartString = "-";
 const string Arg::nameStartString = "--";
+const string Arg::ignoreNameString = "ignore_rest";
 
 Arg::Arg( const string& flag, 
 		 const string& name, 
@@ -53,6 +54,24 @@ Arg::Arg( const string& flag,
 	if ( _flag.length() > 1 ) 
 		throw(ArgException("Argument flag can only be one character long",
 							toString() ) );
+
+	if ( _name != ignoreNameString &&  
+		 ( _flag == Arg::flagStartString || 
+		   _flag == Arg::nameStartString || 
+		   _flag == " " ) )
+		throw(ArgException("Argument flag cannot be either '" + 
+							Arg::flagStartString + "' or '" + 
+							Arg::nameStartString + "' or a space.",
+							toString() ) );
+
+	if ( ( _name.find( Arg::flagStartString, 0 ) != string::npos ) || 
+		 ( _name.find( Arg::nameStartString, 0 ) != string::npos ) ||
+		 ( _name.find( " ", 0 ) != string::npos ) )
+		throw(ArgException("Argument name cannot contain either '" + 
+							Arg::flagStartString + "' or '" + 
+							Arg::nameStartString + "' or space.",
+							toString() ) );
+
 };
 
 Arg::Arg()
@@ -107,7 +126,10 @@ string Arg::shortID( const string& valueId ) const
 {
 	string id = "";
 
-	id = Arg::flagStartString + _flag;
+	if ( _flag != "" )
+		id = Arg::flagStartString + _flag;
+	else
+		id = Arg::nameStartString + _name;
 
 	string delim = " "; 
 	delim[0] = Arg::_delimiter; // ugly!!!
@@ -125,13 +147,17 @@ string Arg::longID( const string& valueId ) const
 {
 	string id = "";
 
-	id = Arg::flagStartString + _flag;
+	if ( _flag != "" )
+	{
+		id += Arg::flagStartString + _flag;
 
-	if ( _valueRequired )
-		id += " <" + valueId + ">";
+		if ( _valueRequired )
+			id += " <" + valueId + ">";
+		
+		id += ",  ";
+	}
 
-
-	id += ",  " + Arg::nameStartString + _name;
+	id += Arg::nameStartString + _name;
 
 	if ( _valueRequired )
 		id += " <" + valueId + ">";
@@ -142,7 +168,7 @@ string Arg::longID( const string& valueId ) const
 
 bool Arg::operator==(const Arg& a)
 {
-	if ( _flag == a._flag || 
+	if ( ( _flag != "" && _flag == a._flag ) || 
 		 _name == a._name || 
 		 _description == a._description )
 		return true;
@@ -156,8 +182,6 @@ bool Arg::processArg(int* i, vector<string>& args)
 	cerr << "WARNING:   Ignoring unknown argument: " << args[*i] << endl;	
 	return false;
 }
-
-const string& Arg::getName() const { return _name; } ;
 
 string Arg::getDescription() const 
 {
@@ -173,7 +197,11 @@ string Arg::getDescription() const
 };
 
 const string& Arg::getFlag() const { return _flag; };
+
+const string& Arg::getName() const { return _name; } ;
+
 bool Arg::isRequired() const { return _required; }
+
 bool Arg::isValueRequired() const { return _valueRequired; }
 
 bool Arg::isSet() const 
@@ -202,7 +230,13 @@ bool Arg::argMatches( const string& argFlag ) const
 
 string Arg::toString() const
 {
-	string s = Arg::flagStartString + _flag + " (" + Arg::nameStartString + _name + ")";
+	string s = "";
+
+	if ( _flag != "" )
+		s += Arg::flagStartString + _flag + " ";
+
+	s += "(" + Arg::nameStartString + _name + ")";
+
 	return s;
 }
 
