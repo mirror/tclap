@@ -54,14 +54,16 @@ em {
 	font-size:110%;
 }
 
-h1 {
+h1,h2,h3{
 	color:#ff9933;
+}
+
+h1 {
 	font-weight:bold;
 	padding-top: 0.2em;
 }
 
 h2 {
-	color:#ff9933;
 	font-size:120%;
 	font-weight:bold;
 	border-bottom-style:solid; 
@@ -70,7 +72,6 @@ h2 {
 }
 
 h3 {
-	color:#ff9933;
 	font-size:110%;
 	font-weight:bold;
 	font-style:italic;
