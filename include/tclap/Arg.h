@@ -332,10 +332,20 @@ class Arg
 };
 
 /**
- * Typedef of a list iterator.
+ * Typedef of an Arg list iterator.
  */
-typedef std::list<Arg*>::iterator ArgIterator;
+typedef std::list<Arg*>::iterator ArgListIterator;
+
+/**
+ * Typedef of an Arg vector iterator.
+ */
 typedef std::vector<Arg*>::iterator ArgVectorIterator;
+
+/**
+ * Typedef of a Visitor list iterator.
+ */
+typedef std::list<Visitor*>::iterator VisitorListIterator;
+
 
 //////////////////////////////////////////////////////////////////////
 //BEGIN Arg.cpp

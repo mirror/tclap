@@ -278,8 +278,8 @@ inline CmdLine::CmdLine(const std::string& m,
 
 inline CmdLine::~CmdLine()
 {
-	std::list<Arg*>::iterator argIter;
-	std::list<Visitor*>::iterator visIter;
+	ArgListIterator argIter;
+	VisitorListIterator visIter;
   
 	for( argIter = _argDeleteOnExitList.begin(); 
 		 argIter != _argDeleteOnExitList.end(); 
@@ -354,8 +354,8 @@ inline void CmdLine::add( Arg& a )
 
 inline void CmdLine::add( Arg* a ) 
 { 
-	for( ArgIterator iter = _argList.begin(); iter != _argList.end(); iter++ ) 
-		if ( *a == *(*iter) ) 
+	for( ArgListIterator it = _argList.begin(); it != _argList.end(); it++ ) 
+		if ( *a == *(*it) ) 
 			throw( SpecificationException( 
 			       	"Argument with same flag/name already exists!", 
 					a->longID() ) );
@@ -382,7 +382,7 @@ inline void CmdLine::parse(int argc, char** argv)
   	for (int i = 0; (unsigned int)i < args.size(); i++)
 	{
 		bool matched = false;
-		for (ArgIterator it = _argList.begin(); it != _argList.end(); it++)
+		for (ArgListIterator it = _argList.begin(); it != _argList.end(); it++)
         {
 			if ( (*it)->processArg( &i, args ) )
 			{

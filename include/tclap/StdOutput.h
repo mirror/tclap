@@ -167,7 +167,7 @@ inline void StdOutput::_shortUsage( CmdLineInterface& _cmd,
 	}
 
 	// then the rest
-	for (ArgIterator it = argList.begin(); it != argList.end(); it++)
+	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
 		if ( !xorHandler.contains( (*it) ) )
 			s += " " + (*it)->shortID();
 
@@ -199,7 +199,7 @@ inline void StdOutput::_longUsage( CmdLineInterface& _cmd,
 	}
 
 	// then the rest
-	for (ArgIterator it = argList.begin(); it != argList.end(); it++)
+	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
 		if ( !xorHandler.contains( (*it) ) )
 		{
 			spacePrint( os, (*it)->longID(), 75, 3, 3 ); 
