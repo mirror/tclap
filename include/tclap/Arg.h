@@ -168,6 +168,11 @@ class Arg
 		static const string nameStartString;
 
 		/**
+		 * The name used to identify the ignore rest argument.
+		 */
+		static const string ignoreNameString;
+
+		/**
 		 * Sets the delimiter for all arguments.
 		 * \param c - The character that delimits flags/names from values.
 		 */
