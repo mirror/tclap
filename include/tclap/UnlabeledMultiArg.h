@@ -30,8 +30,6 @@
 
 #include <tclap/Arg.h>
 
-using namespace std;
-
 namespace TCLAP {
 
 /**
@@ -42,6 +40,7 @@ namespace TCLAP {
 template<class T>
 class UnlabeledMultiArg : public MultiArg<T>
 {
+
 #ifdef TWO_STAGE_NAME_LOOKUP
 	//If compiler has two stage name lookup (as gcc >= 3.4 does)
 	//this is requried to prevent undef. symbols
@@ -70,9 +69,9 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		UnlabeledMultiArg( const string& name,
-				           const string& desc,
-				           const string& typeDesc,
+		UnlabeledMultiArg( const std::string& name,
+				           const std::string& desc,
+				           const std::string& typeDesc,
 						   bool ignoreable = false,
 				           Visitor* v = NULL );
 
@@ -89,9 +88,9 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		UnlabeledMultiArg( const string& name,
-				           const string& desc,
-				           const vector<T>& allowed,
+		UnlabeledMultiArg( const std::string& name,
+				           const std::string& desc,
+				           const std::vector<T>& allowed,
 						   bool ignoreable = false,
 				           Visitor* v = NULL );
 
@@ -103,19 +102,19 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * \param i - Pointer the the current argument in the list.
 		 * \param args - Mutable list of strings. Passed from main().
 		 */
-		virtual bool processArg(int* i, vector<string>& args); 
+		virtual bool processArg(int* i, std::vector<std::string>& args); 
 
 		/**
 		 * Returns the a short id string.  Used in the usage.
 		 * \param val - value to be used.
 		 */
-		virtual string shortID(const string& val="val") const;
+		virtual std::string shortID(const std::string& val="val") const;
 
 		/**
 		 * Returns the a long id string.  Used in the usage.
 		 * \param val - value to be used.
 		 */
-		virtual string longID(const string& val="val") const;
+		virtual std::string longID(const std::string& val="val") const;
 
 		/**
 		 * Opertor ==.
@@ -127,13 +126,13 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * Pushes this to back of list rather than front.
 		 * \param argList - The list this should be added to.
 		 */
-		virtual void addToList( list<Arg*>& argList ) const;
+		virtual void addToList( std::list<Arg*>& argList ) const;
 };
 
 template<class T>
-UnlabeledMultiArg<T>::UnlabeledMultiArg(const string& name, 
-				                        const string& desc, 
-					                    const string& typeDesc,
+UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name, 
+				                        const std::string& desc, 
+					                    const std::string& typeDesc,
 										bool ignoreable,
 					                    Visitor* v)
 : MultiArg<T>("", name, desc,  false, typeDesc, v)
@@ -142,9 +141,9 @@ UnlabeledMultiArg<T>::UnlabeledMultiArg(const string& name,
 };
 
 template<class T>
-UnlabeledMultiArg<T>::UnlabeledMultiArg(const string& name, 
-				                        const string& desc, 
-					                    const vector<T>& allowed,
+UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name, 
+				                        const std::string& desc, 
+					                    const std::vector<T>& allowed,
 										bool ignoreable,
 					                    Visitor* v)
 : MultiArg<T>("", name, desc,  false, allowed, v)
@@ -153,7 +152,7 @@ UnlabeledMultiArg<T>::UnlabeledMultiArg(const string& name,
 };
 
 template<class T>
-bool UnlabeledMultiArg<T>::processArg(int *i, vector<string>& args) 
+bool UnlabeledMultiArg<T>::processArg(int *i, std::vector<std::string>& args) 
 {
 
 	if ( _hasBlanks( args[*i] ) )
@@ -166,17 +165,17 @@ bool UnlabeledMultiArg<T>::processArg(int *i, vector<string>& args)
 }
 
 template<class T>
-string UnlabeledMultiArg<T>::shortID(const string& val) const
+std::string UnlabeledMultiArg<T>::shortID(const std::string& val) const
 {
-	string id = "<" + _typeDesc + "> ...";
+	std::string id = "<" + _typeDesc + "> ...";
 
 	return id;
 }
 
 template<class T>
-string UnlabeledMultiArg<T>::longID(const string& val) const
+std::string UnlabeledMultiArg<T>::longID(const std::string& val) const
 {
-	string id = "<" + _typeDesc + ">  (accepted multiple times)";
+	std::string id = "<" + _typeDesc + ">  (accepted multiple times)";
 
 	return id;
 }
@@ -191,7 +190,7 @@ bool UnlabeledMultiArg<T>::operator==(const Arg& a) const
 }
 
 template<class T>
-void UnlabeledMultiArg<T>::addToList( list<Arg*>& argList ) const
+void UnlabeledMultiArg<T>::addToList( std::list<Arg*>& argList ) const
 {
 	argList.push_back( (Arg*)this );
 }

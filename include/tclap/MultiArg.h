@@ -28,8 +28,6 @@
 #include <sstream>
 #include <tclap/Visitor.h>
 
-using namespace std;
-
 namespace TCLAP {
 
 /**
@@ -45,7 +43,7 @@ class MultiArg : public Arg
 		/**
 		 * The list of values parsed from the CmdLine.
 		 */
-		vector<T> _values;
+		std::vector<T> _values;
 
         /**
 		 * A list of allowed values.
@@ -53,12 +51,12 @@ class MultiArg : public Arg
 		 * for this arg is not found in this list, then an exception is
 		 * thrown.  If the list is empty, then any value is allowed.
 		 */
-		vector<T> _allowed;
+		std::vector<T> _allowed;
 
 		/**
 		 * The description of type T to be used in the usage.
 		 */
-		string _typeDesc;
+		std::string _typeDesc;
 
 		/**
 		 * Extracts the value from the string.
@@ -67,13 +65,13 @@ class MultiArg : public Arg
 		 * \param val - The string to be read.
 		 */
 
-		void _extractValue( const string& val ); 
+		void _extractValue( const std::string& val ); 
 
         /**
 		 * Checks to see if parsed value is in allowed list.
 		 * \param val - value parsed (only used in output).
 		 */
-		void _checkAllowed( const string& val );
+		void _checkAllowed( const std::string& val );
 
 	public:
 
@@ -94,11 +92,11 @@ class MultiArg : public Arg
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		MultiArg( const string& flag,
-				  const string& name,
-				  const string& desc,
+		MultiArg( const std::string& flag,
+				  const std::string& name,
+				  const std::string& desc,
 				  bool req,
-				  const string& typeDesc,
+				  const std::string& typeDesc,
 				  Visitor* v = NULL);
 
 		/**
@@ -116,11 +114,11 @@ class MultiArg : public Arg
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		MultiArg( const string& flag,
-				  const string& name,
-				  const string& desc,
+		MultiArg( const std::string& flag,
+				  const std::string& name,
+				  const std::string& desc,
 				  bool req,
-				  const vector<T>& allowed,
+				  const std::vector<T>& allowed,
 				  Visitor* v = NULL);
 
 		/**
@@ -136,25 +134,25 @@ class MultiArg : public Arg
 		 * \param i - Pointer the the current argument in the list.
 		 * \param args - Mutable list of strings. Passed from main().
 		 */
-		virtual bool processArg(int* i, vector<string>& args); 
+		virtual bool processArg(int* i, std::vector<std::string>& args); 
 
 		/**
 		 * Returns a vector of type T containing the values parsed from
 		 * the command line.
 		 */
-		const vector<T>& getValue() ;
+		const std::vector<T>& getValue() ;
 
 		/**
 		 * Returns the a short id string.  Used in the usage. 
 		 * \param val - value to be used.
 		 */
-		virtual string shortID(const string& val="val") const;
+		virtual std::string shortID(const std::string& val="val") const;
 
 		/**
 		 * Returns the a long id string.  Used in the usage. 
 		 * \param val - value to be used.
 		 */
-		virtual string longID(const string& val="val") const;
+		virtual std::string longID(const std::string& val="val") const;
 
 		/**
 		 * Once we've matched the first value, then the arg is no longer
@@ -168,11 +166,11 @@ class MultiArg : public Arg
  *
  */
 template<class T>
-MultiArg<T>::MultiArg(const string& flag, 
-				      const string& name,
-				      const string& desc,
+MultiArg<T>::MultiArg(const std::string& flag, 
+				      const std::string& name,
+				      const std::string& desc,
 					  bool req,
-					  const string& typeDesc,
+					  const std::string& typeDesc,
 				      Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
   _typeDesc( typeDesc )
@@ -183,21 +181,21 @@ MultiArg<T>::MultiArg(const string& flag,
  *
  */
 template<class T>
-MultiArg<T>::MultiArg(const string& flag, 
-				      const string& name,
-				      const string& desc,
+MultiArg<T>::MultiArg(const std::string& flag, 
+				      const std::string& name,
+				      const std::string& desc,
 					  bool req,
-					  const vector<T>& allowed,
+					  const std::vector<T>& allowed,
 				      Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
   _allowed( allowed )
 { 
 	for ( unsigned int i = 0; i < _allowed.size(); i++ )
 	{
-		ostringstream os;
+		std::ostringstream os;
 		os << _allowed[i];
 
-		string temp( os.str() );
+		std::string temp( os.str() );
 
 		if ( i > 0 )
 			_typeDesc += "|";
@@ -216,13 +214,13 @@ MultiArg<T>::~MultiArg() { };
  *
  */
 template<class T>
-const vector<T>& MultiArg<T>::getValue() { return _values; };
+const std::vector<T>& MultiArg<T>::getValue() { return _values; };
 
 /**
  *
  */
 template<class T>
-bool MultiArg<T>::processArg(int *i, vector<string>& args) 
+bool MultiArg<T>::processArg(int *i, std::vector<std::string>& args) 
 {
 	if ( _ignoreable && Arg::ignoreRest() )
 		return false;
@@ -230,8 +228,8 @@ bool MultiArg<T>::processArg(int *i, vector<string>& args)
 	if ( _hasBlanks( args[*i] ) )
 		return false;
 
-	string flag = args[*i];
-	string value = "";
+	std::string flag = args[*i];
+	std::string value = "";
 
 	trimFlag( flag, value );
 
@@ -264,10 +262,10 @@ bool MultiArg<T>::processArg(int *i, vector<string>& args)
  *
  */
 template<class T>
-void MultiArg<T>::_extractValue( const string& val )
+void MultiArg<T>::_extractValue( const std::string& val )
 {
 	T temp;
-	istringstream is(val);
+	std::istringstream is(val);
 
 	int valuesRead = 0;
 	while ( is.good() )
@@ -300,7 +298,7 @@ void MultiArg<T>::_extractValue( const string& val )
  * because there is no way to tell operator>> to ignore spaces.
  */
 template<>
-void MultiArg<string>::_extractValue( const string& val )
+void MultiArg<std::string>::_extractValue( const std::string& val )
 {
 	_values.push_back( val );
 
@@ -311,7 +309,7 @@ void MultiArg<string>::_extractValue( const string& val )
  * Checks to see if the value parsed is in the allowed list.
  */
 template<class T>
-void MultiArg<T>::_checkAllowed( const string& val )
+void MultiArg<T>::_checkAllowed( const std::string& val )
 {
 	if ( _allowed.size() > 0 )
 		if ( find(_allowed.begin(),_allowed.end(),_values.back()) 
@@ -324,9 +322,9 @@ void MultiArg<T>::_checkAllowed( const string& val )
  *
  */
 template<class T>
-string MultiArg<T>::shortID(const string& val) const
+std::string MultiArg<T>::shortID(const std::string& val) const
 {
-	string id = Arg::shortID(_typeDesc) + " ... ";
+	std::string id = Arg::shortID(_typeDesc) + " ... ";
 
 	return id;
 }
@@ -335,9 +333,9 @@ string MultiArg<T>::shortID(const string& val) const
  *
  */
 template<class T>
-string MultiArg<T>::longID(const string& val) const
+std::string MultiArg<T>::longID(const std::string& val) const
 {
-	string id = Arg::longID(_typeDesc) + "  (accepted multiple times)";
+	std::string id = Arg::longID(_typeDesc) + "  (accepted multiple times)";
 
 	return id;
 }

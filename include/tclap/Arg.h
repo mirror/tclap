@@ -30,8 +30,6 @@
 #include <tclap/ArgException.h>
 #include <tclap/Visitor.h>
 
-using namespace std;
-
 namespace TCLAP {
 
 /** 
@@ -66,7 +64,7 @@ class Arg
 		 * override appropriate functions to get correct handling. Note 
 		 * that the _flag does NOT include the dash as part of the flag.
 		 */
-		string _flag;
+		std::string _flag;
 
 		/**
 		 * A single work namd indentifying the argument.
@@ -75,12 +73,12 @@ class Arg
 		 * _name does NOT include the two dashes as part of the _name. The
 		 * _name cannot be blank.
 		 */
-		string _name;
+		std::string _name;
 
 		/**
 		 * Description of the argument. 
 		 */
-		string _description;
+		std::string _description;
 
 		/** 
 		 * Indicating whether the argument is required.
@@ -91,7 +89,7 @@ class Arg
 		 * Label to be used in usage description.  Normally set to 
 		 * "required", but can be changed when necessary.
 		 */
-		string _requireLabel;
+		std::string _requireLabel;
 
 		/**
 		 * Indicates whether a value is required for the argument.
@@ -137,7 +135,7 @@ class Arg
 		 * Adds this to the specified list of Args.
 		 * \param argList - The list to add this to.
 		 */
-		virtual void addToList( list<Arg*>& argList ) const;
+		virtual void addToList( std::list<Arg*>& argList ) const;
 		
 		/**
 		 * Begin ignoring arguments since the "--" argument was specified.
@@ -165,18 +163,18 @@ class Arg
 		 * The sting that indicates the beginning of a flag.  Currently "-".
 		 * Should be identical to flagStartChar.
 		 */
-		static const string flagStartString;
+		static const std::string flagStartString;
 		
 		/**
 		 * The sting that indicates the beginning of a name.  Currently "--".
 		 * Should be flagStartChar twice.
 		 */
-		static const string nameStartString;
+		static const std::string nameStartString;
 
 		/**
 		 * The name used to identify the ignore rest argument.
 		 */
-		static const string ignoreNameString;
+		static const std::string ignoreNameString;
 
 		/**
 		 * Sets the delimiter for all arguments.
@@ -193,9 +191,9 @@ class Arg
 		 * \param valreq - Whether the a value is required for the argument.
 		 * \param v - The visitor checked by the argument. Defaults to NULL.
 		 */
-		Arg(const string& flag, 
-			const string& name, 
-			const string& desc, 
+		Arg(const std::string& flag, 
+			const std::string& name, 
+			const std::string& desc, 
 			bool req, 
 			bool valreq,
 			Visitor* v = NULL);
@@ -235,7 +233,7 @@ class Arg
 		 * \param args - Mutable list of strings. What is 
 		 * passed in from main.
 		 */
-		virtual bool processArg(int *i, vector<string>& args); 
+		virtual bool processArg(int *i, std::vector<std::string>& args); 
 
 
 		/**
@@ -248,17 +246,17 @@ class Arg
 		/**
 		 * Returns the argument flag.
 		 */
-		const string& getFlag() const;
+		const std::string& getFlag() const;
 
 		/**
 		 * Returns the argument name.
 		 */
-		const string& getName() const;
+		const std::string& getName() const;
 
 		/**
 		 * Returns the argument description.
 		 */
-		string getDescription() const;
+		std::string getDescription() const;
 
 		/**
 		 * Indicates whether the argument is required.
@@ -301,25 +299,25 @@ class Arg
 		 * \param s - The string to be compared to the flag/name to determine
 		 * whether the arg matches.
 		 */
-		virtual bool argMatches( const string& s ) const;
+		virtual bool argMatches( const std::string& s ) const;
 
 		/**
 		 * Returns a simple string representation of the argument.
 		 * Primarily for debugging.
 		 */
-		virtual string toString() const;
+		virtual std::string toString() const;
 
 		/**
 		 * Returns a short ID for the usage.
 		 * \param valueId - The value used in the id.
 		 */
-		virtual string shortID( const string& valueId = "val" ) const;
+		virtual std::string shortID( const std::string& valueId = "val" ) const;
 
 		/**
 		 * Returns a long ID for the usage.
 		 * \param valueId - The value used in the id.
 		 */
-		virtual string longID( const string& valueId = "val" ) const;
+		virtual std::string longID( const std::string& valueId = "val" ) const;
 
 		/**
 		 * Trims a value off of the flag.
@@ -328,7 +326,7 @@ class Arg
 		 * \param value - Where the value trimmed from the string will
 		 * be stored.
 		 */
-		virtual void trimFlag( string& flag, string& value ) const;
+		virtual void trimFlag( std::string& flag, std::string& value ) const;
 
 		/**
 		 * Checks whether a given string has blank chars, indicating that
@@ -336,22 +334,22 @@ class Arg
 		 * false.
 		 * \param s - string to be checked.
 		 */
-		bool _hasBlanks( const string& s ) const;
+		bool _hasBlanks( const std::string& s ) const;
 
 		/**
 		 * Sets the requireLabel. Used by XorHandler.  You shouldn't ever
 		 * use this.
 		 * \param s - Set the requireLabel to this value.
 		 */
-		void setRequireLabel( const string& s );
+		void setRequireLabel( const std::string& s );
 
 };
 
 /**
  * Typedef of a list iterator.
  */
-typedef list<Arg*>::iterator ArgIterator;
-typedef vector<Arg*>::iterator ArgVectorIterator;
+typedef std::list<Arg*>::iterator ArgIterator;
+typedef std::vector<Arg*>::iterator ArgVectorIterator;
 
 }
 

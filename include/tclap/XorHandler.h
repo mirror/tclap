@@ -29,8 +29,6 @@
 #include <algorithm>
 #include <ostream>
 
-using namespace std;
-
 namespace TCLAP {
 
 /**
@@ -44,7 +42,7 @@ class XorHandler
 		/**
 		 * The list of of lists of Arg's to be or'd together.
 		 */
-		vector< vector<Arg*> > _orList;
+		std::vector< std::vector<Arg*> > _orList;
 
 	public:
 
@@ -57,7 +55,7 @@ class XorHandler
 		 * Add a list of Arg*'s that will be orred together.
 		 * \param ors - list of Arg* that will be xor'd.
 		 */
-		void add( vector<Arg*>& ors );
+		void add( std::vector<Arg*>& ors );
 			
 		/**
 		 * Checks whether the specified Arg is in one of the xor lists and
@@ -71,13 +69,13 @@ class XorHandler
 		/**
 		 * Returns the XOR specific short usage.
 		 */
-		string shortUsage();
+		std::string shortUsage();
 
 		/**
 		 * Prints the XOR specific long usage.
 		 * \param os - Stream to print to.
 		 */
-		void printLongUsage(ostream& os);
+		void printLongUsage(std::ostream& os);
 
 		/**
 		 * Simply checks whether the Arg is contained in one of the arg

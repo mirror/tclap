@@ -22,6 +22,8 @@
 
 #include <tclap/XorHandler.h>
 
+using namespace std;
+
 namespace TCLAP {
 
 XorHandler::XorHandler( )

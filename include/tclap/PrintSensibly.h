@@ -26,8 +26,6 @@
 #include <algorithm>
 #include <string>
 
-using namespace std;
-
 namespace TCLAP {
 
 /**
@@ -40,8 +38,8 @@ namespace TCLAP {
  * \param secondLineOffset - The number of spaces to indent the second
  * and all subsequent lines in addition to indentSpaces.
  */
-void spacePrint( ostream& os, 
-				 const string& s, 
+void spacePrint( std::ostream& os, 
+				 const std::string& s, 
 				 int maxWidth, 
 				 int indentSpaces=0, 
 				 int secondLineOffset=0 );

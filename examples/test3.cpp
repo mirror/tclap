@@ -5,6 +5,7 @@
 #include <string>
 
 using namespace TCLAP; 
+using namespace std; 
 
 bool _boolTestB;
 string _stringTest;

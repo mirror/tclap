@@ -44,8 +44,6 @@
 #include <iomanip>
 #include <algorithm>
 
-using namespace std;
-
 namespace TCLAP {
 
 /**
@@ -60,22 +58,22 @@ class CmdLine
 		 * The list of arguments that will be tested against the
 		 * command line.
 		 */
-		list<Arg*> _argList;
+		std::list<Arg*> _argList;
 
 		/**
 		 * The name of the program.  Set to argv[0].
 		 */
-		string _progName;
+		std::string _progName;
 
 		/**
 		 * A message used to describe the program.  Used in the usage output.
 		 */
-		string _message;
+		std::string _message;
 
 		/**
 		 * The version to be displayed with the --version switch.
 		 */
-		string _version;
+		std::string _version;
 
 		/**
 		 * The number of arguments that are required to be present on 
@@ -101,20 +99,20 @@ class CmdLine
 		 * into a single argument.
 		 * \param s - The message to be used in the usage.
 		 */
-		bool _emptyCombined(const string& s);
+		bool _emptyCombined(const std::string& s);
 
 		/**
 		 * Writes a brief usage message with short args.
 		 * \param os - The stream to write the message to.
 		 */
-		void _shortUsage( ostream& os );
+		void _shortUsage( std::ostream& os );
 
 		/**
 		 * Writes a longer usage message with long and short args, 
 		 * provides descriptions and prints message.
 		 * \param os - The stream to write the message to.
 		 */
-		void _longUsage( ostream& os );
+		void _longUsage( std::ostream& os );
 
 	private:
 
@@ -136,9 +134,9 @@ class CmdLine
 		 * \param version - The version number to be used in the
 		 * --version switch.
 		 */
-		CmdLine(const string& name, 
-				const string& message,
-				const string& version = "none" );
+		CmdLine(const std::string& name, 
+				const std::string& message,
+				const std::string& version = "none" );
 
 		/**
 		 * Command line constructor. Defines how the arguments will be
@@ -150,9 +148,9 @@ class CmdLine
 		 * \param version - The version number to be used in the
 		 * --version switch.
 		 */
-		CmdLine(const string& message, 
+		CmdLine(const std::string& message, 
 				const char delimiter = ' ',
-				const string& version = "none" );
+				const std::string& version = "none" );
 
 		/**
 		 * Adds an argument to the list of arguments to be parsed.
@@ -179,7 +177,7 @@ class CmdLine
 		 * add does not need to be called.
 		 * \param xors - List of Args to be added and xor'd. 
 		 */
-		void xorAdd( vector<Arg*>& xors );
+		void xorAdd( std::vector<Arg*>& xors );
 
 		/**
 		 * Prints the usage to stdout and exits.

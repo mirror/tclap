@@ -30,8 +30,6 @@
 #include <tclap/Arg.h>
 #include <tclap/ValueArg.h>
 
-using namespace std;
-
 namespace TCLAP {
 
 /**
@@ -81,10 +79,10 @@ class UnlabeledValueArg : public ValueArg<T>
 		 * \param v - Optional Vistor.  You should leave this blank unless
 		 * you have a very good reason.
 		 */
-		UnlabeledValueArg(const string& name, 
-			              const string& desc, 
+		UnlabeledValueArg(const std::string& name, 
+			              const std::string& desc, 
 				          T value,
-				          const string& typeDesc,
+				          const std::string& typeDesc,
 						  bool ignoreable = false,
 				          Visitor* v = NULL); 
 
@@ -109,10 +107,10 @@ class UnlabeledValueArg : public ValueArg<T>
 		 * \param v - Optional Vistor.  You should leave this blank unless
 		 * you have a very good reason.
 		 */
-		UnlabeledValueArg(const string& name, 
-			              const string& desc, 
+		UnlabeledValueArg(const std::string& name, 
+			              const std::string& desc, 
 				          T value,
-				          const vector<T>& allowed,
+				          const std::vector<T>& allowed,
 						  bool ignoreable = false,
 				          Visitor* v = NULL); 
 
@@ -124,17 +122,17 @@ class UnlabeledValueArg : public ValueArg<T>
 		 * \param i - Pointer the the current argument in the list.
 		 * \param args - Mutable list of strings. 
 		 */
-		virtual bool processArg(int* i, vector<string>& args); 
+		virtual bool processArg(int* i, std::vector<std::string>& args); 
 
 		/**
 		 * Overrides shortID for specific behavior.
 		 */
-		virtual string shortID(const string& val="val") const;
+		virtual std::string shortID(const std::string& val="val") const;
 
 		/**
 		 * Overrides longID for specific behavior.
 		 */
-		virtual string longID(const string& val="val") const;
+		virtual std::string longID(const std::string& val="val") const;
 
 		/**
 		 * Overrides operator== for specific behavior.
@@ -145,17 +143,17 @@ class UnlabeledValueArg : public ValueArg<T>
 		 * Instead of pushing to the front of list, push to the back.
 		 * \param argList - The list to add this to.
 		 */
-		virtual void addToList( list<Arg*>& argList ) const;
+		virtual void addToList( std::list<Arg*>& argList ) const;
 };
 
 /**
  * Constructor implemenation.
  */
 template<class T>
-UnlabeledValueArg<T>::UnlabeledValueArg(const string& name, 
-					  const string& desc, 
+UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name, 
+					  const std::string& desc, 
 					  T val,
-					  const string& typeDesc,
+					  const std::string& typeDesc,
 					  bool ignoreable,
 					  Visitor* v)
 : ValueArg<T>("", name, desc, true, val, typeDesc, v)
@@ -167,10 +165,10 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const string& name,
  * Constructor implemenation.
  */
 template<class T>
-UnlabeledValueArg<T>::UnlabeledValueArg(const string& name, 
-					  const string& desc, 
+UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name, 
+					  const std::string& desc, 
 					  T val,
-					  const vector<T>& allowed,
+					  const std::vector<T>& allowed,
 					  bool ignoreable,
 					  Visitor* v)
 : ValueArg<T>("", name, desc, true, val, allowed, v)
@@ -182,7 +180,7 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const string& name,
  * Implementation of processArg().
  */
 template<class T>
-bool UnlabeledValueArg<T>::processArg(int *i, vector<string>& args) 
+bool UnlabeledValueArg<T>::processArg(int *i, std::vector<std::string>& args) 
 {
 	
 	if ( _alreadySet )
@@ -202,9 +200,9 @@ bool UnlabeledValueArg<T>::processArg(int *i, vector<string>& args)
  * Overriding shortID for specific output.
  */
 template<class T>
-string UnlabeledValueArg<T>::shortID(const string& val) const
+std::string UnlabeledValueArg<T>::shortID(const std::string& val) const
 {
-	string id = "<" + _typeDesc + ">";
+	std::string id = "<" + _typeDesc + ">";
 
 	return id;
 }
@@ -213,12 +211,12 @@ string UnlabeledValueArg<T>::shortID(const string& val) const
  * Overriding longID for specific output.
  */
 template<class T>
-string UnlabeledValueArg<T>::longID(const string& val) const
+std::string UnlabeledValueArg<T>::longID(const std::string& val) const
 {
 	// Ideally we would like to be able to use RTTI to return the name
 	// of the type required for this argument.  However, g++ at least, 
 	// doesn't appear to return terribly useful "names" of the types.  
-	string id = "<" + _typeDesc + ">";
+	std::string id = "<" + _typeDesc + ">";
 
 	return id;	
 }
@@ -236,7 +234,7 @@ bool UnlabeledValueArg<T>::operator==(const Arg& a ) const
 }
 
 template<class T>
-void UnlabeledValueArg<T>::addToList( list<Arg*>& argList ) const
+void UnlabeledValueArg<T>::addToList( std::list<Arg*>& argList ) const
 {
 	argList.push_back( (Arg*)this );
 }

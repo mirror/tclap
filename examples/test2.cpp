@@ -5,6 +5,7 @@
 #include <string>
 
 using namespace TCLAP; 
+using namespace std; 
 
 int _intTest;
 float _floatTest;

@@ -25,8 +25,6 @@
 
 #include <string>
 
-using namespace std;
-
 namespace TCLAP {
 
 /**
@@ -43,8 +41,8 @@ class ArgException
 		 * \param id - The text identifying the argument source 
 		 * of the exception.
 		 */
-		ArgException( const string& text = "undefined exception", 
-					  const string& id = "undefined" )
+		ArgException( const std::string& text = "undefined exception", 
+					  const std::string& id = "undefined" )
 			: _errorText(text), _argId( id ) {}; 
 		
 		/**
@@ -78,12 +76,12 @@ class ArgException
 		/**
 		 * Returns the error text.
 		 */
-		string error() { return ( _errorText ); };
+		std::string error() { return ( _errorText ); };
 
 		/**
 		 * Returns the argument id.
 		 */
-		string argId() 
+		std::string argId() 
 		{ 
 			if ( _argId == "undefined" )
 				return " ";
@@ -96,12 +94,12 @@ class ArgException
 		/**
 		 * The text of the exception message.
 		 */
-		string _errorText;
+		std::string _errorText;
 
 		/**
 		 * The argument related to this exception.
 		 */
-		string _argId;
+		std::string _argId;
 
 };
 

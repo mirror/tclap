@@ -29,8 +29,6 @@
 #include <tclap/Visitor.h>
 #include <tclap/Arg.h>
 
-using namespace std;
-
 namespace TCLAP {
 
 /**
@@ -59,7 +57,7 @@ class ValueArg : public Arg
 		 * for this arg is not found in this list, then an exception is 
 		 * thrown.  If the list is empty, then any value is allowed.
 		 */
-		vector<T> _allowed;
+		std::vector<T> _allowed;
 
 		/**
 		 * A human readable description of the type to be parsed.
@@ -68,7 +66,7 @@ class ValueArg : public Arg
 		 * consistent support for human readable names, we are left to our
 		 * own devices.
 		 */
-		string _typeDesc;
+		std::string _typeDesc;
 
 		/**
 		 * Extracts the value from the string.
@@ -76,13 +74,13 @@ class ValueArg : public Arg
 		 * is thrown.
 		 * \param val - value to be parsed. 
 		 */
-		void _extractValue( const string& val ); 
+		void _extractValue( const std::string& val ); 
 
 		/**
 		 * Checks to see if parsed value is in allowed list.
 		 * \param val - value parsed (only used in output). 
 		 */
-		void _checkAllowed( const string& val );
+		void _checkAllowed( const std::string& val );
 
 	public:
 
@@ -109,12 +107,12 @@ class ValueArg : public Arg
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		ValueArg(const string& flag, 
-				 const string& name, 
-			     const string& desc, 
+		ValueArg(const std::string& flag, 
+				 const std::string& name, 
+			     const std::string& desc, 
 				 bool req, 
 				 T value,
-				 const string& typeDesc,
+				 const std::string& typeDesc,
 				 Visitor* v = NULL);
 
 		/**
@@ -138,12 +136,12 @@ class ValueArg : public Arg
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		ValueArg(const string& flag, 
-				 const string& name, 
-			     const string& desc, 
+		ValueArg(const std::string& flag, 
+				 const std::string& name, 
+			     const std::string& desc, 
 				 bool req, 
 				 T value,
-				 const vector<T>& allowed,
+				 const std::vector<T>& allowed,
 				 Visitor* v = NULL);
 
 		/**
@@ -160,7 +158,7 @@ class ValueArg : public Arg
 		 * \param args - Mutable list of strings. Passed 
 		 * in from main().
 		 */
-		virtual bool processArg(int* i, vector<string>& args); 
+		virtual bool processArg(int* i, std::vector<std::string>& args); 
 
 		/**
 		 * Returns the value of the argument.
@@ -171,13 +169,13 @@ class ValueArg : public Arg
 		 * Specialization of shortID.
 		 * \param val - value to be used.
 		 */
-		virtual string shortID(const string& val = "val") const;
+		virtual std::string shortID(const std::string& val = "val") const;
 
 		/**
 		 * Specialization of longID.
 		 * \param val - value to be used.
 		 */
-		virtual string longID(const string& val = "val") const;
+		virtual std::string longID(const std::string& val = "val") const;
 
 };
 
@@ -186,12 +184,12 @@ class ValueArg : public Arg
  * Constructor implementation.
  */
 template<class T>
-ValueArg<T>::ValueArg(const string& flag, 
-				      const string& name, 
-					  const string& desc, 
+ValueArg<T>::ValueArg(const std::string& flag, 
+				      const std::string& name, 
+					  const std::string& desc, 
 					  bool req, 
 					  T val,
-					  const string& typeDesc,
+					  const std::string& typeDesc,
 					  Visitor* v)
 : Arg(flag, name, desc, req, true, v),
   _value( val ),
@@ -202,12 +200,12 @@ ValueArg<T>::ValueArg(const string& flag,
  * Constructor with allowed list. 
  */
 template<class T>
-ValueArg<T>::ValueArg(const string& flag, 
-				      const string& name, 
-					  const string& desc, 
+ValueArg<T>::ValueArg(const std::string& flag, 
+				      const std::string& name, 
+					  const std::string& desc, 
 					  bool req, 
 					  T val,
-					  const vector<T>& allowed,
+					  const std::vector<T>& allowed,
 					  Visitor* v)
 : Arg(flag, name, desc, req, true, v),
   _value( val ),
@@ -215,10 +213,10 @@ ValueArg<T>::ValueArg(const string& flag,
 { 
 	for ( unsigned int i = 0; i < _allowed.size(); i++ )
 	{
-		ostringstream os;
+		std::ostringstream os;
 		os << _allowed[i];
 
-		string temp( os.str() ); 
+		std::string temp( os.str() ); 
 
 		if ( i > 0 )
 			_typeDesc += "|";
@@ -243,7 +241,7 @@ T& ValueArg<T>::getValue() { return _value; };
  * Implementation of processArg().
  */
 template<class T>
-bool ValueArg<T>::processArg(int *i, vector<string>& args)
+bool ValueArg<T>::processArg(int *i, std::vector<std::string>& args)
 {
 	if ( _ignoreable && Arg::ignoreRest() )
 		return false;
@@ -251,9 +249,9 @@ bool ValueArg<T>::processArg(int *i, vector<string>& args)
 	if ( _hasBlanks( args[*i] ) )
 		return false;
 
-	string flag = args[*i];
+	std::string flag = args[*i];
 
-	string value = "";
+	std::string value = "";
 	trimFlag( flag, value );
 
 	if ( argMatches( flag ) )
@@ -289,9 +287,9 @@ bool ValueArg<T>::processArg(int *i, vector<string>& args)
  * Implementation of _extractValue.
  */
 template<class T>
-void ValueArg<T>::_extractValue( const string& val ) 
+void ValueArg<T>::_extractValue( const std::string& val ) 
 {
-	istringstream is(val);
+	std::istringstream is(val);
 
 	int valuesRead = 0;
 	while ( is.good() )
@@ -320,7 +318,7 @@ void ValueArg<T>::_extractValue( const string& val )
  * read 'X'... and thus the specialization.
  */
 template<>
-void ValueArg<string>::_extractValue( const string& val ) 
+void ValueArg<std::string>::_extractValue( const std::string& val ) 
 {
 	_value = val;
 	_checkAllowed( val );
@@ -330,7 +328,7 @@ void ValueArg<string>::_extractValue( const string& val )
  * Checks to see if the value parsed is in the allowed list.
  */
 template<class T>
-void ValueArg<T>::_checkAllowed( const string& val )
+void ValueArg<T>::_checkAllowed( const std::string& val )
 {
 	if ( _allowed.size() > 0 )
 		if ( find(_allowed.begin(),_allowed.end(),_value) == _allowed.end() )
@@ -342,7 +340,7 @@ void ValueArg<T>::_checkAllowed( const string& val )
  * Implementation of shortID.
  */
 template<class T>
-string ValueArg<T>::shortID(const string& val) const
+std::string ValueArg<T>::shortID(const std::string& val) const
 {
 	return Arg::shortID( _typeDesc );	
 }
@@ -351,7 +349,7 @@ string ValueArg<T>::shortID(const string& val) const
  * Implementation of longID.
  */
 template<class T>
-string ValueArg<T>::longID(const string& val) const
+std::string ValueArg<T>::longID(const std::string& val) const
 {
 	return Arg::longID( _typeDesc );	
 }

@@ -29,8 +29,6 @@
 #include <tclap/Arg.h>
 #include <tclap/ArgException.h>
 
-using namespace std;
-
 namespace TCLAP {
 
 /**
@@ -62,9 +60,9 @@ class SwitchArg : public Arg
 		 * \param v - An optional visitor.  You probably should not
 		 * use this unless you have a very good reason.
 		 */
-		SwitchArg(const string& flag, 
-			      const string& name, 
-			      const string& desc,
+		SwitchArg(const std::string& flag, 
+			      const std::string& name, 
+			      const std::string& desc,
 			      bool def,
 				  Visitor* v = NULL);
 
@@ -81,13 +79,13 @@ class SwitchArg : public Arg
 		 * \param args - Mutable list of strings. Passed
 		 * in from main().
 		 */
-		virtual bool processArg(int* i, vector<string>& args); 
+		virtual bool processArg(int* i, std::vector<std::string>& args); 
 
 		/**
 		 * Checks a string to see if any of the chars in the string
 		 * match the flag for this Switch.
 		 */
-		bool combinedSwitchesMatch(string& combined);
+		bool combinedSwitchesMatch(std::string& combined);
 
 		/**
 		 * Returns bool, whether or not the switch has been set.

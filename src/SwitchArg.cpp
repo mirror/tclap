@@ -22,6 +22,8 @@
 
 #include <tclap/SwitchArg.h>
 
+using namespace std;
+
 namespace TCLAP {
 
 SwitchArg::SwitchArg(const string& flag, 

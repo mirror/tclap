@@ -22,6 +22,8 @@
 
 #include <tclap/CommandLine.h>
 
+using namespace std;
+
 namespace TCLAP {
 
 CmdLine::CmdLine(const string& n, const string& m, const string& v )

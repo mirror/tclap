@@ -5,6 +5,7 @@
 #include <string>
 
 using namespace TCLAP; 
+using namespace std; 
 
 string _orTest;
 string _orTest2;

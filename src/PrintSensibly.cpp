@@ -22,8 +22,9 @@
 
 #include <tclap/PrintSensibly.h>
 
-namespace TCLAP {
+using namespace std;
 
+namespace TCLAP {
 
 void spacePrint( ostream& os, 
 				 const string& s, 

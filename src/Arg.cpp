@@ -22,6 +22,8 @@
 
 #include <tclap/Arg.h>
 
+using namespace std;
+
 namespace TCLAP {
 
 // defaults
