@@ -93,6 +93,9 @@ class CmdLine
 		 */
 		XorHandler _xorHandler;
 
+		std::list<Arg*> _argDeleteOnExitList;
+		std::list<Visitor*> _visitorDeleteOnExitList;
+		
 		/**
 		 * Checks whether a name/flag string matches entirely matches
 		 * the Arg::blankChar.  Used when multiple switches are combined
@@ -121,6 +124,16 @@ class CmdLine
 		 * of it).
 		 */
 		void _constructor();
+
+		/**
+		 * Perform a delete ptr; operation on ptr when this object is deleted.
+		 */
+		void deleteOnExit(Arg* ptr);
+
+		/**
+		 * Perform a delete ptr; operation on ptr when this object is deleted.
+		 */
+		void deleteOnExit(Visitor* ptr);
 
 	public:
 
@@ -151,6 +164,9 @@ class CmdLine
 		CmdLine(const std::string& message, 
 				const char delimiter = ' ',
 				const std::string& version = "none" );
+		
+		///Deletes any resources allocated by a CmdLine object
+		~CmdLine();
 
 		/**
 		 * Adds an argument to the list of arguments to be parsed.
