@@ -20,6 +20,7 @@
   --> 
 
 <html>
+<title>TCLAP Manual</title>
 <body>
 <table><tr><td align="left">
 <h1>Templatized C++ Command Line Parser Manual</h1>
@@ -30,6 +31,35 @@
 </A>
 </td></tr></table>
 
+<h2>Table of Contents</h2>
+<ul>
+<li><a href="manual.html#BASIC_USAGE">Basic usage</a></li>
+<ul>
+<li><a href="manual.html#ARGUMENT_PROPERTIES">Argument Properties</a></li>
+<li><a href="manual.html#ARGUMENT_TYPES">Types of Arguments</a></li>
+<li><a href="manual.html#COMPILING">Compiling</a></li>
+</ul>
+<li><a href="manual.html#COMPLICATIONS">Complications</a></li>
+<ul>
+<li><a href="manual.html#COMBINE_SWITCHES">I want to combine multiple switches into one argument...</a></li>
+<li><a href="manual.html#MULTI_ARG">I tried passing multiple values on the command line with the same flag and it didn't work...</a></li>
+<li><a href="manual.html#UNLABELED_VALUE_ARG">I don't like labelling all of my arguments...</a></li>
+<li><a href="manual.html#UNLABELED_MULTI_ARG">I want an arbitrary number of arguments to be accepted...</a></li>
+<li><a href="manual.html#XOR">I want one argument or the other, but not both...</a></li>
+<li><a href="manual.html#NO_FLAG">I have more arguments than single flags make sense for...</a></li>
+<li><a href="manual.html#ALLOWED">I want to constrain the values allowed for a particular argument...</a></li>
+</ul>
+<li><a href="manual.html#EXCEPTIONS">Exceptions</a></li>
+<ul>
+<li><a href="manual.html#IGNORE_ARGS">Ignoring arguments</a></li>
+<li><a href="manual.html#MULTI_SWITCHES">Multiple Identical Switches</a></li>
+<li><a href="manual.html#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></li>
+</ul>
+<li><a href="manual.html#VISITORS">Visitors</a></li>
+<li><a href="manual.html#MORE_INFO">More Information</a></li>
+</ul>
+
+<a name="BASIC_USAGE"></a>
 <h2>Basic usage</h2>
 There are a few key classes to be aware of.  The first is the <b>CmdLine</b>
 (command line) class.  This is the class that parses the command line
@@ -46,7 +76,7 @@ the specific argument objects.  The values are accessed by calls to
 the <i>getValue()</i> methods of the argument objects.
 <br> <br>
 Here is a simple <a href="test1.cpp">example</a> ...
-<br> <br>
+<br> 
 <pre>
 #include < string >
 #include < iostream >
@@ -150,85 +180,128 @@ Where:
 This example shows a number of different properties of the library...
 <ul>
 <li>Arguments can appear in any order (...mostly, <a href="manual.html#COMPLICATIONS">more</a> on this later).</li>
-<li>The version, help and -- arguments are specified automatically.</li>
-<li>If a required argument isn't provided, the program exits and displays
-the USAGE, along with an error message.</li>
-<li>Note that the creation of the CmdLine object is
-slightly different now.  The program name is assumed to always be
-argv[0], so it isn't specified directly (let me know if you don't like
-this).  More importantly, a delimiter character can now be specified.
-this means that if you prefer arguments of the style "-s=asdf" instead
-of "-s asdf", you can do so.  
-<li>Always wrap everything in a try block that catches <b>ArgException</b>s.
+<li>The <i>help</i>, <i>version</i> and <i>--</i> <b>SwitchArg</b>s 
+are specified automatically.  Using either the 
+<i>-h</i> or <i>--help</i> flag will cause the USAGE message to be displayed,
+<i>-v</i> or <i>--version</i> will cause
+any version information to be displayed, and <i>--</i> or <i>--ignore_rest</i>
+will cause the remaining labeled arguments to be ingored.  
+These switches are included automatically on every command line and 
+there is no way to turn this off (unless you change <b>CmdLine.h</b> yourself).
+More <a href="manual.html#VISITORS">later</a> on how we get this to work.</li>
+<li>If there is an error parsing the command line (e.g. a required argument 
+isn't provided), the program exits and displays
+a brief USAGE and an error message.</li>
+<li> The program name is assumed to always be
+argv[0], so it isn't specified directly.  </li>
+<li>A delimiter character can be specified.  This means that if you 
+prefer arguments of the style "-s=asdf" instead of "-s asdf", you can do so.  
+<li><b><i>Always wrap everything in a try block that catches ArgExceptions!</i></b> Any problems found in constructing the <b>CmdLine</b> or the <b>Arg</b>s
+will throw an <b>ArgException</b>.</li>
+
 </ul>
-<h3><i>Basic Properties</i></h3>
+<a name="ARGUMENT_PROPERTIES"></a>
+<h3><i>Argument Properties</i></h3>
 Arguments, whatever their type, have a few common basic properties.  These
-properties are set in the constructors of the arguments. First
+properties are set in the constructors of the arguments. 
+<ul>
+<li>First
 is the flag or the character preceeded by a dash(-) that signals the beginning
-of the argument on the command line.  
-Arguments also have names, which can, if desired also be
+of the argument on the command line.  </li>
+<li>Arguments also have names, which can, if desired also be
 used as a flag on the command line, this time preceeded by two dashes (--) 
-[like the familiar getopt_long()].
-Next is the description of the argument.  This is a short description of
+[like the familiar getopt_long()].</li>
+<li>Next is the description of the argument.  This is a short description of
 the argument displayed in the help/usage
-message when needed.  The boolean value in <b>ValueArg</b>s indicates 
+message when needed.  </li>
+<li> The boolean value in <b>ValueArg</b>s indicates 
 whether  the argument is required to be present (<b>SwitchArg</b>s can't
-be required, as that would defeat the purpose).  Next, the default
+be required, as that would defeat the purpose).  </li>
+<li>Next, the default
 value  the arg should assume if the arg isn't required or entered on the
-command line. Last, for <b>ValueArg</b>s is a short description of the type
+command line. </li>
+<li>Last, for <b>ValueArg</b>s is a short description of the type
 that the argument expects (yes its an ugly 
-<a href="manual.html#DESCRIPTION_EXCEPTIONS">hack</a>).
-<br><br>
-<b>SwitchArg</b>s are what the name implies, simple on/off, boolean switches.
-Use <b>SwitchArg</b>s anytime you want to turn some sort of system property
-on or off.  Note that multiple <b>SwitchArg</b>s can be combined into a single
-argument on the command line.  If you have switches -a, -b and -c it is
-valid to do either:
-<br><br>
-<pre>
-		% command -a -b -c
-</pre>
-<br>
-<i>or</i>
-<br>
-<pre>
-		% command -abc
-</pre>
-<br>
-<i>or</i>
-<br>
-<pre>
-		% command -ba -c
-</pre>
-<br><br>
-This is to make this library more in line with the POSIX and GNU standards (as
-I understand them).
-<br><br>
-<b>ValueArg</b>s are arguments that read a value of some type from the 
-command line.  Note that the order of arguments on the command line (so far) 
-doesn't matter.  Any
-argument not matching an <b>Arg</b> added to the command line will cause
-an exception to be thrown 
+Note that the order of arguments on the command line (so far) 
+doesn't matter.  Any argument not matching an <b>Arg</b> added to the 
+command line will cause an exception to be thrown 
 (<a href="manual.html#COMPLICATIONS">for the most part</a>, with some
 <a href="manual.html#EXCEPTIONS">exceptions</a>).
-<br> <br>
-Note in the output of the USAGE above, that there are three arguments that
-were not explicitly specified by the user in the code.  
-These are the <i>help</i> 
-and <i>version</i>  and <i>--</i> <b>SwitchArg</b>s.  Using either the 
-<i>-h</i> or 
-<i>--help</i> flag will cause the USAGE message to be displayed 
-and <i>-v</i> or <i>--version</i> will cause
-any version information to be displayed and <i>--</i> or <i>--ignore_rest</i>
-will cause the remaining labeled arguments to be ingored.  
-These switches are included 
-automatically on every command line.  Currently there is no way to turn this
-off, but then, thats kind of the point.  
-More <a href="manual.html#VISITORS">later</a> on how we get this to work.
+<a href="manual.html#DESCRIPTION_EXCEPTIONS">hack</a>).</li>
+</ul>
+<a name="ARGUMENT_TYPES"></a>
+<h3><i>Types of Arguments</i></h3>
+There are two primary types of arguments:
+<ul>
+<li>
+<b>SwitchArg</b>s are what the name implies, simple on/off, boolean switches.
+Use <b>SwitchArg</b>s anytime you want to turn some sort of system property
+on or off.  <b>SwitchArg</b>s don't parse a value.  They return <i>true</i> or
+<i>false</i>, depending on whether the switch has been found on the command
+line and what the default value was defined as.</li>
+<br>
+<li>
+<b>ValueArg</b>s are arguments that read a value of some type from the 
+command line.  Any time you need a file name, a number, etc. use a 
+<b>ValueArg</b> or one of its variants.
+<a href="manual.html#UNLABELED_VALUE_ARG">UnlabedValueArg</a>s, 
+<a href="manual.html#MULTI_ARG">MultiArg</a>s, and 
+<a href="manual.html#UNLABELED_MULTI_ARG">UnlabeledMultiArg</a>s are
+special cases of <b>ValueArg</b>s  and are described below.  All 
+<b>ValueArg</b>s are <a href="manual.html#FOOTNOTES">templatized**</a> 
+and will attempt to parse the string its flag matches on the command 
+line as the type it is specified as. <b>ValueArg< int ></b>
+will attempt to parse in int, <b>ValueArg< float ></b> will attempt to
+parse a float, etc.  If <i>operator>></i> for the specified type doesn't
+recognize the string on the command line as its defined type, 
+then an exception will be thrown.</li>
+</ul>
+
+<a name="COMPILING"></a>
+<h3><i>Compiling</i></h3>
+TCLAP is implemented entirely in header files which means you only need to 
+include CmdLine.h to use the library.
+<pre>
+	#include < tclap/CmdLine.h >
+</pre>
+You'll need to make sure that your compiler can see the header files.  If you
+do the usual "make install" then your compiler should see the files by
+default.  Alternatively, you can use the -I complier argument to specify the
+exact location of the libraries.
+<pre>
+	c++ -o my_program -I /some/place/tclap-1.X/include my_program.cpp
+</pre>
+Where /some/place/tclap-1.X is the place you have unpacked the distribution. 
+<br><br>
+Finally, if you want to include TCLAP as part of your software (which is
+perfectly OK, even encouraged) then simply copy the contents of 
+/some/place/tclap-1.X/include  (the tclap directory and all of he header files
+it contains) into your include directory.
 
 <a name="COMPLICATIONS"></a>
 <h2>Complications</h2>
 Naturally, what we have seen to this point doesn't satisfy all of our needs.
+
+<a name="COMBINE_SWITCHES"></a>
+<h3><i>I want to combine multiple switches into one argument...</i></h3>
+Multiple <b>SwitchArg</b>s can be combined into a single
+argument on the command line.  If you have switches -a, -b and -c it is
+valid to do either:
+<pre>
+		% command -a -b -c
+</pre>
+<i>or</i>
+<pre>
+		% command -abc
+</pre>
+<i>or</i>
+<pre>
+		% command -ba -c
+</pre>
+This is to make this library more in line with the POSIX and GNU standards (as
+I understand them).
+
+<a name="MULTI_ARG"></a>
 <h3><i>I tried passing multiple values on the command line with the same flag and it didn't work...</i></h3>
 Correct.  You can neither specify mulitple <b>ValueArg</b>s or 
 <b>SwitchArg</b>s with the same flag in the code nor on the command line. 
@@ -241,17 +314,14 @@ the flag or not (<a href="manual.html#EXCEPTIONS">yeah but...</a>).
 However, there <i>are</i> situations where you might want
 multiple values for the same flag to be specified.  Imagine a compiler that
 allows you to specify multiple directories to search for libraries...
-<br> <br>
 <pre>
 		% fooCompiler -L /dir/num1 -L /dir/num2 file.foo 
 </pre>
-<br> <br> 
 In situations like this, you will want to use a <b>MultiArg</b>.  A 
 <b>MultiArg</b> is essentially a <b>ValueArg</b> that appends any value
 that it matches and parses onto a vector of values.  When the <i>getValue()</i>
 method is called, a vector of values, instead of a single value is returned.
 A <b>MultiArg</b> is declared much like a <b>ValueArg</b>:
-<br><br>
 <pre>
 		...
 
@@ -260,10 +330,10 @@ A <b>MultiArg</b> is declared much like a <b>ValueArg</b>:
 
 		...
 </pre>
-<br><br>
 Note that <b>MultiArg</b>s can be added to the <b>CmdLine</b> in any
 order (unlike <a href="manual.html#UNLABELED_MULTI_ARG">UnlabeledMultiArg</a>s).
 
+<a name="UNLABELED_VALUE_ARG"></a>
 <h3><i>I don't like labelling all of my arguments...</i> </h3>
 To this point all of our arguments have had labels (flags) indentifying them
 on the command line, but
@@ -275,7 +345,6 @@ argument to the file specified in the second argument.  We can do this using
 the flag specified, which tells the 
 <b>CmdLine</b> object to treat them accordingly. The code would look like
 this:
-<br><br>
 <pre>
 		...
 
@@ -285,7 +354,6 @@ this:
 
 		...
 </pre>
-<br><br>
 Everything else is handled identically to what is seen above.  The only
 difference to be aware of, and this is important: <b>the order that
 UnlabeledValueArgs are added to the <i>CmdLine</i> is the order that
@@ -306,19 +374,15 @@ Don't worry, we've got you covered.  Say you want a strange command that
 searches each file specified for a given string (lets call it <i>grep</i>), 
 but you don't want to have to type in all of the file names or write a 
 script to do it for you.  Say, 
-<br><br>
 <pre>
 		% grep pattern *.txt
 </pre>
-<br><br>
 First remember that the <b>*</b> is handled by the shell and expanded 
 accordingly, so what the program <i>grep</i> sees is really something
 like:
-<br><br>
 <pre>
 		% grep pattern file1.txt file2.txt fileZ.txt
 </pre>
-<br><br>
 To handle situations where multiple, unlabled arguments are needed, we
 provide the <b>UnlabeledMultiArg</b>.  <b>UnlabeledMultiArg</b>s are declared 
 much like
@@ -328,7 +392,6 @@ to be present or an exception will be thrown.  The most important thing to
 remember is, that like <b>UnlabeledValueArg</b>s: order matters! In fact, <b>an
 UnlabeledMultiArg must be the <i>last</i> argument added to the CmdLine!</b>. 
 Here is what a declaration looks like:
-<br> <br> <br> <br>
 <pre>
 		...
 
@@ -343,7 +406,6 @@ Here is what a declaration looks like:
 
 		...
 </pre>
-<br> <br> <br> <br>
 You must only ever specify one (1) <b>UnlabeledMultiArg</b>.  
 One <b>UnlabeledMultiArg</b> will
 read every unlabeled Arg that wasn't already processed by a 
@@ -376,7 +438,6 @@ the <b>Arg</b>s must be set and no more.
 xorAdd() comes in two flavors, either xorAdd(Arg& a, Arg& b) to add just
 two <b>Arg</b>s to be xor'd and xorAdd( vector<Arg*> xorList ) to add more 
 than two <b>Arg</b>s.
-<br> <br>
 <pre>
 
 	...
@@ -391,7 +452,6 @@ than two <b>Arg</b>s.
 
 	...
 </pre>
-<br> <br>
 Once one <b>Arg</b> in the xor list is matched on the <b>CmdLine</b> then
 the others in the xor list will be marked as set.  The question then, is how to
 determine which of the <b>Arg</b>s has been set?  This is accomplished by
@@ -400,7 +460,6 @@ matched on the command line, the isSet() will return <b>TRUE</b>, whereas
 if the <b>Arg</b> has been set as a result of matching the other <b>Arg</b> 
 that was xor'd isSet() will return <b>FALSE</b>. (Of course, if the <b>Arg</b>
 was not xor'd and wasn't matched, it will also return <b>FALSE</b>.)
-<br> <br>
 <pre>
 
 	...
@@ -417,7 +476,6 @@ was not xor'd and wasn't matched, it will also return <b>FALSE</b>.)
 	...
 
 </pre>
-<br> <br>
 <a name="NO_FLAG"></a>
 <h3><i>I have more arguments than single flags make sense for...</i></h3>
 Some commands have so many options that single flags
@@ -428,7 +486,6 @@ the <b>Arg</b> constructor.  This will tell the <b>Arg</b> that only the
 long option should be matched and will force users to specify the long
 option on the command line</b>.  
 The help output is updated accordingly.
-<br> <br>
 <pre>
 
 	...
@@ -440,7 +497,7 @@ The help output is updated accordingly.
 	...
 
 </pre>
-<br> <br>
+<a name="ALLOWED"></a>
 <h3><i>I want to constrain the values allowed for a particular argument...</i></h3>
 There are now constructors for all of the <b>Arg</b>s that 
 parse values that allow a list of values to be specified for that particular
@@ -448,7 +505,6 @@ parse values that allow a list of values to be specified for that particular
 the list of values specified in the constructor.  If the value is in the list
 then it is accepted.  If not, then an exception is thrown.  
 Here is a simple example:
-
 <pre>
 
 	...
@@ -466,8 +522,6 @@ Here is a simple example:
 	...
 
 </pre>
-
-
 Instead of a type description being specified in the <b>Arg</b>, a type
 description is created by concatenating the values in the allowed list
 using the operator<< for the specified type.
@@ -483,6 +537,41 @@ Be sure that the description provided with the <b>Arg</b> reflects the
 constraint you choose.
 <br><br>
 
+
+<a name="EXCEPTIONS"></a>
+<h2>Exceptions</h2>
+Like all good rules, there are many exceptions....
+<a name="IGNORE_ARGS"></a>
+<h3><i>Ignoring arguments</i></h3>
+The <i>--</i> flag is automatically included in the <b>CmdLine</b>.  As (almost)
+per POSIX and GNU standards, any argument specified after the <i>--</i> flag
+is ignored.  <i>Almost</i> because if an <b>UnlabeledValueArg</b> that has
+not been set or an <b>UnlabeledMultiArg</b> has been specified, by default
+we will assign any arguments beyond the <i>--</i> to the those arguments
+as per the rules above.  This is primarily useful if you want to pass in
+arguments with a dash as the first character of the argument.  It should be 
+noted that even if the <i>--</i> flag is passed on the command line, 
+the <b>CmdLine</b> will <i>still</i> test to make sure all of the required
+arguments are present.
+<br><br> 
+Of course, this isn't how POSIX/GNU handle things, they explicitly 
+ignore arguments after the <i>--</i>.  To accomodate this, we can make both 
+<b>UnlabeledValueArg</b>s and <b>UnlabeledMultiArg</b>s ignoreable in 
+their constructors.  See
+the  <a href="html/index.html">API Documentation</a> for details. 
+<a name="MULTI_SWITCHES"></a>
+<h3><i>Multiple Identical Switches</i></h3>
+If you absolutely must allow for multiple, identical switches, then
+don't use a <b>SwitchArg</b>, instead use a <b>MultiArg</b> of type 
+<i>bool</i>.  This means you'll need to specify
+a 1 or 0 on the command line with the switch (as values are required), but 
+this should allow you to turn your favorite switch on and off to your hearts 
+content.
+<a name="DESCRIPTION_EXCEPTIONS"></a>
+<h3><i>Type Descriptions</i></h3>
+Ideally this library would use RTTI to return a human readable name of the
+type declared for a particular argument.  Unfortunately, at least for g++, 
+the names returned aren't particularly useful.  
 <a name="VISITORS"></a>
 <h2>Visitors</h2>
 Disclaimer: Almost no one will have any use for Visitors, they were added
@@ -510,7 +599,6 @@ Lets see an example.
 <br><br>
 Say you want to add an <i>--authors</i> flag to a program that prints the
 names of the authors when present.  First subclass <b>Visitor</b>:
-<br> <br> 
 <pre>
 #include "Visitor.h"
 #include < string >
@@ -525,11 +613,9 @@ class AuthorVisitor : public Visitor
 		void visit() { cout << "AUTHOR:  " << _author << endl;  exit(0); };
 };
 </pre>
-<br> <br>
 Now include this class definition somewhere and go about creating your
 command line.  When you create the author switch, add the <b>AuthorVisitor</b>
 pointer as follows:
-<br><br>
 <pre>
 		...
 
@@ -539,43 +625,11 @@ pointer as follows:
 
 		...
 </pre>
-<br><br>
-<br><br>
 Now, any time the <i>-a</i> or <i>--author</i> flag is specified, the
 program will print the author name, Homer J. Simpson and exit without
 processing any further (as specified in the <i>visit()</i> method).
-<a name="EXCEPTIONS"></a>
-<h2>Exceptions</h2>
-Like all good rules, there are many exceptions....
-<h3><i>Ignoring arguments...</i></h3>
-The <i>--</i> flag is automatically included in the <b>CmdLine</b>.  As (almost)
-per POSIX and GNU standards, any argument specified after the <i>--</i> flag
-is ignored.  <i>Almost</i> because if an <b>UnlabeledValueArg</b> that has
-not been set or an <b>UnlabeledMultiArg</b> has been specified, by default
-we will assign any arguments beyond the <i>--</i> to the those arguments
-as per the rules above.  This is primarily useful if you want to pass in
-arguments with a dash as the first character of the argument.  It should be 
-noted that even if the <i>--</i> flag is passed on the command line, 
-the <b>CmdLine</b> will <i>still</i> test to make sure all of the required
-arguments are present.
-<br><br> 
-Of course, this isn't how POSIX/GNU handle things, they explicitly 
-ignore arguments after the <i>--</i>.  To accomodate this, we can make both 
-<b>UnlabeledValueArg</b>s and <b>UnlabeledMultiArg</b>s ignoreable in 
-their constructors.  See
-the  <a href="html/index.html">API Documentation</a> for details. 
-<h3><i>Multiple Identical Switches</i></h3>
-If you absolutely must allow for multiple, identical switches, then
-don't use a <b>SwitchArg</b>, instead use a <b>MultiArg</b> of type 
-<i>bool</i>.  This means you'll need to specify
-a 1 or 0 on the command line with the switch (as values are required), but 
-this should allow you to turn your favorite switch on and off to your hearts 
-content.
-<a name="DESCRIPTION_EXCEPTIONS"></a>
-<h3><i>Type Descriptions</i></h3>
-Ideally this library would use RTTI to return a human readable name of the
-type declared for a particular argument.  Unfortunately, at least for g++, 
-the names returned aren't particularly useful.  
+
+<a name="MORE_INFO"></a>
 <h2>More Information</h2>
 For more information, look at 
 the <a href="html/index.html">API Documentation</a> 
