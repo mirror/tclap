@@ -42,16 +42,18 @@ namespace TCLAP {
  */
 class Arg
 {
+	private: 
+		static bool _ignoreRest;
+
 	protected:
 
 		/** 
 		 * The single char flag used to identify the argument.
 		 * This value (preceded by a dash {-}), can be used to identify 
 		 * an argument on the command line.  The _flag can be blank, 
-		 * in fact this is how unlabeled
-		 * ValueArgs work.  If the _flag is blank, the _labeled valued
-		 * should be set to false. Note that the _flag does NOT include
-		 * the dash as part of the flag.
+		 * in fact this is how unlabeled args work.  Unlabeled args must
+		 * override appropriate functions to get correct handling. Note 
+		 * that the _flag does NOT include the dash as part of the flag.
 		 */
 		string _flag;
 
@@ -89,13 +91,6 @@ class Arg
 		bool _alreadySet;
 
 		/**
-		 * Indicates whether the _flag is set or not.
-		 * If the argument doesn't require a flag then the argument is
-		 * handled differently.
-		 */
-		bool _labeled;
-
-		/**
 		 * A pointer to a vistitor object.
 		 * The visitor allows special handling to occur as soon as the
 		 * argument is matched.  This defaults to NULL and should not
@@ -107,8 +102,16 @@ class Arg
 		 * Performs the special handling described by the Vistitor.
 		 */
 		void _checkWithVisitor() const;
-  
+
+		/**
+		 * Whether this argument can be ignored, if desired.
+		 */
+		bool _ignoreable;
+
 	public:
+
+		static void beginIgnoring() { Arg::_ignoreRest = true; }
+		static bool ignoreRest() { return Arg::_ignoreRest; }
 
 		/**
 		 * Primary constructor.
@@ -142,7 +145,6 @@ class Arg
 		 */
 		~Arg();
 
-
 		/**
 		 * Processes the argument.
 		 * This is the method that handles the parsing and value assignment
@@ -150,18 +152,18 @@ class Arg
 		 * emits that an argument has matched and is being ignored. This 
 		 * should never really be used, any subclass should implement its
 		 * own version of processArg.
-		 * \param int* i - Pointer the the current argument in the list.
-		 * \param int argc - Number of arguments. Passed in from main().
-		 * \param char** argv - List of strings. Passed in from main().
+		 * \param i - Pointer the the current argument in the list.
+		 * \param args - Mutable list of strings. What is 
+		 * passed in from main.
 		 */
-		virtual bool processArg(int *i, int argc, char** argv); 
+		virtual bool processArg(int *i, vector<string>& args); 
 
 
 		/**
 		 * Operator ==.
-		 * Equality operator.
+		 * Equality operator. Must be virtual to handle unlabeled args.
 		 */
-		bool operator==(const Arg&);
+		virtual bool operator==(const Arg&);
 
 		/**
 		 * Returns the argument flag.
@@ -176,7 +178,7 @@ class Arg
 		/**
 		 * Returns the argument description.
 		 */
-		const string& getDescription() const;
+		string getDescription() const;
 
 		/**
 		 * Indicates whether the argument is required.
@@ -194,10 +196,9 @@ class Arg
 		bool isAlreadySet() const;
 
 		/**
-		 * Indicates whether the _flag value is blank or not.
-		 * If the _flag is blank, the argument is considered unlabeled.
+		 * Indicates whether the argument can be ignored, if desired. 
 		 */
-		bool isLabeled() const;
+		bool isIgnoreable() const;
 
 		/**
 		 * A method that tests whether a string matches this argument.
@@ -211,7 +212,18 @@ class Arg
 		 * Returns a simple string representation of the argument.
 		 * Primarily for debugging.
 		 */
-		string toString() const;
+		virtual string toString() const;
+
+		/**
+		 * Returns a short ID for the usage.
+		 */
+		virtual string shortID( const string& valueId = "val" ) const;
+
+		/**
+		 * Returns a long ID for the usage.
+		 */
+		virtual string longID( const string& valueId = "val" ) const;
+
 };
 
 /**

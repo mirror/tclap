@@ -25,7 +25,9 @@
 #include <tclap/Arg.h>
 #include <tclap/SwitchArg.h>
 #include <tclap/MultiArg.h>
+#include <tclap/UnlabeledMultiArg.h>
 #include <tclap/ValueArg.h>
+#include <tclap/UnlabeledValueArg.h>
 #include <tclap/Visitor.h>
 #include <string>
 #include <vector>
@@ -69,6 +71,7 @@ class CmdLine
 
 #include "HelpVisitor.h"
 #include "VersionVisitor.h"
+#include "IgnoreRestVisitor.h"
 
 
 #endif 

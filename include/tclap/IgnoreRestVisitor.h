@@ -1,7 +1,7 @@
 
 /****************************************************************************** 
  * 
- *  file:  SwitchArg.h
+ *  file:  IgnoreRestVisitor.h
  * 
  *  Copyright (c) 2003, Michael E. Smoot .
  *  All rights reverved.
@@ -20,43 +20,21 @@
  *****************************************************************************/ 
 
 
-#ifndef __SWITCH_ARG_HH__
-#define __SWITCH_ARG_HH__
+#ifndef __IGNORE_REST_VISITOR_H__
+#define __IGNORE_REST_VISITOR_H__
 
-#include <string>
-#include <vector>
-#include <sstream>
+#include <tclap/Visitor.h>
 #include <tclap/Arg.h>
-#include <tclap/ArgException.h>
-
-using namespace std;
 
 namespace TCLAP {
 
-class SwitchArg : public Arg
+class IgnoreRestVisitor: public Visitor
 {
-	protected:
-
-		bool _value;
-
-
 	public:
+		IgnoreRestVisitor() : Visitor() {};
 
-		SwitchArg(const string& flag, 
-			      const string& name, 
-			      const string& desc,
-			      bool _default,
-				  Visitor* v = NULL);
-
-		~SwitchArg();
-
-		virtual bool processArg(int* i, vector<string>& args); 
-
-		bool combinedSwitchesMatch(string& combined);
-
-		bool getValue() ;
+		void visit() { Arg::beginIgnoring();  }
 };
-
 
 }
 

@@ -20,8 +20,8 @@
  *****************************************************************************/ 
 
 
-#ifndef __MULTIPLE_UNLABELED_ARGUMENT_HH__
-#define __MULTIPLE_UNLABELED_ARGUMENT_HH__
+#ifndef __MULTIPLE_ARGUMENT_HH__
+#define __MULTIPLE_ARGUMENT_HH__
 
 #include <string>
 #include <vector>
@@ -38,29 +38,41 @@ class MultiArg : public Arg
 	protected:
 
 		vector<T> _values;
+
+		string _typeDesc;
+
+		void _extractValue(int i, vector<string>& args); 
   
 	public:
 
-		MultiArg( const string& desc,
+		MultiArg( const string& flag,
+				  const string& name,
+				  const string& desc,
+				  bool req,
+				  const string& typeDesc,
 				  Visitor* v = NULL);
 
 		~MultiArg();
 
-		bool processArg(int* i, int argc, char** argv); 
+		virtual bool processArg(int* i, vector<string>& args); 
 
 		const vector<T>& getValue() ;
+
+		virtual string shortID(const string& val="val") const;
+		virtual string longID(const string& val="val") const;
+
 };
 
 
 template<class T>
-MultiArg<T>::MultiArg(const string& desc, Visitor* v)
-					                          
-: Arg( "",    // flag
-	  "...", // name 
-	  desc,  // description
-	  false, // required
-	  true,
-	  v)  // value required
+MultiArg<T>::MultiArg(const string& flag, 
+				      const string& name,
+				      const string& desc,
+					  bool req,
+					  const string& typeDesc,
+				      Visitor* v)
+: Arg( flag, name, desc, req, true, v ),
+  _typeDesc( typeDesc )
 { };
 
 template<class T>
@@ -70,12 +82,32 @@ template<class T>
 const vector<T>& MultiArg<T>::getValue() { return _values; };
 
 template<class T>
-bool MultiArg<T>::processArg(int *i, int argc, char** argv)
+bool MultiArg<T>::processArg(int *i, vector<string>& args) 
 {
-	// can be called multiple times
+	if ( _ignoreable && Arg::ignoreRest() )
+		return false;
+
+	if ( argMatches( args[*i] ) )
+	{
+		(*i)++;
+		if ( *i < args.size() )
+		{
+			_extractValue( *i, args );
+			return true;
+		}
+		else
+			throw( ArgException("Missing a value for this argument!",
+                                     toString() ) );
+	}
+	else
+		return false;
+}
+
+template<class T>
+void MultiArg<T>::_extractValue(int i, vector<string>& args)
+{
 	T temp;
-	string ss(argv[*i]);
-	istringstream is(ss);
+	istringstream is(args[i]);
 	is >> temp; 
 	if ( is.fail() ) 
 		throw( ArgException("Couldn't read argument value!", toString()));
@@ -83,8 +115,22 @@ bool MultiArg<T>::processArg(int *i, int argc, char** argv)
 	_values.push_back(temp);
 
 	_checkWithVisitor();
+}
 
-	return true;
+template<class T>
+string MultiArg<T>::shortID(const string& val) const
+{
+	string id = Arg::shortID(_typeDesc) + " ... ";
+
+	return id;
+}
+
+template<class T>
+string MultiArg<T>::longID(const string& val) const
+{
+	string id = Arg::longID(_typeDesc) + "  (accepted multiple times)";
+
+	return id;
 }
 
 }

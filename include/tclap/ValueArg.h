@@ -34,11 +34,12 @@ using namespace std;
 namespace TCLAP {
 
 /**
- * The basic argument that parses a value.
+ * The basic labeled argument that parses a value.
  * This is a template class, which means the type T defines the type
  * that a given object will attempt to parse when the flag/name is matched
- * on the command line.  Note that a ValueArg does not necessarily have to
- * have a flag specified, making this an unlabled argument. 
+ * on the command line.  While there is nothing stopping you from creating
+ * an unflagged ValueArg, it is unwise and would cause significant problems.
+ * Instead use an UnlabeledValueArg.
  */
 template<class T>
 class ValueArg : public Arg
@@ -53,10 +54,23 @@ class ValueArg : public Arg
 		T _value;
 
 		/**
-		 * Extracts the value at position i from the argv list.
+		 * A human readable description of the type to be parsed.
+		 * This is a hack, plain and simple.  Ideally we would use RTTI to
+		 * return the name of type T, but until there is some sort of
+		 * consistent support for human readable names, we are left to our
+		 * own devices.
 		 */
-		void _extractValue( int i, char** argv );
-  
+		string _typeDesc;
+
+		/**
+		 * Extracts the string at position i from the args list.
+		 * Attempts to parse string as type T, if this fails an exception
+		 * is thrown.
+		 * \param i - The index of the argument to extract.
+		 * \param args - Mutable list of strings.
+		 */
+		void _extractValue( int i, vector<string>& args ); 
+ 
 	public:
 
 		/**
@@ -65,21 +79,30 @@ class ValueArg : public Arg
 		 * but that would make you a bad person.  It would also cause
 		 * an exception to be thrown.   If you want an unlabeled argument, 
 		 * use the other constructor.
+		 * \param flag - The one character flag that identifies this
+		 * argument on the command line.
+		 * \param name - A one word name for the argument.  Can be
+		 * used as a long flag on the command line.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param req - Whether the argument is required on the command
+		 * line.
+		 * \param value - The default value assigned to this argument if it
+		 * is not present on the command line.
+		 * \param typeDesc - A short, human readable description of the
+		 * type that this object expects.  This is used in the generation
+		 * of the USAGE statement.  The goal is to be helpful to the end user
+		 * of the program.
+		 * \param v - An optional visitor.  You probably should not
+		 * use this unless you have a very good reason.
 		 */
 		ValueArg(const string& flag, 
 				 const string& name, 
 			     const string& desc, 
 				 bool req, 
 				 T value,
+				 const string& typeDesc,
 				 Visitor* v = NULL);
-
-		/**
-		 * Unlabeled ValueArg constructor.
-		 */
-		ValueArg(const string& name, 
-			     const string& desc, 
-				 T value,
-				 Visitor* v = NULL); 
 
 		/**
 		 * Destructor.
@@ -91,21 +114,33 @@ class ValueArg : public Arg
 		 * This re-implements the Arg version of this method to set the
 		 * _value of the argument appropriately.  It knows the difference
 		 * between labeled and unlabeled.
-		 * \param int* i - Pointer the the current argument in the list.
-		 * \param int argc - Number of arguments. Passed in from main().
-		 * \param char** argv - List of strings. Passed in from main().
+		 * \param i - Pointer the the current argument in the list.
+		 * \param args - Mutable list of strings. Passed 
+		 * in from main().
 		 */
-		virtual bool processArg(int* i, int argc, char** argv); 
+		virtual bool processArg(int* i, vector<string>& args ); 
 
 		/**
 		 * Returns the value of the argument.
 		 */
 		T& getValue() ;
+
+		/**
+		 * Specialization of shortID.
+		 */
+		virtual string shortID(const string& val = "val") const;
+
+		/**
+		 * Specialization of longID.
+		 */
+		virtual string longID(const string& val = "val") const;
+
 };
 
 
+
 /**
- * Labeled constructor implementation.
+ * Constructor implementation.
  */
 template<class T>
 ValueArg<T>::ValueArg(const string& flag, 
@@ -113,25 +148,11 @@ ValueArg<T>::ValueArg(const string& flag,
 					  const string& desc, 
 					  bool req, 
 					  T val,
+					  const string& typeDesc,
 					  Visitor* v)
 : Arg(flag, name, desc, req, true, v),
-  _value( val )
-{ 
-	if ( _flag == "" )
-		throw( ArgException( "No flag specified for labeled ValueArg!",
-							 toString() ) );
-};
-
-/**
- * Unlabeled constructor implemenation.
- */
-template<class T>
-ValueArg<T>::ValueArg(const string& name, 
-					  const string& desc, 
-					  T val,
-					  Visitor* v)
-: Arg("", name, desc, true, true, v),
-  _value( val )
+  _value( val ),
+  _typeDesc( typeDesc )
 { };
 
 /**
@@ -150,11 +171,12 @@ T& ValueArg<T>::getValue() { return _value; };
  * Implementation of processArg().
  */
 template<class T>
-bool ValueArg<T>::processArg(int *i, int argc, char** argv)
+bool ValueArg<T>::processArg(int *i, vector<string>& args) 
 {
-	if ( _labeled )
-	{
-		string flag = argv[*i];
+		if ( _ignoreable && Arg::ignoreRest() )
+			return false;
+
+		string flag = args[*i];
 
 		if ( argMatches( flag ) )
 		{
@@ -162,9 +184,9 @@ bool ValueArg<T>::processArg(int *i, int argc, char** argv)
 				throw( ArgException("Argument already set!", toString()) );
 
 			(*i)++;
-			if (*i < argc ) 
+			if (*i < args.size() ) 
 			{
-				_extractValue( *i, argv);
+				_extractValue( *i, args);
 				
 				_alreadySet = true;
 
@@ -175,40 +197,41 @@ bool ValueArg<T>::processArg(int *i, int argc, char** argv)
 			else
 				throw( ArgException("Missing a value for this argument!",
 									 toString() ) );
-
 		}	
 		else
 			return false;
-	}
-	else
-	{
-		if ( _alreadySet )
-			return false;
-
-		if ( *i < argc )
-		{
-			_extractValue( *i, argv );
-			_alreadySet = true;
-			return true;
-		}
-		else
-			throw( ArgException("Missing a value for this argument!", 
-									toString()));	
-	}
 }
 
 /**
  * Implementation of _extractValue.
  */
 template<class T>
-void ValueArg<T>::_extractValue(int i, char** argv)
+void ValueArg<T>::_extractValue(int i, vector<string>& args) 
 {
-	string ss(argv[i]);
-	istringstream is(ss);
+	istringstream is(args[i]);
 	is >> _value;
 	if ( is.fail() ) 
 		throw( ArgException("Couldn't read argument value!", toString() ) );
 }
+
+/**
+ * Implementation of shortID.
+ */
+template<class T>
+string ValueArg<T>::shortID(const string& val) const
+{
+	return Arg::shortID( _typeDesc );	
+}
+
+/**
+ * Implementation of longID.
+ */
+template<class T>
+string ValueArg<T>::longID(const string& val) const
+{
+	return Arg::longID( _typeDesc );	
+}
+
 
 }
 #endif
