@@ -123,3 +123,4 @@ EXTRA_DIST = $(TESTS) \
 			 test59.out \
 			 test60.out
 
+CLEANFILES = tmp.out

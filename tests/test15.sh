@@ -3,9 +3,9 @@
 # failure
 ../examples/test3  --stringTest bbb homer marge bart -- -hv two > tmp.out 2>&1
 
-if cmp -s tmp.out test15.out; then
+if cmp -s tmp.out $srcdir/test15.out; then
 	exit 0
-else 
+else
 	exit 1
 fi
 

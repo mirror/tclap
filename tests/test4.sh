@@ -3,9 +3,9 @@
 # failure
 ../examples/test1 > tmp.out 2>&1
 
-if cmp -s tmp.out test4.out; then
+if cmp -s tmp.out $srcdir/test4.out; then
 	exit 0
-else 
+else
 	exit 1
 fi
 

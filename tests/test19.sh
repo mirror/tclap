@@ -3,9 +3,9 @@
 # success
 ../examples/test4 -BA --Bs asdf > tmp.out 2>&1
 
-if cmp -s tmp.out test19.out; then
+if cmp -s tmp.out $srcdir/test19.out; then
 	exit 0
-else 
+else
 	exit 1
 fi
 
