@@ -21,3 +21,7 @@ echo " TOTAL: $total"
 echo "    OK: $suc"
 echo "FAILED: $fail"
 
+if [ $fail -ne 0 ]; then
+    exit 1
+fi
+    
