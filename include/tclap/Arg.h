@@ -263,7 +263,7 @@ class Arg
 		/**
 		 * Indicates whether the argument is required.
 		 */
-		bool isRequired() const;
+		virtual bool isRequired() const;
 
 		/**
 		 * Sets _required to true. This is used by the XorHandler.
