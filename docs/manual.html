@@ -48,6 +48,7 @@
 <li><a href="manual.html#XOR">I want one argument or the other, but not both...</a></li>
 <li><a href="manual.html#NO_FLAG">I have more arguments than single flags make sense for...</a></li>
 <li><a href="manual.html#ALLOWED">I want to constrain the values allowed for a particular argument...</a></li>
+<li><a href="manual.html#CONSTRUCTOR">I want the Args to add themselves to the CmdLine...  </a></li>
 </ul>
 <li><a href="manual.html#EXCEPTIONS">Exceptions</a></li>
 <ul>
@@ -542,6 +543,36 @@ the getValue() call and if it isn't valid, throw an <b>ArgException</b>.
 Be sure that the description provided with the <b>Arg</b> reflects the 
 constraint you choose.
 <br><br>
+<a name="CONSTRUCTOR"></a>
+<h3><i>I want the Args to add themselves to the CmdLine...</i></h3>
+New constructors have beed added for each <b>Arg</b> that take a 
+<b>CmdLine</b> object as an argument.  Each <b>Arg</b> then <i>add</i>s itself
+to the <b>CmdLine</b> object.  There is no difference in how the <b>Arg</b>
+is handled between this method and calling the <i>add()</i> method directly.
+At the moment, there is no way to do an <i>xorAdd()</i> from the constructor.
+Here is an example:
+<pre>
+	...
+
+	// Create the command line.
+	CmdLine cmd("this is a message", '=', "0.99" );
+
+	// Note that the following args take the "cmd" object as arguments.
+	SwitchArg btest("B","existTestB", "exist Test B", false, cmd );
+
+	ValueArg<string> stest("s", "stringTest", "string test", true, "homer", 
+					       "string", cmd );
+
+	UnlabeledValueArg<string> utest("unTest1","unlabeled test one", 
+					                "default","string", cmd );
+	
+	// NO add() calls!
+
+	// Parse the command line.
+	cmd.parse(argc,argv);
+
+	...
+</pre>
 
 
 <a name="EXCEPTIONS"></a>
