@@ -10,7 +10,7 @@ int main(int argc, char** argv)
 	try {  
 
 	// Define the command line object.
-	CmdLine cmd(argv[0], "Command description message", "0.9");
+	CmdLine cmd("Command description message", ' ', "0.9");
 
 	// Define a value argument and add it to the command line.
 	ValueArg<string> nameArg("n","name","Name to print",true,"homer","string");
