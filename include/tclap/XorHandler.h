@@ -30,6 +30,10 @@ using namespace std;
 
 namespace TCLAP {
 
+/**
+ * This class handles lists of Arg's that are to be XOR'd on the command
+ * line.  This is used by CmdLine and you shouldn't ever use it.
+ */
 class XorHandler
 {
 	protected:
@@ -53,22 +57,28 @@ class XorHandler
 		void add( vector<Arg*>& ors );
 			
 		/**
-		 *
+		 * Checks whether the specified Arg is in one of the xor lists and
+		 * if it does match one, returns the size of the xor list that the
+		 * Arg matched.  If the Arg matches, then it also sets the rest of
+		 * the Arg's in the list. You shouldn't use this.  
+		 * \param a - The Arg to be checked.
 		 */
 		int check( const Arg* a );
 
 		/**
-		 *
+		 * Prints the XOR specific short usage.
 		 */
 		void shortUsage();
 
 		/**
-		 *
+		 * Prints the XOR specific long usage.
 		 */
 		void longUsage();
 
 		/**
-		 *
+		 * Simply checks whether the Arg is contained in one of the arg
+		 * lists.
+		 * \param a - The Arg to be checked.
 		 */
 		bool contains( const Arg* a );
 
