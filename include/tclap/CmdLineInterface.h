@@ -36,64 +36,68 @@
 
 namespace TCLAP {
      
-    class Arg;
+class Arg;
 
-    /**
-     * The base class that manages the command line definition and passes
-     * along the parsing to the appropriate Arg classes.
-     */
-    class CmdLineInterface
-        {
-        public:
-            virtual ~CmdLineInterface() {}
+/**
+ * The base class that manages the command line definition and passes
+ * along the parsing to the appropriate Arg classes.
+ */
+class CmdLineInterface
+{
+	public:
 
-            /**
-             * Adds an argument to the list of arguments to be parsed.
-             * \param a - Argument to be added. 
-             */
-            virtual void add( Arg& a )=0;
+		/**
+		 * Destructor
+		 */
+		virtual ~CmdLineInterface() {}
 
-            /**
-             * An alternative add.  Functionally identical.
-             * \param a - Argument to be added. 
-             */
-            virtual void add( Arg* a )=0;
+		/**
+		 * Adds an argument to the list of arguments to be parsed.
+		 * \param a - Argument to be added. 
+		 */
+		virtual void add( Arg& a )=0;
 
-            /**
-             * Add two Args that will be xor'd.  
-             * If this method is used, add does
-             * not need to be called.
-             * \param a - Argument to be added and xor'd. 
-             * \param b - Argument to be added and xor'd. 
-             */
-            virtual void xorAdd( Arg& a, Arg& b )=0;
+		/**
+		 * An alternative add.  Functionally identical.
+		 * \param a - Argument to be added. 
+		 */
+		virtual void add( Arg* a )=0;
 
-            /**
-             * Add a list of Args that will be xor'd.  If this method is used, 
-             * add does not need to be called.
-             * \param xors - List of Args to be added and xor'd. 
-             */
-            virtual void xorAdd( std::vector<Arg*>& xors )=0;
+		/**
+		 * Add two Args that will be xor'd.  
+		 * If this method is used, add does
+		 * not need to be called.
+		 * \param a - Argument to be added and xor'd. 
+		 * \param b - Argument to be added and xor'd. 
+		 */
+		virtual void xorAdd( Arg& a, Arg& b )=0;
 
-            /**
-             * Prints the usage to stdout and exits.
-             * \param exitVal - Value to exit with. 
-             */
-            virtual void usage( int exitVal = 0 )=0;
+		/**
+		 * Add a list of Args that will be xor'd.  If this method is used, 
+		 * add does not need to be called.
+		 * \param xors - List of Args to be added and xor'd. 
+		 */
+		virtual void xorAdd( std::vector<Arg*>& xors )=0;
 
-            /**
-             * Prints the version to stdout and exits.
-             * \param exitVal - Value to exit with. 
-             */
-            virtual void version( int exitVal = 0 )=0;
+		/**
+		 * Prints the usage to stdout and exits.
+		 * \param exitVal - Value to exit with. 
+		 */
+		virtual void usage( int exitVal = 0 )=0;
 
-            /**
-             * Parses the command line.
-             * \param argc - Number of arguments.
-             * \param argv - Array of arguments.
-             */
-            virtual void parse(int argc, char** argv)=0;
-        };
+		/**
+		 * Prints the version to stdout and exits.
+		 * \param exitVal - Value to exit with. 
+		 */
+		virtual void version( int exitVal = 0 )=0;
+
+		/**
+		 * Parses the command line.
+		 * \param argc - Number of arguments.
+		 * \param argv - Array of arguments.
+		 */
+		virtual void parse(int argc, char** argv)=0;
+};
 
 } //namespace
 

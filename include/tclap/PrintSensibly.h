@@ -39,11 +39,11 @@ namespace TCLAP {
  * \param secondLineOffset - The number of spaces to indent the second
  * and all subsequent lines in addition to indentSpaces.
  */
-  inline void spacePrint( std::ostream& os, 
-			  const std::string& s, 
-			  int maxWidth, 
-			  int indentSpaces=0, 
-			  int secondLineOffset=0 )
+inline void spacePrint( std::ostream& os, 
+						const std::string& s, 
+						int maxWidth, 
+						int indentSpaces=0, 
+						int secondLineOffset=0 )
 {
 	int len = (int)(s.length());
 

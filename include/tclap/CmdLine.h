@@ -37,8 +37,6 @@
 #include <list>
 #include <iostream>
 #include <ostream>
-#include <cstdio>
-#include <cstdarg>
 #include <iomanip>
 #include <algorithm>
 
@@ -231,7 +229,9 @@ class CmdLine : public CmdLineInterface
 //Begin CmdLine.cpp
 ///////////////////////////////////////////////////////////////////////////////
 
-inline CmdLine::CmdLine(const std::string& n, const std::string& m, const std::string& v )
+inline CmdLine::CmdLine(const std::string& n, 
+				        const std::string& m, 
+						const std::string& v )
 : _progName(n),
   _message(m),
   _version(v),
@@ -241,7 +241,9 @@ inline CmdLine::CmdLine(const std::string& n, const std::string& m, const std::s
 	_constructor();
 }
 
-inline CmdLine::CmdLine(const std::string& m, char delim, const std::string& v )
+inline CmdLine::CmdLine(const std::string& m, 
+				        char delim, 
+						const std::string& v )
 : _progName("not_set_yet"),
   _message(m),
   _version(v),
@@ -339,7 +341,8 @@ inline void CmdLine::add( Arg* a )
 
 inline void CmdLine::version(int exitVal)
 {
-	std::cout << std::endl << _progName << "  version: " << _version << std::endl << std::endl;
+	std::cout << std::endl << _progName << "  version: " 
+			  << _version << std::endl << std::endl;
 	exit( exitVal );
 }
 
@@ -429,14 +432,15 @@ inline void CmdLine::parse(int argc, char** argv)
 	} catch ( ArgException e )
 	{
 		std::cerr << "PARSE ERROR: " << e.argId() << std::endl
-			 << "             " << e.error() << std::endl << std::endl;
+			      << "             " << e.error() << std::endl << std::endl;
 
 		std::cerr << "Brief USAGE: " << std::endl;
 
 		_shortUsage( std::cerr );	
 
 		std::cerr << std::endl << "For complete USAGE and HELP type: " 
-			 << std::endl << "   " << _progName << " --help" << std::endl << std::endl;
+			      << std::endl << "   " << _progName << " --help" 
+				  << std::endl << std::endl;
 
 		exit(1);
 	}

@@ -48,16 +48,15 @@ class Arg
 		/**
 		 * Indicates whether the rest of the arguments should be ignored.
 		 */
-                static bool& ignoreRestRef() { static bool ign = false; return ign; }
-
-
-	protected:
+		static bool& ignoreRestRef() { static bool ign = false; return ign; }
 
 		/**
 		 * The delimiter that separates an argument flag/name from the
 		 * value.
 		 */
 		static char& delimiterRef() { static char delim = ' '; return delim; } 
+
+	protected:
 
 		/** 
 		 * The single char flag used to identify the argument.
@@ -446,7 +445,8 @@ inline bool Arg::operator==(const Arg& a)
 // should be overridden
 inline bool Arg::processArg(int* i, std::vector<std::string>& args)
 {
-	std::cerr << "WARNING:   Ignoring unknown argument: " << args[*i] << std::endl;	
+	std::cerr << "WARNING:   Ignoring unknown argument: " 
+			  << args[*i] << std::endl;	
 	return false;
 }
 
