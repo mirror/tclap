@@ -22,14 +22,17 @@
 #ifndef __COMMANDLINE_HH__
 #define __COMMANDLINE_HH__
 
+//
+// Explanation of dumb naming.  Originally this file was used as the generic
+// include to use the tclap library.  However, this introduced a few weird
+// bugs related to g++.  Thus, this file has been renamed, and CmdLine.h
+// just contains the files needed to use the lib.
+//
+
 #include <tclap/Arg.h>
 #include <tclap/SwitchArg.h>
-//#include <tclap/MultiArg.h>
-//#include <tclap/UnlabeledMultiArg.h>
-//#include <tclap/ValueArg.h>
-//#include <tclap/UnlabeledValueArg.h>
 #include <tclap/Visitor.h>
-#include <tclap/OrHandler.h>
+#include <tclap/XorHandler.h>
 #include <string>
 #include <vector>
 #include <list>
@@ -43,6 +46,10 @@ using namespace std;
 
 namespace TCLAP {
 
+/**
+ * The base class that manages the command line definition and passes
+ * along the parsing to the appropriate Arg classes.
+ */
 class CmdLine
 {
 	protected:
@@ -81,7 +88,10 @@ class CmdLine
 		 */
 		char _delimiter;
 
-		OrHandler _xorHandler;
+		/**
+		 * The handler that manages xoring lists of args.
+		 */
+		XorHandler _xorHandler;
 
 		/**
 		 * Checks whether a name/flag string matches entirely matches
@@ -134,9 +144,27 @@ class CmdLine
 		 * \param a - Argument to be added. 
 		 */
 		void add( Arg& a );
+
+		/**
+		 * An alternative add.  Functionally identical.
+		 * \param a - Argument to be added. 
+		 */
 		void add( Arg* a );
+
+		/**
+		 * Add two Args that will be xor'd.  If this method is used, add does
+		 * not need to be called.
+		 * \param a - Argument to be added and xor'd. 
+		 * \param b - Argument to be added and xor'd. 
+		 */
 		void xorAdd( Arg& a, Arg& b );
-		void xorAdd( vector<Arg*>& ors );
+
+		/**
+		 * Add a list of Args that will be xor'd.  If this method is used, 
+		 * add does not need to be called.
+		 * \param xors - List of Args to be added and xor'd. 
+		 */
+		void xorAdd( vector<Arg*>& xors );
 
 		/**
 		 * Prints the usage to stdout and exits.

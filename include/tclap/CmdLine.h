@@ -29,7 +29,7 @@
 #include <tclap/ValueArg.h>
 #include <tclap/UnlabeledValueArg.h>
 #include <tclap/Visitor.h>
-#include <tclap/OrHandler.h>
+#include <tclap/XorHandler.h>
 #include <tclap/CommandLine.h>
 
 #endif

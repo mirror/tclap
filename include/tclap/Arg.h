@@ -88,6 +88,12 @@ class Arg
 		bool _required;
 
 		/**
+		 * Label to be used in usage description.  Normally set to 
+		 * "required", but can be changed when necessary.
+		 */
+		string _requireLabel;
+
+		/**
 		 * Indicates whether a value is required for the argument.
 		 * Note that the value may be required but the argument/value
 		 * combination may not be, as specified by _required.
@@ -113,6 +119,12 @@ class Arg
 		 * Whether this argument can be ignored, if desired.
 		 */
 		bool _ignoreable;
+
+		/**
+		 * Indicates that the arg was set as part of an XOR and not on the
+		 * command line.
+		 */
+		bool _xorSet;
 
 		/**
 		 * Performs the special handling described by the Vistitor.
@@ -243,14 +255,27 @@ class Arg
 		bool isRequired() const;
 
 		/**
+		 * Sets _required to true. This is used by the XorHandler.
+		 * You really have no reason to ever use it.
+		 */
+		void forceRequired();
+
+		/**
+		 * Sets the _alreadySet value to true.  This is used by the XorHandler.
+		 * You really have no reason to ever use it.
+		 */
+		void xorSet();
+
+		/**
 		 * Indicates whether a value must be specified for argument.
 		 */
 		bool isValueRequired() const;
 
 		/**
-		 * Indicates whether the argument has already been set.
+		 * Indicates whether the argument has already been set.  Only true
+		 * if the arg has been matched on the command line.
 		 */
-		bool isAlreadySet() const;
+		bool isSet() const;
 
 		/**
 		 * Indicates whether the argument can be ignored, if desired. 
@@ -298,9 +323,16 @@ class Arg
 		 * Checks whether a given string has blank chars, indicating that
 		 * it is a combined SwitchArg.  If so, return true, otherwise return
 		 * false.
+		 * \param s - string to be checked.
 		 */
 		bool _hasBlanks( const string& s ) const;
 
+		/**
+		 * Sets the requireLabel. Used by XorHandler.  You shouldn't ever
+		 * use this.
+		 * \param s - Set the requireLabel to this value.
+		 */
+		void setRequireLabel( const string& s );
 
 };
 
@@ -308,6 +340,7 @@ class Arg
  * Typedef of a list iterator.
  */
 typedef list<Arg*>::iterator ArgIterator;
+typedef vector<Arg*>::iterator ArgVectorIterator;
 
 }
 
