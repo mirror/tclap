@@ -38,6 +38,8 @@
 #include <sstream>
 #elif defined(HAVE_STRSTREAM)
 #include <strstream>
+#else
+#error "Need a stringstream (sstream or strstream) to compile!"
 #endif
 
 namespace TCLAP {
@@ -85,16 +87,12 @@ class ValueExtractor
 		{
 			T temp;
 
-#ifdef HAVE_SSTREAM
+#if defined(HAVE_SSTREAM)
 			std::istringstream is(val);
-#elif HAVE_STRSTREAM
+#elif defined(HAVE_STRSTREAM)
 			std::istrstream is(val.c_str());
 #else
-        	throw(SpecificationException(
-							string("Missing sstream or strstream lib, ") +
-			                       "without which, nothing will work.  " +
-								   "Not even sure how you got this far!",
-								toString()));
+#error "Need a stringstream (sstream or strstream) to compile!"
 #endif
 
 			int valuesRead = 0;
@@ -350,16 +348,12 @@ void MultiArg<T>::allowedInit()
 	for ( unsigned int i = 0; i < _allowed.size(); i++ )
    	{
 
-#ifdef HAVE_SSTREAM
+#if defined(HAVE_SSTREAM)
    		std::ostringstream os;
-#elif HAVE_STRSTREAM
+#elif defined(HAVE_STRSTREAM)
    		std::ostrstream os;
 #else
-        throw(SpecificationException(
-							string("Missing sstream or strstream lib, ") +
-			                       "without which, nothing will work.  " +
-								   "Not even sure how you got this far!",
-								toString()));
+#error "Need a stringstream (sstream or strstream) to compile!"
 #endif
 
    		os << _allowed[i];
