@@ -11,7 +11,6 @@ AC_PROG_INSTALL
 BB_ENABLE_DOXYGEN
 AC_OUTPUT([ Makefile \
            examples/Makefile \
-		   src/Makefile \
 		   include/Makefile \
 		   include/tclap/Makefile \
 		   docs/Makefile \
