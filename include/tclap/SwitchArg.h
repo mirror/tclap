@@ -181,7 +181,7 @@ inline bool SwitchArg::processArg(int *i, std::vector<std::string>& args)
 			ret = true;
 
 		if ( _alreadySet )
-			throw(ArgException("Argument already set!", toString()));	
+			throw(CmdLineParseException("Argument already set!", toString()));	
 
 		_alreadySet = true;
 

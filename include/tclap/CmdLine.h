@@ -331,8 +331,9 @@ inline void CmdLine::add( Arg* a )
 { 
 	for( ArgIterator iter = _argList.begin(); iter != _argList.end(); iter++ ) 
 		if ( *a == *(*iter) ) 
-			throw( ArgException( "Argument with same flag/name already exists!",
-			                     a->longID() ) );
+			throw( SpecificationException( 
+			       	"Argument with same flag/name already exists!", 
+					a->longID() ) );
 
 	a->addToList( _argList );
 
@@ -420,14 +421,15 @@ inline void CmdLine::parse(int argc, char** argv)
 			matched = true;
 
 		if ( !matched && !Arg::ignoreRest() )
-			throw( ArgException("Couldn't find match for argument",args[i]));
+			throw(CmdLineParseException("Couldn't find match for argument",
+			                             args[i]));
     }
 
 	if ( requiredCount < _numRequired )
-		throw( ArgException("One or more required arguments missing!") );
+		throw(CmdLineParseException("One or more required arguments missing!"));
 
 	if ( requiredCount > _numRequired )
-		throw( ArgException("Too many arguments!") );
+		throw(CmdLineParseException("Too many arguments!"));
 
 	} catch ( ArgException e )
 	{

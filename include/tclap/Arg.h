@@ -364,14 +364,14 @@ inline Arg::Arg(const std::string& flag,
   _xorSet(false)
 {
 	if ( _flag.length() > 1 ) 
-		throw(ArgException("Argument flag can only be one character long",
-							toString() ) );
+		throw(SpecificationException(
+				"Argument flag can only be one character long", toString() ) );
 
 	if ( _name != ignoreNameString() &&  
 		 ( _flag == Arg::flagStartString() || 
 		   _flag == Arg::nameStartString() || 
 		   _flag == " " ) )
-		throw(ArgException("Argument flag cannot be either '" + 
+		throw(SpecificationException("Argument flag cannot be either '" + 
 							Arg::flagStartString() + "' or '" + 
 							Arg::nameStartString() + "' or a space.",
 							toString() ) );
@@ -379,7 +379,7 @@ inline Arg::Arg(const std::string& flag,
 	if ( ( _name.find( Arg::flagStartString(), 0 ) != std::string::npos ) || 
 		 ( _name.find( Arg::nameStartString(), 0 ) != std::string::npos ) ||
 		 ( _name.find( " ", 0 ) != std::string::npos ) )
-		throw(ArgException("Argument name cannot contain either '" + 
+		throw(SpecificationException("Argument name cannot contain either '" + 
 							Arg::flagStartString() + "' or '" + 
 							Arg::nameStartString() + "' or space.",
 							toString() ) );

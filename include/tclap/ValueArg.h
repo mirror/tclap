@@ -463,11 +463,12 @@ bool ValueArg<T>::processArg(int *i, std::vector<std::string>& args)
     if ( argMatches( flag ) )
     {
         if ( _alreadySet )
-			throw( ArgException("Argument already set!", toString()) );
+			throw( CmdLineParseException("Argument already set!", toString()) );
 
         if ( Arg::delimiter() != ' ' && value == "" )
-			throw( ArgException( "Couldn't find delimiter for this argument!",
-                                 toString() ) );
+			throw( ArgParseException( 
+							"Couldn't find delimiter for this argument!",
+                             toString() ) );
 
         if ( value == "" )
         {
@@ -475,7 +476,7 @@ bool ValueArg<T>::processArg(int *i, std::vector<std::string>& args)
             if ( (unsigned int)*i < args.size() ) 
 				_extractValue( args[*i] );
             else
-				throw( ArgException("Missing a value for this argument!",
+				throw( ArgParseException("Missing a value for this argument!",
                                                     toString() ) );
         }
         else
@@ -497,8 +498,8 @@ void ValueArg<T>::_checkAllowed( const std::string& val )
 {
     if ( _allowed.size() > 0 )
 		if ( find(_allowed.begin(),_allowed.end(),_value) == _allowed.end() )
-            throw( ArgException( "Couldn't find '" + val + 
-                                 "' in allowed list.", toString() ) );
+            throw( CmdLineParseException( "Couldn't find '" + val + 
+                                          "' in allowed list.", toString() ) );
 }
 
 /**
@@ -527,12 +528,13 @@ void ValueArg<T>::_extractValue( const std::string& val )
 	int err = ve.extractValue(val);
 
 	if ( err == VALUE_ARG_HELPER::EFAIL )
-		throw( ArgException("Couldn't read argument value from string '" +
-	                        val + "'", toString() ) );
+		throw( ArgParseException("Couldn't read argument value from string '" +
+	                             val + "'", toString() ) );
 
 	if ( err == VALUE_ARG_HELPER::EMANY )
-		throw( ArgException("More than one valid value parsed from string '" +
-						    val + "'", toString() ) );
+		throw( ArgParseException(
+					"More than one valid value parsed from string '" +
+				    val + "'", toString() ) );
 
 	_checkAllowed( val );		  
 }

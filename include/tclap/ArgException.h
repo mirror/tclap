@@ -90,7 +90,62 @@ class ArgException : public std::exception
 
 };
 
-}
+/**
+ * Thrown from within the child Arg classes when it fails to properly
+ * parse the argument it has been passed.
+ */
+class ArgParseException : public ArgException
+{ 
+	public:
+		/**
+		 * Constructor.
+		 * \param text - The text of the exception.
+		 * \param id - The text identifying the argument source 
+		 * of the exception.
+		 */
+		ArgParseException( const std::string& text = "undefined exception", 
+					       const std::string& id = "undefined" )
+			: ArgException( text, id ) { }
+};
+
+/**
+ * Thrown from CmdLine when the arguments on the command line are not
+ * properly specified, e.g. too many arguments, required argument missing, etc.
+ */
+class CmdLineParseException : public ArgException
+{
+	public:
+		/**
+		 * Constructor.
+		 * \param text - The text of the exception.
+		 * \param id - The text identifying the argument source 
+		 * of the exception.
+		 */
+		CmdLineParseException( const std::string& text = "undefined exception", 
+					           const std::string& id = "undefined" )
+			: ArgException( text, id ) { }
+};
+
+/**
+ * Thrown from Arg and CmdLine when an Arg is improperly specified, e.g. 
+ * same flag as another Arg, same name, etc.
+ */
+class SpecificationException : public ArgException
+{
+	public:
+		/**
+		 * Constructor.
+		 * \param text - The text of the exception.
+		 * \param id - The text identifying the argument source 
+		 * of the exception.
+		 */
+		SpecificationException( const std::string& text = "undefined exception",
+					            const std::string& id = "undefined" )
+			: ArgException( text, id ) { }
+
+};
+
+} // namespace TCLAP
 
 #endif
 
