@@ -48,16 +48,18 @@ CmdLine::CmdLine(const string& m, char delim, const string& v )
 
 CmdLine::~CmdLine()
 {
-  list<Arg*>::iterator argIter;
-  list<Visitor*>::iterator visIter;
+	list<Arg*>::iterator argIter;
+	list<Visitor*>::iterator visIter;
   
-  for(argIter = _argDeleteOnExitList.begin(); argIter != _argDeleteOnExitList.end(); ++argIter) {
-    delete *argIter;
-  }
+	for( argIter = _argDeleteOnExitList.begin(); 
+		 argIter != _argDeleteOnExitList.end(); 
+		 ++argIter)
+		delete *argIter;
   
-  for(visIter = _visitorDeleteOnExitList.begin(); visIter != _visitorDeleteOnExitList.end(); ++visIter) {
-    delete *visIter;
-  }
+	for( visIter = _visitorDeleteOnExitList.begin(); 
+		 visIter != _visitorDeleteOnExitList.end(); 
+		 ++visIter) 
+		delete *visIter;
 }
 
 void CmdLine::_constructor()
@@ -85,7 +87,7 @@ void CmdLine::_constructor()
 	v = new IgnoreRestVisitor();
 	SwitchArg* ignore  = new SwitchArg(Arg::flagStartString, 
 					   Arg::ignoreNameString,
-					   "Ignores the rest of the labeled arguments following this flag.",
+			   "Ignores the rest of the labeled arguments following this flag.",
 					   false, v);
 	add( *ignore );
 	deleteOnExit(ignore);
@@ -249,12 +251,12 @@ bool CmdLine::_emptyCombined(const string& s)
 
 void CmdLine::deleteOnExit(Arg* ptr)
 {
-  _argDeleteOnExitList.push_back(ptr);
+	_argDeleteOnExitList.push_back(ptr);
 }
 
 void CmdLine::deleteOnExit(Visitor* ptr)
 {
-  _visitorDeleteOnExitList.push_back(ptr);
+	_visitorDeleteOnExitList.push_back(ptr);
 }
 
 }
