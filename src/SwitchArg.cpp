@@ -21,6 +21,7 @@
 
 
 #include <tclap/SwitchArg.h>
+#include <tclap/CommandLine.h>
 
 using namespace std;
 
@@ -34,6 +35,18 @@ SwitchArg::SwitchArg(const string& flag,
 : Arg(flag, name, desc, false, false, v),
   _value( _default )
 { };
+
+SwitchArg::SwitchArg(const string& flag, 
+					const string& name, 
+					const string& desc, 
+					bool _default,
+					CmdLine &parser,
+					Visitor* v )
+: Arg(flag, name, desc, false, false, v),
+  _value( _default )
+{ 
+	parser.add(*this);
+}
 
 SwitchArg::~SwitchArg() { };
 
