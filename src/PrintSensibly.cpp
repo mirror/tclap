@@ -48,14 +48,24 @@ void spacePrint( ostream& os,
 			   	        s[stringLen+start] != ',' &&
 			   	        s[stringLen+start] != '|' )
 					stringLen--;
+			
+			// check for newlines
+			for ( int i = 0; i < stringLen; i++ )
+				if ( s[start+i] == '\n' )
+					stringLen = i+1;
 
 			// print the indent	
 			for ( int i = 0; i < indentSpaces; i++ )
 				os << " ";
 
-			// handle second line offsets
 			if ( start == 0 )
+			{
+				// handle second line offsets
 				indentSpaces += secondLineOffset;
+
+				// adjust allowed len
+				allowedLen -= secondLineOffset;
+			}
 			
 			os << s.substr(start,stringLen) << endl;
 
