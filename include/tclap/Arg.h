@@ -36,10 +36,9 @@
 namespace TCLAP {
 
 /** 
- * A base class that defines the essential data for all arguments.
- * This is not an abstract class, although it can't really be used
- * because the processArg() method just emits a warning.  Arg, or one
- * of its existing children, should be subclassed for new behavior. 
+ * A virtual base class that defines the essential data for all arguments.
+ * This class, or one of its existing children, must be subclassed to do
+ * anything. 
  */
 class Arg
 {
@@ -215,17 +214,13 @@ class Arg
 		static void setDelimiter( char c ) { delimiterRef() = c; }
 
 		/**
-		 * Processes the argument.
-		 * This is the method that handles the parsing and value assignment
-		 * of the string on the command line.  This implementation just
-		 * emits that an argument has matched and is being ignored. This 
-		 * should never really be used, any subclass should implement its
-		 * own version of processArg.
+		 * Pure virtual method meant to handle the parsing and value assignment
+		 * of the string on the command line. 
 		 * \param i - Pointer the the current argument in the list.
 		 * \param args - Mutable list of strings. What is 
 		 * passed in from main.
 		 */
-		virtual bool processArg(int *i, std::vector<std::string>& args); 
+		virtual bool processArg(int *i, std::vector<std::string>& args) = 0; 
 
 		/**
 		 * Operator ==.
@@ -440,14 +435,6 @@ inline bool Arg::operator==(const Arg& a)
 		return true;
 	else
 		return false;
-}
-
-// should be overridden
-inline bool Arg::processArg(int* i, std::vector<std::string>& args)
-{
-	std::cerr << "WARNING:   Ignoring unknown argument: " 
-			  << args[*i] << std::endl;	
-	return false;
 }
 
 inline std::string Arg::getDescription() const 
