@@ -36,3 +36,8 @@ chars.
 that allows the user to provide a list of values that the input arg values 
 should be restricted to.  
 
+8/9/04 - Created a function to print the output nicely, meaning line wraps
+are handled somewhat sensibly now.  Also changed error handling slightly. 
+Instead of printing the entire usage, I just print a short usage.  If
+someone really hates this, its easy to change back.  Let me know if this 
+causes problems.  I think this equals release 0.9.9!
