@@ -31,10 +31,7 @@ SwitchArg::SwitchArg(const string& flag,
 					 Visitor* v )
 : Arg(flag, name, desc, false, false, v),
   _value( _default )
-{ 
-	if ( _flag == "" )
-		throw(ArgException("Cannot have an unlabeled SwitchArg!",toString()));
-};
+{ };
 
 SwitchArg::~SwitchArg() { };
 
