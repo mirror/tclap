@@ -322,8 +322,8 @@ void ValueArg<T>::_extractValue( const string& val )
 template<>
 void ValueArg<string>::_extractValue( const string& val ) 
 {
-	_checkAllowed( val );
 	_value = val;
+	_checkAllowed( val );
 }
 
 /**
