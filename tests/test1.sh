@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # success
-../examples/test1 -u -n mike > tmp.out 2>&1
+../examples/test1 -r -n mike > tmp.out 2>&1
 
 if cmp -s tmp.out test1.out; then
 	exit 0

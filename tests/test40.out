@@ -1,13 +1,13 @@
 
 USAGE: 
 
-   ../examples/test1  [-u] -n <string> [--] [-v] [-h]
+   ../examples/test1  [-r] -n <string> [--] [-v] [-h]
 
 
 Where: 
 
-   -u,  --upperCase
-     Print in upper case
+   -r,  --reverse
+     Print name backwards
 
    -n <string>,  --name <string>
      (required)  (value required)  Name to print
