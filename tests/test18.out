@@ -1,0 +1,32 @@
+PARSE ERROR: Argument: -*s
+             Couldn't find match for argument
+
+
+USAGE: 
+
+    ../examples/test4 [-A] [-B] -s <string> [--] [-v] [-h]
+
+Where: 
+
+   -A,  --sA
+     exist Test B
+
+   -B,  --sB
+     exist Test B
+
+   -s <string>,  --Bs <string>
+     (required)  (value required)  string test
+
+   --,  --ignore_rest
+     Ignores the rest of the labeled arguments following this flag.
+
+   -v,  --version
+     Displays version information and exits.
+
+   -h,  --help
+     Displays usage information and exits.
+
+
+
+this is a message
+
