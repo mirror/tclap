@@ -3,7 +3,7 @@
 let "suc = 0"
 let "fail = 0"
 
-for tnam in `ls test??.sh`
+for tnam in `ls test*.sh`
   do 
   echo "Running test $tnam"
   if ./$tnam && echo "OK" || echo "FAIL" ; then
