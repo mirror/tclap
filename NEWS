@@ -62,3 +62,11 @@ And so we have release 1.0!
 This will help Windows users who don't have it.  Also changed test1 so that 
 it doesn't use toupper, which apparently causes problem for non-ASCII 
 character sets.
+
+10/31/04 - A few more tweaks, none of which should be noticeable to people
+who are already using the lib without trouble. Maybe I shouldn't release 
+things early in the morning!  Also note that manual.html is now generated 
+from manual.xml.  If you have your own docbook xsl style that you prefer, 
+then have at it.
+
+
