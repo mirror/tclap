@@ -15,7 +15,8 @@ TESTS = test1.sh \
 		test13.sh \
 		test14.sh \
 		test15.sh \
-		test16.sh
+		test16.sh \
+		test17.sh
 
 EXTRA_DIST = $(TESTS) \
 			 test1.out \
@@ -33,5 +34,6 @@ EXTRA_DIST = $(TESTS) \
 			 test13.out \
 			 test14.out \
 			 test15.out \
-			 test16.out 
+			 test16.out \
+			 test17.out 
 
