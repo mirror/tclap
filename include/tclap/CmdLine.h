@@ -36,8 +36,6 @@
 #include <vector>
 #include <list>
 #include <iostream>
-#include <ostream>
-#include <iomanip>
 #include <algorithm>
 
 namespace TCLAP {

@@ -28,10 +28,6 @@
 #include <vector>
 #include <list>
 #include <iostream>
-#include <ostream>
-#include <cstdio>
-#include <cstdarg>
-#include <iomanip>
 #include <algorithm>
 
 namespace TCLAP {

@@ -25,7 +25,13 @@
 
 #include <string>
 #include <vector>
+
+#include <config.h>
+#if defined(HAVE_SSTREAM)
 #include <sstream>
+#elif defined(HAVE_STRSTREAM)
+#include <strstream>
+#endif
 
 #include <tclap/Arg.h>
 
@@ -74,8 +80,19 @@ template<class T> class ValueExtractor
 		 */
         int extractValue( const std::string& val ) 
 		{
-            std::istringstream is(val);
-      
+
+#ifdef HAVE_SSTREAM
+			std::istringstream is(val);
+#elif HAVE_STRSTREAM
+			std::istrstream is(val.c_str());
+#else
+			throw(SpecificationException(
+							string("Missing sstream or strstream lib, ") +
+									"without which, nothing will work.  " +
+									"Not even sure how you got this far!",
+								toString()));
+#endif
+
             int valuesRead = 0;
             while ( is.good() ) 
 			{
@@ -358,7 +375,19 @@ void ValueArg<T>::allowedInit()
 {
     for ( unsigned int i = 0; i < _allowed.size(); i++ )
     {
+
+#ifdef HAVE_SSTREAM
         std::ostringstream os;
+#elif defined(HAVE_STRSTREAM)
+        std::ostrstream os;
+#else
+		throw(SpecificationException(
+								string("Missing sstream or strstream lib, ") + 
+								       "without which, nothing will work.  " +
+								       "Not even sure how you got this far!", 
+								toString()));
+#endif
+
         os << _allowed[i];
 
         std::string temp( os.str() ); 

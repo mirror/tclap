@@ -25,7 +25,13 @@
 
 #include <string>
 #include <vector>
+
+#include <config.h>
+#ifdef HAVE_SSTREAM
 #include <sstream>
+#elif HAVE_SSTREAM
+#include <strstream>
+#endif
 
 #include <tclap/Arg.h>
 
@@ -73,7 +79,19 @@ class ValueExtractor
 		int extractValue( const std::string& val ) 
 		{
 			T temp;
+
+#ifdef HAVE_SSTREAM
 			std::istringstream is(val);
+#elif HAVE_STRSTREAM
+			std::istrstream is(val.c_str());
+#else
+        	throw(SpecificationException(
+							string("Missing sstream or strstream lib, ") +
+			                       "without which, nothing will work.  " +
+								   "Not even sure how you got this far!",
+								toString()));
+#endif
+
 			int valuesRead = 0;
     
 			while ( is.good() ) 
@@ -326,7 +344,19 @@ void MultiArg<T>::allowedInit()
 {
 	for ( unsigned int i = 0; i < _allowed.size(); i++ )
    	{
+
+#ifdef HAVE_SSTREAM
    		std::ostringstream os;
+#elif HAVE_STRSTREAM
+   		std::ostrstream os;
+#else
+        throw(SpecificationException(
+							string("Missing sstream or strstream lib, ") +
+			                       "without which, nothing will work.  " +
+								   "Not even sure how you got this far!",
+								toString()));
+#endif
+
    		os << _allowed[i];
 
    		std::string temp( os.str() );

@@ -26,7 +26,6 @@
 
 #include <string>
 #include <vector>
-#include <sstream>
 
 #include <tclap/Arg.h>
 

@@ -23,7 +23,7 @@
 #ifndef TCLAP_PRINTSENSIBLY_H
 #define TCLAP_PRINTSENSIBLY_H
 
-#include <ostream>
+#include <iostream>
 #include <algorithm>
 #include <string>
 

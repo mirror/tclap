@@ -25,7 +25,6 @@
 
 #include <string>
 #include <vector>
-#include <sstream>
 
 #include <tclap/MultiArg.h>
 
