@@ -15,6 +15,10 @@ a {
 	text-decoration:underline;
 }
 
+a:visited {
+	color:#6699cc;
+}
+
 a:hover {
 	text-decoration: blink; 
 	color:#ff9933;
