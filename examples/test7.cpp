@@ -2,6 +2,7 @@
 #include <tclap/CmdLine.h>
 
 using namespace TCLAP;
+using namespace std;
 
 int main(int argc, char** argv)
 {
@@ -30,6 +31,43 @@ int main(int argc, char** argv)
 	UnlabeledMultiArg<int> intArg("times","Number of times to print",iallowed);
 	cmd.add( intArg );
 
+	// Ignore the names and comments!  These  args mean nothing (to this
+	// program) and are here solely to take up space.
+    ValueArg<int> gapCreate("f","gapCreate", "The cost of creating a gap",
+	                                 false, -10, "negative int");
+	cmd.add( gapCreate );
+
+	ValueArg<int> gapExtend("g","gapExtend",
+		"The cost for each extension of a gap", false, -2, "negative int");
+	cmd.add( gapExtend );
+
+	SwitchArg dna("d","isDna","The input sequences are DNA", false);
+	cmd.add( dna );
+	
+	ValueArg<string> scoringMatrixName("s","scoringMatrix",
+		"Scoring Matrix name", false,"BLOSUM50","name string");
+	cmd.add( scoringMatrixName );
+	
+	ValueArg<string> seq1Filename ("f","filename1",
+		"Sequence 1 filename (FASTA format)", false,"","filename");
+	cmd.add( seq1Filename );
+
+	ValueArg<string> seq2Filename ("F","filename2",
+		"Sequence 2 filename (FASTA format)", false,"","filename");
+	cmd.add( seq2Filename );
+
+	ValueArg<float> lowerBound("b","lowerBound", "lower percentage bound",
+		false,1.0,"float lte 1");
+	cmd.add( lowerBound );
+	
+	ValueArg<float> upperBound("u","upperBound", "upper percentage bound",
+		false,1.0,"float lte 1");
+	cmd.add( upperBound );
+	
+	ValueArg<int> limit("l","limit","Max number of alignments allowed",
+		false, 1000,"int");
+	cmd.add( limit );
+	
 	// Parse the args.
 	cmd.parse( argc, argv );
 
