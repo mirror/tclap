@@ -1,4 +1,4 @@
-PARSE ERROR: for argument:   -i (--intTest)
+PARSE ERROR: Argument: -i (--intTest)
              Argument already set!
 
 

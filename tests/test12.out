@@ -1,4 +1,4 @@
-PARSE ERROR: for argument:   -f (--floatTest)
+PARSE ERROR: Argument: -f (--floatTest)
              Couldn't read argument value!
 
 

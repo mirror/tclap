@@ -1,11 +1,41 @@
-[  ] 0  marge
-[  ] 1  bart
-[  ] 2  -hv
-[  ] 3  two
-for float we got : 0
-for int we got : 0
-for string we got : bbb
-for ulabeled we got : homer
-for bool A we got : 0
-for bool B we got : 0
-for bool C we got : 0
+PARSE ERROR: Argument: -s (--stringTest)
+             Couldn't find delimiter for this argument!
+
+
+USAGE: 
+
+    ../examples/test3 [-i=<int>] ...  -s=<string> [-B] [--] [-v] [-h] <string> <string> <fileNameString> ...
+
+Where: 
+
+   -i <int>,  --intTest <int>  (accepted multiple times)
+     (value required)  multi int test
+
+   -s <string>,  --stringTest <string>
+     (required)  (value required)  string test
+
+   -B,  --existTest B
+     exist Test B
+
+   --,  --ignore_rest
+     Ignores the rest of the labeled arguments following this flag.
+
+   -v,  --version
+     Displays version information and exits.
+
+   -h,  --help
+     Displays usage information and exits.
+
+   <string>
+     (required)  (value required)  unlabeled test one
+
+   <string>
+     (required)  (value required)  unlabeled test two
+
+   <fileNameString>  (accepted multiple times)
+     (value required)  file names
+
+
+
+this is a message
+
