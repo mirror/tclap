@@ -21,19 +21,28 @@
 
 <html>
 <body>
-<h2>C++ Command Line Parser Examples</h2>
+<table><tr><td align="left">
+<h1>Templatized C++ Command Line Parser Examples</h1>
+</td><td align="right">
+<A href="http://sourceforge.net"> <IMG 
+		src="http://sourceforge.net/sflogo.php?group_id=76645&amp;type=4" 
+		width="125" height="37" border="0" alt="SourceForge.net Logo">
+</A>
+</td></tr></table>
+
 <h2>Basic usage</h2>
 There are a few key classes to be aware of.  The first is the <b>CmdLine</b>
-or command line class.  This is the class that parses that command line
+or command line class.  This is the class that parses the command line
 passed to it according to the arguments that it contains.  Arguments are
 separate objects that are added to <b>CmdLine</b> object one at a time. There
-are three types of arguments, <b>ValueArg</b>, <b>SwitchArg</b> and
-<b>MultiArg</b>.  Once the arguments are added to the command line object,
+are five types of arguments, <b>ValueArg</b>, <b>UnlabeledValueArg</b>, 
+<b>SwitchArg</b>, <b>MultiArg</b> and <b>UnlabeledMultiArg</b>.  
+Once the arguments are added to the command line object,
 the command line is parsed which assigns the data on the command line to
-the specific arguments.  The values are accessed by calls to the getValue() 
-methods of the argument objects.
+the specific argument objects.  The values are accessed by calls to 
+the <i>getValue()</i> methods of the argument objects.
 <br> <br>
-Here is a simple <a href="../tests/test1.cpp">example</a> ...
+Here is a simple <a href="test1.cpp">example</a> ...
 <br> <br>
 <pre>
 #include < string >
@@ -50,7 +59,8 @@ int main(int argc, char** argv)
 	CmdLine cmd(argv[0], "Command description message", "0.9");
 
 	// Define a value argument and add it to the command line.
-	ValueArg<string> nameArg("n","name","Name to print",true,"homer");
+	ValueArg < string >  nameArg("n","name","Name to print",true,"homer",
+	                             "nameString");
 	cmd.add( nameArg );
 
 	// Define a switch and add it to the command line.
@@ -99,23 +109,34 @@ PARSE ERROR: for argument:   undefined
 
 USAGE:
 
-    tester [-u] -n name [-v] [-h]
+	test1 [-u] -n < nameString > [--] [-v] [-h]
 
 Where:
 
-  [-u]            = Print in upper case
-   -n name        = Name to print
-  [-v]            = displays version information and exits
-  [-h]            = displays usage information and exits
+	-u,  --upperCase
+	  Print in upper case
+
+	-n < nameString >,  --name < nameString >
+	  (required)  (value required)  Name to print
+
+	--,  --ignore_rest
+	  Ignores the rest of the labeled arguments following this flag.
+
+	-v,  --version
+	  Displays version information and exits.
+
+	-h,  --help
+	  Displays usage information and exits.
 
 
 Command description message
+
 </pre>
 <br><br><br>
 This example shows a number of different properties of the library...
 <ul>
 <li>Arguments can appear in any order (...mostly, <a href="manual.html#COMPLICATIONS">more</a> on this later).</li>
-<li>The version and help arguments are specified automatically.</li>
+<li>The version, help and -- arguments are specified automatically.</li>
 <li>If a required argument isn't provided, the program exits and displays
 the USAGE, along with an error message.</li>
 </ul>
@@ -123,49 +144,114 @@ the USAGE, along with an error message.</li>
 Arguments, whatever their type, have a few common basic properties.  First
 is the flag or the character preceeded by a dash(-) that signals the beginning
 of the argument.  Arguments also have names, which can, if desired also be
-used as a flag on the command line, this time preceeded by two dashes (--).
-Next is the description of the argument.  This is displayed in the help/usage
+used as a flag on the command line, this time preceeded by two dashes (--) 
+[like the familiar getopt_long()].
+Next is the description of the argument.  This is a short description of
+the argument displayed in the help/usage
 message when needed.  The boolean value in <b>ValueArg</b>s indicates 
 whether  the argument is required to be present (<b>SwitchArg</b>s can't
-be required, as that would defeat the purpose).  Finally, is the default
-value the arg should assume if the arg isn't required or entered on the
-command line.
+be required, as that would defeat the purpose).  Next, the default
+value  the arg should assume if the arg isn't required or entered on the
+command line. Last, for <b>ValueArg</b>s is a short description of the type
+that the argument expects (yes its an ugly 
+<a href="manual.html#DESCRIPTION_EXCEPTIONS">hack</a>).
+<br><br>
 <b>SwitchArg</b>s are what the name implies, simple on/off, boolean switches.
 Use <b>SwitchArg</b>s anytime you want to turn some sort of system property
-on or off.  
+on or off.  Note that multiple <b>SwitchArg</b>s can be combined into a single
+argument on the command line.  If you have switches -a, -b and -c it is
+valid to do either:
+<br><br>
+<pre>
+		% command -a -b -c
+</pre>
+<br><br>
+<i>or</i>
+<br><br>
+<pre>
+		% command -abc
+</pre>
+<br><br>
+This is to make this library more in line with the POSIX and GNU standards (as
+I understand them).
+<br><br>
 <b>ValueArg</b>s are arguments that read a value of some type from the 
-command line.  Note that the order of arguments (so far) don't matter.  Any
-argument not matching an <b>*Arg</b> added to the command line will cause
-an exception to be thrown.
+command line.  Note that the order of arguments on the command line(so far) 
+doesn't matter.  Any
+argument not matching an <b>Arg</b> added to the command line will cause
+an exception to be thrown 
+(<a href="manual.html#COMPLICATIONS">for the most part</a>, with some
+<a href="manual.html#EXCEPTIONS">exceptions</a>).
 <br> <br>
-Note in the output of the USAGE above, that there are two arguments that
+Note in the output of the USAGE above, that there are three arguments that
 were not explicitly specified by the user in the code.  
 These are the <i>help</i> 
-and <i>version</i> <b>SwitchArg</b>s.  Using either the <i>-h</i> or 
+and <i>version</i>  and <i>--</i> <b>SwitchArg</b>s.  Using either the 
+<i>-h</i> or 
 <i>--help</i> flag will cause the USAGE message to be displayed 
 and <i>-v</i> or <i>--version</i> will cause
-any version information to be displayed.  These switches are included 
+any version information to be displayed and <i>--</i> or <i>--ignore_rest</i>
+will cause the remaining labeled arguments to be ingored.  
+These switches are included 
 automatically on every command line.  Currently there is no way to turn this
-off, but thats kind of the point.  More <a href="manual.html#VISITORS">later</a> on how we get this to work.
+off, but then, thats kind of the point.  
+More <a href="manual.html#VISITORS">later</a> on how we get this to work.
 
 <a name="COMPLICATIONS"></a>
 <h2>Complications</h2>
 Naturally, what we have seen to this point doesn't satisfy all of our needs.
+<h3>I tried passing multiple values on the command line with the same flag and it didn't work...</h3>
+Correct.  You can neither specify mulitple <b>ValueArg</b>s or 
+<b>SwitchArg</b>s with the same flag in the code nor on the command line. 
+Exceptions will occur in either case.  For <b>SwitchArg</b>s it simply doesn't
+make sense to allow a particular flag to be turned on or off repeatedly on 
+the command 
+line.  All you should ever need is to set your state <i>once</i> by specifying
+the flag or not (<a href="manual.html#EXCEPTIONS">yeah but...</a>).  
+<br><br>
+However, there <i>are</i> situations where you might want
+multiple values for the same flag to be specified.  Imagine a compiler that
+allows you to specify multiple directories to search for libraries...
+<br> <br>
+<pre>
+		% fooCompiler -L /dir/num1 -L /dir/num2 file.foo 
+</pre>
+<br> <br> 
+In situations like this, you will want to use a <b>MultiArg</b>.  A 
+<b>MultiArg</b> is essentially a <b>ValueArg</b> that appends any value
+that it matches and parses onto a vector of values.  When the <i>getValue()</i>
+method id called, a vector of values, instead of a single value is returned.
+A <b>MultiArg</b> is declared much like a <b>ValueArg</b>:
+<br><br>
+<pre>
+		...
+
+		MultiArg < int > itest("i", "intTest", "multi int test", false,"int" );
+		cmd.add( itest );
+
+		...
+</pre>
+<br><br>
+Note that <b>MultiArg</b>s can be added to the <b>CmdLine</b> in any
+order (unlike <a href="manual.html#UNLABELED_MULTI_ARG">UnlabeledMultiArg</a>s).
 
 <h3>But I don't like labelling all of my arguments... </h3>
-To this point all of our arguments have had labels indentifying them, but
+To this point all of our arguments have had labels (flags) indentifying them
+on the command line, but
 there are some situations where flags are burdensome and not worth the effort.
-One example might be if you want to implement a magical command, we'll call
+One example might be if you want to implement a magical command we'll call
 <i>copy</i>.  All <i>copy</i> does is copy the file specified in the first 
-argument to file specified in the second argument.  We can do this using
-<b>ValueArg</b>s that don't have a flag specified, which tells the 
+argument to the file specified in the second argument.  We can do this using 
+<b>UnlabeledValueArg</b>s which are pretty much just <b>ValueArg</b>s without
+the flag specified, which tells the 
 <b>CmdLine</b> object to treat them accordingly. The code would look like
 this:
 <br><br>
 <pre>
 		...
 
-		ValueArg<float> nolabel( "name", "unlabeled test", 3.14 );
+		UnlabeledValueArg < float >  nolabel( "name", "unlabeled test", 3.14,
+	                                          "nameString"	);
 		cmd.add( nolabel );
 
 		...
@@ -173,15 +259,19 @@ this:
 <br><br>
 Everything else is handled identically to what is seen above.  The only
 difference to be aware of, and this is important: <b>the order that
-unlabeled ValueArgs are added to the CmdLine is the order that
+UnlabeledValueArgs are added to the <i>CmdLine</i> is the order that
 they will be parsed!!!!</b>  This is <i>not</i> the case for normal 
 <b>SwitchArg</b>s and <b>ValueArg</b>s.  What happens internally is the
-first argument that the CmdLine doesn't recognize is assumed to be the
-first unlabeled <b>ValueArg</b> and parses it as such.  Note that you
-are allowed to intersperse labeled args in between unlabeled args (either
-on the command line or in the declaration), but the unlabeled args will
-still be parsed in the order they are added.  Just remember that order
-is important.
+first argument that the <b>CmdLine</b> doesn't recognize is assumed to be the
+first <b>UnlabeledValueArg</b> and parses it as such.  Note that you
+are allowed to intersperse labeled args (SwitchArgs and ValueArgs) in 
+between <b>UnlabeledValueArgs</b> (either
+on the command line or in the declaration), but the <b>UnlabeledValueArgs</b> 
+will still be parsed in the order they are added.  Just remember that order
+is important for unlabeled arguments.
+
+
+<a name="UNLABELED_MULTI_ARG"></a>
 <h3>But I want an arbitrary number of arguments to be accepted...</h3>
 Don't worry, we've got you covered.  Say you want a strange command that
 searches each file specified for a given string (lets call it <i>grep</i>), 
@@ -201,13 +291,14 @@ like:
 </pre>
 <br><br>
 To handle situations where multiple, unlabled arguments are needed, we
-provide the <b>MultiArg</b>.  <b>MultiArg</b>s are declared much like
+provide the <b>UnlabeledMultiArg</b>.  <b>UnlabeledMultiArg</b>s are declared 
+much like
 everything else, but with only a description of the arguments.  By default,
-if a <b>MultiArg</b> is specified, then at least one is required to be
-present or an exception will be thrown.  The most important thing to remember
-is, that like <b>unlabeled ValueArg</b>s order matters, in fact: <b>a
-MultiArg must be the <i>last</i> argument added to the CmdLine!</b>. Here is
-what it looks like:
+if an <b>UnlabeledMultiArg</b> is specified, then at least one is required 
+to be present or an exception will be thrown.  The most important thing to 
+remember is, that like <b>UnlabeledValueArg</b>s: order matters! In fact, <b>an
+UnlabeledMultiArg must be the <i>last</i> argument added to the CmdLine!</b>. 
+Here is what a declaration looks like:
 <br> <br> <br> <br>
 <pre>
 		...
@@ -215,21 +306,24 @@ what it looks like:
 		//
 		// MultiArg must be the LAST argument added!
 		//
-		MultiArg<string> multi("file names");
+		UnlabeledMultiArg < string > multi("file names");
 		cmd.add( multi );
 		cmd.parse(argc, argv);
 
-		vector<string> fileNames = multi.getValue();
+		vector < string >  fileNames = multi.getValue();
 
 		...
 </pre>
 <br> <br> <br> <br>
-You must only ever specify one (1) <b>MultiArg</b>.  One <b>MultiArg</b> will
-read every unlabeled Arg that wasn't already processed by a <b>ValueArg</b>
-into a <i>vector</i> of type T.  When you call the getValue() method of the
-argument, a <i>vector</i> will be returned.  If you can imagine a
+You must only ever specify one (1) <b>UnlabeledMultiArg</b>.  
+One <b>UnlabeledMultiArg</b> will
+read every unlabeled Arg that wasn't already processed by a 
+<b>UnlabeledValueArg</b>
+into a <i>vector</i> of type T.  When you call the <i>getValue()</i> method 
+of the argument, a <i>vector</i> will be returned.  If you can imagine a
 situation where there will be multiple args of multiple types (stings, ints,
-floats, etc.) then just declare the <b>MultiArg</b> as type <i>string</i>
+floats, etc.) then just declare the <b>UnlabeledMultiArg</b> as type 
+<i>string</i>
 and parse the different values yourself.  
 
 <a name="VISITORS"></a>
@@ -239,29 +333,27 @@ to provide special handling for default arguments. Nothing that Visitors
 do couldn't be accomplished by the user after the command line has been parsed.
 If you're still interested, keep reading...
 <br><br>
-Some of you may be wondering how we get the <i>--help</i> and <i>--version</i>
+Some of you may be wondering how we get the <i>--help</i>, <i>--version</i>
+and <i>--</i>
 arguments to do their thing without mucking up the <b>CmdLine</b> code
 with lots of <i>if</i> statements and type checking.  This is accomplished
 by using a variation on the Visitor Pattern.  Actually, it may not be a Visitor
 Pattern at all, but thats what inspired me.  
 <br> <br>
 If we want some argument to do some sort of special handling, besides simply
-parsing a value, then we add a <b>Visitor</b> pointer to the <b>*Arg</b>.  
+parsing a value, then we add a <b>Visitor</b> pointer to the <b>Arg</b>.  
 More specifically, we add a <i>subclass</i> of the <b>Visitor</b> class. 
 Once the argument has been successfully parsed, the <b>Visitor</b> for
 that argument is called. 
 Any data that needs to be operated on is declared in the <b>Visitor</b>
 constructor and then operated on in the <i>visit()</i> method. A
-<b>Visitor</b> is added to an <b>*Arg</b> as the last argument in its 
+<b>Visitor</b> is added to an <b>Arg</b> as the last argument in its 
 declaration. This may sound complicated, but its pretty straightforward. 
 Lets see an example.  
 <br><br>
-<br><br>
 Say you want to add an <i>--authors</i> flag to a program that prints the
 names of the authors when present.  First subclass <b>Visitor</b>:
-<br>
-<br>
-<br>
+<br> <br> 
 <pre>
 #include "Visitor.h"
 #include < string >
@@ -284,7 +376,7 @@ pointer as follows:
 <pre>
 		...
 
-		SwitchArg author("-a","author","Prints author name", false, 
+		SwitchArg author("a","author","Prints author name", false, 
 				         new AuthorVisitor("Homer J. Simpson");
 		cmd.add( author );
 
@@ -294,7 +386,39 @@ pointer as follows:
 <br><br>
 Now, any time the <i>-a</i> or <i>--author</i> flag is specified, the
 program will print the author name, Homer J. Simpson and exit without
-processing any further.
+processing any further (as specified in the <i>visit()</i> method.
+<a name="EXCEPTIONS"></a>
+<h2>Exceptions</h2>
+Like all good rules, there are many exceptions....
+<h3>Ignoring arguments...</h3>
+The <i>--</i> flag is automatically included in the <b>CmdLine</b>.  As (almost)
+per POSIX and GNU standards, any argument specified after the <i>--</i> flag
+is ignored.  <i>Almost</i> because if an <b>UnlabeledValueArg</b> that has
+not been set or an <b>UnlabeledMultiArg</b> has been specified, by default
+we will assign any arguments beyond the <i>--</i> to the those arguments
+as per the rules above.  This is primarily useful if you want to pass in
+arguments with a dash as the first character of the argument.  It should be 
+noted that even if the <i>--</i> flag is passed on the command line, 
+the <b>CmdLine</b> will <i>still</i> test to make sure all of the required
+arguments are present.
+<br><br> 
+Of course, this isn't how POSIX/GNU handle things, they explicitly 
+ignore arguments after the <i>--</i>.  To accomodate this, we can make both 
+<b>UnlabeledValueArg</b>s and <b>UnlabeledMultiArg</b>s ignoreable in 
+their constructors.  See
+the  <a href="html/index.html">API Documentation</a> for details. 
+<h3>Multiple Identical Switches</h3>
+If you absolutely must allow for multiple, identical switches to be allowed,
+don't use a <b>SwitchArg</b>, instead use a <b>MultiArg</b> of type 
+<i>bool</i>.  This means you'll need to specify
+a 1 or 0 on the command line with the switch (as values are required), but 
+this should allow you to turn your favorite switch on and off to your hearts 
+content.
+<a name="DESCRIPTION_EXCEPTIONS"></a>
+<h3>Type Descriptions</h3>
+Ideally this library would use RTTI to return a human readable name of the
+type declared for a particular argument.  Unfortunately, at least for g++, 
+the names returned aren't particularly useful.  
 <h2>More Information</h2>
 For more information, look at 
 the <a href="html/index.html">API Documentation</a> 
