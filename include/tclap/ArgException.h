@@ -43,8 +43,13 @@ class ArgException : public std::exception
 		 * of the exception.
 		 */
 		ArgException( const std::string& text = "undefined exception", 
-					  const std::string& id = "undefined" )
-			: std::exception(), _errorText(text), _argId( id ) { } 
+					  const std::string& id = "undefined",
+					  const std::string& td = "Generic ArgException")
+			: std::exception(), 
+			  _errorText(text), 
+			  _argId( id ), 
+			  _typeDescription(td)
+		{ } 
 		
 		/**
 		 * Destructor.
@@ -76,6 +81,16 @@ class ArgException : public std::exception
 			return ex.c_str();
 		}
 
+		/**
+		 * Returns the type of the exception.  Used to explain and distinguish
+		 * between different child exceptions.
+		 */
+		std::string typeDescription() const
+		{
+			return _typeDescription; 
+		}
+
+
 	private:
 
 		/**
@@ -87,6 +102,12 @@ class ArgException : public std::exception
 		 * The argument related to this exception.
 		 */
 		std::string _argId;
+
+		/**
+		 * Describes the type of the exception.  Used to distinguish
+		 * between different child exceptions.
+		 */
+		std::string _typeDescription;
 
 };
 
@@ -105,7 +126,11 @@ class ArgParseException : public ArgException
 		 */
 		ArgParseException( const std::string& text = "undefined exception", 
 					       const std::string& id = "undefined" )
-			: ArgException( text, id ) { }
+			: ArgException( text, 
+			                id, 
+							std::string( "Exception found while parsing " ) + 
+							std::string( "the value the Arg has been passed." ))
+			{ }
 };
 
 /**
@@ -123,7 +148,13 @@ class CmdLineParseException : public ArgException
 		 */
 		CmdLineParseException( const std::string& text = "undefined exception", 
 					           const std::string& id = "undefined" )
-			: ArgException( text, id ) { }
+			: ArgException( text, 
+			                id,
+							std::string( "Exception found when the values ") +
+							std::string( "on the command line do not meet ") +
+							std::string( "the requirements of the defined ") +
+							std::string( "Args." ))
+		{ }
 };
 
 /**
@@ -141,7 +172,12 @@ class SpecificationException : public ArgException
 		 */
 		SpecificationException( const std::string& text = "undefined exception",
 					            const std::string& id = "undefined" )
-			: ArgException( text, id ) { }
+			: ArgException( text, 
+			                id,
+							std::string("Exception found when an Arg object ")+
+							std::string("is improperly defined by the ") +
+							std::string("developer." )) 
+		{ }
 
 };
 
