@@ -36,7 +36,7 @@ void parseOptions(int argc, char** argv)
 {
 	try {
 
-	CmdLine cmd(argv[0], "this is a message", "0.99" );
+	CmdLine cmd("this is a message", ' ', "0.99" );
 
 	// 
 	// Define arguments
@@ -85,7 +85,7 @@ void parseOptions(int argc, char** argv)
 	_utest = utest.getValue();
 
 	vector<string> v = mtest.getValue();
-	for ( int i = 0; i < v.size(); i++ ) 
+	for ( int i = 0; (unsigned int)i < v.size(); i++ ) 
 		cout << i << "  " <<  v[i] << endl;
 
 	} catch ( ArgException e )

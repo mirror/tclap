@@ -71,11 +71,11 @@ void parseOptions(int argc, char** argv)
 	_ztest = ztest.getValue();
 
 	vector<int> vi = itest.getValue();
-	for ( int i = 0; i < vi.size(); i++ ) 
+	for ( int i = 0; (unsigned int)i < vi.size(); i++ ) 
 		cout << "[-i] " << i << "  " <<  vi[i] << endl;
 
 	vector<string> v = mtest.getValue();
-	for ( int i = 0; i < v.size(); i++ ) 
+	for ( int i = 0; (unsigned int)i < v.size(); i++ ) 
 		cout << "[  ] " << i << "  " <<  v[i] << endl;
 
 	} catch ( ArgException e )
