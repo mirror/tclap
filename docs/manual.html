@@ -104,91 +104,91 @@ calls to the <i>getValue()</i> methods of the argument objects.<br />
 Here is a simple <a href="test1.cpp">example</a> ...
 <br/>
 <pre>
-#include &lt; string &gt;
-#include &lt; iostream &gt;
-#include &lt; tclap/CmdLine.h &gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;tclap/CmdLine.h&gt;
+
+using namespace TCLAP;
 using namespace std;
 
 int main(int argc, char** argv)
 {
-        // Wrap everything in a try block.  Do this every time, 
-        // because exceptions will be thrown for problems. 
-        try {  
+	// Wrap everything in a try block.  Do this every time, 
+	// because exceptions will be thrown for problems. 
+	try {  
 
-        // Define the command line object.
-        CmdLine cmd("Command description message", ' ', "0.9");
+	// Define the command line object.
+	CmdLine cmd("Command description message", ' ', "0.9");
 
-        // (deprecated, but still functional)
-        // CmdLine cmd(argv[0], "Command description message", "0.9"); 
+	// Define a value argument and add it to the command line.
+	ValueArg&lt;string&gt; nameArg("n","name","Name to print",true,"homer","string");
+	cmd.add( nameArg );
 
-        // Define a value argument and add it to the command line.
-        ValueArg &lt; string &gt;  nameArg("n","name","Name to print",true,"homer",
-                                     "nameString");
-        cmd.add( nameArg );
+	// Define a switch and add it to the command line.
+	SwitchArg reverseSwitch("r","reverse","Print name backwards", false);
+	cmd.add( reverseSwitch );
 
-        // Define a switch and add it to the command line.
-        SwitchArg caseSwitch("u","upperCase","Print in upper case", false);
-        cmd.add( caseSwitch );
+	// Parse the args.
+	cmd.parse( argc, argv );
 
-        // Parse the args.
-        cmd.parse( argc, argv );
+	// Get the value parsed by each arg. 
+	string name = nameArg.getValue();
+	bool reverseName = reverseSwitch.getValue();
 
-        // Get the value parsed by each arg. 
-        string name = nameArg.getValue();
-        bool upperCase = caseSwitch.getValue();
+	// Do what you intend too...
+	if ( reverseName )
+	{
+		reverse(name.begin(),name.end());
+		cout &lt;&lt; "My name (spelled backwards) is: " &lt;&lt; name &lt;&lt; endl;
+	}
+	else
+		cout &lt;&lt; "My name is: " &lt;&lt; name &lt;&lt; endl;
 
-        // Do what you intend to...
-        if ( upperCase )
-                transform(name.begin(),name.end(),name.begin(),::toupper);
-        else
-                transform(name.begin(),name.end(),name.begin(),::tolower);
 
-        cout &lt;&lt; "My name is " &lt;&lt; name &lt;&lt; endl;
-
-        } catch (ArgException e)  // catch any exceptions
-        { cerr &lt;&lt; "error: " &lt;&lt; e.error() &lt;&lt; " for arg " &lt;&lt; e.argId() &lt;&lt; endl; }
+	} catch (ArgException &e)  // catch any exceptions
+	{ cerr &lt;&lt; "error: " &lt;&lt; e.error() &lt;&lt; " for arg " &lt;&lt; e.argId() &lt;&lt; endl; }
 }
 </pre>
+
 <br />
 The output should look like:<br />
 <br />
 <pre>
 
-% tester -u -n mike
-My name is MIKE
+% test1 -n mike
+My name is: mike
 
-% tester -n mike -u
-My name is MIKE
+% test1 -n mike -r
+My name (spelled backwards) is: ekim
 
-% tester -n mike
-My name is mike
+% test1 -r -n mike
+My name (spelled backwards) is: ekim
 
-% tester -n MIKE
-My name is mike
-
-% tester
+% test1 -r
 PARSE ERROR:
-        One or more required arguments missing!
+             One or more required arguments missing!
 
 Brief USAGE:
-        tester  [-u] -n &lt; string &gt; [--] [-v] [-h]
+   test1  [-r] -n &lt;string&gt; [--] [-v] [-h]
 
 For complete USAGE and HELP type:
-        tester --help
+   test1 --help
 
-% tester --help
+
+% test1 --help
 
 USAGE:
 
-   tester  [-u] -n &lt; string &gt; [--] [-v] [-h]
+   test1  [-r] -n &lt;string&gt; [--] [-v] [-h]
 
 
 Where:
 
-   -u,  --upperCase
-     Print in upper case
+   -r,  --reverse
+     Print name backwards
 
-   -n &lt; string &gt;,  --name &lt; string &gt;
+   -n &lt;string&gt;  --name &lt;string&gt;
      (required)  (value required)  Name to print
 
    --,  --ignore_rest
