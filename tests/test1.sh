@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# success
 ../examples/test1 -u -n mike > tmp.out 2>&1
 
 if cmp -s tmp.out test1.out; then

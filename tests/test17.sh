@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# failure
 ../examples/test3  -s=one homer -B > tmp.out 2>&1
 
 if cmp -s tmp.out test17.out; then

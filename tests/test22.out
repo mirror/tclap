@@ -1,0 +1,36 @@
+PARSE ERROR: Argument: -b (--bbb)
+             Argument already set!
+
+
+USAGE: 
+
+    ../examples/test5 {-a <string>|-b <string>} [-d <string>] -c <string> [--] [-v] [-h]
+
+Where: 
+
+   -a <string>,  --aaa <string>
+     (OR required)  (value required)  or test a
+       -- OR -- 
+   -b <string>,  --bbb <string>
+     (OR required)  (value required)  or test b
+
+
+   -d <string>,  --ddd <string>
+     (value required)  d test
+
+   -c <string>,  --ccc <string>
+     (required)  (value required)  c test
+
+   --,  --ignore_rest
+     Ignores the rest of the labeled arguments following this flag.
+
+   -v,  --version
+     Displays version information and exits.
+
+   -h,  --help
+     Displays usage information and exits.
+
+
+
+this is a message
+
