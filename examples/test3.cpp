@@ -42,30 +42,21 @@ void parseOptions(int argc, char** argv)
 	// Define arguments
 	//
 
-	SwitchArg btest("B","existTestB", "tests for the existence of B", false);
+	SwitchArg btest("B","existTest B", "exist Test B", false);
 	cmd.add( btest );
 
-	SwitchArg ctest("C","existTestC", "tests for the existence of C", false);
-	cmd.add( ctest );
-
-	SwitchArg atest("A","existTestA", "tests for the existence of A", false);
-	cmd.add( atest );
-
-	ValueArg<string> stest("s","stringTest","string test",true,"homer",
+	ValueArg<string> stest("s", "stringTest", "string test", true, "homer", 
 					       "string");
 	cmd.add( stest );
-
-	ValueArg<int> itest("i", "intTest", "integer test", true, 5, "int");
-	cmd.add( itest );
-							 
-	ValueArg<double> ftest("f", "floatTest", "float test", false, 3.7, "float");
-	cmd.add( ftest );
 
 	UnlabeledValueArg<string> utest("unTest","unlabeld test", 
 					                "default","string");
 	cmd.add( utest );
 
-	UnlabeledMultiArg<string> mtest("fileName", "file names", "string");
+	MultiArg<int> itest("i", "intTest", "multi int test", false,"int" );
+	cmd.add( itest );
+
+	UnlabeledMultiArg<string> mtest("fileName","file names","fileNameString");
 	cmd.add( mtest );
 
 	//
@@ -73,20 +64,22 @@ void parseOptions(int argc, char** argv)
 	//
 	cmd.parse(argc,argv);
 
+
+
 	//
 	// Set variables
 	//
-	_intTest = itest.getValue();
-	_floatTest = ftest.getValue();
 	_stringTest = stest.getValue();
 	_boolTestB = btest.getValue();
-	_boolTestC = ctest.getValue();
-	_boolTestA = atest.getValue();
 	_utest = utest.getValue();
+
+	vector<int> vi = itest.getValue();
+	for ( int i = 0; i < vi.size(); i++ ) 
+		cout << "[-i] " << i << "  " <<  vi[i] << endl;
 
 	vector<string> v = mtest.getValue();
 	for ( int i = 0; i < v.size(); i++ ) 
-		cout << i << "  " <<  v[i] << endl;
+		cout << "[  ] " << i << "  " <<  v[i] << endl;
 
 	} catch ( ArgException e )
 	{ cout << "ERROR: " << e.error() << " " << e.argId() << endl; }

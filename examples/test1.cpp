@@ -13,7 +13,7 @@ int main(int argc, char** argv)
 	CmdLine cmd(argv[0], "Command description message", "0.9");
 
 	// Define a value argument and add it to the command line.
-	ValueArg<string> nameArg("n","name","Name to print",true,"homer");
+	ValueArg<string> nameArg("n","name","Name to print",true,"homer","string");
 	cmd.add( nameArg );
 
 	// Define a switch and add it to the command line.
