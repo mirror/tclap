@@ -69,4 +69,8 @@ things early in the morning!  Also note that manual.html is now generated
 from manual.xml.  If you have your own docbook xsl style that you prefer, 
 then have at it.
 
-
+12/3/04 - Some minor bug fixes including the removal of the two stage name
+lookup ifdefs which means that the software should work out of the box 
+for gcc 3.4+.  Isolated output in a separate class that should make
+customization of output easier.  I also included a rudimentary output class
+that generated a (bad) Docbook command summary when used. 
