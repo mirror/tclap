@@ -48,11 +48,11 @@ int main(int argc, char** argv)
 		"Scoring Matrix name", false,"BLOSUM50","name string");
 	cmd.add( scoringMatrixName );
 	
-	ValueArg<string> seq1Filename ("f","filename1",
+	ValueArg<string> seq1Filename ("x","filename1",
 		"Sequence 1 filename (FASTA format)", false,"","filename");
 	cmd.add( seq1Filename );
 
-	ValueArg<string> seq2Filename ("F","filename2",
+	ValueArg<string> seq2Filename ("z","filename2",
 		"Sequence 2 filename (FASTA format)", false,"","filename");
 	cmd.add( seq2Filename );
 

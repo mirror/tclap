@@ -1,8 +1,8 @@
 
 USAGE: 
 
-   ../examples/test7  [-l <int>] [-u <float lte 1>] [-b <float lte 1>] [-F
-                      <filename>] [-f <filename>] [-s <name string>] [-d]
+   ../examples/test7  [-l <int>] [-u <float lte 1>] [-b <float lte 1>] [-z
+                      <filename>] [-x <filename>] [-s <name string>] [-d]
                       [-g <negative int>] [-f <negative int>] -n <homer
                       |marge|bart|lisa|maggie> ...  [--] [-v] [-h] <1|2|3>
                       ...
@@ -19,10 +19,10 @@ Where:
    -b <float lte 1>,  --lowerBound <float lte 1>
      (value required)  lower percentage bound
 
-   -F <filename>,  --filename2 <filename>
+   -z <filename>,  --filename2 <filename>
      (value required)  Sequence 2 filename (FASTA format)
 
-   -f <filename>,  --filename1 <filename>
+   -x <filename>,  --filename1 <filename>
      (value required)  Sequence 1 filename (FASTA format)
 
    -s <name string>,  --scoringMatrix <name string>

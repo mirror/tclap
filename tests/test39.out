@@ -2,8 +2,8 @@ PARSE ERROR: Argument: (--times)
              Couldn't find '6' in allowed list.
 
 Brief USAGE: 
-   ../examples/test7  [-l <int>] [-u <float lte 1>] [-b <float lte 1>] [-F
-                      <filename>] [-f <filename>] [-s <name string>] [-d]
+   ../examples/test7  [-l <int>] [-u <float lte 1>] [-b <float lte 1>] [-z
+                      <filename>] [-x <filename>] [-s <name string>] [-d]
                       [-g <negative int>] [-f <negative int>] -n <homer
                       |marge|bart|lisa|maggie> ...  [--] [-v] [-h] <1|2|3>
                       ...

@@ -36,7 +36,7 @@ void parseOptions(int argc, char** argv)
 	//
 
 	SwitchArg btest("B","sB", "exist Test B", false);
-	SwitchArg atest("A","sA", "exist Test B", false);
+	SwitchArg atest("A","sA", "exist Test A", false);
 
 	ValueArg<string> stest("s", "Bs", "string test", true, "homer", 
 					       "string");
