@@ -1,0 +1,47 @@
+PARSE ERROR: Argument: -i (--intTest)
+             Couldn't read argument value from string '2a'
+
+
+USAGE: 
+
+    ../examples/test2 [-f <float>] -i <int> -s <string> [-A] [-C] [-B] [--] [-v] [-h] <string> <string> ...
+
+Where: 
+
+   -f <float>,  --floatTest <float>
+     (value required)  float test
+
+   -i <int>,  --intTest <int>
+     (required)  (value required)  integer test
+
+   -s <string>,  --stringTest <string>
+     (required)  (value required)  string test
+
+   -A,  --existTestA
+     tests for the existence of A
+
+   -C,  --existTestC
+     tests for the existence of C
+
+   -B,  --existTestB
+     tests for the existence of B
+
+   --,  --ignore_rest
+     Ignores the rest of the labeled arguments following this flag.
+
+   -v,  --version
+     Displays version information and exits.
+
+   -h,  --help
+     Displays usage information and exits.
+
+   <string>
+     (required)  (value required)  unlabeld test
+
+   <string>  (accepted multiple times)
+     (value required)  file names
+
+
+
+this is a message
+
