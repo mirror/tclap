@@ -132,6 +132,12 @@ class Arg
 		void _checkWithVisitor() const;
 
 	public:
+
+		/**
+		 * Adds this to the specified list of Args.
+		 * \param argList - The list to add this to.
+		 */
+		virtual void addToList( list<Arg*>& argList ) const;
 		
 		/**
 		 * Begin ignoring arguments since the "--" argument was specified.

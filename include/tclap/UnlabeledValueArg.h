@@ -101,6 +101,11 @@ class UnlabeledValueArg : public ValueArg<T>
 		 */
 		virtual bool operator==(const Arg& a ) const;
 
+		/**
+		 * Instead of pushing to the front of list, push to the back.
+		 * \param argList - The list to add this to.
+		 */
+		virtual void addToList( list<Arg*>& argList ) const;
 };
 
 /**
@@ -173,6 +178,12 @@ bool UnlabeledValueArg<T>::operator==(const Arg& a ) const
 		return true;
 	else
 		return false;
+}
+
+template<class T>
+void UnlabeledValueArg<T>::addToList( list<Arg*>& argList ) const
+{
+	argList.push_back( (Arg*)this );
 }
 
 }
