@@ -93,7 +93,18 @@ class CmdLine
 		 */
 		XorHandler _xorHandler;
 
+		/**
+		 * A list of Args to be explicitly deleted when the destructor
+		 * is called.  At the moment, this only includes the three default
+		 * Args.
+		 */
 		std::list<Arg*> _argDeleteOnExitList;
+
+		/**
+		 * A list of Visitors to be explicitly deleted when the destructor
+		 * is called.  At the moment, these are the Vistors created for the
+		 * default Args.
+		 */
 		std::list<Visitor*> _visitorDeleteOnExitList;
 		
 		/**
@@ -165,7 +176,9 @@ class CmdLine
 				const char delimiter = ' ',
 				const std::string& version = "none" );
 		
-		///Deletes any resources allocated by a CmdLine object
+		/**
+		 * Deletes any resources allocated by a CmdLine object.
+		 */
 		~CmdLine();
 
 		/**
