@@ -402,6 +402,7 @@ ValueArg<T>::ValueArg(const std::string& flag,
                       Visitor* v)
 : Arg(flag, name, desc, req, true, v),
   _value( val ),
+  _typeDesc( constraint->shortID() ),
   _constraint( constraint )
 { }
 
@@ -415,8 +416,9 @@ ValueArg<T>::ValueArg(const std::string& flag,
                       CmdLineInterface& parser,
                       Visitor* v)
 : Arg(flag, name, desc, req, true, v),
-_value( val ),
-_constraint( constraint )
+  _value( val ),
+  _typeDesc( constraint->shortID() ),
+  _constraint( constraint )
 { 
     parser.add( this );
 }
@@ -481,7 +483,7 @@ bool ValueArg<T>::processArg(int *i, std::vector<std::string>& args)
 template<class T>
 std::string ValueArg<T>::shortID(const std::string& val) const
 {
-    return Arg::shortID( _typeDesc );	
+    return Arg::shortID( _typeDesc ); 
 }
 
 /**
@@ -490,7 +492,7 @@ std::string ValueArg<T>::shortID(const std::string& val) const
 template<class T>
 std::string ValueArg<T>::longID(const std::string& val) const
 {
-    return Arg::longID( _typeDesc );	
+    return Arg::longID( _typeDesc ); 
 }
 
 template<class T>
@@ -513,7 +515,8 @@ void ValueArg<T>::_extractValue( const std::string& val )
 		if ( ! _constraint->check( _value ) )
 			throw( CmdLineParseException( "Value '" + val + 
 									      "' does not meet constraint: " + 
-										  _constraint->description() ) );
+										  _constraint->description(),
+										  toString() ) );
 }
 
 } // namespace TCLAP

@@ -363,6 +363,7 @@ MultiArg<T>::MultiArg(const std::string& flag,
                       Constraint<T>* constraint,
                       Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
+  _typeDesc( constraint->shortID() ),
   _constraint( constraint )
 { }
 
@@ -375,6 +376,7 @@ MultiArg<T>::MultiArg(const std::string& flag,
                       CmdLineInterface& parser,
                       Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
+  _typeDesc( constraint->shortID() ),
   _constraint( constraint )
 { 
 	parser.add( this );
@@ -484,7 +486,8 @@ void MultiArg<T>::_extractValue( const std::string& val )
 		if ( ! _constraint->check( _values.back() ) )
 			throw( CmdLineParseException( "Value '" + val +
                                           "' does not meet constraint: " +
-                                          _constraint->description() ) );
+                                          _constraint->description(), 
+										  toString() ) );
 }
 		
 
