@@ -39,7 +39,7 @@ width="125" height="37" border="0" alt=
 </table>
 <h2>Table of Contents</h2>
 <ul>
-<li><a href="manual.html#BASIC_USAGE">Basic usage</a></li>
+<li><a href="manual.html#BASIC_USAGE">Basic Usage</a></li>
 <li style="list-style: none">
 <ul>
 <li><a href="manual.html#ARGUMENT_PROPERTIES">Argument
@@ -71,10 +71,10 @@ allowed for a particular argument...</a></li>
 themselves to the CmdLine...</a></li>
 </ul>
 </li>
-<li><a href="manual.html#EXCEPTIONS">Exceptions</a></li>
+<li><a href="manual.html#EXCEPTIONS">Exceptions to the Rules</a></li>
 <li style="list-style: none">
 <ul>
-<li><a href="manual.html#IGNORE_ARGS">Ignoring arguments</a></li>
+<li><a href="manual.html#IGNORE_ARGS">Ignoring Arguments</a></li>
 <li><a href="manual.html#MULTI_SWITCHES">Multiple Identical
 Switches</a></li>
 <li><a href="manual.html#DESCRIPTION_EXCEPTIONS">Type
@@ -85,7 +85,7 @@ Descriptions</a></li>
 <li><a href="manual.html#MORE_INFO">More Information</a></li>
 </ul>
 <a name="BASIC_USAGE" id="BASIC_USAGE"></a>
-<h2>Basic usage</h2>
+<h2>Basic Usage</h2>
 There are a few key classes to be aware of. The first is the
 <b>CmdLine</b> (command line) class. This is the class that parses
 the command line passed to it according to the arguments that it
@@ -135,7 +135,7 @@ int main(int argc, char** argv)
         string name = nameArg.getValue();
         bool upperCase = caseSwitch.getValue();
 
-        // Do what you intend too...
+        // Do what you intend to...
         if ( upperCase )
                 transform(name.begin(),name.end(),name.begin(),::toupper);
         else
@@ -282,7 +282,7 @@ special cases of <b>ValueArg</b>s and are described below. All
 <b>ValueArg</b>s are <a href=
 "manual.html#FOOTNOTES">templatized**</a> and will attempt to parse
 the string its flag matches on the command line as the type it is
-specified as. <b>ValueArg&lt; int &gt;</b> will attempt to parse in
+specified as. <b>ValueArg&lt; int &gt;</b> will attempt to parse an
 int, <b>ValueArg&lt; float &gt;</b> will attempt to parse a float,
 etc. If <i>operator&gt;&gt;</i> for the specified type doesn't
 recognize the string on the command line as its defined type, then
@@ -308,7 +308,7 @@ distribution.<br />
 Finally, if you want to include TCLAP as part of your software
 (which is perfectly OK, even encouraged) then simply copy the
 contents of /some/place/tclap-1.X/include (the tclap directory and
-all of he header files it contains) into your include
+all of the header files it contains) into your include
 directory.<br />
 <br />
 TCLAP was developed on Linux and MacOSX systems. It is also known
@@ -411,7 +411,7 @@ id="UNLABELED_MULTI_ARG"></a>
 <h3><i>I want an arbitrary number of arguments to be
 accepted...</i></h3>
 Don't worry, we've got you covered. Say you want a strange command
-that searches each file specified for a given string (lets call it
+that searches each file specified for a given string (let's call it
 <i>grep</i>), but you don't want to have to type in all of the file
 names or write a script to do it for you. Say,
 <pre>
@@ -452,7 +452,7 @@ already processed by a <b>UnlabeledValueArg</b> into a
 <i>vector</i> of type T. Any <b>UnlabeledValueArg</b> or other
 <b>UnlabeledMultiArg</b> specified after the first
 <b>UnlabeledMultiArg</b> will be ignored, and if they are required,
-expections will be thrown. When you call the <i>getValue()</i>
+exceptions will be thrown. When you call the <i>getValue()</i>
 method of the <b>UnlabeledValueArg</b> argument, a <i>vector</i>
 will be returned. If you can imagine a situation where there will
 be multiple args of multiple types (stings, ints, floats, etc.)
@@ -467,7 +467,7 @@ not both, yet neither argument is strictly necessary by itself.
 This is called "exclusive or" or "XOR". To accomodate this
 situation, there is now an option to add two or more <b>Arg</b>s to
 a <b>CmdLine</b> that are exclusively or'd with one another:
-xorAdd(). This means that at exactly one of the <b>Arg</b>s must be
+xorAdd(). This means that exactly one of the <b>Arg</b>s must be
 set and no more.<br />
 <br />
 xorAdd() comes in two flavors, either xorAdd(Arg&amp; a, Arg&amp;
@@ -607,7 +607,7 @@ example:
         ...
 </pre>
 <a name="EXCEPTIONS" id="EXCEPTIONS"></a>
-<h2>Exceptions</h2>
+<h2>Exceptions to the Rules</h2>
 Like all good rules, there are many exceptions.... <a name=
 "IGNORE_ARGS" id="IGNORE_ARGS"></a>
 <h3><i>Ignoring arguments</i></h3>
@@ -635,7 +635,7 @@ don't use a <b>SwitchArg</b>, instead use a <b>MultiArg</b> of type
 <i>bool</i>. This means you'll need to specify a 1 or 0 on the
 command line with the switch (as values are required), but this
 should allow you to turn your favorite switch on and off to your
-hearts content. <a name="DESCRIPTION_EXCEPTIONS" id=
+heart's content. <a name="DESCRIPTION_EXCEPTIONS" id=
 "DESCRIPTION_EXCEPTIONS"></a>
 <h3><i>Type Descriptions</i></h3>
 Ideally this library would use RTTI to return a human readable name
@@ -654,7 +654,7 @@ Some of you may be wondering how we get the <i>--help</i>,
 mucking up the <b>CmdLine</b> code with lots of <i>if</i>
 statements and type checking. This is accomplished by using a
 variation on the Visitor Pattern. Actually, it may not be a Visitor
-Pattern at all, but thats what inspired me.<br />
+Pattern at all, but that's what inspired me.<br />
 <br />
 If we want some argument to do some sort of special handling,
 besides simply parsing a value, then we add a <b>Visitor</b>
@@ -665,7 +665,7 @@ called. Any data that needs to be operated on is declared in the
 <b>Visitor</b> constructor and then operated on in the
 <i>visit()</i> method. A <b>Visitor</b> is added to an <b>Arg</b>
 as the last argument in its declaration. This may sound
-complicated, but its pretty straightforward. Lets see an
+complicated, but it is pretty straightforward. Let's see an
 example.<br />
 <br />
 Say you want to add an <i>--authors</i> flag to a program that
