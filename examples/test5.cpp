@@ -44,7 +44,7 @@ void parseOptions(int argc, char** argv)
 	ValueArg<string> ctest("c", "ccc", "c test", true, "homer", "string");
 	cmd.add( ctest );
 
-	SwitchArg dtest("", "ddd", "d test", "homer", false);
+	SwitchArg dtest("", "ddd", "d test", false);
 	cmd.add( dtest );
 
 	ValueArg<string> etest("", "eee", "e test", false, "homer", "string");
