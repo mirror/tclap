@@ -46,7 +46,7 @@ class VersionVisitor: public Visitor
 		 * Constructor.
 		 * \param cmd - The CmdLine whose version method will be called.
 		 */
-		VersionVisitor(CmdLine* cmd) : Visitor(), _cmd( cmd ) {};
+		VersionVisitor(CmdLine* cmd) : Visitor(), _cmd( cmd ) { }
 
 		/**
 		 * Prints the version to stdout.

@@ -210,11 +210,6 @@ class ValueArg : public Arg
 				  Visitor* v = NULL );
 
 		/**
-		 * Destructor.
-		 */ 
-		~ValueArg();
-
-		/**
 		 * Handles the processing of the argument.
 		 * This re-implements the Arg version of this method to set the
 		 * _value of the argument appropriately.  It knows the difference
@@ -337,16 +332,10 @@ ValueArg<T>::ValueArg(const std::string& flag,
 
 
 /**
- * Destructor implementation.
- */
-template<class T>
-ValueArg<T>::~ValueArg() { };
-
-/**
  * Implementation of getValue().
  */
 template<class T>
-T& ValueArg<T>::getValue() { return _value; };
+T& ValueArg<T>::getValue() { return _value; }
 
 /**
  * Implementation of processArg().

@@ -151,6 +151,11 @@ class Arg
 			 bool valreq,
 			 Visitor* v = NULL );
 
+		/**
+		 * Destructor.
+		 */
+		virtual ~Arg();
+
 	public:
 
 		/**
@@ -203,30 +208,6 @@ class Arg
 		 * \param c - The character that delimits flags/names from values.
 		 */
 		static void setDelimiter( char c ) { Arg::_delimiter = c; }
-
-		/**
-		 * Null constructor.
-		 * Everything set to null/blank/0 values.
-		 */
-		Arg();
-
-		/**
-		 * Copy constructor.
-		 * \param a - The Arg to be copied. 
-		 */
-		Arg(const Arg& a);
-
-		/**
-		 * Operator =.
-		 * Assignment operator.
-		 * \param a - The Arg to be assigned to this.
-		 */
-		Arg& operator=(const Arg& a);
-
-		/**
-		 * Destructor.
-		 */
-		virtual ~Arg();
 
 		/**
 		 * Processes the argument.

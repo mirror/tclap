@@ -181,7 +181,7 @@ UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name,
 : MultiArg<T>("", name, desc,  false, typeDesc, v)
 { 
 	_ignoreable = ignoreable;
-};
+}
 
 template<class T>
 UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name, 

@@ -171,11 +171,6 @@ class MultiArg : public Arg
 				  CmdLine& parser,
 				  Visitor* v = NULL );
 		  
-		  /**
-		 * Destructor.
-		 */
-		~MultiArg();
-
 		/**
 		 * Handles the processing of the argument.
 		 * This re-implements the Arg version of this method to set the
@@ -190,7 +185,7 @@ class MultiArg : public Arg
 		 * Returns a vector of type T containing the values parsed from
 		 * the command line.
 		 */
-		const std::vector<T>& getValue() ;
+		const std::vector<T>& getValue();
 
 		/**
 		 * Returns the a short id string.  Used in the usage. 
@@ -218,6 +213,9 @@ class MultiArg : public Arg
 		void allowedInit();
 };
 
+/**
+ *
+ */
 template<class T>
 void MultiArg<T>::allowedInit()
 {
@@ -297,13 +295,7 @@ MultiArg<T>::MultiArg(const std::string& flag,
  *
  */
 template<class T>
-MultiArg<T>::~MultiArg() { };
-
-/**
- *
- */
-template<class T>
-const std::vector<T>& MultiArg<T>::getValue() { return _values; };
+const std::vector<T>& MultiArg<T>::getValue() { return _values; }
 
 /**
  *

@@ -44,7 +44,7 @@ class HelpVisitor: public Visitor
 		 * Constructor.
 		 * \param cmd - The CmdLine that will called for usage method.
 		 */
-		HelpVisitor(CmdLine* cmd) : Visitor(), _cmd( cmd ) {};
+		HelpVisitor(CmdLine* cmd) : Visitor(), _cmd( cmd ) { }
 
 		/**
 		 * Calls the usage method of the CmdLine.

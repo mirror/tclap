@@ -48,9 +48,7 @@ SwitchArg::SwitchArg(const string& flag,
 	parser.add( this );
 }
 
-SwitchArg::~SwitchArg() { };
-
-bool SwitchArg::getValue() { return _value; };
+bool SwitchArg::getValue() { return _value; }
 
 bool SwitchArg::combinedSwitchesMatch(string& combinedSwitches )
 {

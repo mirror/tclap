@@ -39,7 +39,7 @@ class IgnoreRestVisitor: public Visitor
 		/**
 		 * Constructor.
 		 */
-		IgnoreRestVisitor() : Visitor() {};
+		IgnoreRestVisitor() : Visitor() {}
 
 		/**
 		 * Sets Arg::_ignoreRest.

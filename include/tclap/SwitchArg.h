@@ -88,11 +88,6 @@ class SwitchArg : public Arg
 				  Visitor* v = NULL);
 				  
 				  
-		/**
-		 * Destructor.
-		 */
-		~SwitchArg();
-
         /**
 		 * Handles the processing of the argument.
 		 * This re-implements the Arg version of this method to set the
@@ -112,7 +107,7 @@ class SwitchArg : public Arg
 		/**
 		 * Returns bool, whether or not the switch has been set.
 		 */
-		bool getValue() ;
+		bool getValue();
 };
 
 }

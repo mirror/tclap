@@ -35,12 +35,12 @@ class Visitor
 		/**
 		 * Constructor. Does nothing.
 		 */
-		Visitor() {};
+		Visitor() { }
 
 		/**
 		 * Does nothing. Should be overridden by child.
 		 */
-		virtual void visit() {};
+		virtual void visit() { }
 };
 
 }

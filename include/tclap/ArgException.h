@@ -24,6 +24,7 @@
 #define __ARG_EXCEPTION_H__
 
 #include <string>
+#include <exception>
 
 namespace TCLAP {
 
@@ -31,7 +32,7 @@ namespace TCLAP {
  * A simple class that defines and argument exception.  Should be caught
  * whenever a CmdLine is created and parsed.
  */
-class ArgException
+class ArgException : std::exception
 {
 	public:
 	
@@ -43,19 +44,19 @@ class ArgException
 		 */
 		ArgException( const std::string& text = "undefined exception", 
 					  const std::string& id = "undefined" )
-			: _errorText(text), _argId( id ) {}; 
+			: std::exception(), _errorText(text), _argId( id ) { } 
 		
 		/**
 		 * Copy constructor.
 		 * \param e - The ArgException that will be copied.
 		 */
 		ArgException(const ArgException& e) 
-			: _errorText(e._errorText), _argId(e._argId) {};
+			: _errorText(e._errorText), _argId(e._argId) { }
 
 		/**
 		 * Destructor.
 		 */
-		~ArgException() {};
+		virtual ~ArgException() throw() { }
 
 	
 		/**
@@ -71,23 +72,28 @@ class ArgException
 				_argId = e._argId;
 			}
 			return *this; 
-		};
+		}
 
 		/**
 		 * Returns the error text.
 		 */
-		std::string error() { return ( _errorText ); };
+		std::string error() const { return ( _errorText ); }
 
 		/**
 		 * Returns the argument id.
 		 */
-		std::string argId() 
+		std::string argId() const  
 		{ 
 			if ( _argId == "undefined" )
 				return " ";
 			else
 				return ( "Argument: " + _argId ); 
-		};
+		}
+
+		/**
+		 * Returns the error text. 
+		 */
+		const char* what() throw() { return _errorText.c_str(); }
 
 	private:
 

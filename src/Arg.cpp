@@ -76,53 +76,7 @@ Arg::Arg(const std::string& flag,
 
 }
 
-Arg::Arg()
-: 
-  _flag(""),
-  _name(""),
-  _description(""),
-  _required(false),
-  _requireLabel("required"),
-  _valueRequired(false),
-  _alreadySet(false),
-  _visitor( NULL ),
-  _ignoreable(false),
-  _xorSet(false)
-{ };
-
-Arg::Arg(const Arg& a)
-: 
-  _flag(a._flag),
-  _name(a._name),
-  _description(a._description),
-  _required(a._required),
-  _requireLabel(a._requireLabel),
-  _valueRequired(a._valueRequired),
-  _alreadySet(a._alreadySet),
-  _visitor( a._visitor ),
-  _ignoreable(a._ignoreable),
-  _xorSet(a._xorSet)
-{ };
-
-Arg::~Arg() { };
-
-Arg& Arg::operator=(const Arg& a)
-{
-	if ( this != &a )
-	{
-		_flag = a._flag;
-		_name = a._name;
-		_description = a._description;
-		_required = a._required;
-		_requireLabel = a._requireLabel;
-		_valueRequired = a._valueRequired;
-		_alreadySet = a._alreadySet;
-  		_visitor = a._visitor; 
-  		_ignoreable = a._ignoreable;
-  		_xorSet = a._xorSet;
-	} 
-	return *this;
-};
+Arg::~Arg() { }
 
 string Arg::shortID( const string& valueId ) const
 {
@@ -196,11 +150,11 @@ string Arg::getDescription() const
 
 	desc += _description;
 	return desc; 
-};
+}
 
-const string& Arg::getFlag() const { return _flag; };
+const string& Arg::getFlag() const { return _flag; }
 
-const string& Arg::getName() const { return _name; } ;
+const string& Arg::getName() const { return _name; } 
 
 bool Arg::isRequired() const { return _required; }
 
