@@ -17,5 +17,7 @@ libtclapinclude_HEADERS = \
 			 IgnoreRestVisitor.h \
 			 CmdLineOutput.h \
 			 StdOutput.h \
-			 DocBookOutput.h
+			 DocBookOutput.h \
+			 Constraint.h \
+			 ValuesConstraint.h
 
