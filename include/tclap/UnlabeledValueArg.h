@@ -75,6 +75,33 @@ class UnlabeledValueArg : public ValueArg<T>
 						  bool ignoreable = false,
 				          Visitor* v = NULL); 
 
+		/**
+		 * UnlabeledValueArg constructor.
+		 * Note that this constructor does not have a required flag. Any 
+		 * unlabeled argument added to the CmdLine is by default required.
+		 * If you want optional, unlabeled arguments then use an 
+		 * UnlabeledMultiArg.
+		 * \param name - A one word name for the argument.  Can be
+		 * used as a long flag on the command line.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param value - The default value assigned to this argument if it
+		 * is not present on the command line.
+		 * \param allowed - A vector of type T that where the values in the
+		 * vector are the only values allowed for the arg.
+		 * \param ignoreable - Allows you to specify that this argument can be
+		 * ignored if the '--' flag is set.  This defaults to false (cannot
+		 * be ignored) and should  generally stay that way unless you have 
+		 * some special need for certain arguments to be ignored.
+		 * \param v - Optional Vistor.  You should leave this blank unless
+		 * you have a very good reason.
+		 */
+		UnlabeledValueArg(const string& name, 
+			              const string& desc, 
+				          T value,
+				          const vector<T>& allowed,
+						  bool ignoreable = false,
+				          Visitor* v = NULL); 
 
 		/**
 		 * Handles the processing of the argument.
@@ -119,6 +146,21 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const string& name,
 					  bool ignoreable,
 					  Visitor* v)
 : ValueArg<T>("", name, desc, true, val, typeDesc, v)
+{ 
+	_ignoreable = ignoreable;
+};
+
+/**
+ * Constructor implemenation.
+ */
+template<class T>
+UnlabeledValueArg<T>::UnlabeledValueArg(const string& name, 
+					  const string& desc, 
+					  T val,
+					  const vector<T>& allowed,
+					  bool ignoreable,
+					  Visitor* v)
+: ValueArg<T>("", name, desc, true, val, allowed, v)
 { 
 	_ignoreable = ignoreable;
 };

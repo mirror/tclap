@@ -47,6 +47,14 @@ class MultiArg : public Arg
 		 */
 		vector<T> _values;
 
+        /**
+		 * A list of allowed values.
+		 * A list of values allowed for this argument. If the value parsed
+		 * for this arg is not found in this list, then an exception is
+		 * thrown.  If the list is empty, then any value is allowed.
+		 */
+		vector<T> _allowed;
+
 		/**
 		 * The description of type T to be used in the usage.
 		 */
@@ -58,8 +66,15 @@ class MultiArg : public Arg
 		 * is thrown.
 		 * \param val - The string to be read.
 		 */
+
 		void _extractValue( const string& val ); 
-  
+
+        /**
+		 * Checks to see if parsed value is in allowed list.
+		 * \param val - value parsed (only used in output).
+		 */
+		void _checkAllowed( const string& val );
+
 	public:
 
 		/**
@@ -84,6 +99,28 @@ class MultiArg : public Arg
 				  const string& desc,
 				  bool req,
 				  const string& typeDesc,
+				  Visitor* v = NULL);
+
+		/**
+		 * Constructor.
+		 * \param flag - The one character flag that identifies this
+		 * argument on the command line.
+		 * \param name - A one word name for the argument.  Can be
+		 * used as a long flag on the command line.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param req - Whether the argument is required on the command
+		 * line.
+		 * \param allowed - A vector of type T that where the values in the
+		 * vector are the only values allowed for the arg.
+		 * \param v - An optional visitor.  You probably should not
+		 * use this unless you have a very good reason.
+		 */
+		MultiArg( const string& flag,
+				  const string& name,
+				  const string& desc,
+				  bool req,
+				  const vector<T>& allowed,
 				  Visitor* v = NULL);
 
 		/**
@@ -119,6 +156,12 @@ class MultiArg : public Arg
 		 */
 		virtual string longID(const string& val="val") const;
 
+		/**
+		 * Once we've matched the first value, then the arg is no longer
+		 * required.
+		 */
+		virtual bool isRequired() const;
+
 };
 
 /**
@@ -134,6 +177,34 @@ MultiArg<T>::MultiArg(const string& flag,
 : Arg( flag, name, desc, req, true, v ),
   _typeDesc( typeDesc )
 { };
+
+
+/**
+ *
+ */
+template<class T>
+MultiArg<T>::MultiArg(const string& flag, 
+				      const string& name,
+				      const string& desc,
+					  bool req,
+					  const vector<T>& allowed,
+				      Visitor* v)
+: Arg( flag, name, desc, req, true, v ),
+  _allowed( allowed )
+{ 
+	for ( unsigned int i = 0; i < _allowed.size(); i++ )
+	{
+		ostringstream os;
+		os << _allowed[i];
+
+		string temp( os.str() );
+
+		if ( i > 0 )
+			_typeDesc += ",";
+		_typeDesc += temp;
+	}
+};
+
 
 /**
  *
@@ -217,7 +288,10 @@ void MultiArg<T>::_extractValue( const string& val )
        throw( ArgException("More than one valid value parsed from string '" +
                             val + "'", toString() ) );
 
+
 	_values.push_back(temp);
+
+	_checkAllowed( val );
 
 }
 
@@ -228,7 +302,22 @@ void MultiArg<T>::_extractValue( const string& val )
 template<>
 void MultiArg<string>::_extractValue( const string& val )
 {
-	_values.push_back(val);
+	_values.push_back( val );
+
+	_checkAllowed( val );
+}
+
+/**
+ * Checks to see if the value parsed is in the allowed list.
+ */
+template<class T>
+void MultiArg<T>::_checkAllowed( const string& val )
+{
+	if ( _allowed.size() > 0 )
+		if ( find(_allowed.begin(),_allowed.end(),_values.back()) 
+						== _allowed.end() )
+			throw( ArgException( "Couldn't find '" + val +
+                                 "' in allowed list.", toString() ) );
 }
 
 /**
@@ -251,6 +340,25 @@ string MultiArg<T>::longID(const string& val) const
 	string id = Arg::longID(_typeDesc) + "  (accepted multiple times)";
 
 	return id;
+}
+
+/**
+ * Once we've matched the first value, then the arg is no longer
+ * required.
+ */
+template<class T>
+bool MultiArg<T>::isRequired() const
+{
+	if ( _required )
+	{
+		if ( _values.size() > 1 )
+			return false;
+		else
+			return true;
+	}
+	else
+		return false;
+
 }
 
 }

@@ -42,7 +42,7 @@ namespace TCLAP {
  * Instead use an UnlabeledValueArg.
  */
 template<class T>
-class ValueArg : public Arg
+class ValueArg : public Arg 
 {
 	protected:
 
@@ -52,6 +52,14 @@ class ValueArg : public Arg
 		 * is defined.
 		 */
 		T _value;
+
+		/**
+		 * A list of allowed values.
+		 * A list of values allowed for this argument. If the value parsed
+		 * for this arg is not found in this list, then an exception is 
+		 * thrown.  If the list is empty, then any value is allowed.
+		 */
+		vector<T> _allowed;
 
 		/**
 		 * A human readable description of the type to be parsed.
@@ -69,6 +77,12 @@ class ValueArg : public Arg
 		 * \param val - value to be parsed. 
 		 */
 		void _extractValue( const string& val ); 
+
+		/**
+		 * Checks to see if parsed value is in allowed list.
+		 * \param val - value parsed (only used in output). 
+		 */
+		void _checkAllowed( const string& val );
 
 	public:
 
@@ -101,6 +115,35 @@ class ValueArg : public Arg
 				 bool req, 
 				 T value,
 				 const string& typeDesc,
+				 Visitor* v = NULL);
+
+		/**
+		 * Labeled ValueArg constructor.
+		 * You could conceivably call this constructor with a blank flag, 
+		 * but that would make you a bad person.  It would also cause
+		 * an exception to be thrown.   If you want an unlabeled argument, 
+		 * use the other constructor.
+		 * \param flag - The one character flag that identifies this
+		 * argument on the command line.
+		 * \param name - A one word name for the argument.  Can be
+		 * used as a long flag on the command line.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param req - Whether the argument is required on the command
+		 * line.
+		 * \param value - The default value assigned to this argument if it
+		 * is not present on the command line.
+		 * \param allowed - A vector of type T that where the values in the 
+		 * vector are the only values allowed for the arg.
+		 * \param v - An optional visitor.  You probably should not
+		 * use this unless you have a very good reason.
+		 */
+		ValueArg(const string& flag, 
+				 const string& name, 
+			     const string& desc, 
+				 bool req, 
+				 T value,
+				 const vector<T>& allowed,
 				 Visitor* v = NULL);
 
 		/**
@@ -153,7 +196,36 @@ ValueArg<T>::ValueArg(const string& flag,
 : Arg(flag, name, desc, req, true, v),
   _value( val ),
   _typeDesc( typeDesc )
-{ };
+{ }
+
+/**
+ * Constructor with allowed list. 
+ */
+template<class T>
+ValueArg<T>::ValueArg(const string& flag, 
+				      const string& name, 
+					  const string& desc, 
+					  bool req, 
+					  T val,
+					  const vector<T>& allowed,
+					  Visitor* v)
+: Arg(flag, name, desc, req, true, v),
+  _value( val ),
+  _allowed( allowed )
+{ 
+	for ( unsigned int i = 0; i < _allowed.size(); i++ )
+	{
+		ostringstream os;
+		os << _allowed[i];
+
+		string temp( os.str() ); 
+
+		if ( i > 0 )
+			_typeDesc += ",";
+		_typeDesc += temp;
+	}
+}
+
 
 /**
  * Destructor implementation.
@@ -239,6 +311,7 @@ void ValueArg<T>::_extractValue( const string& val )
 		throw( ArgException("More than one valid value parsed from string '" +
 							val + "'", toString() ) );
 
+	_checkAllowed( val );
 }
 
 /**
@@ -249,7 +322,20 @@ void ValueArg<T>::_extractValue( const string& val )
 template<>
 void ValueArg<string>::_extractValue( const string& val ) 
 {
+	_checkAllowed( val );
 	_value = val;
+}
+
+/**
+ * Checks to see if the value parsed is in the allowed list.
+ */
+template<class T>
+void ValueArg<T>::_checkAllowed( const string& val )
+{
+	if ( _allowed.size() > 0 )
+		if ( find(_allowed.begin(),_allowed.end(),_value) == _allowed.end() )
+			throw( ArgException( "Couldn't find '" + val + 
+							     "' in allowed list.", toString() ) );
 }
 
 /**

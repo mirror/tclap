@@ -64,6 +64,25 @@ class UnlabeledMultiArg : public MultiArg<T>
 				           Visitor* v = NULL );
 
 		/**
+		 * Constructor.  
+		 * \param name - The name of the Arg. Note that this is used for
+		 * identification, not as a long flag.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param allowed - A vector of type T that where the values in the
+		 * vector are the only values allowed for the arg.
+		 * \param ignoreable - Whether or not this argument can be ignored
+		 * using the "--" flag.
+		 * \param v - An optional visitor.  You probably should not
+		 * use this unless you have a very good reason.
+		 */
+		UnlabeledMultiArg( const string& name,
+				           const string& desc,
+				           const vector<T>& allowed,
+						   bool ignoreable = false,
+				           Visitor* v = NULL );
+
+		/**
 		 * Handles the processing of the argument.
 		 * This re-implements the Arg version of this method to set the
 		 * _value of the argument appropriately.  It knows the difference
@@ -105,6 +124,17 @@ UnlabeledMultiArg<T>::UnlabeledMultiArg(const string& name,
 										bool ignoreable,
 					                    Visitor* v)
 : MultiArg<T>("", name, desc,  false, typeDesc, v)
+{ 
+	_ignoreable = ignoreable;
+};
+
+template<class T>
+UnlabeledMultiArg<T>::UnlabeledMultiArg(const string& name, 
+				                        const string& desc, 
+					                    const vector<T>& allowed,
+										bool ignoreable,
+					                    Visitor* v)
+: MultiArg<T>("", name, desc,  false, allowed, v)
 { 
 	_ignoreable = ignoreable;
 };
