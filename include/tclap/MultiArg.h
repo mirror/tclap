@@ -26,14 +26,19 @@
 #include <string>
 #include <vector>
 
+#include <tclap/Arg.h>
+
+#ifdef HAVE_CONFIG_H
 #include <config.h>
-#ifdef HAVE_SSTREAM
-#include <sstream>
-#elif HAVE_SSTREAM
-#include <strstream>
+#else
+#define HAVE_SSTREAM
 #endif
 
-#include <tclap/Arg.h>
+#if defined(HAVE_SSTREAM)
+#include <sstream>
+#elif defined(HAVE_STRSTREAM)
+#include <strstream>
+#endif
 
 namespace TCLAP {
 
