@@ -40,7 +40,7 @@ void parseOptions(int argc, char** argv)
 	SwitchArg btest("B","existTestB", "exist Test B", false);
 	cmd.add( btest );
 
-	ValueArg<string> stest("s", "stringTest", "string test", true, "homer", 
+	ValueArg<string> stest("", "stringTest", "string test", true, "homer", 
 					       "string");
 	cmd.add( stest );
 
