@@ -88,7 +88,29 @@ class CmdLine
 		 */
 		bool _emptyCombined(const string& s);
 
+	private:
+
+		/**
+		 * Encapsulates the code common to the constructors (which is all
+		 * of it).
+		 */
+		void _constructor();
+
 	public:
+
+		/**
+		 * Command line constructor. DEPRECATED!!!  This is here to maintain
+		 * backwards compatibility with earlier releases.  Note that the
+		 * program name will be overwritten with argv[0].  The delimiter
+		 * used is ' ' (as before).
+		 * \param name - The program name - will be overwritten with argv[0].
+		 * \param message - The message to be used in the usage output.
+		 * \param version - The version number to be used in the
+		 * --version switch.
+		 */
+		CmdLine(const string& name, 
+				const string& message,
+				const string& version = "none" );
 
 		/**
 		 * Command line constructor. Defines how the arguments will be

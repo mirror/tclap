@@ -24,12 +24,27 @@
 
 namespace TCLAP {
 
+CmdLine::CmdLine(const string& n, const string& m, const string& v )
+: _progName(n),
+  _message(m),
+  _version(v),
+  _numRequired(0),
+  _delimiter(' ')
+{ 
+	_constructor();
+}
+
 CmdLine::CmdLine(const string& m, char delim, const string& v )
 : _progName("not_set_yet"),
   _message(m),
   _version(v),
   _numRequired(0),
   _delimiter(delim)
+{
+	_constructor();
+}
+
+void CmdLine::_constructor()
 { 
 	Arg::setDelimiter( _delimiter );
 
