@@ -200,7 +200,6 @@ void Arg::trimFlag(string& flag, string& value) const
 		flag = flag.substr(0,stop);
 	}
 
-	cout << "flag: " << flag << endl << "value: " << value << endl;
 }
 
 }
