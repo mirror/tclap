@@ -23,9 +23,11 @@
 #define __ORHANDLER_HH__
 
 #include <tclap/Arg.h>
+#include <tclap/PrintSensibly.h>
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <ostream>
 
 using namespace std;
 
@@ -67,14 +69,15 @@ class XorHandler
 		int check( const Arg* a );
 
 		/**
-		 * Prints the XOR specific short usage.
+		 * Returns the XOR specific short usage.
 		 */
-		void shortUsage();
+		string shortUsage();
 
 		/**
 		 * Prints the XOR specific long usage.
+		 * \param os - Stream to print to.
 		 */
-		void longUsage();
+		void printLongUsage(ostream& os);
 
 		/**
 		 * Simply checks whether the Arg is contained in one of the arg

@@ -33,10 +33,12 @@
 #include <tclap/SwitchArg.h>
 #include <tclap/Visitor.h>
 #include <tclap/XorHandler.h>
+#include <tclap/PrintSensibly.h>
 #include <string>
 #include <vector>
 #include <list>
 #include <iostream>
+#include <ostream>
 #include <cstdio>
 #include <cstdarg>
 #include <iomanip>
@@ -100,6 +102,19 @@ class CmdLine
 		 * \param s - The message to be used in the usage.
 		 */
 		bool _emptyCombined(const string& s);
+
+		/**
+		 * Writes a brief usage message with short args.
+		 * \param os - The stream to write the message to.
+		 */
+		void _shortUsage( ostream& os );
+
+		/**
+		 * Writes a longer usage message with long and short args, 
+		 * provides descriptions and prints message.
+		 * \param os - The stream to write the message to.
+		 */
+		void _longUsage( ostream& os );
 
 	private:
 

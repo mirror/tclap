@@ -31,5 +31,6 @@
 #include <tclap/Visitor.h>
 #include <tclap/XorHandler.h>
 #include <tclap/CommandLine.h>
+#include <tclap/PrintSensibly.h>
 
 #endif
