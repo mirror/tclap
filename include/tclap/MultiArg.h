@@ -200,7 +200,7 @@ MultiArg<T>::MultiArg(const string& flag,
 		string temp( os.str() );
 
 		if ( i > 0 )
-			_typeDesc += ",";
+			_typeDesc += "|";
 		_typeDesc += temp;
 	}
 };
