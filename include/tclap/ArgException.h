@@ -39,7 +39,8 @@ class ArgException : public std::exception
 		/**
 		 * Constructor.
 		 * \param text - The text of the exception.
-		 * \param id - The text identifying the argument source 
+		 * \param id - The text identifying the argument source.
+		 * \param td - Text describing the type of ArgException it is.
 		 * of the exception.
 		 */
 		ArgException( const std::string& text = "undefined exception", 
