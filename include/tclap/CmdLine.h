@@ -1,24 +1,24 @@
 
-/****************************************************************************** 
- * 
+/******************************************************************************
+ *
  *  file:  CmdLine.h
- * 
+ *
  *  Copyright (c) 2003, Michael E. Smoot .
  *  Copyright (c) 2004, Michael E. Smoot, Daniel Aarno.
  *  All rights reverved.
- * 
+ *
  *  See the file COPYING in the top directory of this distribution for
  *  more information.
- *  
- *  THE SOFTWARE IS PROVIDED _AS IS_, WITHOUT WARRANTY OF ANY KIND, EXPRESS 
- *  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
- *  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
- *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
- *  DEALINGS IN THE SOFTWARE.  
- *  
- *****************************************************************************/ 
+ *
+ *  THE SOFTWARE IS PROVIDED _AS IS_, WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ *  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ *  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ *  DEALINGS IN THE SOFTWARE.
+ *
+ *****************************************************************************/
 
 #ifndef TCLAP_CMDLINE_H
 #define TCLAP_CMDLINE_H
@@ -78,14 +78,14 @@ class CmdLine : public CmdLineInterface
 		std::string _version;
 
 		/**
-		 * The number of arguments that are required to be present on 
-		 * the command line. This is set dynamically, based on the 
+		 * The number of arguments that are required to be present on
+		 * the command line. This is set dynamically, based on the
 		 * Args added to the CmdLine object.
 		 */
 		int _numRequired;
 
 		/**
-		 * The character that is used to separate the argument flag/name 
+		 * The character that is used to separate the argument flag/name
 		 * from the value.  Defaults to ' ' (space).
 		 */
 		char _delimiter;
@@ -122,14 +122,6 @@ class CmdLine : public CmdLineInterface
 		 */
 		bool _emptyCombined(const std::string& s);
 
-	private:
-
-		/**
-		 * Encapsulates the code common to the constructors (which is all
-		 * of it).
-		 */
-		void _constructor();
-
 		/**
 		 * Perform a delete ptr; operation on ptr when this object is deleted.
 		 */
@@ -139,6 +131,14 @@ class CmdLine : public CmdLineInterface
 		 * Perform a delete ptr; operation on ptr when this object is deleted.
 		 */
 		void deleteOnExit(Visitor* ptr);
+
+	private:
+
+		/**
+		 * Encapsulates the code common to the constructors (which is all
+		 * of it).
+		 */
+		void _constructor();
 
 		/**
 		 * Is set to true when a user sets the output object. We use this so
@@ -163,7 +163,7 @@ class CmdLine : public CmdLineInterface
 		 * \param version - The version number to be used in the
 		 * --version switch.
 		 */
-		CmdLine(const std::string& name, 
+		CmdLine(const std::string& name,
 				const std::string& message,
 				const std::string& version = "none" );
 
@@ -179,11 +179,11 @@ class CmdLine : public CmdLineInterface
 		 * \param helpAndVersion - Whether or not to create the Help and
 		 * Version switches. Defaults to true.
 		 */
-		CmdLine(const std::string& message, 
+		CmdLine(const std::string& message,
 				const char delimiter = ' ',
 				const std::string& version = "none",
 				bool helpAndVersion = true);
-		
+
 		/**
 		 * Deletes any resources allocated by a CmdLine object.
 		 */
@@ -191,28 +191,28 @@ class CmdLine : public CmdLineInterface
 
 		/**
 		 * Adds an argument to the list of arguments to be parsed.
-		 * \param a - Argument to be added. 
+		 * \param a - Argument to be added.
 		 */
 		void add( Arg& a );
 
 		/**
 		 * An alternative add.  Functionally identical.
-		 * \param a - Argument to be added. 
+		 * \param a - Argument to be added.
 		 */
 		void add( Arg* a );
 
 		/**
 		 * Add two Args that will be xor'd.  If this method is used, add does
 		 * not need to be called.
-		 * \param a - Argument to be added and xor'd. 
-		 * \param b - Argument to be added and xor'd. 
+		 * \param a - Argument to be added and xor'd.
+		 * \param b - Argument to be added and xor'd.
 		 */
 		void xorAdd( Arg& a, Arg& b );
 
 		/**
-		 * Add a list of Args that will be xor'd.  If this method is used, 
+		 * Add a list of Args that will be xor'd.  If this method is used,
 		 * add does not need to be called.
-		 * \param xors - List of Args to be added and xor'd. 
+		 * \param xors - List of Args to be added and xor'd.
 		 */
 		void xorAdd( std::vector<Arg*>& xors );
 
@@ -274,8 +274,8 @@ class CmdLine : public CmdLineInterface
 //Begin CmdLine.cpp
 ///////////////////////////////////////////////////////////////////////////////
 
-inline CmdLine::CmdLine(const std::string& n, 
-				        const std::string& m, 
+inline CmdLine::CmdLine(const std::string& n,
+				        const std::string& m,
 						const std::string& v )
 : _progName(n),
   _message(m),
@@ -284,12 +284,12 @@ inline CmdLine::CmdLine(const std::string& n,
   _delimiter(' '),
   _userSetOutput(false),
   _helpAndVersion(true)
-{ 
+{
 	_constructor();
 }
 
-inline CmdLine::CmdLine(const std::string& m, 
-				        char delim, 
+inline CmdLine::CmdLine(const std::string& m,
+				        char delim,
 						const std::string& v,
 						bool help )
 : _progName("not_set_yet"),
@@ -307,15 +307,15 @@ inline CmdLine::~CmdLine()
 {
 	ArgListIterator argIter;
 	VisitorListIterator visIter;
-  
-	for( argIter = _argDeleteOnExitList.begin(); 
-		 argIter != _argDeleteOnExitList.end(); 
+
+	for( argIter = _argDeleteOnExitList.begin();
+		 argIter != _argDeleteOnExitList.end();
 		 ++argIter)
 		delete *argIter;
-  
-	for( visIter = _visitorDeleteOnExitList.begin(); 
-		 visIter != _visitorDeleteOnExitList.end(); 
-		 ++visIter) 
+
+	for( visIter = _visitorDeleteOnExitList.begin();
+		 visIter != _visitorDeleteOnExitList.end();
+		 ++visIter)
 		delete *visIter;
 
 	if ( !_userSetOutput )
@@ -323,7 +323,7 @@ inline CmdLine::~CmdLine()
 }
 
 inline void CmdLine::_constructor()
-{ 
+{
 	_output = new StdOutput;
 
 	Arg::setDelimiter( _delimiter );
@@ -333,16 +333,16 @@ inline void CmdLine::_constructor()
 	if ( _helpAndVersion )
 	{
 		v = new HelpVisitor( this, &_output );
-		SwitchArg* help = new SwitchArg("h","help", 
-						"Displays usage information and exits.", 
+		SwitchArg* help = new SwitchArg("h","help",
+						"Displays usage information and exits.",
 						false, v);
 		add( help );
 		deleteOnExit(help);
 		deleteOnExit(v);
-	
+
 		v = new VersionVisitor( this, &_output );
-		SwitchArg* vers = new SwitchArg("","version", 
-					"Displays version information and exits.", 
+		SwitchArg* vers = new SwitchArg("","version",
+					"Displays version information and exits.",
 					false, v);
 		add( vers );
 		deleteOnExit(vers);
@@ -350,7 +350,7 @@ inline void CmdLine::_constructor()
 	}
 
 	v = new IgnoreRestVisitor();
-	SwitchArg* ignore  = new SwitchArg(Arg::flagStartString(), 
+	SwitchArg* ignore  = new SwitchArg(Arg::flagStartString(),
 					   Arg::ignoreNameString(),
 			   "Ignores the rest of the labeled arguments following this flag.",
 					   false, v);
@@ -372,7 +372,7 @@ inline void CmdLine::xorAdd( std::vector<Arg*>& ors )
 	}
 }
 
-inline void CmdLine::xorAdd( Arg& a, Arg& b ) 
+inline void CmdLine::xorAdd( Arg& a, Arg& b )
 {
     std::vector<Arg*> ors;
     ors.push_back( &a );
@@ -380,30 +380,30 @@ inline void CmdLine::xorAdd( Arg& a, Arg& b )
 	xorAdd( ors );
 }
 
-inline void CmdLine::add( Arg& a ) 
-{ 
+inline void CmdLine::add( Arg& a )
+{
 	add( &a );
 }
 
-inline void CmdLine::add( Arg* a ) 
-{ 
-	for( ArgListIterator it = _argList.begin(); it != _argList.end(); it++ ) 
-		if ( *a == *(*it) ) 
-			throw( SpecificationException( 
-			       	"Argument with same flag/name already exists!", 
+inline void CmdLine::add( Arg* a )
+{
+	for( ArgListIterator it = _argList.begin(); it != _argList.end(); it++ )
+		if ( *a == *(*it) )
+			throw( SpecificationException(
+			       	"Argument with same flag/name already exists!",
 					a->longID() ) );
 
 	a->addToList( _argList );
 
-	if ( a->isRequired() ) 
-		_numRequired++;	
+	if ( a->isRequired() )
+		_numRequired++;
 }
 
 inline void CmdLine::parse(int argc, char** argv)
 {
 	try {
 
-	_progName = argv[0]; 
+	_progName = argv[0];
 
 	// this step is necessary so that we have easy access to mutable strings.
 	std::vector<std::string> args;
@@ -519,4 +519,4 @@ inline bool CmdLine::hasHelpAndVersion()
 
 
 } //namespace TCLAP
-#endif 
+#endif
