@@ -67,7 +67,7 @@ bool UnlabeledMultiArg<T>::processArg(int *i, vector<string>& args)
 {
 	// never ignore an unlabeled multi arg
 	
-	_extractValue( *i, args );
+	_extractValue( args[*i] );
 	return true;
 }
 
