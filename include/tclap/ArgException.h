@@ -47,32 +47,9 @@ class ArgException : public std::exception
 			: std::exception(), _errorText(text), _argId( id ) { } 
 		
 		/**
-		 * Copy constructor.
-		 * \param e - The ArgException that will be copied.
-		 */
-		ArgException(const ArgException& e) 
-			: _errorText(e._errorText), _argId(e._argId) { }
-
-		/**
 		 * Destructor.
 		 */
 		virtual ~ArgException() throw() { }
-
-	
-		/**
-		 * Assignment operator.
-		 * \param e - The ArgException that will be assigned
-		 * to this.
-		 */
-		ArgException& operator=( const ArgException& e )
-		{ 
-			if ( this != &e ) 
-			{
-				_errorText = e._errorText;  
-				_argId = e._argId;
-			}
-			return *this; 
-		}
 
 		/**
 		 * Returns the error text.
@@ -91,9 +68,13 @@ class ArgException : public std::exception
 		}
 
 		/**
-		 * Returns the error text. 
+		 * Returns the arg id and error text. 
 		 */
-		const char* what() throw() { return _errorText.c_str(); }
+		const char* what() throw() 
+		{
+			std::string ex = _argId + " -- " + _errorText;
+			return ex.c_str();
+		}
 
 	private:
 
