@@ -1,3 +1,8 @@
 
-No news is good news.
+4/3/03 -  Checked in a good sized update that move support of the library
+closer to that of the POSIX/GNU standards.  Switches can now be combined into
+single arguments, -- is supported and MultiArgs now allow for multiple labeled
+args.  I've also changed things a bit by subclassing MultiArg and ValueArg
+to get unlabeled versions of these classes.  I think this is a bit cleaner
+design, despite two new classes.
 
