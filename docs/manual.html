@@ -24,6 +24,7 @@
 <meta name="generator" content=
 "HTML Tidy for Mac OS X (vers 1st August 2004), see www.w3.org" />
 <title>TCLAP Manual</title>
+<link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
 <table summary="Title and Sourceforge Logo.">
@@ -86,12 +87,12 @@ Descriptions</a></li>
 </ul>
 <a name="BASIC_USAGE" id="BASIC_USAGE"></a>
 <h2>Basic Usage</h2>
-There are a few key classes to be aware of. The first is the
+<em>TCLAP</em> has a few key classes to be aware of. The first is the
 <b>CmdLine</b> (command line) class. This class parses
 the command line passed to it according to the arguments that it
 contains. Arguments are separate objects that are added to the
-<b>CmdLine</b> object one at a time. The five types of 
-arguments are, <b>ValueArg</b>, <b>UnlabeledValueArg</b>,
+<b>CmdLine</b> object one at a time. The five 
+argument classes are: <b>ValueArg</b>, <b>UnlabeledValueArg</b>,
 <b>SwitchArg</b>, <b>MultiArg</b> and <b>UnlabeledMultiArg</b>.
 These classes are templatized, which means they can be defined to parse
 a value of any <a href="manual.html#FOOTNOTES">type**</a>. Once you add the 
@@ -99,8 +100,9 @@ arguments to the <b>CmdLine</b> object, it parses the command line
 and assigns the data it finds to the specific argument objects it
 contains. Your program accesses the values parsed by 
 calls to the <i>getValue()</i> methods of the argument objects.<br />
-<br />
-Here is a simple <a href="test1.cpp">example</a> ...<br />
+<br/>
+Here is a simple <a href="test1.cpp">example</a> ...
+<br/>
 <pre>
 #include &lt; string &gt;
 #include &lt; iostream &gt;
@@ -148,12 +150,10 @@ int main(int argc, char** argv)
 }
 </pre>
 <br />
-<br />
-<br />
 The output should look like:<br />
 <br />
-<br />
 <pre>
+
 % tester -u -n mike
 My name is MIKE
 
@@ -202,9 +202,8 @@ Where:
 
 
    Command description message
+
 </pre>
-<br />
-<br />
 <br />
 This example shows a number of different properties of the
 library...
@@ -235,7 +234,7 @@ ArgExceptions!</i></b> Any problems found in constructing the
 <b>ArgException</b>.</li>
 </ul>
 <a name="ARGUMENT_PROPERTIES" id="ARGUMENT_PROPERTIES"></a>
-<h3><i>Argument Properties</i></h3>
+<h3>Argument Properties</h3>
 Arguments, whatever their type, have a few common basic properties.
 These properties are set in the constructors of the arguments.
 <ul>
@@ -262,10 +261,10 @@ most part</a>, with some <a href=
 "manual.html#DESCRIPTION_EXCEPTIONS">hack</a>).</li>
 </ul>
 <a name="ARGUMENT_TYPES" id="ARGUMENT_TYPES"></a>
-<h3><i>Types of Arguments</i></h3>
+<h3>Types of Arguments</h3>
 There are two primary types of arguments:
 <ul>
-<li><b>SwitchArg</b>s are what the name implies, simple on/off,
+<li><b>SwitchArg</b>s are what the name implies: simple, on/off,
 boolean switches. Use <b>SwitchArg</b>s anytime you want to turn
 some sort of system property on or off. <b>SwitchArg</b>s don't
 parse a value. They return <i>true</i> or <i>false</i>, depending
@@ -289,8 +288,8 @@ recognize the string on the command line as its defined type, then
 an exception will be thrown.</li>
 </ul>
 <a name="COMPILING" id="COMPILING"></a>
-<h3><i>Compiling</i></h3>
-TCLAP is implemented entirely in header files which means you only
+<h3>Compiling</h3>
+<em>TCLAP</em> is implemented entirely in header files which means you only
 need to include CmdLine.h to use the library.
 <pre>
         #include &lt; tclap/CmdLine.h &gt;
@@ -305,13 +304,13 @@ complier argument to specify the exact location of the libraries.
 Where /some/place/tclap-1.X is the place you have unpacked the
 distribution.<br />
 <br />
-Finally, if you want to include TCLAP as part of your software
+Finally, if you want to include <em>TCLAP</em> as part of your software
 (which is perfectly OK, even encouraged) then simply copy the
 contents of /some/place/tclap-1.X/include (the tclap directory and
 all of the header files it contains) into your include
 directory.<br />
 <br />
-TCLAP was developed on Linux and MacOSX systems. It is also known
+<em>TCLAP</em> was developed on Linux and MacOSX systems. It is also known
 to work on Windows, Sun and Alpha platforms. We've made every
 effort to keep the library compliant with the ANSI C++ standard so
 if your compiler meets the standard, then this library should work
@@ -320,8 +319,8 @@ for you. Please let us know if this is not the case! <a name=
 <h2>Complications</h2>
 Naturally, what we have seen to this point doesn't satisfy all of
 our needs. <a name="COMBINE_SWITCHES" id="COMBINE_SWITCHES"></a>
-<h3><i>I want to combine multiple switches into one
-argument...</i></h3>
+<h3>I want to combine multiple switches into one
+argument...</h3>
 Multiple <b>SwitchArg</b>s can be combined into a single argument
 on the command line. If you have switches -a, -b and -c it is valid
 to do either:
@@ -339,8 +338,8 @@ to do either:
 This is to make this library more in line with the POSIX and GNU
 standards (as I understand them). <a name="MULTI_ARG" id=
 "MULTI_ARG"></a>
-<h3><i>I tried passing multiple values on the command line with the
-same flag and it didn't work...</i></h3>
+<h3>I tried passing multiple values on the command line with the
+same flag and it didn't work...</h3>
 Correct. You can neither specify mulitple <b>ValueArg</b>s or
 <b>SwitchArg</b>s with the same flag in the code nor on the command
 line. Exceptions will occur in either case. For <b>SwitchArg</b>s
@@ -363,18 +362,16 @@ value that it matches and parses onto a vector of values. When the
 a single value is returned. A <b>MultiArg</b> is declared much like
 a <b>ValueArg</b>:
 <pre>
-                ...
 
                 MultiArg &lt; int &gt; itest("i", "intTest", "multi int test", false,"int" );
                 cmd.add( itest );
 
-                ...
 </pre>
 Note that <b>MultiArg</b>s can be added to the <b>CmdLine</b> in
 any order (unlike <a href=
 "manual.html#UNLABELED_MULTI_ARG">UnlabeledMultiArg</a>s). <a name=
 "UNLABELED_VALUE_ARG" id="UNLABELED_VALUE_ARG"></a>
-<h3><i>I don't like labelling all of my arguments...</i></h3>
+<h3>I don't like labelling all of my arguments...</h3>
 To this point all of our arguments have had labels (flags)
 indentifying them on the command line, but there are some
 situations where flags are burdensome and not worth the effort. One
@@ -386,13 +383,11 @@ much just <b>ValueArg</b>s without the flag specified, which tells
 the <b>CmdLine</b> object to treat them accordingly. The code would
 look like this:
 <pre>
-                ...
 
                 UnlabeledValueArg &lt; float &gt;  nolabel( "name", "unlabeled test", 3.14,
                                                   "nameString"  );
                 cmd.add( nolabel );
 
-                ...
 </pre>
 Everything else is handled identically to what is seen above. The
 only difference to be aware of, and this is important: <b>the order
@@ -408,8 +403,8 @@ declaration), but the <b>UnlabeledValueArgs</b> will still be
 parsed in the order they are added. Just remember that order is
 important for unlabeled arguments. <a name="UNLABELED_MULTI_ARG"
 id="UNLABELED_MULTI_ARG"></a>
-<h3><i>I want an arbitrary number of arguments to be
-accepted...</i></h3>
+<h3>I want an arbitrary number of arguments to be
+accepted...</h3>
 Don't worry, we've got you covered. Say you want a strange command
 that searches each file specified for a given string (let's call it
 <i>grep</i>), but you don't want to have to type in all of the file
@@ -433,7 +428,6 @@ that like <b>UnlabeledValueArg</b>s: order matters! In fact, <b>an
 UnlabeledMultiArg must be the <i>last</i> argument added to the
 CmdLine!</b>. Here is what a declaration looks like:
 <pre>
-                ...
 
                 //
                 // UnlabeledMultiArg must be the LAST argument added!
@@ -444,7 +438,6 @@ CmdLine!</b>. Here is what a declaration looks like:
 
                 vector &lt; string &gt;  fileNames = multi.getValue();
 
-                ...
 </pre>
 You must only ever specify one (1) <b>UnlabeledMultiArg</b>. One
 <b>UnlabeledMultiArg</b> will read every unlabeled Arg that wasn't
@@ -459,7 +452,7 @@ be multiple args of multiple types (stings, ints, floats, etc.)
 then just declare the <b>UnlabeledMultiArg</b> as type
 <i>string</i> and parse the different values yourself or use
 several <b>UnlabeledValueArg</b>s. <a name="XOR" id="XOR"></a>
-<h3><i>I want one argument or the other, but not both...</i></h3>
+<h3>I want one argument or the other, but not both...</h3>
 Suppose you have a command that must read input from one of two
 possible locations, either a local file or a URL. The command
 <i>must</i> read something, so <i>one</i> argument is required, but
@@ -475,7 +468,6 @@ b) to add just two <b>Arg</b>s to be xor'd and xorAdd( vector&lt;
 Arg* &gt; xorList ) to add more than two <b>Arg</b>s.
 <pre>
 
-        ...
 
         ValueArg &lt; string &gt;  fileArg("f","file","File name to read",true,"homer",
                                  "filename");
@@ -485,7 +477,6 @@ Arg* &gt; xorList ) to add more than two <b>Arg</b>s.
         cmd.xorAdd( fileArg, urlArg );
         cmd.parse(argc, argv);
 
-        ...
 </pre>
 Once one <b>Arg</b> in the xor list is matched on the
 <b>CmdLine</b> then the others in the xor list will be marked as
@@ -499,7 +490,6 @@ other <b>Arg</b> that was xor'd isSet() will return <b>FALSE</b>.
 will also return <b>FALSE</b>.)
 <pre>
 
-        ...
 
         if ( fileArg.isSet() )
                 readFile( fileArg.getValue() );
@@ -510,12 +500,11 @@ will also return <b>FALSE</b>.)
                 // required args above has not been set.
                 throw("Very bad things...");
 
-        ...
 
 </pre>
 <a name="NO_FLAG" id="NO_FLAG"></a>
-<h3><i>I have more arguments than single flags make sense
-for...</i></h3>
+<h3>I have more arguments than single flags make sense
+for...</h3>
 Some commands have so many options that single flags no longer map
 sensibly to the available options. In this case, it is desirable to
 specify <b>Arg</b>s using only long options. This one is easy to
@@ -525,18 +514,16 @@ option should be matched and will force users to specify the long
 option on the command line. The help output is updated accordingly.
 <pre>
 
-        ...
 
         ValueArg &lt; string &gt;  fileArg("","file","File name",true,"homer","filename");
 
         SwitchArg  caseSwitch("","upperCase","Print in upper case",false);
 
-        ...
 
 </pre>
 <a name="ALLOWED" id="ALLOWED"></a>
-<h3><i>I want to constrain the values allowed for a particular
-argument...</i></h3>
+<h3>I want to constrain the values allowed for a particular
+argument...</h3>
 There are now constructors for all of the <b>Arg</b>s that parse
 values that allow a list of values to be specified for that
 particular <b>Arg</b>. When the value for the <b>Arg</b> is parsed,
@@ -544,8 +531,6 @@ it is checked against the list of values specified in the
 constructor. If the value is in the list then it is accepted. If
 not, then an exception is thrown. Here is a simple example:
 <pre>
-
-        ...
 
         vector&lt; string &gt; allowed;
         allowed.push_back("homer");
@@ -556,8 +541,6 @@ not, then an exception is thrown. Here is a simple example:
         
         ValueArg&lt; string &gt; nameArg("n","name","Name to print",true,"homer",allowed);
         cmd.add( nameArg );
-
-        ...
 
 </pre>
 Instead of a type description being specified in the <b>Arg</b>, a
@@ -576,7 +559,7 @@ description provided with the <b>Arg</b> reflects the constraint
 you choose.<br />
 <br />
 <a name="CONSTRUCTOR" id="CONSTRUCTOR"></a>
-<h3><i>I want the Args to add themselves to the CmdLine...</i></h3>
+<h3>I want the Args to add themselves to the CmdLine...</h3>
 New constructors have beed added for each <b>Arg</b> that take a
 <b>CmdLine</b> object as an argument. Each <b>Arg</b> then
 <i>add</i>s itself to the <b>CmdLine</b> object. There is no
@@ -585,7 +568,6 @@ calling the <i>add()</i> method directly. At the moment, there is
 no way to do an <i>xorAdd()</i> from the constructor. Here is an
 example:
 <pre>
-        ...
 
         // Create the command line.
         CmdLine cmd("this is a message", '=', "0.99" );
@@ -604,13 +586,12 @@ example:
         // Parse the command line.
         cmd.parse(argc,argv);
 
-        ...
 </pre>
 <a name="EXCEPTIONS" id="EXCEPTIONS"></a>
 <h2>Exceptions to the Rules</h2>
 Like all good rules, there are many exceptions.... <a name=
 "IGNORE_ARGS" id="IGNORE_ARGS"></a>
-<h3><i>Ignoring arguments</i></h3>
+<h3>Ignoring arguments</h3>
 The <i>--</i> flag is automatically included in the <b>CmdLine</b>.
 As (almost) per POSIX and GNU standards, any argument specified
 after the <i>--</i> flag is ignored. <i>Almost</i> because if an
@@ -629,7 +610,7 @@ make both <b>UnlabeledValueArg</b>s and <b>UnlabeledMultiArg</b>s
 ignoreable in their constructors. See the <a href=
 "html/index.html">API Documentation</a> for details. <a name=
 "MULTI_SWITCHES" id="MULTI_SWITCHES"></a>
-<h3><i>Multiple Identical Switches</i></h3>
+<h3>Multiple Identical Switches</h3>
 If you absolutely must allow for multiple, identical switches, then
 don't use a <b>SwitchArg</b>, instead use a <b>MultiArg</b> of type
 <i>bool</i>. This means you'll need to specify a 1 or 0 on the
@@ -637,7 +618,7 @@ command line with the switch (as values are required), but this
 should allow you to turn your favorite switch on and off to your
 heart's content. <a name="DESCRIPTION_EXCEPTIONS" id=
 "DESCRIPTION_EXCEPTIONS"></a>
-<h3><i>Type Descriptions</i></h3>
+<h3>Type Descriptions</h3>
 Ideally this library would use RTTI to return a human readable name
 of the type declared for a particular argument. Unfortunately, at
 least for g++, the names returned aren't particularly useful.
@@ -689,13 +670,11 @@ Now include this class definition somewhere and go about creating
 your command line. When you create the author switch, add the
 <b>AuthorVisitor</b> pointer as follows:
 <pre>
-                ...
 
                 SwitchArg author("a","author","Prints author name", false, 
                                          new AuthorVisitor("Homer J. Simpson") );
                 cmd.add( author );
 
-                ...
 </pre>
 Now, any time the <i>-a</i> or <i>--author</i> flag is specified,
 the program will print the author name, Homer J. Simpson and exit
@@ -706,7 +685,10 @@ For more information, look at the <a href="html/index.html">API
 Documentation</a> and the examples included with the
 distribution.<br />
 <br />
-<b>Happy coding!</b><br />
+<br />
+<em>Happy coding!</em><br />
+<br />
+<br />
 <br />
 <a name="FOOTNOTES" id="FOOTNOTES"></a><br />
 ** In theory, any type that supports operator&gt;&gt; and
