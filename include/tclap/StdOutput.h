@@ -242,7 +242,7 @@ inline void StdOutput::spacePrint( std::ostream& os,
 						stringLen >= 0 )
 					stringLen--;
 	
-			// ok, the word is longer than the line, so just split in the 
+			// ok, the word is longer than the line, so just split 
 			// wherever the line ends
 			if ( stringLen <= 0 )
 				stringLen = allowedLen;
