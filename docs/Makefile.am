@@ -10,7 +10,7 @@ all:
 
 endif
 
-EXTRA_DIST = index.html manual.html style.css
+EXTRA_DIST = index.html manual.html style.css manual.xml
 
 clean-local:
 	$(RM) -rf html
