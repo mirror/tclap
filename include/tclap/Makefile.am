@@ -13,6 +13,7 @@ libtclapinclude_HEADERS = \
 			 Visitor.h Arg.h \
 			 HelpVisitor.h \
 			 SwitchArg.h \
+			 MultiSwitchArg.h \
 			 VersionVisitor.h \
 			 IgnoreRestVisitor.h \
 			 CmdLineOutput.h \
