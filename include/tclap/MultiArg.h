@@ -182,6 +182,7 @@ bool MultiArg<T>::processArg(int *i, vector<string>& args)
 		else
 			_extractValue( value );
 
+		_checkWithVisitor();
 		return true;
 	}
 	else
@@ -196,13 +197,28 @@ void MultiArg<T>::_extractValue( const string& val )
 {
 	T temp;
 	istringstream is(val);
-	is >> temp; 
-	if ( is.fail() ) 
-		throw( ArgException("Couldn't read argument value!", toString()));
+
+	int valuesRead = 0;
+	while ( is.good() )
+	{
+		if ( is.peek() != EOF )
+			is >> temp; 
+		else
+			break;
+
+		valuesRead++;
+	}		
+
+    if ( is.fail() )
+       throw( ArgException("Couldn't read argument value from string '" +
+                            val + "'", toString() ) );
+
+    if ( valuesRead > 1 )
+       throw( ArgException("More than one valid value parsed from string '" +
+                            val + "'", toString() ) );
 
 	_values.push_back(temp);
 
-	_checkWithVisitor();
 }
 
 /**
@@ -213,8 +229,6 @@ template<>
 void MultiArg<string>::_extractValue( const string& val )
 {
 	_values.push_back(val);
-
-	_checkWithVisitor();
 }
 
 /**

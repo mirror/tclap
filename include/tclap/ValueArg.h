@@ -220,9 +220,25 @@ template<class T>
 void ValueArg<T>::_extractValue( const string& val ) 
 {
 	istringstream is(val);
-	is >> _value;
+
+	int valuesRead = 0;
+	while ( is.good() )
+	{
+		if ( is.peek() != EOF )
+			is >> _value;
+		else
+			break;
+		valuesRead++;
+	}
+
 	if ( is.fail() ) 
-		throw( ArgException("Couldn't read argument value!", toString() ) );
+		throw( ArgException("Couldn't read argument value from string '" +
+							 val + "'", toString() ) );
+
+	if ( valuesRead > 1 )
+		throw( ArgException("More than one valid value parsed from string '" +
+							val + "'", toString() ) );
+
 }
 
 /**
