@@ -56,7 +56,10 @@ int main(int argc, char** argv)
 	try {  
 
 	// Define the command line object.
-	CmdLine cmd(argv[0], "Command description message", "0.9");
+	CmdLine cmd("Command description message", ' ', "0.9");
+
+	// (deprecated, but still functional)
+	// CmdLine cmd(argv[0], "Command description message", "0.9"); 
 
 	// Define a value argument and add it to the command line.
 	ValueArg < string >  nameArg("n","name","Name to print",true,"homer",
@@ -135,6 +138,12 @@ Command description message
 <br><br><br>
 This example shows a number of different properties of the library...
 <ul>
+<li><b>New Feature!</b> Note that the creation of the CmdLine object is
+slightly different now.  The program name is assumed to always be
+argv[0], so it isn't specified directly (let me know if you don't like
+this).  More importantly, a delimiter character can now be specified.
+this means that if you prefer arguments of the style "-s=asdf" instead
+of "-s asdf", you can do so.  
 <li>Arguments can appear in any order (...mostly, <a href="manual.html#COMPLICATIONS">more</a> on this later).</li>
 <li>The version, help and -- arguments are specified automatically.</li>
 <li>If a required argument isn't provided, the program exits and displays
@@ -172,11 +181,17 @@ valid to do either:
 		% command -abc
 </pre>
 <br><br>
+<i>or</i>
+<br><br>
+<pre>
+		% command -ba -c
+</pre>
+<br><br>
 This is to make this library more in line with the POSIX and GNU standards (as
 I understand them).
 <br><br>
 <b>ValueArg</b>s are arguments that read a value of some type from the 
-command line.  Note that the order of arguments on the command line(so far) 
+command line.  Note that the order of arguments on the command line (so far) 
 doesn't matter.  Any
 argument not matching an <b>Arg</b> added to the command line will cause
 an exception to be thrown 
@@ -319,8 +334,14 @@ You must only ever specify one (1) <b>UnlabeledMultiArg</b>.
 One <b>UnlabeledMultiArg</b> will
 read every unlabeled Arg that wasn't already processed by a 
 <b>UnlabeledValueArg</b>
-into a <i>vector</i> of type T.  When you call the <i>getValue()</i> method 
-of the argument, a <i>vector</i> will be returned.  If you can imagine a
+into a <i>vector</i> of type T.  
+Any <b>UnlabeledValueArg</b> or other <b>UnlabeledMultiArg</b> specified after
+the first <b>UnlabeledMultiArg</b> will be ignored, and if they are required, 
+expections will be thrown.
+
+When you call the <i>getValue()</i> method 
+of the <b>UnlabeledValueArg</b>
+argument, a <i>vector</i> will be returned.  If you can imagine a
 situation where there will be multiple args of multiple types (stings, ints,
 floats, etc.) then just declare the <b>UnlabeledMultiArg</b> as type 
 <i>string</i>
@@ -377,7 +398,7 @@ pointer as follows:
 		...
 
 		SwitchArg author("a","author","Prints author name", false, 
-				         new AuthorVisitor("Homer J. Simpson");
+				         new AuthorVisitor("Homer J. Simpson") );
 		cmd.add( author );
 
 		...
@@ -386,7 +407,7 @@ pointer as follows:
 <br><br>
 Now, any time the <i>-a</i> or <i>--author</i> flag is specified, the
 program will print the author name, Homer J. Simpson and exit without
-processing any further (as specified in the <i>visit()</i> method.
+processing any further (as specified in the <i>visit()</i> method).
 <a name="EXCEPTIONS"></a>
 <h2>Exceptions</h2>
 Like all good rules, there are many exceptions....
