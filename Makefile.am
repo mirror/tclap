@@ -1,3 +1,3 @@
 
-SUBDIRS = include examples docs tests
+SUBDIRS = include examples docs tests msc
 
