@@ -45,7 +45,7 @@ class VersionVisitor: public Visitor
 		/**
 		 * The output object. 
 		 */
-		CmdLineOutput* _out;
+		CmdLineOutput** _out;
 
 	public:
 
@@ -54,14 +54,15 @@ class VersionVisitor: public Visitor
 		 * \param cmd - The CmdLine the output is generated for. 
 		 * \param out - The type of output. 
 		 */
-		VersionVisitor( CmdLineInterface* cmd, CmdLineOutput* out ) 
+		VersionVisitor( CmdLineInterface* cmd, CmdLineOutput** out ) 
 				: Visitor(), _cmd( cmd ), _out( out ) { }
 
 		/**
 		 * Calls the version method of the output object using the
 		 * specified CmdLine.
 		 */
-		void visit() { _out->version(*_cmd); exit(0); }
+		void visit() { (*_out)->version(*_cmd); exit(0); }
+
 };
 
 }

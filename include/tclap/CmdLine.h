@@ -310,7 +310,7 @@ inline void CmdLine::_constructor()
 	
 	Arg::setDelimiter( _delimiter );
 
-	v = new HelpVisitor( this, _output );
+	v = new HelpVisitor( this, &_output );
 	SwitchArg* help = new SwitchArg("h","help", 
 					"Displays usage information and exits.", 
 					false, v);
@@ -318,7 +318,7 @@ inline void CmdLine::_constructor()
 	deleteOnExit(help);
 	deleteOnExit(v);
 	
-	v = new VersionVisitor( this, _output );
+	v = new VersionVisitor( this, &_output );
 	SwitchArg* vers = new SwitchArg("v","version", 
 					"Displays version information and exits.", 
 					false, v);
