@@ -46,26 +46,50 @@ CmdLine::CmdLine(const string& m, char delim, const string& v )
 	_constructor();
 }
 
+CmdLine::~CmdLine()
+{
+  list<Arg*>::iterator argIter;
+  list<Visitor*>::iterator visIter;
+  
+  for(argIter = _argDeleteOnExitList.begin(); argIter != _argDeleteOnExitList.end(); ++argIter) {
+    delete *argIter;
+  }
+  
+  for(visIter = _visitorDeleteOnExitList.begin(); visIter != _visitorDeleteOnExitList.end(); ++visIter) {
+    delete *visIter;
+  }
+}
+
 void CmdLine::_constructor()
 { 
+	Visitor *v;
+	
 	Arg::setDelimiter( _delimiter );
 
-	SwitchArg* help = new SwitchArg("h","help",
-					                "Displays usage information and exits.",
-									false, new HelpVisitor( this ) );
+	v = new HelpVisitor( this );
+	SwitchArg* help = new SwitchArg("h","help", 
+					"Displays usage information and exits.", 
+					false, v);
 	add( *help );
-
+	deleteOnExit(help);
+	deleteOnExit(v);
+	
+	v = new VersionVisitor( this );
 	SwitchArg* vers = new SwitchArg("v","version", 
-					                "Displays version information and exits.",
-									false, new VersionVisitor( this ) );
+					"Displays version information and exits.", 
+					false, v);
 	add( *vers );
+	deleteOnExit(vers);
+	deleteOnExit(v);
 
+	v = new IgnoreRestVisitor();
 	SwitchArg* ignore  = new SwitchArg(Arg::flagStartString, 
-				Arg::ignoreNameString,
-               "Ignores the rest of the labeled arguments following this flag.",
-			   false, new IgnoreRestVisitor() );
+					   Arg::ignoreNameString,
+					   "Ignores the rest of the labeled arguments following this flag.",
+					   false, v);
 	add( *ignore );
-
+	deleteOnExit(ignore);
+	deleteOnExit(v);
 }
 
 void CmdLine::xorAdd( vector<Arg*>& ors )
@@ -221,6 +245,16 @@ bool CmdLine::_emptyCombined(const string& s)
 			return false;
 
 	return true;
+}
+
+void CmdLine::deleteOnExit(Arg* ptr)
+{
+  _argDeleteOnExitList.push_back(ptr);
+}
+
+void CmdLine::deleteOnExit(Visitor* ptr)
+{
+  _visitorDeleteOnExitList.push_back(ptr);
 }
 
 }
