@@ -3,7 +3,8 @@ PARSE ERROR: Argument: -s (--stringTest)
 
 Brief USAGE: 
    ../examples/test3  [-f=<float>] ...  [-i=<int>] ...  -s=<string> [-B]
-                      [--] [-v] [-h] <string> <string> <fileNameString> ...
+                      [--] [-v] [-h] <string> <string> <fileNameString>
+                      ...
 
 For complete USAGE and HELP type: 
    ../examples/test3 --help

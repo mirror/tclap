@@ -1,11 +1,41 @@
 
 USAGE: 
 
-   ../examples/test7  -n <homer|marge|bart|lisa|maggie> ...  [--] [-v] [-h]
-                      <1|2|3> ...
+   ../examples/test7  [-l <int>] [-u <float lte 1>] [-b <float lte 1>] [-F
+                      <filename>] [-f <filename>] [-s <name string>] [-d]
+                      [-g <negative int>] [-f <negative int>] -n <homer
+                      |marge|bart|lisa|maggie> ...  [--] [-v] [-h] <1|2|3>
+                      ...
 
 
 Where: 
+
+   -l <int>,  --limit <int>
+     (value required)  Max number of alignments allowed
+
+   -u <float lte 1>,  --upperBound <float lte 1>
+     (value required)  upper percentage bound
+
+   -b <float lte 1>,  --lowerBound <float lte 1>
+     (value required)  lower percentage bound
+
+   -F <filename>,  --filename2 <filename>
+     (value required)  Sequence 2 filename (FASTA format)
+
+   -f <filename>,  --filename1 <filename>
+     (value required)  Sequence 1 filename (FASTA format)
+
+   -s <name string>,  --scoringMatrix <name string>
+     (value required)  Scoring Matrix name
+
+   -d,  --isDna
+     The input sequences are DNA
+
+   -g <negative int>,  --gapExtend <negative int>
+     (value required)  The cost for each extension of a gap
+
+   -f <negative int>,  --gapCreate <negative int>
+     (value required)  The cost of creating a gap
 
    -n <homer|marge|bart|lisa|maggie>,  --name <homer|marge|bart|lisa
       |maggie>  (accepted multiple times)

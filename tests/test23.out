@@ -3,7 +3,8 @@ PARSE ERROR: Argument: -d
 
 Brief USAGE: 
    ../examples/test5  {-a <string>|-b <string>} {--eee <string>|--fff
-                      <string>|-g <string>} [--ddd] -c <string> [--] [-v] [-h]
+                      <string>|-g <string>} [--ddd] -c <string> [--] [-v]
+                      [-h]
 
 For complete USAGE and HELP type: 
    ../examples/test5 --help
