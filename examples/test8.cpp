@@ -42,10 +42,10 @@ void parseOptions(int argc, char** argv)
 	ValueArg<string> stest("s", "stringTest", "string test", true, "homer", 
 					       "string", cmd );
 
-	UnlabeledValueArg<string> utest("unTest1","unlabeled test one", 
+	UnlabeledValueArg<string> utest("unTest1","unlabeled test one", true,
 					                "default","string", cmd );
 
-	UnlabeledValueArg<string> ztest("unTest2","unlabeled test two", 
+	UnlabeledValueArg<string> ztest("unTest2","unlabeled test two", true,
 					                "default","string", cmd );
 
 	MultiArg<int> itest("i", "intTest", "multi int test", false,"int", cmd );
@@ -53,8 +53,8 @@ void parseOptions(int argc, char** argv)
 	MultiArg<float> ftest("f", "floatTest", "multi float test", false,"float",
 	                      cmd );
 
-	UnlabeledMultiArg<string> mtest("fileName","file names","fileNameString", 
-	                                cmd);
+	UnlabeledMultiArg<string> mtest("fileName","file names",
+					                "fileNameString", cmd);
 	//
 	// Parse the command line.
 	//

@@ -21,6 +21,10 @@ int main(int argc, char** argv)
 	MultiSwitchArg noise("N","noise","Level of noise",5);
 	cmd.add( noise );
 
+	UnlabeledValueArg<string> word("word","a random word", false, "string",
+					               "won't see this",false);
+	cmd.add( word );
+
 	cmd.parse( argc, argv );
 
 	bool reverseName = reverseSwitch.getValue();
@@ -36,6 +40,8 @@ int main(int argc, char** argv)
 	if ( noise.isSet() )
 		cout << "Noise level: " << noise.getValue() << endl;
 
+	if ( word.isSet() )
+		cout << "Word: " << word.getValue() << endl;
 
 	} catch (ArgException &e)  // catch any exceptions
 	{ cerr << "error: " << e.error() << " for arg " << e.argId() << endl; }

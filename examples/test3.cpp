@@ -44,11 +44,11 @@ void parseOptions(int argc, char** argv)
 					       "string");
 	cmd.add( stest );
 
-	UnlabeledValueArg<string> utest("unTest1","unlabeled test one", 
+	UnlabeledValueArg<string> utest("unTest1","unlabeled test one", true,
 					                "default","string");
 	cmd.add( utest );
 
-	UnlabeledValueArg<string> ztest("unTest2","unlabeled test two", 
+	UnlabeledValueArg<string> ztest("unTest2","unlabeled test two", true, 
 					                "default","string");
 	cmd.add( ztest );
 

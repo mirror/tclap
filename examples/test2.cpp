@@ -62,7 +62,7 @@ void parseOptions(int argc, char** argv)
 	ValueArg<double> ftest("f", "floatTest", "float test", false, 3.7, "float");
 	cmd.add( ftest );
 
-	UnlabeledValueArg<string> utest("unTest","unlabeld test", 
+	UnlabeledValueArg<string> utest("unTest","unlabeld test", true,
 					                "default","string");
 	cmd.add( utest );
 

@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 	iallowed.push_back(3);
 	ValuesConstraint<int> iallowedVals( iallowed );
 
-	UnlabeledValueArg<int> intArg("times","Number of times to print",1,
+	UnlabeledValueArg<int> intArg("times","Number of times to print",true,1,
 					      &iallowedVals,false);
 	cmd.add( intArg );
 
