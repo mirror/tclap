@@ -211,7 +211,7 @@ void Arg::trimFlag(string& flag, string& value) const
  */
 bool Arg::_hasBlanks( const string& s ) const
 {
-	for ( int i = 1; i < s.length(); i++ )
+	for ( int i = 1; (unsigned int)i < s.length(); i++ )
 		if ( s[i] == Arg::blankChar )
 			return true;
 
