@@ -191,6 +191,8 @@ class MultiArg : public Arg
 		 */
 		void _extractValue( const std::string& val );
 
+		bool _allowMore;
+
 	public:
 
    		/**
@@ -323,6 +325,8 @@ class MultiArg : public Arg
 		 */
 		virtual bool isRequired() const;
 
+		virtual bool allowMore();
+
 };
 
 template<class T>
@@ -334,7 +338,8 @@ MultiArg<T>::MultiArg(const std::string& flag,
                       Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
   _typeDesc( typeDesc ),
-  _constraint( NULL )
+  _constraint( NULL ),
+  _allowMore(false)
 { }
 
 template<class T>
@@ -347,7 +352,8 @@ MultiArg<T>::MultiArg(const std::string& flag,
                       Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
   _typeDesc( typeDesc ),
-  _constraint( NULL )
+  _constraint( NULL ),
+  _allowMore(false)
 { 
 	parser.add( this );
 }
@@ -364,7 +370,8 @@ MultiArg<T>::MultiArg(const std::string& flag,
                       Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
   _typeDesc( constraint->shortID() ),
-  _constraint( constraint )
+  _constraint( constraint ),
+  _allowMore(false)
 { }
 
 template<class T>
@@ -377,7 +384,8 @@ MultiArg<T>::MultiArg(const std::string& flag,
                       Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
   _typeDesc( constraint->shortID() ),
-  _constraint( constraint )
+  _constraint( constraint ),
+  _allowMore(false)
 { 
 	parser.add( this );
 }
@@ -406,6 +414,7 @@ bool MultiArg<T>::processArg(int *i, std::vector<std::string>& args)
 			           "Couldn't find delimiter for this argument!",
 					   toString() ) );
 
+		// always take the first one, regardless of start string
 		if ( value == "" )
 		{
 			(*i)++;
@@ -414,10 +423,19 @@ bool MultiArg<T>::processArg(int *i, std::vector<std::string>& args)
 			else
 				throw( ArgParseException("Missing a value for this argument!",
                                          toString() ) );
-		}
+		} 
 		else
 			_extractValue( value );
 
+		/*
+		// continuing taking the args until we hit one with a start string 
+		while ( (unsigned int)(*i)+1 < args.size() &&
+				args[(*i)+1].find_first_of( Arg::flagStartString() ) != 0 &&
+		        args[(*i)+1].find_first_of( Arg::nameStartString() ) != 0 ) 
+				_extractValue( args[++(*i)] );
+		*/
+
+		_alreadySet = true;
 		_checkWithVisitor();
 
 		return true;
@@ -490,6 +508,13 @@ void MultiArg<T>::_extractValue( const std::string& val )
 										  toString() ) );
 }
 		
+template<class T>
+bool MultiArg<T>::allowMore()
+{
+	bool am = _allowMore;
+	_allowMore = true;
+	return am;
+}
 
 } // namespace TCLAP
 

@@ -329,6 +329,8 @@ class Arg
 		 */
 		void setRequireLabel( const std::string& s );
 
+		virtual bool allowMore();
+
 };
 
 /**
@@ -558,6 +560,11 @@ inline void Arg::xorSet()
 inline void Arg::addToList( std::list<Arg*>& argList ) const
 {
 	argList.push_front( (Arg*)this );
+}
+
+inline bool Arg::allowMore()
+{
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////
