@@ -206,6 +206,18 @@ void MultiArg<T>::_extractValue( const string& val )
 }
 
 /**
+ * Specialization to handle strings with spaces in them. This is needed
+ * because there is no way to tell operator>> to ignore spaces.
+ */
+template<>
+void MultiArg<string>::_extractValue( const string& val )
+{
+	_values.push_back(val);
+
+	_checkWithVisitor();
+}
+
+/**
  *
  */
 template<class T>

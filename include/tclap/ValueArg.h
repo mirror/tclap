@@ -139,7 +139,6 @@ class ValueArg : public Arg
 };
 
 
-
 /**
  * Constructor implementation.
  */
@@ -181,6 +180,7 @@ bool ValueArg<T>::processArg(int *i, vector<string>& args)
 		return false;
 
 	string flag = args[*i];
+
 	string value = "";
 	trimFlag( flag, value );
 
@@ -223,6 +223,17 @@ void ValueArg<T>::_extractValue( const string& val )
 	is >> _value;
 	if ( is.fail() ) 
 		throw( ArgException("Couldn't read argument value!", toString() ) );
+}
+
+/**
+ * Specialization for string.  This is necessary because istringstream
+ * operator>> is not able to ignore spaces...  meaning -x "X Y" will only 
+ * read 'X'... and thus the specialization.
+ */
+template<>
+void ValueArg<string>::_extractValue( const string& val ) 
+{
+	_value = val;
 }
 
 /**
