@@ -15,5 +15,7 @@ AC_OUTPUT([ Makefile \
 		   include/tclap/Makefile \
 		   docs/Makefile \
 		   docs/Doxyfile  \
+		   msc/Makefile  \
+		   msc/examples/Makefile  \
 		   tests/Makefile], \
 		   [chmod a+x tests/*.sh])
