@@ -15,10 +15,6 @@ a {
 	text-decoration:underline;
 }
 
-a:visited {
-	color:#6699cc;
-}
-
 a:hover {
 	text-decoration: blink; 
 	color:#ff9933;
@@ -26,12 +22,13 @@ a:hover {
 
 body {
 	font-family: verdana, tahoma, helvetica, arial, sans-serif;
-	font-size: 100%;
+	font-size: 90%;
 	background-color:#ffffff;
 	margin: 1em;
 }
 
 pre {
+	font-family: courier, serif;
 	background-color:#f8f8f8;
 	margin: 1.5em;
 	font-size:90%;
@@ -39,18 +36,14 @@ pre {
 
 ul {
 	list-style: circle outside;
+	font-stretch:extra-expanded;
+/*	font-size:90%;*/
 }
 
 ul.menu { /* inherits from ul */
 	padding-left: 1em; 
 }
 
-table {
-	background-color:#f8f8f8;
-	border-style:solid; 
-	border-width:1px; 
-	border-color:#d0d0d0;
-}
 
 em {
 	color:#ff9933;
@@ -62,8 +55,12 @@ h1,h2,h3{
 }
 
 h1 {
+	border-color:#d0d0d0;
+	border-style:solid; 
+	border-width:1px; 
+	background-color:#f8f8f8
 	font-weight:bold;
-	padding-top: 0.2em;
+	padding: 0.2em;
 }
 
 h2 {
@@ -80,12 +77,27 @@ h3 {
 	font-style:italic;
 }
 
+tt {
+	font-family: courier, serif;
+}
+
+tt.classname {
+	font-weight:bold;
+}
+
+tt.constant {
+	font-style:italic;
+	font-weight:bold;
+}
+
+tt.methodname {
+	font-style:italic;
+}
 
 p {
-	color:#555555;
-	font-size: 90%;
 	line-height: 1.5em;
 }
+
 
 div.links{
 	float: left;
