@@ -123,6 +123,12 @@ class CmdLineInterface
 		 * Returns the message string.
 		 */
 		virtual std::string& getMessage()=0;
+
+		/**
+		 * Indicates whether or not the help and version switches were created
+		 * automatically.
+		 */
+		virtual bool hasHelpAndVersion()=0;
 };
 
 } //namespace

@@ -135,13 +135,18 @@ inline void StdOutput::failure( CmdLineInterface& _cmd,
 	std::cerr << "PARSE ERROR: " << e.argId() << std::endl
 		      << "             " << e.error() << std::endl << std::endl;
 
-	std::cerr << "Brief USAGE: " << std::endl;
+	if ( _cmd.hasHelpAndVersion() )
+	{
+		std::cerr << "Brief USAGE: " << std::endl;
 
-	_shortUsage( _cmd, std::cerr );	
+		_shortUsage( _cmd, std::cerr );	
 
-	std::cerr << std::endl << "For complete USAGE and HELP type: " 
-		      << std::endl << "   " << progName << " --help" 
-			  << std::endl << std::endl;
+		std::cerr << std::endl << "For complete USAGE and HELP type: " 
+			      << std::endl << "   " << progName << " --help" 
+				  << std::endl << std::endl;
+	}
+	else
+		usage(_cmd);
 
 }
 

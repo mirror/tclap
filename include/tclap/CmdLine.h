@@ -24,6 +24,7 @@
 #define TCLAP_CMDLINE_H
 
 #include <tclap/SwitchArg.h>
+#include <tclap/MultiSwitchArg.h>
 #include <tclap/UnlabeledValueArg.h>
 #include <tclap/UnlabeledMultiArg.h>
 
@@ -145,6 +146,11 @@ class CmdLine : public CmdLineInterface
 		 */
 		bool _userSetOutput;
 
+		/**
+		 * Whether or not to automatically create help and version switches.
+		 */
+		bool _helpAndVersion;
+
 	public:
 
 		/**
@@ -170,10 +176,13 @@ class CmdLine : public CmdLineInterface
 		 * the argument flag/name from the value.  Defaults to ' ' (space).
 		 * \param version - The version number to be used in the
 		 * --version switch.
+		 * \param helpAndVersion - Whether or not to create the Help and
+		 * Version switches. Defaults to true.
 		 */
 		CmdLine(const std::string& message, 
 				const char delimiter = ' ',
-				const std::string& version = "none" );
+				const std::string& version = "none",
+				bool helpAndVersion = true);
 		
 		/**
 		 * Deletes any resources allocated by a CmdLine object.
@@ -253,6 +262,11 @@ class CmdLine : public CmdLineInterface
 		 *
 		 */
 		std::string& getMessage();
+
+		/**
+		 *
+		 */
+		bool hasHelpAndVersion();
 };
 
 
@@ -268,20 +282,23 @@ inline CmdLine::CmdLine(const std::string& n,
   _version(v),
   _numRequired(0),
   _delimiter(' '),
-  _userSetOutput(false)
+  _userSetOutput(false),
+  _helpAndVersion(true)
 { 
 	_constructor();
 }
 
 inline CmdLine::CmdLine(const std::string& m, 
 				        char delim, 
-						const std::string& v )
+						const std::string& v,
+						bool help )
 : _progName("not_set_yet"),
   _message(m),
   _version(v),
   _numRequired(0),
   _delimiter(delim),
-  _userSetOutput(false)
+  _userSetOutput(false),
+  _helpAndVersion(help)
 {
 	_constructor();
 }
@@ -309,25 +326,28 @@ inline void CmdLine::_constructor()
 { 
 	_output = new StdOutput;
 
-	Visitor *v;
-	
 	Arg::setDelimiter( _delimiter );
 
-	v = new HelpVisitor( this, &_output );
-	SwitchArg* help = new SwitchArg("h","help", 
-					"Displays usage information and exits.", 
-					false, v);
-	add( help );
-	deleteOnExit(help);
-	deleteOnExit(v);
+	Visitor* v;
+
+	if ( _helpAndVersion )
+	{
+		v = new HelpVisitor( this, &_output );
+		SwitchArg* help = new SwitchArg("h","help", 
+						"Displays usage information and exits.", 
+						false, v);
+		add( help );
+		deleteOnExit(help);
+		deleteOnExit(v);
 	
-	v = new VersionVisitor( this, &_output );
-	SwitchArg* vers = new SwitchArg("v","version", 
+		v = new VersionVisitor( this, &_output );
+		SwitchArg* vers = new SwitchArg("v","version", 
 					"Displays version information and exits.", 
 					false, v);
-	add( vers );
-	deleteOnExit(vers);
-	deleteOnExit(v);
+		add( vers );
+		deleteOnExit(vers);
+		deleteOnExit(v);
+	}
 
 	v = new IgnoreRestVisitor();
 	SwitchArg* ignore  = new SwitchArg(Arg::flagStartString(), 
@@ -485,6 +505,11 @@ inline char CmdLine::getDelimiter()
 inline std::string& CmdLine::getMessage()
 {
 	return _message;
+}
+
+inline bool CmdLine::hasHelpAndVersion()
+{
+	return _helpAndVersion;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
