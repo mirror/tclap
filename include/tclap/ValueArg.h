@@ -114,7 +114,72 @@ class ValueArg : public Arg
 				 T value,
 				 const std::string& typeDesc,
 				 Visitor* v = NULL);
-
+				 
+				 
+		 /**
+		 * Labeled ValueArg constructor.
+		 * You could conceivably call this constructor with a blank flag, 
+		 * but that would make you a bad person.  It would also cause
+		 * an exception to be thrown.   If you want an unlabeled argument, 
+		 * use the other constructor.
+		 * \param flag - The one character flag that identifies this
+		 * argument on the command line.
+		 * \param name - A one word name for the argument.  Can be
+		 * used as a long flag on the command line.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param req - Whether the argument is required on the command
+		 * line.
+		 * \param value - The default value assigned to this argument if it
+		 * is not present on the command line.
+		 * \param typeDesc - A short, human readable description of the
+		 * type that this object expects.  This is used in the generation
+		 * of the USAGE statement.  The goal is to be helpful to the end user
+		 * of the program.
+		 * \param parser - A CmdLine parser object to add this Arg to
+		 * \param v - An optional visitor.  You probably should not
+		 * use this unless you have a very good reason.
+		 */
+		ValueArg(const std::string& flag, 
+				 const std::string& name, 
+			     const std::string& desc, 
+				 bool req, 
+				 T value,
+				 const std::string& typeDesc,
+				 CmdLine &parser,
+				 Visitor* v = NULL);
+				 
+		 /**
+		 * Labeled ValueArg constructor.
+		 * You could conceivably call this constructor with a blank flag, 
+		 * but that would make you a bad person.  It would also cause
+		 * an exception to be thrown.   If you want an unlabeled argument, 
+		 * use the other constructor.
+		 * \param flag - The one character flag that identifies this
+		 * argument on the command line.
+		 * \param name - A one word name for the argument.  Can be
+		 * used as a long flag on the command line.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param req - Whether the argument is required on the command
+		 * line.
+		 * \param value - The default value assigned to this argument if it
+		 * is not present on the command line.
+		 * \param allowed - A vector of type T that where the values in the 
+		 * vector are the only values allowed for the arg.
+		 * \param parser - A CmdLine parser object to add this Arg to
+		 * \param v - An optional visitor.  You probably should not
+		 * use this unless you have a very good reason.
+		 */
+		 ValueArg(const std::string& flag, 
+				      const std::string& name, 
+					  const std::string& desc, 
+					  bool req, 
+					  T val,
+					  const std::vector<T>& allowed,
+					  CmdLine &parser,
+					  Visitor* v);
+					  
 		/**
 		 * Labeled ValueArg constructor.
 		 * You could conceivably call this constructor with a blank flag, 
@@ -177,8 +242,26 @@ class ValueArg : public Arg
 		 */
 		virtual std::string longID(const std::string& val = "val") const;
 
+private: 
+		void init();
+
 };
 
+template<class T>
+void ValueArg<T>::init()
+{
+	for ( unsigned int i = 0; i < _allowed.size(); i++ )
+	{
+		std::ostringstream os;
+		os << _allowed[i];
+
+		std::string temp( os.str() ); 
+
+		if ( i > 0 )
+			_typeDesc += "|";
+		_typeDesc += temp;
+	}
+}
 
 /**
  * Constructor implementation.
@@ -196,6 +279,22 @@ ValueArg<T>::ValueArg(const std::string& flag,
   _typeDesc( typeDesc )
 { }
 
+template<class T>
+ValueArg<T>::ValueArg(const std::string& flag, 
+				      const std::string& name, 
+					  const std::string& desc, 
+					  bool req, 
+					  T val,
+					  const std::string& typeDesc,
+					  CmdLine& parser,
+					  Visitor* v)
+: Arg(flag, name, desc, req, true, v),
+  _value( val ),
+  _typeDesc( typeDesc )
+{ 
+	parser.add(*this);
+}
+
 /**
  * Constructor with allowed list. 
  */
@@ -211,17 +310,27 @@ ValueArg<T>::ValueArg(const std::string& flag,
   _value( val ),
   _allowed( allowed )
 { 
-	for ( unsigned int i = 0; i < _allowed.size(); i++ )
-	{
-		std::ostringstream os;
-		os << _allowed[i];
+	init();
+}
 
-		std::string temp( os.str() ); 
-
-		if ( i > 0 )
-			_typeDesc += "|";
-		_typeDesc += temp;
-	}
+template<class T>
+ValueArg<T>::ValueArg(const std::string& flag, 
+				      const std::string& name, 
+					  const std::string& desc, 
+					  bool req, 
+					  T val,
+					  const std::vector<T>& allowed,
+					  CmdLine &parser,
+					  Visitor* v)
+: Arg(flag, name, desc, req, true, v),
+  _value( val ),
+  _allowed( allowed )
+{ 
+	init();
+	//Do explicit add here instead of using Args parser constructor
+	//becase then we can not initialize first. Perhaps init would like
+	//to throw an exception or something in the future.
+	parser.add();
 }
 
 

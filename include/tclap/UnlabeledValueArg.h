@@ -29,6 +29,7 @@
 #include <tclap/Visitor.h>
 #include <tclap/Arg.h>
 #include <tclap/ValueArg.h>
+#include <tclap/CommandLine.h>
 
 namespace TCLAP {
 
@@ -98,6 +99,38 @@ class UnlabeledValueArg : public ValueArg<T>
 		 * does.
 		 * \param value - The default value assigned to this argument if it
 		 * is not present on the command line.
+		 * \param typeDesc - A short, human readable description of the
+		 * type that this object expects.  This is used in the generation
+		 * of the USAGE statement.  The goal is to be helpful to the end user
+		 * of the program.
+		 * \param ignoreable - Allows you to specify that this argument can be
+		 * ignored if the '--' flag is set.  This defaults to false (cannot
+		 * be ignored) and should  generally stay that way unless you have 
+		 * some special need for certain arguments to be ignored.
+		 * \param parser - A CmdLine parser object to add this Arg to
+		 * \param v - Optional Vistor.  You should leave this blank unless
+		 * you have a very good reason.
+		 */
+		UnlabeledValueArg(const std::string& name, 
+			              const std::string& desc, 
+				          T value,
+				          const std::string& typeDesc,
+						  bool ignoreable = false,
+						  CmdLine &parser,
+				          Visitor* v = NULL); 					
+						
+		/**
+		 * UnlabeledValueArg constructor.
+		 * Note that this constructor does not have a required flag. Any 
+		 * unlabeled argument added to the CmdLine is by default required.
+		 * If you want optional, unlabeled arguments then use an 
+		 * UnlabeledMultiArg.
+		 * \param name - A one word name for the argument.  Can be
+		 * used as a long flag on the command line.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param value - The default value assigned to this argument if it
+		 * is not present on the command line.
 		 * \param allowed - A vector of type T that where the values in the
 		 * vector are the only values allowed for the arg.
 		 * \param ignoreable - Allows you to specify that this argument can be
@@ -114,6 +147,37 @@ class UnlabeledValueArg : public ValueArg<T>
 						  bool ignoreable = false,
 				          Visitor* v = NULL); 
 
+		
+		/**
+		 * UnlabeledValueArg constructor.
+		 * Note that this constructor does not have a required flag. Any 
+		 * unlabeled argument added to the CmdLine is by default required.
+		 * If you want optional, unlabeled arguments then use an 
+		 * UnlabeledMultiArg.
+		 * \param name - A one word name for the argument.  Can be
+		 * used as a long flag on the command line.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param value - The default value assigned to this argument if it
+		 * is not present on the command line.
+		 * \param allowed - A vector of type T that where the values in the
+		 * vector are the only values allowed for the arg.
+		 * \param ignoreable - Allows you to specify that this argument can be
+		 * ignored if the '--' flag is set.  This defaults to false (cannot
+		 * be ignored) and should  generally stay that way unless you have 
+		 * some special need for certain arguments to be ignored.
+		 * \param parser - A CmdLine parser object to add this Arg to
+		 * \param v - Optional Vistor.  You should leave this blank unless
+		 * you have a very good reason.
+		 */
+		UnlabeledValueArg(const std::string& name, 
+			              const std::string& desc, 
+				          T value,
+				          const std::vector<T>& allowed,
+						  bool ignoreable = false,
+						  CmdLine &parser,
+				          Visitor* v = NULL);
+						
 		/**
 		 * Handles the processing of the argument.
 		 * This re-implements the Arg version of this method to set the
@@ -161,6 +225,20 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name,
 	_ignoreable = ignoreable;
 };
 
+template<class T>
+UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name, 
+					  const std::string& desc, 
+					  T val,
+					  const std::string& typeDesc,
+					  bool ignoreable,
+					  CmdLine &parser,
+					  Visitor* v)
+: ValueArg<T>("", name, desc, true, val, typeDesc, v)
+{ 
+	_ignoreable = ignoreable;
+	parser.add(*this);
+};
+
 /**
  * Constructor implemenation.
  */
@@ -175,6 +253,20 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name,
 { 
 	_ignoreable = ignoreable;
 };
+
+template<class T>
+UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name, 
+					  const std::string& desc, 
+					  T val,
+					  const std::vector<T>& allowed,
+					  bool ignoreable,
+					  CmdLine &parser,
+					  Visitor* v)
+: ValueArg<T>("", name, desc, true, val, allowed, v)
+{ 
+	_ignoreable = ignoreable;
+	parser.add(*this);
+}
 
 /**
  * Implementation of processArg().

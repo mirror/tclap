@@ -27,6 +27,7 @@
 #include <vector>
 #include <sstream>
 #include <tclap/Visitor.h>
+#include <tclap/CommandLine.h>
 
 namespace TCLAP {
 
@@ -109,6 +110,31 @@ class MultiArg : public Arg
 		 * does.
 		 * \param req - Whether the argument is required on the command
 		 * line.
+		 * \param typeDesc - A short, human readable description of the
+		 * type that this object expects.  This is used in the generation
+		 * of the USAGE statement.  The goal is to be helpful to the end user
+		 * of the program.
+		 * \param parser - A CmdLine parser object to add this Arg to
+		 * \param v - An optional visitor.  You probably should not
+		 * use this unless you have a very good reason.
+		 */
+		 MultiArg(const std::string& flag, 
+				      const std::string& name,
+				      const std::string& desc,
+					  bool req,
+					  const std::string& typeDesc,
+					  CmdLine &parser,
+				      Visitor* v);
+		/**
+		 * Constructor.
+		 * \param flag - The one character flag that identifies this
+		 * argument on the command line.
+		 * \param name - A one word name for the argument.  Can be
+		 * used as a long flag on the command line.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param req - Whether the argument is required on the command
+		 * line.
 		 * \param allowed - A vector of type T that where the values in the
 		 * vector are the only values allowed for the arg.
 		 * \param v - An optional visitor.  You probably should not
@@ -120,8 +146,32 @@ class MultiArg : public Arg
 				  bool req,
 				  const std::vector<T>& allowed,
 				  Visitor* v = NULL);
-
+		  
 		/**
+		 * Constructor.
+		 * \param flag - The one character flag that identifies this
+		 * argument on the command line.
+		 * \param name - A one word name for the argument.  Can be
+		 * used as a long flag on the command line.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param req - Whether the argument is required on the command
+		 * line.
+		 * \param allowed - A vector of type T that where the values in the
+		 * vector are the only values allowed for the arg.
+		 * \param parser - A CmdLine parser object to add this Arg to
+		 * \param v - An optional visitor.  You probably should not
+		 * use this unless you have a very good reason.
+		 */
+		MultiArg(const std::string& flag, 
+				      const std::string& name,
+				      const std::string& desc,
+					  bool req,
+					  const std::vector<T>& allowed,
+					  CmdLine &parser,
+				      Visitor* v);
+		  
+		  /**
 		 * Destructor.
 		 */
 		~MultiArg();
@@ -159,8 +209,25 @@ class MultiArg : public Arg
 		 * required.
 		 */
 		virtual bool isRequired() const;
-
+private:
+		void init();
 };
+
+template<class T>
+void MultiArg<T>::init()
+{
+	for ( unsigned int i = 0; i < _allowed.size(); i++ )
+	{
+		std::ostringstream os;
+		os << _allowed[i];
+
+		std::string temp( os.str() );
+
+		if ( i > 0 )
+			_typeDesc += "|";
+		_typeDesc += temp;
+	}
+}
 
 /**
  *
@@ -176,6 +243,22 @@ MultiArg<T>::MultiArg(const std::string& flag,
   _typeDesc( typeDesc )
 { };
 
+template<class T>
+MultiArg<T>::MultiArg(const std::string& flag, 
+				      const std::string& name,
+				      const std::string& desc,
+					  bool req,
+					  const std::string& typeDesc,
+					  CmdLine &parser,
+				      Visitor* v)
+: Arg( flag, name, desc, req, true, v ),
+  _typeDesc( typeDesc )
+{ 
+	//Do explicit add here instead of using Args parser constructor
+	//becase then we can not initialize first. Perhaps init would like
+	//to throw an exception or something in the future.
+	parser.add(*this);
+}
 
 /**
  *
@@ -190,19 +273,26 @@ MultiArg<T>::MultiArg(const std::string& flag,
 : Arg( flag, name, desc, req, true, v ),
   _allowed( allowed )
 { 
-	for ( unsigned int i = 0; i < _allowed.size(); i++ )
-	{
-		std::ostringstream os;
-		os << _allowed[i];
-
-		std::string temp( os.str() );
-
-		if ( i > 0 )
-			_typeDesc += "|";
-		_typeDesc += temp;
-	}
+	init();
 };
 
+template<class T>
+MultiArg<T>::MultiArg(const std::string& flag, 
+				      const std::string& name,
+				      const std::string& desc,
+					  bool req,
+					  const std::vector<T>& allowed,
+					  CmdLine &parser,
+				      Visitor* v)
+: Arg( flag, name, desc, req, true, v ),
+  _allowed( allowed )
+{ 
+	init();
+	//Do explicit add here instead of using Args parser constructor
+	//becase then we can not initialize first. Perhaps init would like
+	//to throw an exception or something in the future.
+	parser.add(*this);
+}
 
 /**
  *

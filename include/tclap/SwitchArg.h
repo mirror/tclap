@@ -66,6 +66,28 @@ class SwitchArg : public Arg
 			      bool def,
 				  Visitor* v = NULL);
 
+				  
+		/**
+		 * SwitchArg constructor.
+		 * \param flag - The one character flag that identifies this
+		 * argument on the command line.
+		 * \param name - A one word name for the argument.  Can be
+		 * used as a long flag on the command line.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param def - The default value for this Switch.
+		 * \param parser - A CmdLine parser object to add this Arg to
+		 * \param v - An optional visitor.  You probably should not
+		 * use this unless you have a very good reason.
+		 */
+		SwitchArg(const std::string& flag, 
+			      const std::string& name, 
+			      const std::string& desc,
+			      bool def,
+				 CmdLine &parser,
+				  Visitor* v = NULL);
+				  
+				  
 		/**
 		 * Destructor.
 		 */
