@@ -736,15 +736,29 @@ class MyOutput : public StdOutput
 			cerr &lt;&lt; "My special failure message for: " &lt;&lt; endl
 				 &lt;&lt; e.what() &lt;&lt; endl;
 		}
+
+		virtual void usage(CmdLineInterface&amp; c)
+		{
+			cout &lt;&lt; "my usage message:" &lt;&lt; endl;
+			list&lt;Arg*&gt; args = c.getArgList();
+			for (ArgListIterator it = args.begin(); it != args.end(); it++)
+				cout &lt;&lt; (*it)-&gt;longID() 
+					 &lt;&lt; "  (" &lt;&lt; (*it)-&gt;getDescription() &lt;&lt; ")" &lt;&lt; endl;
+		}
+
+		virtual void version(CmdLineInterface&amp; c)
+		{
+			cout &lt;&lt; "my version message: 0.1" &lt;&lt; endl;
+		}
 };
 
 int main(int argc, char** argv)
 {
-	    CmdLine cmd("this is a message", ' ', "0.99" );
+		CmdLine cmd("this is a message", ' ', "0.99" );
 
-	    // set the output
-	    MyOutput my;
-	    cmd.setOutput( &amp;my );
+		// set the output
+		MyOutput my;
+		cmd.setOutput( &amp;my );
 
 		// proceed normally ...
 </programlisting>
