@@ -28,6 +28,8 @@
 #include <sstream>
 #include <tclap/Visitor.h>
 
+#include <tclap/Arg.h>
+
 using namespace std;
 
 namespace TCLAP {
@@ -40,6 +42,17 @@ namespace TCLAP {
 template<class T>
 class UnlabeledMultiArg : public MultiArg<T>
 {
+#ifdef TWO_STAGE_NAME_LOOKUP
+	//If compiler has two stage name lookup (as gcc >= 3.4 does)
+	//this is requried to prevent undef. symbols
+	using MultiArg<T>::_ignoreable;
+	using MultiArg<T>::_hasBlanks;
+	using MultiArg<T>::_extractValue;
+	using MultiArg<T>::_typeDesc;
+	using MultiArg<T>::_name;
+	using MultiArg<T>::_description;
+#endif
+
 	public:
 		
 		/**

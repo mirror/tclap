@@ -43,6 +43,19 @@ namespace TCLAP {
 template<class T>
 class UnlabeledValueArg : public ValueArg<T>
 {
+
+#ifdef TWO_STAGE_NAME_LOOKUP
+	//If compiler has two stage name lookup (as gcc >= 3.4 does)
+	//this is requried to prevent undef. symbols
+	using ValueArg<T>::_ignoreable;
+	using ValueArg<T>::_hasBlanks;
+	using ValueArg<T>::_extractValue;
+	using ValueArg<T>::_typeDesc;
+	using ValueArg<T>::_name;
+	using ValueArg<T>::_description;
+	using ValueArg<T>::_alreadySet;
+#endif
+
 	public:
 
 		/**
