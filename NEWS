@@ -80,5 +80,9 @@ long args and unlabeled args were used together and weren't working properly.
 Now they can be used together. Fixed another bug in spacePrint where long 
 program names caused an infinite loop.  Finally, fixed a small memory leak.
 
-1/5/05 - Fixed a bug where setting the output object for a CmdLine didn't
-register for version or usage generation. Doh! 
+1/6/05 - Fixed a bug where setting the output object for a CmdLine didn't
+register for version or usage generation. Doh!  Created a Constraint interface
+that should facilitate the creation of different constraints on Args.
+This has involved changing the constructor interface, so if you've been using
+allowed lists, you'll need to make a small modification to your existing code.
+See examples/test6.cpp for details.

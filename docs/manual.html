@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Templatized C++ Command Line Parser Manual</title><link rel="stylesheet" href="style.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.61.3" /></head><body><div class="book" lang="en" xml:lang="en"><div class="titlepage"><div><div><h1 class="title"><a id="id2868300"></a>Templatized C++ Command Line Parser Manual</h1></div><div><div class="author"><h3 class="author"><span class="firstname">Michael</span> <span class="othername">E</span> <span class="surname">Smoot</span></h3></div></div><div><p class="copyright">Copyright © 2003,2004 Michael E. Smoot</p></div></div><div></div><hr /></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1. <a href="#id2868084">Basic Usage</a></dt><dd><dl><dt><a href="#ARG_PROPERTIES">Argument Properties</a></dt><dt><a href="#ARGUMENT_TYPES">Types of Arguments</a></dt><dt><a href="#COMPILING">Compiling</a></dt></dl></dd><dt>2. <a href="#COMPLICATIONS">Complications</a></dt><dd><dl><dt><a href="#COMBINE_SWITCHES">I want to combine multiple switches into one argument...</a></dt><dt><a href="#MULTI_ARG">I tried passing multiple values on the command line with the
-same flag and it didn't work...</a></dt><dt><a href="#UNLABELED_VALUE_ARG">I don't like labelling all of my arguments...</a></dt><dt><a href="#UNLABELED_MULTI_ARG">I want an arbitrary number of unlabeled arguments to be accepted...</a></dt><dt><a href="#XOR">I want one argument or the other, but not both...</a></dt><dt><a href="#NO_FLAG">I have more arguments than single flags make sense for...</a></dt><dt><a href="#ALLOWED_LIST">I want to constrain the values allowed for a particular 
+same flag and it didn't work...</a></dt><dt><a href="#UNLABELED_VALUE_ARG">I don't like labelling all of my arguments...</a></dt><dt><a href="#UNLABELED_MULTI_ARG">I want an arbitrary number of unlabeled arguments to be accepted...</a></dt><dt><a href="#XOR">I want one argument or the other, but not both...</a></dt><dt><a href="#NO_FLAG">I have more arguments than single flags make sense for...</a></dt><dt><a href="#CONSTRAINT">I want to constrain the values allowed for a particular 
 argument...</a></dt><dt><a href="#ARG_ADD_CMDLINE">I want the Args to add themselves to the CmdLine...</a></dt><dt><a href="#CHANGE_OUTPUT">I want different output than what is provided...</a></dt></dl></dd><dt>3. <a href="#EXCEPTIONS">Exceptions to the Rules</a></dt><dd><dl><dt><a href="#IGNORE_ARGS">Ignoring arguments</a></dt><dt><a href="#COMBINED_SWITCHES">Multiple Identical Switches</a></dt><dt><a href="#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></dt></dl></dd><dt>4. <a href="#VISITORS">Visitors</a></dt><dt>5. <a href="#MORE_INFO">More Information</a></dt></dl></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="id2868084"></a>Chapter 1. Basic Usage</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="#ARG_PROPERTIES">Argument Properties</a></dt><dt><a href="#ARGUMENT_TYPES">Types of Arguments</a></dt><dt><a href="#COMPILING">Compiling</a></dt></dl></div><p>
 <span class="emphasis"><em>TCLAP</em></span> has a few key classes to be aware of. 
 The first is the
@@ -253,7 +253,7 @@ of just <tt class="methodname">_ignorable</tt> (do this for each variable
 or method referenced by <tt class="methodname">using</tt>).
 </p></div><p>
 </p></div></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="COMPLICATIONS"></a>Chapter 2. Complications</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><a href="#COMBINE_SWITCHES">I want to combine multiple switches into one argument...</a></dt><dt><a href="#MULTI_ARG">I tried passing multiple values on the command line with the
-same flag and it didn't work...</a></dt><dt><a href="#UNLABELED_VALUE_ARG">I don't like labelling all of my arguments...</a></dt><dt><a href="#UNLABELED_MULTI_ARG">I want an arbitrary number of unlabeled arguments to be accepted...</a></dt><dt><a href="#XOR">I want one argument or the other, but not both...</a></dt><dt><a href="#NO_FLAG">I have more arguments than single flags make sense for...</a></dt><dt><a href="#ALLOWED_LIST">I want to constrain the values allowed for a particular 
+same flag and it didn't work...</a></dt><dt><a href="#UNLABELED_VALUE_ARG">I don't like labelling all of my arguments...</a></dt><dt><a href="#UNLABELED_MULTI_ARG">I want an arbitrary number of unlabeled arguments to be accepted...</a></dt><dt><a href="#XOR">I want one argument or the other, but not both...</a></dt><dt><a href="#NO_FLAG">I have more arguments than single flags make sense for...</a></dt><dt><a href="#CONSTRAINT">I want to constrain the values allowed for a particular 
 argument...</a></dt><dt><a href="#ARG_ADD_CMDLINE">I want the Args to add themselves to the CmdLine...</a></dt><dt><a href="#CHANGE_OUTPUT">I want different output than what is provided...</a></dt></dl></div><p>
 Naturally, what we have seen to this point doesn't satisfy all of
 our needs. 
@@ -488,46 +488,58 @@ option on the command line. The help output is updated accordingly.
         SwitchArg  caseSwitch(&quot;&quot;,&quot;upperCase&quot;,&quot;Print in upper case&quot;,false);
 
 </pre><p>
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="ALLOWED_LIST"></a>I want to constrain the values allowed for a particular 
+</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="CONSTRAINT"></a>I want to constrain the values allowed for a particular 
 argument...</h2></div></div><div></div></div><p>
-There are now constructors for all of the <tt class="classname">Arg</tt>s 
-that parse values that allow a list of values to be specified for that
-particular <tt class="classname">Arg</tt>. When the value for the 
+<span class="emphasis"><em>Interface Change!!!</em></span> Sorry folks, but we've changed
+the interface to constraining <tt class="classname">Arg</tt>s.  Constraints are
+now hidden behind the <tt class="classname">Constraint</tt> interface.  To
+constrain an <tt class="classname">Arg</tt> simply implement the interface
+and specify the new class in the constructor as before.
+</p><p>
+Fear not, you can still constrain <tt class="classname">Arg</tt>s based on
+a list of values.  Instead of adding a <tt class="classname">vector</tt> of
+allowed values to the <tt class="classname">Arg</tt> directly, 
+create a <tt class="classname">ValuesConstraint</tt> object
+with a <tt class="classname">vector</tt> of values and add that to the 
+<tt class="classname">Arg</tt>. The <tt class="classname">Arg</tt> constructors
+have been modified accordingly.
+</p><p>
+When the value for the 
 <tt class="classname">Arg</tt> is parsed,
 it is checked against the list of values specified in the
-constructor. If the value is in the list then it is accepted. If
+<tt class="classname">ValuesConstraint</tt>. 
+If the value is in the list then it is accepted. If
 not, then an exception is thrown. Here is a simple example:
 
 </p><pre class="programlisting">
-
-        vector&lt;string&gt; allowed;
-        allowed.push_back(&quot;homer&quot;);
-        allowed.push_back(&quot;marge&quot;);
-        allowed.push_back(&quot;bart&quot;);
-        allowed.push_back(&quot;lisa&quot;);
-        allowed.push_back(&quot;maggie&quot;);
+		vector&lt;string&gt; allowed;
+		allowed.push_back(&quot;homer&quot;);
+		allowed.push_back(&quot;marge&quot;);
+		allowed.push_back(&quot;bart&quot;);
+		allowed.push_back(&quot;lisa&quot;);
+		allowed.push_back(&quot;maggie&quot;);
+		ValuesConstraint&lt;string&gt; allowedVals( allowed );
         
-        ValueArg&lt;string&gt; nameArg(&quot;n&quot;,&quot;name&quot;,&quot;Name to print&quot;,true,&quot;homer&quot;,allowed);
-        cmd.add( nameArg );
-
+		ValueArg&lt;string&gt; nameArg(&quot;n&quot;,&quot;name&quot;,&quot;Name to print&quot;,true,&quot;homer&quot;,&amp;allowedVals);
+		cmd.add( nameArg );
 </pre><p>
 
-Instead of a type description being specified in the 
+When a <tt class="classname">ValuesConstraint</tt> is specified,
+instead of a type description being specified in the 
 <tt class="classname">Arg</tt>, a
 type description is created by concatenating the values in the
-allowed list using the operator&lt;&lt; for the specified type. The
+allowed list using operator&lt;&lt; for the specified type. The
 help/usage for the <tt class="classname">Arg</tt> therefore lists the 
-allowable values.  Because of this, it is assumed that list should 
-be relatively small, although there is no limit on this.
+allowable values.  Because of this, you might want to keep the list 
+relatively small, however there is no limit on this.
 </p><p>
 Obviously, a list of allowed values isn't always the best way to
 constrain things. For instance, one might wish to allow only
-integers greater than 0. In this case, the best strategy is for you
-to evaluate the value returned from the <tt class="methodname">getValue()</tt> 
-call and if it
-isn't valid, throw an <tt class="classname">ArgException</tt>. Be sure that the
-description provided with the <tt class="classname">Arg</tt> reflects 
-the constraint you choose.
+integers greater than 0. In this case, simply create a class that
+implements the <tt class="classname">Constraint&lt;int&gt;</tt> interface and
+checks whether the value parsed is greater than 0 (done in the
+<tt class="methodname">check()</tt> method) and create your 
+<tt class="classname">Arg</tt> with your new <tt class="classname">Constraint</tt>. 
 </p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="ARG_ADD_CMDLINE"></a>I want the Args to add themselves to the CmdLine...</h2></div></div><div></div></div><p>
 New constructors have beed added for each <tt class="classname">Arg</tt> 
 that take a <tt class="classname">CmdLine</tt> object as an argument. 

@@ -632,50 +632,66 @@ option on the command line. The help output is updated accordingly.
 </sect1>
 
 
-<sect1 id="ALLOWED_LIST">
+<sect1 id="CONSTRAINT">
 <title>I want to constrain the values allowed for a particular 
 argument...</title>
 <para>
-There are now constructors for all of the <classname>Arg</classname>s 
-that parse values that allow a list of values to be specified for that
-particular <classname>Arg</classname>. When the value for the 
+<emphasis>Interface Change!!!</emphasis> Sorry folks, but we've changed
+the interface to constraining <classname>Arg</classname>s.  Constraints are
+now hidden behind the <classname>Constraint</classname> interface.  To
+constrain an <classname>Arg</classname> simply implement the interface
+and specify the new class in the constructor as before.
+</para>
+
+<para>
+Fear not, you can still constrain <classname>Arg</classname>s based on
+a list of values.  Instead of adding a <classname>vector</classname> of
+allowed values to the <classname>Arg</classname> directly, 
+create a <classname>ValuesConstraint</classname> object
+with a <classname>vector</classname> of values and add that to the 
+<classname>Arg</classname>. The <classname>Arg</classname> constructors
+have been modified accordingly.
+</para>
+
+<para>
+When the value for the 
 <classname>Arg</classname> is parsed,
 it is checked against the list of values specified in the
-constructor. If the value is in the list then it is accepted. If
+<classname>ValuesConstraint</classname>. 
+If the value is in the list then it is accepted. If
 not, then an exception is thrown. Here is a simple example:
 
 <programlisting>
-
-        vector&lt;string&gt; allowed;
-        allowed.push_back("homer");
-        allowed.push_back("marge");
-        allowed.push_back("bart");
-        allowed.push_back("lisa");
-        allowed.push_back("maggie");
+		vector&lt;string&gt; allowed;
+		allowed.push_back("homer");
+		allowed.push_back("marge");
+		allowed.push_back("bart");
+		allowed.push_back("lisa");
+		allowed.push_back("maggie");
+		ValuesConstraint&lt;string&gt; allowedVals( allowed );
         
-        ValueArg&lt;string&gt; nameArg("n","name","Name to print",true,"homer",allowed);
-        cmd.add( nameArg );
-
+		ValueArg&lt;string&gt; nameArg("n","name","Name to print",true,"homer",&amp;allowedVals);
+		cmd.add( nameArg );
 </programlisting>
 
-Instead of a type description being specified in the 
+When a <classname>ValuesConstraint</classname> is specified,
+instead of a type description being specified in the 
 <classname>Arg</classname>, a
 type description is created by concatenating the values in the
-allowed list using the operator&lt;&lt; for the specified type. The
+allowed list using operator&lt;&lt; for the specified type. The
 help/usage for the <classname>Arg</classname> therefore lists the 
-allowable values.  Because of this, it is assumed that list should 
-be relatively small, although there is no limit on this.
+allowable values.  Because of this, you might want to keep the list 
+relatively small, however there is no limit on this.
 </para>
 
 <para>
 Obviously, a list of allowed values isn't always the best way to
 constrain things. For instance, one might wish to allow only
-integers greater than 0. In this case, the best strategy is for you
-to evaluate the value returned from the <methodname>getValue()</methodname> 
-call and if it
-isn't valid, throw an <classname>ArgException</classname>. Be sure that the
-description provided with the <classname>Arg</classname> reflects 
-the constraint you choose.
+integers greater than 0. In this case, simply create a class that
+implements the <classname>Constraint&lt;int&gt;</classname> interface and
+checks whether the value parsed is greater than 0 (done in the
+<methodname>check()</methodname> method) and create your 
+<classname>Arg</classname> with your new <classname>Constraint</classname>. 
 </para>
 </sect1>
 
