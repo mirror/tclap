@@ -7,6 +7,32 @@
 using namespace TCLAP; 
 using namespace std; 
 
+
+// This exemplifies how the CmdLine class can be overridden to provide
+// user defined output.
+class MyCmdLine : public CmdLine
+{
+	public:
+
+        MyCmdLine(const std::string& name,
+                const std::string& message,
+                const std::string& version = "none" )
+		: CmdLine(name,message,version) { }
+
+		MyCmdLine(const std::string& message,
+	            const char delimiter = ' ',
+	             const std::string& version = "none" )
+		: CmdLine(message,delimiter,version) { }
+
+		virtual void failure(const ArgException& e)
+		{
+			cerr << "My special failure message for: " << endl
+			     << e.what() << endl; 
+			exit(1);
+		}
+};
+
+
 bool _boolTestB;
 bool _boolTestA;
 string _stringTest;
@@ -29,7 +55,7 @@ void parseOptions(int argc, char** argv)
 {
 	try {
 
-	CmdLine cmd("this is a message", ' ', "0.99" );
+	MyCmdLine cmd("this is a message", ' ', "0.99" );
 
 	// 
 	// Define arguments
