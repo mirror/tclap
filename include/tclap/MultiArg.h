@@ -41,7 +41,7 @@ template<class T> class MultiArg;
 
 namespace MULTI_ARG_HELPER {
 
-enum Error_e { EFAIL = 1000, EMANY };
+enum Error_e { EXTRACT_FAILURE = 1000, EXTRACT_TOO_MANY };
 
 /**
  * This class is used to extract a value from an argument. 
@@ -105,10 +105,10 @@ class ValueExtractor
 			}		
     
 			if ( is.fail() )
-				return EFAIL;
+				return EXTRACT_FAILURE;
     
 			if ( valuesRead > 1 )
-				return EMANY;
+				return EXTRACT_TOO_MANY;
     
 			_values.push_back(temp);
     
@@ -538,11 +538,11 @@ void MultiArg<T>::_extractValue( const std::string& val )
 		  
 	int err = ve.extractValue(val);
 
-	if ( err == MULTI_ARG_HELPER::EFAIL )
+	if ( err == MULTI_ARG_HELPER::EXTRACT_FAILURE )
 		throw( ArgParseException("Couldn't read argument value "
                                  "from string '" + val + "'", toString() ) );
 
-	if(err == MULTI_ARG_HELPER::EMANY)
+	if(err == MULTI_ARG_HELPER::EXTRACT_TOO_MANY)
 	    throw( ArgParseException("More than one valid value "
                                  "parsed from string '" + val + "'", 
 								 toString() ) );		    
