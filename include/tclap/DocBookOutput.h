@@ -120,7 +120,7 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 		std::cout << "</group>" << std::endl;
 	}
 
-	for (ArgIterator it = argList.begin(); it != argList.end(); it++)
+	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
 		if ( !xorHandler.contains( (*it) ) )
 		{
 			std::string id = (*it)->shortID();
