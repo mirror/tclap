@@ -25,10 +25,21 @@
 
 namespace TCLAP {
 
+/**
+ * A base class that defines the interface for visitors.
+ */
 class Visitor
 {
 	public:
+
+		/**
+		 * Constructor. Does nothing.
+		 */
 		Visitor() {};
+
+		/**
+		 * Does nothing. Should be overridden by child.
+		 */
 		virtual void visit() {};
 };
 

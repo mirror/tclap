@@ -33,30 +33,67 @@ using namespace std;
 
 namespace TCLAP {
 
+/**
+ * A simple switch argument.  If the switch is set on the command line, then
+ * the getValue method will return the opposite of the default value for the
+ * switch.
+ */
 class SwitchArg : public Arg
 {
 	protected:
 
+		/**
+		 * The value of the switch.
+		 */
 		bool _value;
 
 
 	public:
 
+        /**
+		 * SwitchArg constructor.
+		 * \param flag - The one character flag that identifies this
+		 * argument on the command line.
+		 * \param name - A one word name for the argument.  Can be
+		 * used as a long flag on the command line.
+		 * \param desc - A description of what the argument is for or
+		 * does.
+		 * \param def - The default value for this Switch. 
+		 * \param v - An optional visitor.  You probably should not
+		 * use this unless you have a very good reason.
+		 */
 		SwitchArg(const string& flag, 
 			      const string& name, 
 			      const string& desc,
-			      bool _default,
+			      bool def,
 				  Visitor* v = NULL);
 
+		/**
+		 * Destructor.
+		 */
 		~SwitchArg();
 
+        /**
+		 * Handles the processing of the argument.
+		 * This re-implements the Arg version of this method to set the
+		 * _value of the argument appropriately.
+		 * \param i - Pointer the the current argument in the list.
+		 * \param args - Mutable list of strings. Passed
+		 * in from main().
+		 */
 		virtual bool processArg(int* i, vector<string>& args); 
 
+		/**
+		 * Checks a string to see if any of the chars in the string
+		 * match the flag for this Switch.
+		 */
 		bool combinedSwitchesMatch(string& combined);
 
+		/**
+		 * Returns bool, whether or not the switch has been set.
+		 */
 		bool getValue() ;
 };
-
 
 }
 

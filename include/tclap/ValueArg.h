@@ -66,10 +66,10 @@ class ValueArg : public Arg
 		 * Extracts the value from the string.
 		 * Attempts to parse string as type T, if this fails an exception
 		 * is thrown.
-		 * \param val - string value to be parsed. 
+		 * \param val - value to be parsed. 
 		 */
 		void _extractValue( const string& val ); 
- 
+
 	public:
 
 		/**
@@ -126,11 +126,13 @@ class ValueArg : public Arg
 
 		/**
 		 * Specialization of shortID.
+		 * \param val - value to be used.
 		 */
 		virtual string shortID(const string& val = "val") const;
 
 		/**
 		 * Specialization of longID.
+		 * \param val - value to be used.
 		 */
 		virtual string longID(const string& val = "val") const;
 
@@ -175,8 +177,10 @@ bool ValueArg<T>::processArg(int *i, vector<string>& args)
 	if ( _ignoreable && Arg::ignoreRest() )
 		return false;
 
-	string flag = args[*i];
+	if ( _hasBlanks( args[*i] ) )
+		return false;
 
+	string flag = args[*i];
 	string value = "";
 	trimFlag( flag, value );
 

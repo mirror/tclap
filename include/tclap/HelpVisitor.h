@@ -26,14 +26,29 @@
 
 namespace TCLAP {
 
+/**
+ * A Visitor object that calls the usage method of a given CmdLine.
+ */
 class HelpVisitor: public Visitor
 {
 	protected:
+
+		/**
+		 * The CmdLine that will be called for the usage method.
+		 */
 		CmdLine* _cmd;
 
 	public:
+
+		/**
+		 * Constructor.
+		 * \param cmd - The CmdLine that will called for usage method.
+		 */
 		HelpVisitor(CmdLine* cmd) : Visitor(), _cmd( cmd ) {};
 
+		/**
+		 * Calls the usage method of the CmdLine.
+		 */
 		void visit() { _cmd->usage(0); }
 		
 };

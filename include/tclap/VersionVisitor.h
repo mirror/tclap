@@ -27,14 +27,30 @@
 
 namespace TCLAP {
 
+/**
+ * A Vistor that will call the version method of the given CmdLine and
+ * then exit.
+ */
 class VersionVisitor: public Visitor
 {
 	protected:
+
+		/**
+		 * The CmdLine of interest.
+		 */
 		CmdLine* _cmd;
 		
 	public:
+
+		/**
+		 * Constructor.
+		 * \param cmd - The CmdLine whose version method will be called.
+		 */
 		VersionVisitor(CmdLine* cmd) : Visitor(), _cmd( cmd ) {};
 
+		/**
+		 * Prints the version to stdout.
+		 */
 		void visit() { _cmd->version(0); }
 };
 

@@ -123,11 +123,15 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const string& name,
 template<class T>
 bool UnlabeledValueArg<T>::processArg(int *i, vector<string>& args) 
 {
-	// never ignore an unlabeled arg
 	
 	if ( _alreadySet )
 		return false;
+	
+	if ( _hasBlanks( args[*i] ) )
+		return false;
 
+	// never ignore an unlabeled arg
+	
 	_extractValue( args[*i] );
 	_alreadySet = true;
 	return true;

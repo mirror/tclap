@@ -28,11 +28,22 @@
 
 namespace TCLAP {
 
+/**
+ * A Vistor that tells the CmdLine to begin ignoring arguments after
+ * this one is parsed.
+ */
 class IgnoreRestVisitor: public Visitor
 {
 	public:
+
+		/**
+		 * Constructor.
+		 */
 		IgnoreRestVisitor() : Visitor() {};
 
+		/**
+		 * Sets Arg::_ignoreRest.
+		 */
 		void visit() { Arg::beginIgnoring();  }
 };
 

@@ -29,20 +29,42 @@ using namespace std;
 
 namespace TCLAP {
 
+/**
+ * A simple class that defines and argument exception.  Should be caught
+ * whenever a CmdLine is created and parsed.
+ */
 class ArgException
 {
 	public:
-		
+	
+		/**
+		 * Constructor.
+		 * \param text - The text of the exception.
+		 * \param id - The text identifying the argument source 
+		 * of the exception.
+		 */
 		ArgException( const string& text = "undefined exception", 
 					  const string& id = "undefined" )
 			: _errorText(text), _argId( id ) {}; 
 		
+		/**
+		 * Copy constructor.
+		 * \param e - The ArgException that will be copied.
+		 */
 		ArgException(const ArgException& e) 
 			: _errorText(e._errorText), _argId(e._argId) {};
 
-		~ArgException(){};
+		/**
+		 * Destructor.
+		 */
+		~ArgException() {};
 
 	
+		/**
+		 * Assignment operator.
+		 * \param e - The ArgException that will be assigned
+		 * to this.
+		 */
 		ArgException& operator=( const ArgException& e )
 		{ 
 			if ( this != &e ) 
@@ -53,7 +75,14 @@ class ArgException
 			return *this; 
 		};
 
+		/**
+		 * Returns the error text.
+		 */
 		string error() { return ( _errorText ); };
+
+		/**
+		 * Returns the argument id.
+		 */
 		string argId() 
 		{ 
 			if ( _argId == "undefined" )
@@ -64,7 +93,14 @@ class ArgException
 
 	private:
 
+		/**
+		 * The text of the exception message.
+		 */
 		string _errorText;
+
+		/**
+		 * The argument related to this exception.
+		 */
 		string _argId;
 
 };

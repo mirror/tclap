@@ -44,11 +44,18 @@ class Arg
 {
 	private: 
 
+		/**
+		 * Indicates whether the rest of the arguments should be ignored.
+		 */
 		static bool _ignoreRest;
 
 
 	protected:
 
+		/**
+		 * The delimiter that separates an argument flag/name from the
+		 * value.
+		 */
 		static char _delimiter; 
 
 		/** 
@@ -113,17 +120,55 @@ class Arg
 		void _checkWithVisitor() const;
 
 	public:
-
+		
+		/**
+		 * Begin ignoring arguments since the "--" argument was specified.
+		 */
 		static void beginIgnoring() { Arg::_ignoreRest = true; }
+		
+		/**
+		 * Whether to ignore the rest.
+		 */
 		static bool ignoreRest() { return Arg::_ignoreRest; }
+		
+		/**
+		 * The char used as a place holder when SwitchArgs are combined.
+		 * Currently set to '*', which shouldn't cause many problems since
+		 * *'s are expanded by most shells on the command line.  
+		 */
+		static const char blankChar; 
+		
+		/**
+		 * The char that indicates the beginning of a flag.  Currently '-'.
+		 */
+		static const char flagStartChar; 
+		
+		/**
+		 * The sting that indicates the beginning of a flag.  Currently "-".
+		 * Should be identical to flagStartChar.
+		 */
+		static const string flagStartString;
+		
+		/**
+		 * The sting that indicates the beginning of a name.  Currently "--".
+		 * Should be flagStartChar twice.
+		 */
+		static const string nameStartString;
 
 		/**
 		 * Sets the delimiter for all arguments.
+		 * \param c - The character that delimits flags/names from values.
 		 */
 		static void setDelimiter( char c ) { Arg::_delimiter = c; }
 
 		/**
 		 * Primary constructor.
+		 * \param flag - The flag identifying the argument.
+		 * \param name - The name identifying the argument.
+		 * \param desc - The description of the argument, used in the usage.
+		 * \param req - Whether the argument is required.
+		 * \param valreq - Whether the a value is required for the argument.
+		 * \param v - The visitor checked by the argument. Defaults to NULL.
 		 */
 		Arg(const string& flag, 
 			const string& name, 
@@ -140,14 +185,16 @@ class Arg
 
 		/**
 		 * Copy constructor.
+		 * \param a - The Arg to be copied. 
 		 */
-		Arg(const Arg&);
+		Arg(const Arg& a);
 
 		/**
 		 * Operator =.
 		 * Assignment operator.
+		 * \param a - The Arg to be assigned to this.
 		 */
-		Arg& operator=(const Arg&);
+		Arg& operator=(const Arg& a);
 
 		/**
 		 * Destructor.
@@ -171,8 +218,9 @@ class Arg
 		/**
 		 * Operator ==.
 		 * Equality operator. Must be virtual to handle unlabeled args.
+		 * \param a - The Arg to be compared to this.
 		 */
-		virtual bool operator==(const Arg&);
+		virtual bool operator==(const Arg& a);
 
 		/**
 		 * Returns the argument flag.
@@ -214,6 +262,8 @@ class Arg
 		 * This is generally called by the processArg() method.  This
 		 * method could be re-implemented by a child to change how 
 		 * arguments are specified on the command line.
+		 * \param s - The string to be compared to the flag/name to determine
+		 * whether the arg matches.
 		 */
 		virtual bool argMatches( const string& s ) const;
 
@@ -225,18 +275,31 @@ class Arg
 
 		/**
 		 * Returns a short ID for the usage.
+		 * \param valueId - The value used in the id.
 		 */
 		virtual string shortID( const string& valueId = "val" ) const;
 
 		/**
 		 * Returns a long ID for the usage.
+		 * \param valueId - The value used in the id.
 		 */
 		virtual string longID( const string& valueId = "val" ) const;
 
 		/**
 		 * Trims a value off of the flag.
+		 * \param flag - The string from which the flag and value will be 
+		 * trimmed. Contains the flag once the value has been trimmed. 
+		 * \param value - Where the value trimmed from the string will
+		 * be stored.
 		 */
 		virtual void trimFlag( string& flag, string& value ) const;
+
+		/**
+		 * Checks whether a given string has blank chars, indicating that
+		 * it is a combined SwitchArg.  If so, return true, otherwise return
+		 * false.
+		 */
+		bool _hasBlanks( const string& s ) const;
 
 
 };
