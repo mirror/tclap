@@ -28,6 +28,7 @@
 #include <sstream>
 #include <tclap/Visitor.h>
 #include <tclap/Arg.h>
+#include <tclap/ValueArg.h>
 
 using namespace std;
 
