@@ -52,13 +52,14 @@ void XorHandler::longUsage()
 {
 	for ( int i = 0; (unsigned int)i < _orList.size(); i++ )
 	{
-		int orCount = 0;
 		for ( ArgVectorIterator it = _orList[i].begin(); 
-						it != _orList[i].end(); it++, orCount++ )
+			  it != _orList[i].end(); 
+			  it++ )
 		{
 			cout << "   " << (*it)->longID() << endl
 				 << "     " << (*it)->getDescription() << endl; 
-			if ( (orCount % 2) == 0 )
+
+			if ( it+1 != _orList[i].end() )
 				cout << "       -- OR -- " << endl;
 		}
 		cout << endl << endl;
