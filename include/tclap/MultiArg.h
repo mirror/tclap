@@ -340,7 +340,9 @@ MultiArg<T>::MultiArg(const std::string& flag,
   _typeDesc( typeDesc ),
   _constraint( NULL ),
   _allowMore(false)
-{ }
+{ 
+	_acceptsMultipleValues = true;
+}
 
 template<class T>
 MultiArg<T>::MultiArg(const std::string& flag, 
@@ -356,6 +358,7 @@ MultiArg<T>::MultiArg(const std::string& flag,
   _allowMore(false)
 { 
 	parser.add( this );
+	_acceptsMultipleValues = true;
 }
 
 /**
@@ -372,7 +375,9 @@ MultiArg<T>::MultiArg(const std::string& flag,
   _typeDesc( constraint->shortID() ),
   _constraint( constraint ),
   _allowMore(false)
-{ }
+{ 
+	_acceptsMultipleValues = true;
+}
 
 template<class T>
 MultiArg<T>::MultiArg(const std::string& flag, 
@@ -388,6 +393,7 @@ MultiArg<T>::MultiArg(const std::string& flag,
   _allowMore(false)
 { 
 	parser.add( this );
+	_acceptsMultipleValues = true;
 }
 
 template<class T>

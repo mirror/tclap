@@ -125,6 +125,8 @@ class Arg
 		 */
 		bool _xorSet;
 
+		bool _acceptsMultipleValues;
+
 		/**
 		 * Performs the special handling described by the Vistitor.
 		 */
@@ -330,6 +332,7 @@ class Arg
 		void setRequireLabel( const std::string& s );
 
 		virtual bool allowMore();
+		virtual bool acceptsMultipleValues();
 
 };
 
@@ -368,7 +371,8 @@ inline Arg::Arg(const std::string& flag,
   _alreadySet(false),
   _visitor( v ),
   _ignoreable(true),
-  _xorSet(false)
+  _xorSet(false),
+  _acceptsMultipleValues(false)
 {
 	if ( _flag.length() > 1 ) 
 		throw(SpecificationException(
@@ -565,6 +569,11 @@ inline void Arg::addToList( std::list<Arg*>& argList ) const
 inline bool Arg::allowMore()
 {
 	return false;
+}
+
+inline bool Arg::acceptsMultipleValues()
+{
+	return _acceptsMultipleValues;
 }
 
 //////////////////////////////////////////////////////////////////////
