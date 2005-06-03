@@ -25,6 +25,13 @@ int main(int argc, char** argv)
 					               "won't see this",false);
 	cmd.add( word );
 
+	// Uncommenting the next arg will (correctly) cause an exception 
+	// to be thrown.
+
+//	UnlabeledMultiArg<string> badword("badword","a bad word", false,"string");
+//
+//	cmd.add( badword );
+
 	cmd.parse( argc, argv );
 
 	bool reverseName = reverseSwitch.getValue();

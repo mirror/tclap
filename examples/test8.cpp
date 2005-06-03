@@ -53,7 +53,7 @@ void parseOptions(int argc, char** argv)
 	MultiArg<float> ftest("f", "floatTest", "multi float test", false,"float",
 	                      cmd );
 
-	UnlabeledMultiArg<string> mtest("fileName","file names",
+	UnlabeledMultiArg<string> mtest("fileName","file names", false,
 					                "fileNameString", cmd);
 	//
 	// Parse the command line.

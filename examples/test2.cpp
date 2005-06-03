@@ -66,7 +66,7 @@ void parseOptions(int argc, char** argv)
 					                "default","string");
 	cmd.add( utest );
 
-	UnlabeledMultiArg<string> mtest("fileName", "file names", "string");
+	UnlabeledMultiArg<string> mtest("fileName", "file names", false, "string");
 	cmd.add( mtest );
 
 	//

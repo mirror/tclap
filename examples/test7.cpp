@@ -30,7 +30,8 @@ int main(int argc, char** argv)
 	iallowed.push_back(3);
 	ValuesConstraint<int> iiallowed( iallowed );
 
-	UnlabeledMultiArg<int> intArg("times","Number of times to print",&iiallowed);
+	UnlabeledMultiArg<int> intArg("times","Number of times to print",false,
+					              &iiallowed);
 	cmd.add( intArg );
 
 	// Ignore the names and comments!  These  args mean nothing (to this
