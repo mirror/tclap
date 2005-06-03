@@ -28,6 +28,8 @@
 #include <vector>
 
 #include <tclap/ValueArg.h>
+#include <tclap/OptionalUnlabeledTracker.h>
+
 
 namespace TCLAP {
 
@@ -200,6 +202,7 @@ class UnlabeledValueArg : public ValueArg<T>
 		 * \param argList - The list to add this to.
 		 */
 		virtual void addToList( std::list<Arg*>& argList ) const;
+
 };
 
 /**
@@ -216,6 +219,9 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name,
 : ValueArg<T>("", name, desc, req, val, typeDesc, v)
 { 
 	_ignoreable = ignoreable;
+
+	OptionalUnlabeledTracker::check(req, toString());
+
 }
 
 template<class T>
@@ -230,6 +236,7 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name,
 : ValueArg<T>("", name, desc, req, val, typeDesc, v)
 { 
 	_ignoreable = ignoreable;
+	OptionalUnlabeledTracker::check(req, toString());
 	parser.add( this );
 }
 
@@ -247,6 +254,7 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name,
 : ValueArg<T>("", name, desc, req, val, constraint, v)
 { 
 	_ignoreable = ignoreable;
+	OptionalUnlabeledTracker::check(req, toString());
 }
 
 template<class T>
@@ -261,6 +269,7 @@ UnlabeledValueArg<T>::UnlabeledValueArg(const std::string& name,
 : ValueArg<T>("", name, desc, req, val, constraint,  v)
 { 
 	_ignoreable = ignoreable;
+	OptionalUnlabeledTracker::check(req, toString());
 	parser.add( this );
 }
 

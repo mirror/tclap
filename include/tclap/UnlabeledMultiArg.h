@@ -27,6 +27,7 @@
 #include <vector>
 
 #include <tclap/MultiArg.h>
+#include <tclap/OptionalUnlabeledTracker.h>
 
 namespace TCLAP {
 
@@ -57,6 +58,8 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * identification, not as a long flag.
 		 * \param desc - A description of what the argument is for or
 		 * does.
+		 * \param req - Whether the argument is required on the command
+		 *  line.
 		 * \param typeDesc - A short, human readable description of the
 		 * type that this object expects.  This is used in the generation
 		 * of the USAGE statement.  The goal is to be helpful to the end user
@@ -68,6 +71,7 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 */
 		UnlabeledMultiArg( const std::string& name,
 				           const std::string& desc,
+						   bool req,
 				           const std::string& typeDesc,
 						   bool ignoreable = false,
 				           Visitor* v = NULL );
@@ -77,6 +81,8 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * identification, not as a long flag.
 		 * \param desc - A description of what the argument is for or
 		 * does.
+		 * \param req - Whether the argument is required on the command
+		 *  line.
 		 * \param typeDesc - A short, human readable description of the
 		 * type that this object expects.  This is used in the generation
 		 * of the USAGE statement.  The goal is to be helpful to the end user
@@ -89,6 +95,7 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 */
 		UnlabeledMultiArg( const std::string& name,
 				           const std::string& desc,
+						   bool req,
 				           const std::string& typeDesc,
 						   CmdLineInterface& parser,
 						   bool ignoreable = false,
@@ -100,6 +107,8 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * identification, not as a long flag.
 		 * \param desc - A description of what the argument is for or
 		 * does.
+		 * \param req - Whether the argument is required on the command
+		 *  line.
 		 * \param constraint - A pointer to a Constraint object used
 		 * to constrain this Arg.
 		 * \param ignoreable - Whether or not this argument can be ignored
@@ -109,6 +118,7 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 */
 		UnlabeledMultiArg( const std::string& name,
 						   const std::string& desc,
+						   bool req,
 						   Constraint<T>* constraint,
 						   bool ignoreable = false,
 						   Visitor* v = NULL );
@@ -119,6 +129,8 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * identification, not as a long flag.
 		 * \param desc - A description of what the argument is for or
 		 * does.
+		 * \param req - Whether the argument is required on the command
+		 *  line.
 		 * \param constraint - A pointer to a Constraint object used
 		 * to constrain this Arg.
 		 * \param parser - A CmdLine parser object to add this Arg to
@@ -129,6 +141,7 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 */
 		UnlabeledMultiArg( const std::string& name, 
 						   const std::string& desc, 
+						   bool req,
 						   Constraint<T>* constraint,
 						   CmdLineInterface& parser,
 						   bool ignoreable = false,
@@ -172,24 +185,28 @@ class UnlabeledMultiArg : public MultiArg<T>
 template<class T>
 UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name, 
 				                        const std::string& desc, 
+										bool req,
 					                    const std::string& typeDesc,
 										bool ignoreable,
 					                    Visitor* v)
-: MultiArg<T>("", name, desc,  false, typeDesc, v)
+: MultiArg<T>("", name, desc,  req, typeDesc, v)
 { 
 	_ignoreable = ignoreable;
+	OptionalUnlabeledTracker::check(true, toString());
 }
 
 template<class T>
 UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name, 
 				                        const std::string& desc, 
+										bool req,
 					                    const std::string& typeDesc,
 										CmdLineInterface& parser,
 										bool ignoreable,
 					                    Visitor* v)
-: MultiArg<T>("", name, desc,  false, typeDesc, v)
+: MultiArg<T>("", name, desc,  req, typeDesc, v)
 { 
 	_ignoreable = ignoreable;
+	OptionalUnlabeledTracker::check(true, toString());
 	parser.add( this );
 }
 
@@ -197,24 +214,28 @@ UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name,
 template<class T>
 UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name, 
 				                        const std::string& desc, 
+										bool req,
 					                    Constraint<T>* constraint,
 										bool ignoreable,
 					                    Visitor* v)
-: MultiArg<T>("", name, desc,  false, constraint, v)
+: MultiArg<T>("", name, desc,  req, constraint, v)
 { 
 	_ignoreable = ignoreable;
+	OptionalUnlabeledTracker::check(true, toString());
 }
 
 template<class T>
 UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name, 
 				                        const std::string& desc, 
+										bool req,
 					                    Constraint<T>* constraint,
 										CmdLineInterface& parser,
 										bool ignoreable,
 					                    Visitor* v)
-: MultiArg<T>("", name, desc,  false, constraint, v)
+: MultiArg<T>("", name, desc,  req, constraint, v)
 { 
 	_ignoreable = ignoreable;
+	OptionalUnlabeledTracker::check(true, toString());
 	parser.add( this );
 }
 
