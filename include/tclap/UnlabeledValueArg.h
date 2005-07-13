@@ -52,6 +52,7 @@ class UnlabeledValueArg : public ValueArg<T>
 	using ValueArg<T>::_name;
 	using ValueArg<T>::_description;
 	using ValueArg<T>::_alreadySet;
+	using ValueArg<T>::toString;
 
 	public:
 
