@@ -11,6 +11,6 @@ test7_SOURCES = test7.cpp
 test8_SOURCES = test8.cpp
 test9_SOURCES = test9.cpp
 
-INCLUDES = -I$(top_builddir)/include
+INCLUDES = -I$(top_srcdir)/include
 
 AM_CXXFLAGS = -Wall
