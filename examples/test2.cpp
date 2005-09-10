@@ -86,7 +86,7 @@ void parseOptions(int argc, char** argv)
 	_utest = utest.getValue();
 
 	vector<string> v = mtest.getValue();
-	for ( int i = 0; (unsigned int)i < v.size(); i++ ) 
+	for ( int i = 0; static_cast<unsigned int>(i) < v.size(); i++ ) 
 		cout << i << "  " <<  v[i] << endl;
 
 	} catch ( ArgException& e )

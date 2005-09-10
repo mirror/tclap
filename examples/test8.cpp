@@ -70,15 +70,15 @@ void parseOptions(int argc, char** argv)
 	_ztest = ztest.getValue();
 
 	vector<int> vi = itest.getValue();
-	for ( int i = 0; (unsigned int)i < vi.size(); i++ ) 
+	for ( int i = 0; static_cast<unsigned int>(i) < vi.size(); i++ ) 
 		cout << "[-i] " << i << "  " <<  vi[i] << endl;
 
 	vector<float> vf = ftest.getValue();
-	for ( int i = 0; (unsigned int)i < vf.size(); i++ ) 
+	for ( int i = 0; static_cast<unsigned int>(i) < vf.size(); i++ ) 
 		cout << "[-f] " << i << "  " <<  vf[i] << endl;
 
 	vector<string> v = mtest.getValue();
-	for ( int i = 0; (unsigned int)i < v.size(); i++ ) 
+	for ( int i = 0; static_cast<unsigned int>(i) < v.size(); i++ ) 
 		cout << "[  ] " << i << "  " <<  v[i] << endl;
 
 	} catch ( ArgException& e )

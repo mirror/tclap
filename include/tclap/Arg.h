@@ -229,7 +229,7 @@ class Arg
 		 * Equality operator. Must be virtual to handle unlabeled args.
 		 * \param a - The Arg to be compared to this.
 		 */
-		virtual bool operator==(const Arg& a);
+		virtual bool operator==(const Arg& a) const;
 
 		/**
 		 * Returns the argument flag.
@@ -443,7 +443,7 @@ inline std::string Arg::longID( const std::string& valueId ) const
 
 }
 
-inline bool Arg::operator==(const Arg& a)
+inline bool Arg::operator==(const Arg& a) const
 {
 	if ( ( _flag != "" && _flag == a._flag ) || _name == a._name)
 		return true;
@@ -520,7 +520,7 @@ inline void Arg::_checkWithVisitor() const
 inline void Arg::trimFlag(std::string& flag, std::string& value) const
 {
 	int stop = 0;
-	for ( int i = 0; (unsigned int)i < flag.length(); i++ )
+	for ( int i = 0; static_cast<unsigned int>(i) < flag.length(); i++ )
 		if ( flag[i] == Arg::delimiter() )
 		{
 			stop = i;
@@ -540,7 +540,7 @@ inline void Arg::trimFlag(std::string& flag, std::string& value) const
  */
 inline bool Arg::_hasBlanks( const std::string& s ) const
 {
-	for ( int i = 1; (unsigned int)i < s.length(); i++ )
+	for ( int i = 1; static_cast<unsigned int>(i) < s.length(); i++ )
 		if ( s[i] == Arg::blankChar() )
 			return true;
 
@@ -563,7 +563,7 @@ inline void Arg::xorSet()
  */
 inline void Arg::addToList( std::list<Arg*>& argList ) const
 {
-	argList.push_front( (Arg*)this );
+	argList.push_front( const_cast<Arg*>(this) );
 }
 
 inline bool Arg::allowMore()

@@ -295,7 +295,7 @@ bool UnlabeledMultiArg<T>::operator==(const Arg& a) const
 template<class T>
 void UnlabeledMultiArg<T>::addToList( std::list<Arg*>& argList ) const
 {
-	argList.push_back( (Arg*)this );
+	argList.push_back( const_cast<Arg*>(static_cast<const Arg* const>(this)) );
 }
 
 }

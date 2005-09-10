@@ -95,14 +95,14 @@ void parseOptions(int argc, char** argv)
     {
         cout << "for J:" << endl;
         vector<string> v = jtest.getValue();
-        for ( int z = 0; (unsigned int)z < v.size(); z++ )
+        for ( int z = 0; static_cast<unsigned int>(z) < v.size(); z++ )
             cout << " " << z << "  " << v[z] << endl;
     }
     else if ( itest.isSet() )
     {
         cout << "for I:" << endl;
         vector<string> v = itest.getValue();
-        for ( int z = 0; (unsigned int)z < v.size(); z++ )
+        for ( int z = 0; static_cast<unsigned int>(z) < v.size(); z++ )
             cout << " " << z << "  " << v[z] << endl;
     }
     else

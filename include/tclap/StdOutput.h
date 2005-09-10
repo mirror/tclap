@@ -161,7 +161,7 @@ inline void StdOutput::_shortUsage( CmdLineInterface& _cmd,
 	std::string s = progName + " ";
 
 	// first the xor
-	for ( int i = 0; (unsigned int)i < xorList.size(); i++ )
+	for ( int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++ )
 	{
 		s += " {";
 		for ( ArgVectorIterator it = xorList[i].begin(); 
@@ -177,9 +177,9 @@ inline void StdOutput::_shortUsage( CmdLineInterface& _cmd,
 			s += " " + (*it)->shortID();
 
 	// if the program name is too long, then adjust the second line offset 
-	int secondLineOffset = (int)(progName.length()) + 2;
+	int secondLineOffset = static_cast<int>(progName.length()) + 2;
 	if ( secondLineOffset > 75/2 )
-			secondLineOffset = (int)(75/2);
+			secondLineOffset = static_cast<int>(75/2);
 
 	spacePrint( std::cout, s, 75, 3, secondLineOffset );
 }
@@ -193,7 +193,7 @@ inline void StdOutput::_longUsage( CmdLineInterface& _cmd,
 	std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
 
 	// first the xor 
-	for ( int i = 0; (unsigned int)i < xorList.size(); i++ )
+	for ( int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++ )
 	{
 		for ( ArgVectorIterator it = xorList[i].begin(); 
 			  it != xorList[i].end(); 
@@ -228,7 +228,7 @@ inline void StdOutput::spacePrint( std::ostream& os,
 						           int indentSpaces, 
 						           int secondLineOffset ) const
 {
-	int len = (int)(s.length());
+	int len = static_cast<int>(s.length());
 
 	if ( (len + indentSpaces > maxWidth) && maxWidth > 0 )
 	{

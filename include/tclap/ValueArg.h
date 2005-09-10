@@ -460,7 +460,7 @@ bool ValueArg<T>::processArg(int *i, std::vector<std::string>& args)
         if ( value == "" )
         {
             (*i)++;
-            if ( (unsigned int)*i < args.size() ) 
+            if ( static_cast<unsigned int>(*i) < args.size() ) 
 				_extractValue( args[*i] );
             else
 				throw( ArgParseException("Missing a value for this argument!",
