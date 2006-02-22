@@ -1,14 +1,14 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-#include <tclap/CmdLine.h>
+#include "tclap/CmdLine.h"
 
 using namespace TCLAP;
 using namespace std;
 
 int main(int argc, char** argv)
 {
-	try {  
+	try {
 
 	CmdLine cmd("Command description message", ' ', "0.9",false);
 
@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 					               "won't see this",false);
 	cmd.add( word );
 
-	// Uncommenting the next arg will (correctly) cause an exception 
+	// Uncommenting the next arg will (correctly) cause an exception
 	// to be thrown.
 
 //	UnlabeledMultiArg<string> badword("badword","a bad word", false,"string");

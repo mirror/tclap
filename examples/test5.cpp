@@ -1,11 +1,11 @@
 
 
-#include <tclap/CmdLine.h>
+#include "tclap/CmdLine.h"
 #include <iostream>
 #include <string>
 
-using namespace TCLAP; 
-using namespace std; 
+using namespace TCLAP;
+using namespace std;
 
 string _orTest;
 string _orTest2;
@@ -33,7 +33,7 @@ void parseOptions(int argc, char** argv)
 
 	CmdLine cmd("this is a message", ' ', "0.99" );
 
-	// 
+	//
 	// Define arguments
 	//
 
@@ -69,7 +69,7 @@ void parseOptions(int argc, char** argv)
 	//
 	// Set variables
 	//
-	
+
 	if ( atest.isSet() )
 		_orTest = atest.getValue();
 	else if ( btest.isSet() )
@@ -107,7 +107,7 @@ void parseOptions(int argc, char** argv)
     }
     else
 		throw("yup, still bad");
-	
+
 
 
 	} catch ( ArgException& e )

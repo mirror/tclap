@@ -1,11 +1,11 @@
 
 
-#include <tclap/CmdLine.h>
+#include "tclap/CmdLine.h"
 #include <iostream>
 #include <string>
 
-using namespace TCLAP; 
-using namespace std; 
+using namespace TCLAP;
+using namespace std;
 
 int _intTest;
 float _floatTest;
@@ -39,7 +39,7 @@ void parseOptions(int argc, char** argv)
 
 	CmdLine cmd("this is a message", ' ', "0.99" );
 
-	// 
+	//
 	// Define arguments
 	//
 
@@ -58,7 +58,7 @@ void parseOptions(int argc, char** argv)
 
 	ValueArg<int> itest("i", "intTest", "integer test", true, 5, "int");
 	cmd.add( itest );
-							 
+
 	ValueArg<double> ftest("f", "floatTest", "float test", false, 3.7, "float");
 	cmd.add( ftest );
 
@@ -86,7 +86,7 @@ void parseOptions(int argc, char** argv)
 	_utest = utest.getValue();
 
 	vector<string> v = mtest.getValue();
-	for ( int i = 0; static_cast<unsigned int>(i) < v.size(); i++ ) 
+	for ( int i = 0; static_cast<unsigned int>(i) < v.size(); i++ )
 		cout << i << "  " <<  v[i] << endl;
 
 	} catch ( ArgException& e )

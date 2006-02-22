@@ -1,11 +1,11 @@
 
 
-#include <tclap/CmdLine.h>
+#include "tclap/CmdLine.h"
 #include <iostream>
 #include <string>
 
-using namespace TCLAP; 
-using namespace std; 
+using namespace TCLAP;
+using namespace std;
 
 
 // This exemplifies how the output class can be overridden to provide
@@ -17,7 +17,7 @@ class MyOutput : public StdOutput
 		virtual void failure(CmdLineInterface& c, ArgException& e)
 		{
 			cerr << "my failure message: " << endl
-			     << e.what() << endl; 
+			     << e.what() << endl;
 		}
 
 		virtual void usage(CmdLineInterface& c)
@@ -25,7 +25,7 @@ class MyOutput : public StdOutput
 			cout << "my usage message:" << endl;
 			list<Arg*> args = c.getArgList();
 			for (ArgListIterator it = args.begin(); it != args.end(); it++)
-				cout << (*it)->longID() 
+				cout << (*it)->longID()
 					 << "  (" << (*it)->getDescription() << ")" << endl;
 		}
 
@@ -64,14 +64,14 @@ void parseOptions(int argc, char** argv)
 	MyOutput my;
 	cmd.setOutput(&my);
 
-	// 
+	//
 	// Define arguments
 	//
 
 	SwitchArg btest("B","sB", "exist Test B", false);
 	SwitchArg atest("A","sA", "exist Test A", false);
 
-	ValueArg<string> stest("s", "Bs", "string test", true, "homer", 
+	ValueArg<string> stest("s", "Bs", "string test", true, "homer",
 					       "string");
 	cmd.add( stest );
 	cmd.add( btest );

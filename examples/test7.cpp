@@ -1,14 +1,14 @@
 #include <string>
-#include <tclap/CmdLine.h>
+#include "tclap/CmdLine.h"
 
 using namespace TCLAP;
 using namespace std;
 
 int main(int argc, char** argv)
 {
-	// Wrap everything in a try block.  Do this every time, 
-	// because exceptions will be thrown for problems. 
-	try {  
+	// Wrap everything in a try block.  Do this every time,
+	// because exceptions will be thrown for problems.
+	try {
 
 	// Define the command line object.
 	CmdLine cmd("Command description message. This is a long multi-line message meant to test line wrapping.  This is more text that doesn't really do anything besides take up lots of space that otherwise might be used for something real.  That should be enough, don't you think?", ' ', "0.9");
@@ -46,11 +46,11 @@ int main(int argc, char** argv)
 
 	SwitchArg dna("d","isDna","The input sequences are DNA", false);
 	cmd.add( dna );
-	
+
 	ValueArg<string> scoringMatrixName("s","scoringMatrix",
 		"Scoring Matrix name", false,"BLOSUM50","name string");
 	cmd.add( scoringMatrixName );
-	
+
 	ValueArg<string> seq1Filename ("x","filename1",
 		"Sequence 1 filename (FASTA format)", false,"","filename");
 	cmd.add( seq1Filename );
@@ -62,21 +62,21 @@ int main(int argc, char** argv)
 	ValueArg<float> lowerBound("b","lowerBound", "lower percentage bound",
 		false,1.0,"float lte 1");
 	cmd.add( lowerBound );
-	
+
 	ValueArg<float> upperBound("u","upperBound", "upper percentage bound",
 		false,1.0,"float lte 1");
 	cmd.add( upperBound );
-	
+
 	ValueArg<int> limit("l","limit","Max number of alignments allowed",
 		false, 1000,"int");
 	cmd.add( limit );
 
 	argv[0] = "ThisIsAVeryLongProgramNameDesignedToTestSpacePrintWhichUsedToHaveProblemsWithLongProgramNamesIThinkItIsNowLongEnough";
-	
+
 	// Parse the args.
 	cmd.parse( argc, argv );
 
-	// Get the value parsed by each arg. 
+	// Get the value parsed by each arg.
 	vector<int> num = intArg.getValue();
 
 	for ( unsigned int i = 0; i < num.size(); i++ )
@@ -86,7 +86,7 @@ int main(int argc, char** argv)
 
 	for ( unsigned int i = 0; i < name.size(); i++ )
 		cout << "Got name " << name[i] << endl;
-	
+
 
 	} catch (ArgException& e)  // catch any exceptions
 	{ cerr << "error: " << e.error() << " for arg " << e.argId() << endl; }
