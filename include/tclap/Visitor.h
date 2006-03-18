@@ -38,6 +38,11 @@ class Visitor
 		Visitor() { }
 
 		/**
+		 * Destructor. Does nothing.
+		 */
+		virtual ~Visitor() { }
+
+		/**
 		 * Does nothing. Should be overridden by child.
 		 */
 		virtual void visit() { }
