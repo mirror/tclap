@@ -68,25 +68,40 @@ Here is a simple <ulink url="test1.cpp"> example</ulink> ...
 #include &lt;algorithm&gt;
 #include &lt;tclap/CmdLine.h&gt;
 
-using namespace TCLAP;
-using namespace std;
-
 int main(int argc, char** argv)
 {
+        using std::string;
+	using std::cout;
+	using std::cerr;
+	using std::endl;
+
 	// Wrap everything in a try block.  Do this every time, 
-	// because exceptions will be thrown for problems. 
+	// because exceptions will be thrown for problems.
 	try {  
 
-	// Define the command line object.
-	CmdLine cmd("Command description message", ' ', "0.9");
+	// Define the command line object, and insert a messages 
+	//that tells you what the program does etc.
+	//The "Command description message" is printed last in the help 
+	//text. The second argument is the delimiter (usually space) and
+	//the last one is the version number. The CmdLine object is used
+	//for parsing.
+	TCLAP::CmdLine cmd("Command description message", ' ', "0.9");
 
 	// Define a value argument and add it to the command line.
-	ValueArg&lt;string&gt; nameArg("n","name","Name to print",true,"homer","string");
+	// A value arg takes a switch and a value such as -n Bishop
+	TCLAP::ValueArg&lt;string&gt; nameArg("n","name","Name to print",true,"homer","string");
+
+	// Add the argument nameArg to the command line object. This 
+	// makes it possible to match the argument on the command line 
+	// during parsing.
 	cmd.add( nameArg );
 
 	// Define a switch and add it to the command line.
-	SwitchArg reverseSwitch("r","reverse","Print name backwards", false);
-	cmd.add( reverseSwitch );
+	// A switch arg is a binary argument and only takes a switch 
+	// (true/false) such as -r. Also the command line object is added
+	// directly while creating the SwitchArg, eliminating the need 
+	// for the call to cmd.add(), this can be used with any type of Arg.
+	TCLAP::SwitchArg reverseSwitch("r","reverse","Print name backwards", false, cmd);
 
 	// Parse the args.
 	cmd.parse( argc, argv );
@@ -98,14 +113,14 @@ int main(int argc, char** argv)
 	// Do what you intend too...
 	if ( reverseName )
 	{
-		reverse(name.begin(),name.end());
+		std::reverse(name.begin(),name.end());
 		cout &lt;&lt; "My name (spelled backwards) is: " &lt;&lt; name &lt;&lt; endl;
 	}
 	else
 		cout &lt;&lt; "My name is: " &lt;&lt; name &lt;&lt; endl;
 
 
-	} catch (ArgException &amp;e)  // catch any exceptions
+	} catch (TCLAP::ArgException &amp;e)  // catch any exceptions
 	{ cerr &lt;&lt; "error: " &lt;&lt; e.error() &lt;&lt; " for arg " &lt;&lt; e.argId() &lt;&lt; endl; }
 }
 </programlisting>
