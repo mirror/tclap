@@ -2,7 +2,7 @@ AC_INIT(Makefile.am)
 #AC_PREREQ(2.50)
 AC_CONFIG_AUX_DIR(config)
 AM_CONFIG_HEADER(config/config.h)
-AM_INIT_AUTOMAKE(tclap,1.0.5)
+AM_INIT_AUTOMAKE(tclap,1.1.0)
 AC_PROG_CXX
 AC_CXX_HAVE_SSTREAM
 AC_CXX_HAVE_STRSTREAM
@@ -14,6 +14,7 @@ AC_OUTPUT([ Makefile \
            examples/Makefile \
 		   include/Makefile \
 		   include/tclap/Makefile \
+		   config/Makefile \
 		   docs/Makefile \
 		   docs/Doxyfile  \
 		   msc/Makefile  \
