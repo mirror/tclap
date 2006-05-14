@@ -62,7 +62,7 @@ class SwitchArg : public Arg
 		SwitchArg(const std::string& flag, 
 			      const std::string& name, 
 			      const std::string& desc,
-			      bool def,
+			      bool def = false,
 				  Visitor* v = NULL);
 
 				  
@@ -82,8 +82,8 @@ class SwitchArg : public Arg
 		SwitchArg(const std::string& flag, 
 			      const std::string& name, 
 			      const std::string& desc,
-			      bool def,
 				  CmdLineInterface& parser,
+			      bool def = false,
 				  Visitor* v = NULL);
 				  
 				  
@@ -125,8 +125,8 @@ inline SwitchArg::SwitchArg(const std::string& flag,
 inline SwitchArg::SwitchArg(const std::string& flag, 
 					const std::string& name, 
 					const std::string& desc, 
-					bool _default,
 					CmdLineInterface& parser,
+					bool _default,
 					Visitor* v )
 : Arg(flag, name, desc, false, false, v),
   _value( _default )

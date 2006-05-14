@@ -37,7 +37,7 @@ void parseOptions(int argc, char** argv)
 	// Define arguments
 	//
 
-	SwitchArg btest("B","existTestB", "exist Test B", false, cmd );
+	SwitchArg btest("B","existTestB", "exist Test B", cmd, false);
 
 	ValueArg<string> stest("s", "stringTest", "string test", true, "homer",
 					       "string", cmd );
