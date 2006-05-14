@@ -1,6 +1,6 @@
 AC_DEFUN([BB_ENABLE_DOXYGEN],
 [
-AC_ARG_ENABLE(doxygen, AS_HELP_STRING([--enable-doxygen],[enable documentation generation with doxygen (auto)]))
+AC_ARG_ENABLE(doxygen, [--enable-doxygen 	enable documentation generation with doxygen (auto)])
 if test "x$enable_doxygen" = xno; then
         enable_doc=no
 else 
