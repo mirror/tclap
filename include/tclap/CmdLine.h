@@ -154,20 +154,6 @@ class CmdLine : public CmdLineInterface
 	public:
 
 		/**
-		 * Command line constructor. DEPRECATED!!!  This is here to maintain
-		 * backwards compatibility with earlier releases.  Note that the
-		 * program name will be overwritten with argv[0].  The delimiter
-		 * used is ' ' (as before).
-		 * \param name - The program name - will be overwritten with argv[0].
-		 * \param message - The message to be used in the usage output.
-		 * \param version - The version number to be used in the
-		 * --version switch.
-		 */
-		CmdLine(const std::string& name,
-				const std::string& message,
-				const std::string& version = "none" );
-
-		/**
 		 * Command line constructor. Defines how the arguments will be
 		 * parsed.
 		 * \param message - The message to be used in the usage
@@ -273,20 +259,6 @@ class CmdLine : public CmdLineInterface
 ///////////////////////////////////////////////////////////////////////////////
 //Begin CmdLine.cpp
 ///////////////////////////////////////////////////////////////////////////////
-
-inline CmdLine::CmdLine(const std::string& n,
-				        const std::string& m,
-						const std::string& v )
-: _progName(n),
-  _message(m),
-  _version(v),
-  _numRequired(0),
-  _delimiter(' '),
-  _userSetOutput(false),
-  _helpAndVersion(true)
-{
-	_constructor();
-}
 
 inline CmdLine::CmdLine(const std::string& m,
 				        char delim,
