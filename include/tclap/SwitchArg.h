@@ -150,7 +150,8 @@ inline bool SwitchArg::combinedSwitchesMatch(std::string& combinedSwitches )
 	// ok, we're not specifying a ValueArg, so we know that we have
 	// a combined switch list.  
 	for ( unsigned int i = 1; i < combinedSwitches.length(); i++ )
-		if ( combinedSwitches[i] == _flag[0] ) 
+		if ( combinedSwitches[i] == _flag[0] &&
+		     _flag[0] != Arg::flagStartString()[0] ) 
 		{
 			// update the combined switches so this one is no longer present
 			// this is necessary so that no unlabeled args are matched
