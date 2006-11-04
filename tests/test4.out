@@ -1,5 +1,5 @@
 PARSE ERROR:  
-             One or more required arguments missing!
+             Required argument missing: name
 
 Brief USAGE: 
    ../examples/test1  [-r] -n <string> [--] [--version] [-h]

@@ -1,5 +1,5 @@
 PARSE ERROR:  
-             Required argument missing: unTest
+             Required arguments missing: intTest, stringTest, unTest
 
 Brief USAGE: 
    ../examples/test2  [-f <float>] -i <int> -s <string> [-A] [-C] [-B] [--]

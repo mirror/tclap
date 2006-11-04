@@ -115,6 +115,11 @@ class CmdLine : public CmdLineInterface
 		CmdLineOutput* _output;
 
 		/**
+		 * Throws an exception listing the missing args.
+		 */
+		void missingArgsException();
+
+		/**
 		 * Checks whether a name/flag string matches entirely matches
 		 * the Arg::blankChar.  Used when multiple switches are combined
 		 * into a single argument.
@@ -408,12 +413,12 @@ inline void CmdLine::parse(int argc, char** argv)
     }
 
 	if ( requiredCount < _numRequired )
-		throw(CmdLineParseException("One or more required arguments missing!"));
+		missingArgsException();
 
 	if ( requiredCount > _numRequired )
 		throw(CmdLineParseException("Too many arguments!"));
 
-	} catch ( ArgException e ) { _output->failure(*this,e); exit(1); }
+	} catch ( ArgException& e ) { _output->failure(*this,e); exit(1); }
 }
 
 inline bool CmdLine::_emptyCombined(const std::string& s)
@@ -426,6 +431,33 @@ inline bool CmdLine::_emptyCombined(const std::string& s)
 			return false;
 
 	return true;
+}
+
+inline void CmdLine::missingArgsException() 
+{
+		int count = 0;
+
+		std::string missingArgList;
+		for (ArgListIterator it = _argList.begin(); it != _argList.end(); it++)
+		{
+			if ( (*it)->isRequired() && !(*it)->isSet() )
+			{
+				missingArgList += (*it)->getName();
+				missingArgList += ", ";
+				count++;
+			}
+		}
+		missingArgList = missingArgList.substr(0,missingArgList.length()-2);
+		
+		std::string msg;
+		if ( count > 1 )
+			msg = "Required arguments missing: ";
+		else
+			msg = "Required argument missing: ";
+
+		msg += missingArgList;
+
+		throw(CmdLineParseException(msg));
 }
 
 inline void CmdLine::deleteOnExit(Arg* ptr)

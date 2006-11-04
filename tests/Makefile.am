@@ -60,7 +60,8 @@ TESTS = test1.sh \
 		test58.sh \
 		test59.sh \
 		test60.sh \
-		test61.sh
+		test61.sh \
+		test62.sh
 
 EXTRA_DIST = $(TESTS) \
 			 test1.out \
@@ -123,6 +124,7 @@ EXTRA_DIST = $(TESTS) \
 			 test58.out \
 			 test59.out \
 			 test60.out \
-			 test61.out
+			 test61.out \
+			 test62.out
 
 CLEANFILES = tmp.out

@@ -1,5 +1,5 @@
 PARSE ERROR:  
-             One or more required arguments missing!
+             Required argument missing: unTest2
 
 Brief USAGE: 
    ../examples/test3  [-f=<float>] ...  [-i=<int>] ... 
