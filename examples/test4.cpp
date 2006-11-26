@@ -18,6 +18,7 @@ class MyOutput : public StdOutput
 		{
 			cerr << "my failure message: " << endl
 			     << e.what() << endl;
+			exit(1);
 		}
 
 		virtual void usage(CmdLineInterface& c)
