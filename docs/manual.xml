@@ -104,7 +104,7 @@ int main(int argc, char** argv)
 	// the need to call the cmd.add() method.  All args have support in
 	// their constructors to add themselves directly to the CmdLine object.
 	// It doesn't matter which idiom you choose, they accomplish the same thing.
-	TCLAP::SwitchArg reverseSwitch("r","reverse","Print name backwards", false, cmd);
+	TCLAP::SwitchArg reverseSwitch("r","reverse","Print name backwards", cmd, false);
 
 	// Parse the argv array.
 	cmd.parse( argc, argv );
@@ -764,7 +764,7 @@ is an example:
         CmdLine cmd("this is a message", '=', "0.99" );
 
         // Note that the following args take the "cmd" object as arguments.
-        SwitchArg btest("B","existTestB", "exist Test B", false, cmd );
+        SwitchArg btest("B","existTestB", "exist Test B", cmd, false );
 
         ValueArg&lt;string&gt; stest("s", "stringTest", "string test", true, "homer", 
                                                "string", cmd );
