@@ -192,6 +192,7 @@ inline void DocBookOutput::failure( CmdLineInterface& _cmd,
 				                ArgException& e ) 
 { 
 		std::cout << e.what() << std::endl;
+		exit(1);
 }
 
 inline void DocBookOutput::substituteSpecialChars( std::string& s,

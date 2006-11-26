@@ -148,6 +148,7 @@ inline void StdOutput::failure( CmdLineInterface& _cmd,
 	else
 		usage(_cmd);
 
+	exit(1);
 }
 
 inline void StdOutput::_shortUsage( CmdLineInterface& _cmd, 
