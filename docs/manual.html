@@ -615,6 +615,7 @@ class MyOutput : public StdOutput
 		{ 
 			cerr &lt;&lt; "My special failure message for: " &lt;&lt; endl
 				 &lt;&lt; e.what() &lt;&lt; endl;
+			exit(1);
 		}
 
 		virtual void usage(CmdLineInterface&amp; c)
@@ -647,7 +648,9 @@ See <code class="filename">test4.cpp</code> in the examples directory for the fu
 example. <span class="emphasis"><em>NOTE</em></span>: if you supply your own Output object, we 
 will not delete it in the <code class="classname">CmdLine</code> destructor.  This 
 could lead to a (very small) memory leak if you don't take care of the object
-yourself.
+yourself.  Also note that the <code class="methodname">failure</code> method is 
+now responsible for exiting the application (assuming that is the desired
+behavior).
 </p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="NO_HELP_VERSION"></a>I don't want the --help and --version switches to be created automatically...</h2></div></div></div><p>
 Help and version information is useful for nearly all command line applications
 and as such we generate flags that provide those options automatically.  

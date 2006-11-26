@@ -800,6 +800,7 @@ class MyOutput : public StdOutput
 		{ 
 			cerr &lt;&lt; "My special failure message for: " &lt;&lt; endl
 				 &lt;&lt; e.what() &lt;&lt; endl;
+			exit(1);
 		}
 
 		virtual void usage(CmdLineInterface&amp; c)
@@ -832,7 +833,9 @@ See <filename>test4.cpp</filename> in the examples directory for the full
 example. <emphasis>NOTE</emphasis>: if you supply your own Output object, we 
 will not delete it in the <classname>CmdLine</classname> destructor.  This 
 could lead to a (very small) memory leak if you don't take care of the object
-yourself.
+yourself.  Also note that the <methodname>failure</methodname> method is 
+now responsible for exiting the application (assuming that is the desired
+behavior).
 </para>
 </sect1>
 <sect1 id="NO_HELP_VERSION">
