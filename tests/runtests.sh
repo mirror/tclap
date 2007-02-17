@@ -3,16 +3,15 @@
 let "suc = 0"
 let "fail = 0"
 
-for tnam in `ls test*.sh`
-  do 
-  echo "Running test $tnam"
-  if ./$tnam; then 
-  	  echo "OK" 
-      let "suc = $(($suc + 1))"
-  else
-	  echo "FAIL" 
-      let "fail = $(($fail + 1))"
-  fi
+for (( tno = 1 ; $tno < 62 ; tno = $tno + 1 )); do     
+    ./testCheck.sh $tno
+    if [ "$?" -eq "0" ]; then 
+	echo "OK" 
+	let "suc = $(($suc + 1))"
+    else
+	echo "FAIL" 
+	let "fail = $(($fail + 1))"
+    fi
 done
 
 let "total = $(($suc + $fail))"
