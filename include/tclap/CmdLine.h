@@ -1,3 +1,4 @@
+// -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
 
 /******************************************************************************
  *
@@ -47,6 +48,19 @@
 #include <algorithm>
 
 namespace TCLAP {
+
+template<typename T> void DelPtr(T ptr)
+{
+	delete ptr;
+}
+
+template<typename C> void ClearContainer(C &c)
+{
+	typedef typename C::value_type value_type;
+	std::for_each(c.begin(), c.end(), DelPtr<value_type>);
+	c.clear();
+}
+
 
 /**
  * The base class that manages the command line definition and passes
@@ -137,13 +151,14 @@ class CmdLine : public CmdLineInterface
 		 */
 		void deleteOnExit(Visitor* ptr);
 
-	private:
+private:
 
 		/**
-		 * Encapsulates the code common to the constructors (which is all
-		 * of it).
+		 * Encapsulates the code common to the constructors
+		 * (which is all of it).
 		 */
 		void _constructor();
+
 
 		/**
 		 * Is set to true when a user sets the output object. We use this so
@@ -266,9 +281,9 @@ class CmdLine : public CmdLineInterface
 ///////////////////////////////////////////////////////////////////////////////
 
 inline CmdLine::CmdLine(const std::string& m,
-				        char delim,
-						const std::string& v,
-						bool help )
+			char delim,
+			const std::string& v,
+			bool help )
 : _progName("not_set_yet"),
   _message(m),
   _version(v),
@@ -282,21 +297,13 @@ inline CmdLine::CmdLine(const std::string& m,
 
 inline CmdLine::~CmdLine()
 {
-	ArgListIterator argIter;
-	VisitorListIterator visIter;
-
-	for( argIter = _argDeleteOnExitList.begin();
-		 argIter != _argDeleteOnExitList.end();
-		 ++argIter)
-		delete *argIter;
-
-	for( visIter = _visitorDeleteOnExitList.begin();
-		 visIter != _visitorDeleteOnExitList.end();
-		 ++visIter)
-		delete *visIter;
-
-	if ( !_userSetOutput )
+	ClearContainer(_argDeleteOnExitList);
+	ClearContainer(_visitorDeleteOnExitList);
+	
+	if ( !_userSetOutput ) {
 		delete _output;
+		_output = 0;
+	}
 }
 
 inline void CmdLine::_constructor()
@@ -378,47 +385,63 @@ inline void CmdLine::add( Arg* a )
 
 inline void CmdLine::parse(int argc, char** argv)
 {
+	bool shouldExit = false;
+	int estat = 0;
+
 	try {
+		_progName = argv[0];
 
-	_progName = argv[0];
+		// this step is necessary so that we have easy access to
+		// mutable strings. 
+		std::vector<std::string> args;
+		for (int i = 1; i < argc; i++)
+			args.push_back(argv[i]);
 
-	// this step is necessary so that we have easy access to mutable strings.
-	std::vector<std::string> args;
-  	for (int i = 1; i < argc; i++)
-		args.push_back(argv[i]);
+		int requiredCount = 0;
 
-	int requiredCount = 0;
-
-  	for (int i = 0; static_cast<unsigned int>(i) < args.size(); i++)
-	{
-		bool matched = false;
-		for (ArgListIterator it = _argList.begin(); it != _argList.end(); it++)
-        {
-			if ( (*it)->processArg( &i, args ) )
-			{
-				requiredCount += _xorHandler.check( *it );
-				matched = true;
-				break;
+		for (int i = 0; static_cast<unsigned int>(i) < args.size(); i++) {
+			bool matched = false;
+			for (ArgListIterator it = _argList.begin(); 
+				 it != _argList.end(); it++) {
+				if ( (*it)->processArg( &i, args ) )
+					{
+						requiredCount += _xorHandler.check( *it );
+						matched = true;
+						break;
+					}
 			}
-        }
 
-		// checks to see if the argument is an empty combined switch ...
-		// and if so, then we've actually matched it
-		if ( !matched && _emptyCombined( args[i] ) )
-			matched = true;
+			// checks to see if the argument is an empty combined
+			// switch and if so, then we've actually matched it
+			if ( !matched && _emptyCombined( args[i] ) )
+				matched = true;
 
-		if ( !matched && !Arg::ignoreRest() )
-			throw(CmdLineParseException("Couldn't find match for argument",
-			                             args[i]));
-    }
+			if ( !matched && !Arg::ignoreRest() )
+				throw(CmdLineParseException("Couldn't find match "
+											"for argument",
+											args[i]));
+		}
 
-	if ( requiredCount < _numRequired )
-		missingArgsException();
+		if ( requiredCount < _numRequired )
+			missingArgsException();
 
-	if ( requiredCount > _numRequired )
-		throw(CmdLineParseException("Too many arguments!"));
+		if ( requiredCount > _numRequired )
+			throw(CmdLineParseException("Too many arguments!"));
 
-	} catch ( ArgException& e ) { _output->failure(*this,e); }
+	} catch ( ArgException& e ) { 
+		try { 
+			_output->failure(*this,e); 
+		} catch (ExitException &ee) { 
+			estat = ee.getExitStatus();
+			shouldExit = true;
+		}
+	} catch (ExitException &ee) { 
+		estat = ee.getExitStatus();
+		shouldExit = true;
+	}
+
+	if (shouldExit)
+		exit(estat);
 }
 
 inline bool CmdLine::_emptyCombined(const std::string& s)
