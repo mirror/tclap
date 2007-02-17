@@ -483,7 +483,8 @@ bool ValueArg<T>::processArg(int *i, std::vector<std::string>& args)
 template<class T>
 std::string ValueArg<T>::shortID(const std::string& val) const
 {
-    return Arg::shortID( _typeDesc ); 
+	static_cast<void>(val); // Ignore input, don't warn
+	return Arg::shortID( _typeDesc ); 
 }
 
 /**
@@ -492,7 +493,8 @@ std::string ValueArg<T>::shortID(const std::string& val) const
 template<class T>
 std::string ValueArg<T>::longID(const std::string& val) const
 {
-    return Arg::longID( _typeDesc ); 
+	static_cast<void>(val); // Ignore input, don't warn
+	return Arg::longID( _typeDesc ); 
 }
 
 template<class T>

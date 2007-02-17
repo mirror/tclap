@@ -456,9 +456,8 @@ bool MultiArg<T>::processArg(int *i, std::vector<std::string>& args)
 template<class T>
 std::string MultiArg<T>::shortID(const std::string& val) const
 {
-	std::string id = Arg::shortID(_typeDesc) + " ... ";
-
-	return id;
+	static_cast<void>(val); // Ignore input, don't warn
+	return Arg::shortID(_typeDesc) + " ... ";
 }
 
 /**
@@ -467,9 +466,8 @@ std::string MultiArg<T>::shortID(const std::string& val) const
 template<class T>
 std::string MultiArg<T>::longID(const std::string& val) const
 {
-	std::string id = Arg::longID(_typeDesc) + "  (accepted multiple times)";
-
-	return id;
+	static_cast<void>(val); // Ignore input, don't warn
+	return Arg::longID(_typeDesc) + "  (accepted multiple times)";
 }
 
 /**

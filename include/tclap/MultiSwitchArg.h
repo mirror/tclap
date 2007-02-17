@@ -179,18 +179,16 @@ inline bool MultiSwitchArg::processArg(int *i, std::vector<std::string>& args)
 		return false;
 }
 
-std::string MultiSwitchArg::shortID(const std::string& val) const
+inline std::string 
+MultiSwitchArg::shortID(const std::string& val) const
 {
-	std::string id = Arg::shortID() + " ... ";
-
-	return id;
+	return Arg::shortID(val) + " ... ";
 }
 
-std::string MultiSwitchArg::longID(const std::string& val) const
+inline std::string 
+MultiSwitchArg::longID(const std::string& val) const
 {
-	std::string id = Arg::longID() + "  (accepted multiple times)";
-
-	return id;
+	return Arg::longID(val) + "  (accepted multiple times)";
 }
 
 //////////////////////////////////////////////////////////////////////
