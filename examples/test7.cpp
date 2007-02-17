@@ -4,7 +4,7 @@
 using namespace TCLAP;
 using namespace std;
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
 	// Wrap everything in a try block.  Do this every time,
 	// because exceptions will be thrown for problems.
@@ -71,7 +71,7 @@ int main(int argc, char** argv)
 		false, 1000,"int");
 	cmd.add( limit );
 
-	argv[0] = "ThisIsAVeryLongProgramNameDesignedToTestSpacePrintWhichUsedToHaveProblemsWithLongProgramNamesIThinkItIsNowLongEnough";
+	argv[0] = const_cast<char*>("ThisIsAVeryLongProgramNameDesignedToTestSpacePrintWhichUsedToHaveProblemsWithLongProgramNamesIThinkItIsNowLongEnough");
 
 	// Parse the args.
 	cmd.parse( argc, argv );

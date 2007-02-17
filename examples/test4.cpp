@@ -16,6 +16,7 @@ class MyOutput : public StdOutput
 
 		virtual void failure(CmdLineInterface& c, ArgException& e)
 		{
+			static_cast<void>(c); // Ignore input, don't warn
 			cerr << "my failure message: " << endl
 			     << e.what() << endl;
 			exit(1);
@@ -32,6 +33,7 @@ class MyOutput : public StdOutput
 
 		virtual void version(CmdLineInterface& c)
 		{
+			static_cast<void>(c); // Ignore input, don't warn
 			cout << "my version message: 0.1" << endl;
 		}
 };
