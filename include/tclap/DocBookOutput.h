@@ -1,3 +1,4 @@
+// -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
 
 /****************************************************************************** 
  * 
@@ -189,10 +190,10 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 }
 
 inline void DocBookOutput::failure( CmdLineInterface& _cmd,
-				                ArgException& e ) 
+				    ArgException& e ) 
 { 
 		std::cout << e.what() << std::endl;
-		exit(1);
+		throw ExitException(1);
 }
 
 inline void DocBookOutput::substituteSpecialChars( std::string& s,

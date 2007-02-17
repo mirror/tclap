@@ -1,3 +1,4 @@
+// -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
 
 /****************************************************************************** 
  * 
@@ -61,7 +62,10 @@ class VersionVisitor: public Visitor
 		 * Calls the version method of the output object using the
 		 * specified CmdLine.
 		 */
-		void visit() { (*_out)->version(*_cmd); exit(0); }
+		void visit() { 
+		    (*_out)->version(*_cmd); 
+		    throw ExitException(0); 
+		}
 
 };
 
