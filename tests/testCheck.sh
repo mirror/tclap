@@ -7,7 +7,7 @@ if [ "$1" == "" ]
 then
 	echo "USAGE:  testCheck.sh <test num>"
 else
-	cmd="test$1.sh"
+	cmd="./test$1.sh"
 	out="test$1.out"
 	$cmd
 	if cmp -s tmp.out $out
@@ -30,5 +30,6 @@ else
 		echo
 		diff tmp.out $out
 		echo
+		exit 1
 	fi
 fi
