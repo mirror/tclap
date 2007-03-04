@@ -230,6 +230,13 @@ private:
 		void parse(int argc, char** argv);
 
 		/**
+		 * Parses the command line.
+		 * \param args - A vector of strings representing the args. 
+		 * args[0] is still the program name.
+		 */
+		void parse(std::vector<std::string>& args);
+
+		/**
 		 *
 		 */
 		CmdLineOutput* getOutput();
@@ -383,19 +390,26 @@ inline void CmdLine::add( Arg* a )
 		_numRequired++;
 }
 
+
 inline void CmdLine::parse(int argc, char** argv)
+{
+		// this step is necessary so that we have easy access to
+		// mutable strings. 
+		std::vector<std::string> args;
+		for (int i = 0; i < argc; i++)
+			args.push_back(argv[i]);
+
+		parse(args);
+}
+
+inline void CmdLine::parse(std::vector<std::string>& args)
 {
 	bool shouldExit = false;
 	int estat = 0;
 
 	try {
-		_progName = argv[0];
-
-		// this step is necessary so that we have easy access to
-		// mutable strings. 
-		std::vector<std::string> args;
-		for (int i = 1; i < argc; i++)
-			args.push_back(argv[i]);
+		_progName = args.front();
+		args.erase(args.begin());
 
 		int requiredCount = 0;
 
@@ -431,7 +445,7 @@ inline void CmdLine::parse(int argc, char** argv)
 	} catch ( ArgException& e ) { 
 		try { 
 			_output->failure(*this,e); 
-		} catch (ExitException &ee) { 
+		} catch ( ExitException &ee ) { 
 			estat = ee.getExitStatus();
 			shouldExit = true;
 		}

@@ -84,6 +84,13 @@ class CmdLineInterface
 		 */
 		virtual void parse(int argc, char** argv)=0;
 
+        /**
+         * Parses the command line.
+         * \param args - A vector of strings representing the args. 
+         * args[0] is still the program name.
+         */
+        void parse(std::vector<std::string>& args);
+
 		/**
 		 * Returns the CmdLineOutput object.
 		 */
