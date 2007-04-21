@@ -182,10 +182,9 @@ class Arg
 		
 		/**
 		 * The char used as a place holder when SwitchArgs are combined.
-		 * Currently set to '*', which shouldn't cause many problems since
-		 * *'s are expanded by most shells on the command line.  
+		 * Currently set to the bell char (ASCII 7). 
 		 */
-		static const char blankChar() { return '*'; }
+		static const char blankChar() { return (char)7; }
 		
 		/**
 		 * The char that indicates the beginning of a flag.  Currently '-'.
