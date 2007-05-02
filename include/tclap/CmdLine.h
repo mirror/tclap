@@ -227,7 +227,7 @@ private:
 		 * \param argc - Number of arguments.
 		 * \param argv - Array of arguments.
 		 */
-		void parse(int argc, char** argv);
+		void parse(int argc, const char * const * argv);
 
 		/**
 		 * Parses the command line.
@@ -391,7 +391,7 @@ inline void CmdLine::add( Arg* a )
 }
 
 
-inline void CmdLine::parse(int argc, char** argv)
+inline void CmdLine::parse(int argc, const char * const * argv)
 {
 		// this step is necessary so that we have easy access to
 		// mutable strings. 

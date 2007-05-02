@@ -82,7 +82,7 @@ class CmdLineInterface
 		 * \param argc - Number of arguments.
 		 * \param argv - Array of arguments.
 		 */
-		virtual void parse(int argc, char** argv)=0;
+		virtual void parse(int argc, const char * const * argv)=0;
 
         /**
          * Parses the command line.
