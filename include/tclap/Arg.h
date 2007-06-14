@@ -24,10 +24,26 @@
 #ifndef TCLAP_ARGUMENT_H
 #define TCLAP_ARGUMENT_H
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#else
+#define HAVE_SSTREAM
+#endif
+
 #include <string>
 #include <vector>
 #include <list>
 #include <iostream>
+
+#if defined(HAVE_SSTREAM)
+#include <sstream>
+typedef std::istringstream istringstream;
+#elif defined(HAVE_STRSTREAM)
+#include <strstream>
+typedef std::istrstream istringstream;
+#else
+#error "Need a stringstream (sstream or strstream) to compile!"
+#endif
 
 #include <tclap/ArgException.h>
 #include <tclap/Visitor.h>
@@ -350,6 +366,84 @@ typedef std::vector<Arg*>::iterator ArgVectorIterator;
  */
 typedef std::list<Visitor*>::iterator VisitorListIterator;
 
+// We use two empty structs to get compile type specialization
+// function to work
+
+/**
+ * A value like argument value type is a value that can be set using
+ * operator>>. This is the default value type.
+ */
+struct ValueLike {};
+
+/** 
+ * A string like argument value type is a value that can be set using
+ * operator=(string). Usefull if the value type contains spaces which
+ * will be broken up into individual tokens by operator>>.
+ */
+struct StringLike {};
+
+/**
+ * Arg traits are used to get compile type specialization when parsing
+ * argument values. Using an ArgTraits you can specify the way that
+ * values gets assigned to any particular type during parsing. The two
+ * supported types are string like and value like.
+ */
+template<typename T>
+struct ArgTraits {
+    typedef ValueLike ValueCategory;
+};
+
+/** 
+ * Strings have string like argument traits.
+ */
+template<>
+struct ArgTraits<std::string> {
+    typedef StringLike ValueCategory;
+};
+
+/*
+ * Extract a value of type T from it's string representation contained
+ * in strVal. The ValueLike parameter used to select the correct
+ * specialization of ExtractValue depending on the value traits of T.
+ * ValueLike traits use operator>> to assign the value from strVal.
+ */
+template<typename T> void
+ExtractValue(T &destVal, const std::string& strVal, ValueLike vl)
+{
+    std::istringstream is(strVal);
+
+    int valuesRead = 0;
+    while ( is.good() ) {
+	if ( is.peek() != EOF )
+	    is >> destVal;
+	else
+	    break;
+	
+	valuesRead++;
+    }
+      
+    if ( is.fail() ) 
+	throw( ArgParseException("Couldn't read argument value "
+				 "from string '" + strVal + "'"));
+
+
+    if ( valuesRead > 1 )
+	throw( ArgParseException("More than one valid value parsed from "
+				 "string '" + strVal + "'"));
+
+}
+
+/*
+ * Extract a value of type T from it's string representation contained
+ * in strVal. The ValueLike parameter used to select the correct
+ * specialization of ExtractValue depending on the value traits of T.
+ * StringLike uses assignment (operator=) to assign from strVal.
+ */
+template<typename T> void
+ExtractValue(T &destVal, const std::string& strVal, StringLike sl)
+{
+    destVal = strVal;
+}
 
 //////////////////////////////////////////////////////////////////////
 //BEGIN Arg.cpp

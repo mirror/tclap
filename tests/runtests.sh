@@ -2,8 +2,9 @@
 
 let "suc = 0"
 let "fail = 0"
+NUMTEST=67
 
-for (( tno = 1 ; $tno < 62 ; tno = $tno + 1 )); do     
+for (( tno = 1 ; $tno <= $NUMTEST ; tno = $tno + 1 )); do     
     ./testCheck.sh $tno
     if [ "$?" -eq "0" ]; then 
 	echo "OK" 

@@ -29,134 +29,7 @@
 #include <tclap/Arg.h>
 #include <tclap/Constraint.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#else
-#define HAVE_SSTREAM
-#endif
-
-#if defined(HAVE_SSTREAM)
-#include <sstream>
-#elif defined(HAVE_STRSTREAM)
-#include <strstream>
-#else
-#error "Need a stringstream (sstream or strstream) to compile!"
-#endif
-
 namespace TCLAP {
-
-template<class T> class ValueArg;
-
-namespace VALUE_ARG_HELPER {
-
-enum Error_e { EXTRACT_FAILURE = 1000, EXTRACT_TOO_MANY };
-
-/**
- * This class is used to extract a value from an argument. 
- * It is used because we need a special implementation to
- * deal with std::string and making a specialiced function
- * puts it in the T segment, thus generating link errors.
- * Having a specialiced class makes the symbols weak.
- * This is not pretty but I don't know how to make it
- * work any other way.
- */
-template<class T> class ValueExtractor 
-{
-	/**
-	 *
-	 */
-	friend class ValueArg<T>;
-
-	private:
-
-		/**
-		 * Reference to the value where the result of the extraction will 
-		 * be put.
-		 */
-        T &_value;
-
-		/**
-		 * Constructor.
-		 * \param value - Where the value extracted will be put.
-		 */
-        ValueExtractor(T &value) : _value(value) { }
-
-		/**
-		 * Method that will attempt to parse the input stream for a value
-		 * of type T.
-		 * \param val - Where the value parsed will be put.
-		 */
-        int extractValue( const std::string& val ) 
-		{
-
-#if defined(HAVE_SSTREAM)
-			std::istringstream is(val);
-#elif defined(HAVE_STRSTREAM)
-			std::istrstream is(val.c_str());
-#else
-#error "Need a stringstream (sstream or strstream) to compile!"
-#endif
-
-            int valuesRead = 0;
-            while ( is.good() ) 
-			{
-                if ( is.peek() != EOF )
-                    is >> _value;
-                else
-                    break;
-	
-                valuesRead++;
-            }
-      
-            if ( is.fail() ) 
-                return EXTRACT_FAILURE;
-
-            if ( valuesRead > 1 )
-                return EXTRACT_TOO_MANY;
-
-            return 0;
-        }
-};
-
-/**
- * Specialization for string.  This is necessary because istringstream
- * operator>> is not able to ignore spaces...  meaning -x "X Y" will only 
- * read 'X'... and thus the specialization.
- */
-template<> class ValueExtractor<std::string> 
-{
-	/**
-	 *
-	 */
-    friend class ValueArg<std::string>;
-
-    private:
-	
-		/**
-		 * Reference to the value where the result of the extraction will 
-		 * be put.
-		 */
-        std::string &_value;
-
-		/**
-		 * Constructor.
-		 * \param value - Where the value extracted will be put.
-		 */
-        ValueExtractor(std::string &value) : _value(value) {}
-
-		/**
-		 * Method that will attempt to parse the input stream for a value
-		 * of type std::string.
-		 * \param val - Where the string parsed will be put.
-		 */
-        int extractValue( const std::string& val ) 
-		{
-            _value = val;
-            return 0;
-        }
-};
-
-} //namespace VALUE_ARG_HELPER 
 
 /**
  * The basic labeled argument that parses a value.
@@ -500,25 +373,18 @@ std::string ValueArg<T>::longID(const std::string& val) const
 template<class T>
 void ValueArg<T>::_extractValue( const std::string& val ) 
 {
-	VALUE_ARG_HELPER::ValueExtractor<T> ve(_value);
-
-	int err = ve.extractValue(val);
-
-	if ( err == VALUE_ARG_HELPER::EXTRACT_FAILURE )
-		throw( ArgParseException("Couldn't read argument value from string '" +
-	                             val + "'", toString() ) );
-
-	if ( err == VALUE_ARG_HELPER::EXTRACT_TOO_MANY )
-		throw( ArgParseException(
-					"More than one valid value parsed from string '" +
-				    val + "'", toString() ) );
-
-	if ( _constraint != NULL )
-		if ( ! _constraint->check( _value ) )
-			throw( CmdLineParseException( "Value '" + val + 
-									      "' does not meet constraint: " + 
-										  _constraint->description(),
-										  toString() ) );
+    try {
+	ExtractValue(_value, val, typename ArgTraits<T>::ValueCategory());
+    } catch( ArgParseException &e) {
+	throw ArgParseException(e.error(), toString());
+    }
+    
+    if ( _constraint != NULL )
+	if ( ! _constraint->check( _value ) )
+	    throw( CmdLineParseException( "Value '" + val + 
+					  + "' does not meet constraint: " 
+					  + _constraint->description(),
+					  toString() ) );
 }
 
 } // namespace TCLAP
