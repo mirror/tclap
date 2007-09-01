@@ -1,3 +1,4 @@
+// -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
 
 /****************************************************************************** 
  * 
@@ -410,6 +411,7 @@ struct ArgTraits<std::string> {
 template<typename T> void
 ExtractValue(T &destVal, const std::string& strVal, ValueLike vl)
 {
+    static_cast<void>(vl); // Avoid warning about unused vl
     std::istringstream is(strVal);
 
     int valuesRead = 0;
@@ -442,6 +444,7 @@ ExtractValue(T &destVal, const std::string& strVal, ValueLike vl)
 template<typename T> void
 ExtractValue(T &destVal, const std::string& strVal, StringLike sl)
 {
+    static_cast<void>(sl); // Avoid warning about unused sl
     destVal = strVal;
 }
 

@@ -1,3 +1,5 @@
+// -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
+
 /****************************************************************************** 
  * 
  *  file:  ZshCompletionOutput.h
@@ -125,6 +127,7 @@ inline void ZshCompletionOutput::usage(CmdLineInterface& _cmd )
 inline void ZshCompletionOutput::failure( CmdLineInterface& _cmd,
 				                ArgException& e )
 {
+	static_cast<void>(_cmd); // unused
 	std::cout << e.what() << std::endl;
 }
 

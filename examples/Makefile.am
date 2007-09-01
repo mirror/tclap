@@ -17,4 +17,4 @@ test12_SOURCES = test12.cpp
 
 INCLUDES = -I$(top_srcdir)/include
 
-AM_CXXFLAGS = -Wall
+AM_CXXFLAGS = -Wall -Wextra
