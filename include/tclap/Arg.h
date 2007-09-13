@@ -504,11 +504,8 @@ inline std::string Arg::shortID( const std::string& valueId ) const
 	else
 		id = Arg::nameStartString() + _name;
 
-	std::string delim = " "; 
-	delim[0] = Arg::delimiter(); // ugly!!!
-	
 	if ( _valueRequired )
-		id += delim + "<" + valueId  + ">";
+		id += std::string( 1, Arg::delimiter() ) + "<" + valueId  + ">";
 
 	if ( !_required )
 		id = "[" + id + "]";
@@ -525,7 +522,7 @@ inline std::string Arg::longID( const std::string& valueId ) const
 		id += Arg::flagStartString() + _flag;
 
 		if ( _valueRequired )
-			id += " <" + valueId + ">";
+			id += std::string( 1, Arg::delimiter() ) + "<" + valueId + ">";
 		
 		id += ",  ";
 	}
@@ -533,7 +530,7 @@ inline std::string Arg::longID( const std::string& valueId ) const
 	id += Arg::nameStartString() + _name;
 
 	if ( _valueRequired )
-		id += " <" + valueId + ">";
+		id += std::string( 1, Arg::delimiter() ) + "<" + valueId + ">";
 			
 	return id;
 

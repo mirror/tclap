@@ -8,13 +8,13 @@ USAGE:
 
 Where: 
 
-   -f <float>,  --floatTest <float>  (accepted multiple times)
+   -f=<float>,  --floatTest=<float>  (accepted multiple times)
      multi float test
 
-   -i <int>,  --intTest <int>  (accepted multiple times)
+   -i=<int>,  --intTest=<int>  (accepted multiple times)
      multi int test
 
-   --stringTest <string>
+   --stringTest=<string>
      (required)  string test
 
    -B,  --existTestB
