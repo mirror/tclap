@@ -16,7 +16,7 @@ using namespace TCLAP;
 //
 // This should not print an error
 //
-int main(int argc, char ** argv)
+int main()
 {
 
    try
