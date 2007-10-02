@@ -16,6 +16,8 @@ using namespace TCLAP;
 //
 // This should not print an error
 //
+// Contributed by Nico Lugil.
+//
 int main()
 {
 
