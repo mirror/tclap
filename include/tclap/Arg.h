@@ -49,6 +49,8 @@ typedef std::istrstream istringstream;
 #include <tclap/ArgException.h>
 #include <tclap/Visitor.h>
 #include <tclap/CmdLineInterface.h>
+#include <tclap/ArgTraits.h>
+#include <tclap/StandardTraits.h>
 
 namespace TCLAP {
 
@@ -367,41 +369,6 @@ typedef std::vector<Arg*>::iterator ArgVectorIterator;
  */
 typedef std::list<Visitor*>::iterator VisitorListIterator;
 
-// We use two empty structs to get compile type specialization
-// function to work
-
-/**
- * A value like argument value type is a value that can be set using
- * operator>>. This is the default value type.
- */
-struct ValueLike {};
-
-/** 
- * A string like argument value type is a value that can be set using
- * operator=(string). Usefull if the value type contains spaces which
- * will be broken up into individual tokens by operator>>.
- */
-struct StringLike {};
-
-/**
- * Arg traits are used to get compile type specialization when parsing
- * argument values. Using an ArgTraits you can specify the way that
- * values gets assigned to any particular type during parsing. The two
- * supported types are string like and value like.
- */
-template<typename T>
-struct ArgTraits {
-    typedef ValueLike ValueCategory;
-};
-
-/** 
- * Strings have string like argument traits.
- */
-template<>
-struct ArgTraits<std::string> {
-    typedef StringLike ValueCategory;
-};
-
 /*
  * Extract a value of type T from it's string representation contained
  * in strVal. The ValueLike parameter used to select the correct
@@ -445,7 +412,7 @@ template<typename T> void
 ExtractValue(T &destVal, const std::string& strVal, StringLike sl)
 {
     static_cast<void>(sl); // Avoid warning about unused sl
-    destVal = strVal;
+    SetString(destVal, strVal);
 }
 
 //////////////////////////////////////////////////////////////////////
