@@ -22,5 +22,7 @@ libtclapinclude_HEADERS = \
 			 ZshCompletionOutput.h \
 			 OptionalUnlabeledTracker.h \
 			 Constraint.h \
-			 ValuesConstraint.h
+			 ValuesConstraint.h \
+			 ArgTraits.h \
+			 StandardTraits.h
 
