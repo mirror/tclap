@@ -450,8 +450,8 @@ inline Arg::Arg(const std::string& flag,
 							Arg::nameStartString() + "' or a space.",
 							toString() ) );
 
-	if ( ( _name.find( Arg::flagStartString(), 0 ) != std::string::npos ) || 
-		 ( _name.find( Arg::nameStartString(), 0 ) != std::string::npos ) ||
+	if ( ( _name.substr( 0, Arg::flagStartString().length() ) == Arg::flagStartString() ) || 
+		 ( _name.substr( 0, Arg::nameStartString().length() ) == Arg::nameStartString() ) ||
 		 ( _name.find( " ", 0 ) != std::string::npos ) )
 		throw(SpecificationException("Argument name cannot contain either '" + 
 							Arg::flagStartString() + "' or '" + 
