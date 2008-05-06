@@ -29,13 +29,13 @@ Where:
    -x <filename>,  --filename1 <filename>
      Sequence 1 filename (FASTA format)
 
-   -s <name string>,  --scoringMatrix <name string>
+   -s <name string>,  --scoring--Matrix <name string>
      Scoring Matrix name
 
    -d,  --isDna
      The input sequences are DNA
 
-   -g <negative int>,  --gapExtend <negative int>
+   -g <negative int>,  --gap-Extend <negative int>
      The cost for each extension of a gap
 
    -f <negative int>,  --gapCreate <negative int>

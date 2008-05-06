@@ -453,7 +453,7 @@ inline Arg::Arg(const std::string& flag,
 	if ( ( _name.substr( 0, Arg::flagStartString().length() ) == Arg::flagStartString() ) || 
 		 ( _name.substr( 0, Arg::nameStartString().length() ) == Arg::nameStartString() ) ||
 		 ( _name.find( " ", 0 ) != std::string::npos ) )
-		throw(SpecificationException("Argument name cannot contain either '" + 
+		throw(SpecificationException("Argument name begin with either '" + 
 							Arg::flagStartString() + "' or '" + 
 							Arg::nameStartString() + "' or space.",
 							toString() ) );

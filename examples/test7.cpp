@@ -40,14 +40,14 @@ int main(int argc, char **argv)
 	                                 false, -10, "negative int");
 	cmd.add( gapCreate );
 
-	ValueArg<int> gapExtend("g","gapExtend",
+	ValueArg<int> gapExtend("g","gap-Extend",
 		"The cost for each extension of a gap", false, -2, "negative int");
 	cmd.add( gapExtend );
 
 	SwitchArg dna("d","isDna","The input sequences are DNA", false);
 	cmd.add( dna );
 
-	ValueArg<string> scoringMatrixName("s","scoringMatrix",
+	ValueArg<string> scoringMatrixName("s","scoring--Matrix",
 		"Scoring Matrix name", false,"BLOSUM50","name string");
 	cmd.add( scoringMatrixName );
 
