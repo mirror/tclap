@@ -1,6 +1,7 @@
 
 noinst_PROGRAMS = test1 test2 test3 test4 test5 test6 test7 test8 test9 \
-			test10 test11 test12 test13 test14 test15 test16
+			test10 test11 test12 test13 test14 test15 test16 \
+			test17
 
 test1_SOURCES = test1.cpp
 test2_SOURCES = test2.cpp
@@ -18,6 +19,7 @@ test13_SOURCES = test13.cpp
 test14_SOURCES = test14.cpp
 test15_SOURCES = test15.cpp
 test16_SOURCES = test16.cpp
+test17_SOURCES = test17.cpp test17-a.cpp
 
 INCLUDES = -I$(top_srcdir)/include
 
