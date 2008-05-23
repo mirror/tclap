@@ -461,7 +461,7 @@ inline void CmdLine::parse(std::vector<std::string>& args)
 
 inline bool CmdLine::_emptyCombined(const std::string& s)
 {
-	if ( s[0] != Arg::flagStartChar() )
+	if ( s.length() > 0 && s[0] != Arg::flagStartChar() )
 		return false;
 
 	for ( int i = 1; static_cast<unsigned int>(i) < s.length(); i++ )

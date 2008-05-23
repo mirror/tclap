@@ -139,7 +139,8 @@ inline bool SwitchArg::getValue() { return _value; }
 inline bool SwitchArg::combinedSwitchesMatch(std::string& combinedSwitches )
 {
 	// make sure this is actually a combined switch
-	if ( combinedSwitches[0] != Arg::flagStartString()[0] )
+	if ( combinedSwitches.length() > 0 &&
+	     combinedSwitches[0] != Arg::flagStartString()[0] )
 		return false;
 
 	// make sure it isn't a long name 
@@ -154,7 +155,8 @@ inline bool SwitchArg::combinedSwitchesMatch(std::string& combinedSwitches )
 	// ok, we're not specifying a ValueArg, so we know that we have
 	// a combined switch list.  
 	for ( unsigned int i = 1; i < combinedSwitches.length(); i++ )
-		if ( combinedSwitches[i] == _flag[0] &&
+		if ( _flag.length() > 0 && 
+		     combinedSwitches[i] == _flag[0] &&
 		     _flag[0] != Arg::flagStartString()[0] ) 
 		{
 			// update the combined switches so this one is no longer present
