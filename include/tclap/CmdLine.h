@@ -130,6 +130,11 @@ class CmdLine : public CmdLineInterface
 		CmdLineOutput* _output;
 
 		/**
+		 * Should CmdLine handle parsing exceptions internally?
+		 */
+		bool _handleExceptions;
+		
+		/**
 		 * Throws an exception listing the missing args.
 		 */
 		void missingArgsException();
@@ -232,7 +237,7 @@ private:
 
 		/**
 		 * Parses the command line.
-		 * \param args - A vector of strings representing the args. 
+		 * \param args - A vector of strings representing the args.
 		 * args[0] is still the program name.
 		 */
 		void parse(std::vector<std::string>& args);
@@ -281,6 +286,21 @@ private:
 		 *
 		 */
 		bool hasHelpAndVersion();
+
+		/**
+		 * Disables or enables CmdLine's internal parsing exception handling.
+		 *
+		 * @param state Should CmdLine handle parsing exceptions internally?
+		 */
+		void setExceptionHandling(const bool state);
+
+		/**
+		 * Returns the current state of the internal exception handling.
+		 *
+		 * @retval true Parsing exceptions are handled internally.
+		 * @retval false Parsing exceptions are propagated to the caller.
+		 */
+		bool getExceptionHandling() const;
 };
 
 
@@ -297,6 +317,7 @@ inline CmdLine::CmdLine(const std::string& m,
   _version(v),
   _numRequired(0),
   _delimiter(delim),
+  _handleExceptions(true),
   _userSetOutput(false),
   _helpAndVersion(help)
 {
@@ -307,7 +328,7 @@ inline CmdLine::~CmdLine()
 {
 	ClearContainer(_argDeleteOnExitList);
 	ClearContainer(_visitorDeleteOnExitList);
-	
+
 	if ( !_userSetOutput ) {
 		delete _output;
 		_output = 0;
@@ -395,7 +416,7 @@ inline void CmdLine::add( Arg* a )
 inline void CmdLine::parse(int argc, const char * const * argv)
 {
 		// this step is necessary so that we have easy access to
-		// mutable strings. 
+		// mutable strings.
 		std::vector<std::string> args;
 		for (int i = 0; i < argc; i++)
 			args.push_back(argv[i]);
@@ -416,7 +437,7 @@ inline void CmdLine::parse(std::vector<std::string>& args)
 
 		for (int i = 0; static_cast<unsigned int>(i) < args.size(); i++) {
 			bool matched = false;
-			for (ArgListIterator it = _argList.begin(); 
+			for (ArgListIterator it = _argList.begin();
 				 it != _argList.end(); it++) {
 				if ( (*it)->processArg( &i, args ) )
 					{
@@ -443,14 +464,19 @@ inline void CmdLine::parse(std::vector<std::string>& args)
 		if ( requiredCount > _numRequired )
 			throw(CmdLineParseException("Too many arguments!"));
 
-	} catch ( ArgException& e ) { 
-		try { 
-			_output->failure(*this,e); 
-		} catch ( ExitException &ee ) { 
+	} catch ( ArgException& e ) {
+		// If we're not handling the exceptions, rethrow.
+		if ( !_handleExceptions) {
+			throw;
+		}
+		
+		try {
+			_output->failure(*this,e);
+		} catch ( ExitException &ee ) {
 			estat = ee.getExitStatus();
 			shouldExit = true;
 		}
-	} catch (ExitException &ee) { 
+	} catch (ExitException &ee) {
 		estat = ee.getExitStatus();
 		shouldExit = true;
 	}
@@ -471,7 +497,7 @@ inline bool CmdLine::_emptyCombined(const std::string& s)
 	return true;
 }
 
-inline void CmdLine::missingArgsException() 
+inline void CmdLine::missingArgsException()
 {
 		int count = 0;
 
@@ -486,7 +512,7 @@ inline void CmdLine::missingArgsException()
 			}
 		}
 		missingArgList = missingArgList.substr(0,missingArgList.length()-2);
-		
+
 		std::string msg;
 		if ( count > 1 )
 			msg = "Required arguments missing: ";
@@ -552,6 +578,16 @@ inline std::string& CmdLine::getMessage()
 inline bool CmdLine::hasHelpAndVersion()
 {
 	return _helpAndVersion;
+}
+
+inline void CmdLine::setExceptionHandling(const bool state)
+{
+	_handleExceptions = state;
+}
+
+inline bool CmdLine::getExceptionHandling() const
+{
+	return _handleExceptions;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
