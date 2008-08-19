@@ -133,7 +133,7 @@ class CmdLine : public CmdLineInterface
 		 * Should CmdLine handle parsing exceptions internally?
 		 */
 		bool _handleExceptions;
-		
+
 		/**
 		 * Throws an exception listing the missing args.
 		 */
@@ -469,7 +469,7 @@ inline void CmdLine::parse(std::vector<std::string>& args)
 		if ( !_handleExceptions) {
 			throw;
 		}
-		
+
 		try {
 			_output->failure(*this,e);
 		} catch ( ExitException &ee ) {
@@ -477,6 +477,11 @@ inline void CmdLine::parse(std::vector<std::string>& args)
 			shouldExit = true;
 		}
 	} catch (ExitException &ee) {
+		// If we're not handling the exceptions, rethrow.
+		if ( !_handleExceptions) {
+			throw;
+		}
+
 		estat = ee.getExitStatus();
 		shouldExit = true;
 	}
