@@ -618,10 +618,8 @@ to add more than two <classname>Arg</classname>s.
 <programlisting>
 
 
-        ValueArg&lt;string&gt;  fileArg("f","file","File name to read",true,"homer",
-                                 "filename");
-        ValueArg&lt;string&gt;  urlArg("u","url","URL to load",true, 
-                                    "http://example.com", "URL");
+        ValueArg&lt;string&gt;  fileArg("f","file","File name to read",true,"/dev/null", "filename");
+        ValueArg&lt;string&gt;  urlArg("u","url","URL to load",true, "http://example.com", "URL");
 
         cmd.xorAdd( fileArg, urlArg );
         cmd.parse(argc, argv);
@@ -662,16 +660,16 @@ requires additional information.
 
 <programlisting>
 
-	SwitchArg sss("s", "stdin", "read from STDIN", false);
-	ValueArg&lt;string&gt; fff("f", "file", "read from file", false, "/dev/null", "string");
-	ValueArg&lt;string&gt; uuu("u", "url", "read from URL", false, "http://example.com", "string");
+        SwitchArg  stdinArg("s", "stdin", "Read from STDIN", false);
+        ValueArg&lt;string&gt;  fileArg("f","file","File name to read",true,"/dev/null", "filename");
+        ValueArg&lt;string&gt;  urlArg("u","url","URL to load",true, "http://example.com", "URL");
 
-	vector&lt;Arg*&gt; xorlist;
-	xorlist.push_back(&amp;sss);
-	xorlist.push_back(&amp;fff);
-	xorlist.push_back(&amp;uuu);
+        vector&lt;Arg*&gt;  xorlist;
+        xorlist.push_back(&amp;stdinArg);
+        xorlist.push_back(&amp;fileArg);
+        xorlist.push_back(&amp;urlArg);
 
-	cmd.xorAdd( xorlist );
+        cmd.xorAdd( xorlist );
 
 </programlisting>
 
