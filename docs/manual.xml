@@ -654,6 +654,28 @@ wasn't matched, it will also return <constant>FALSE</constant>.)
                 throw("Very bad things...");
 
 </programlisting>
+
+It is helpful to note that <classname>Arg</classname>s of any type can be xor'd together.
+This means that you can xor a <classname>SwitchArg</classname> with a <classname>ValueArg</classname>.
+This is helpful in situations where one of several options is necessary and one of the options
+requires additional information.
+
+<programlisting>
+
+	SwitchArg sss("s", "stdin", "read from STDIN", false);
+	ValueArg&lt;string&gt; fff("f", "file", "read from file", false, "/dev/null", "string");
+	ValueArg&lt;string&gt; uuu("u", "url", "read from URL", false, "http://example.com", "string");
+
+	vector&lt;Arg*&gt; xorlist;
+	xorlist.push_back(&amp;sss);
+	xorlist.push_back(&amp;fff);
+	xorlist.push_back(&amp;uuu);
+
+	cmd.xorAdd( xorlist );
+
+</programlisting>
+
+
 </para>
 </sect1>
 
