@@ -35,6 +35,8 @@
 #include <vector>
 #include <list>
 #include <iostream>
+#include <iomanip>
+#include <cstdio>
 
 #if defined(HAVE_SSTREAM)
 #include <sstream>
@@ -384,7 +386,11 @@ ExtractValue(T &destVal, const std::string& strVal, ValueLike vl)
     int valuesRead = 0;
     while ( is.good() ) {
 	if ( is.peek() != EOF )
+#ifdef TCLAP_SETBASE_ZERO
+	    is >> std::setbase(0) >> destVal;
+#else
 	    is >> destVal;
+#endif
 	else
 	    break;
 

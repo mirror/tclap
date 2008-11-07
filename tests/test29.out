@@ -1,5 +1,5 @@
 PARSE ERROR: Argument: -i (--intTest)
-             Couldn't read argument value from string '0x2'
+             Couldn't read argument value from string '0xA'
 
 Brief USAGE: 
    ../examples/test2  [-f <float>] -i <int> -s <string> [-A] [-C] [-B] [--]

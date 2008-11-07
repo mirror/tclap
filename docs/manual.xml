@@ -872,10 +872,9 @@ false will disable automatic help and version generation.
 </programlisting>
 </para>
 </sect1>
-</chapter>
 
 <sect1 id="IGNORE_ARGS">
-<title>Ignoring arguments</title>
+<title>I want to ignore certain arguments...</title>
 <para>
 The <parameter>--</parameter> flag is automatically included in the 
 <classname>CmdLine</classname>.
@@ -902,6 +901,61 @@ we can make both <classname>UnlabeledValueArg</classname>s and
 See the <ulink url="html/index.html"> API Documentation</ulink> for details. 
 </para>
 </sect1>
+
+<sect1 id="READING_HEX_INTEGERS">
+<title>I want to read hex integers as arguments...</title>
+<para>
+Sometimes it's desirable to read integers formatted in decimal, hexadecimal, 
+and octal format. This is now possible by #defining the <parameter>TCLAP_SETBASE_ZERO</parameter>
+directive.  Simply define this directive in your code and integer arguments will be parsed
+in each base.  
+<programlisting>
+
+#define TCLAP_SETBASE_ZERO 1
+
+#include "tclap/CmdLine.h"
+#include &lt;iostream&gt;
+
+using namespace TCLAP;
+using namespace std;
+
+int main(int argc, char** argv)
+{
+
+	try {
+
+	CmdLine cmd("this is a message", ' ', "0.99" );
+
+	ValueArg&lt;int&gt; itest("i", "intTest", "integer test", true, 5, "int");
+	cmd.add( itest );
+
+	//
+	// Parse the command line.
+	//
+	cmd.parse(argc,argv);
+
+	//
+	// Set variables
+	//
+	int _intTest = itest.getValue();
+	cout &lt;&lt; "found int: " &lt;&lt; _intTest &lt;&lt; endl;
+
+	} catch ( ArgException&amp; e )
+	{ cout &lt;&lt; "ERROR: " &lt;&lt; e.error() &lt;&lt; " " &lt;&lt; e.argId() &lt;&lt; endl; }
+}
+</programlisting>
+</para>
+<para>
+The reason that this behavior is not the default behavior for <emphasis>TCLAP</emphasis> is that the use of 
+<methodname>setbase(0)</methodname> appears to be something of a side effect and is not necessarily how
+<methodname>setbase()</methodname> is meant to be used.  So while we're making this functionality
+available, we're not turning it on by default for fear of bad things happening in different compilers.  
+If you know otherwise, please let us know.
+</para>
+</sect1>
+
+
+</chapter>
 
 <chapter id="NOTES">
 <title>Notes</title>

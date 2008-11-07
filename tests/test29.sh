@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# failure  ! ack no hex :(
-../examples/test2 -i 0x2 -f 4.2 -s asdf asdf > tmp.out 2>&1
+# failure...  no hex here, but see test19.cpp for how to use hex 
+../examples/test2 -i 0xA -f 4.2 -s asdf asdf > tmp.out 2>&1
 
 if cmp -s tmp.out $srcdir/test29.out; then
 	exit 0
