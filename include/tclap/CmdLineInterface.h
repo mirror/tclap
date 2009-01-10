@@ -136,6 +136,12 @@ class CmdLineInterface
 		 * automatically.
 		 */
 		virtual bool hasHelpAndVersion()=0;
+
+		/** 
+		 * Resets the instance as if it had just been constructed so that the
+		 * instance can be reused. 
+		 */
+		virtual void reset()=0;
 };
 
 } //namespace

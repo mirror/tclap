@@ -351,9 +351,23 @@ class Arg
 		 */
 		void setRequireLabel( const std::string& s );
 
+		/**
+		 * Used for MultiArgs and XorHandler to determine whether args
+		 * can still be set.
+		 */
 		virtual bool allowMore();
+
+		/**
+		 * Use by output classes to determine whether an Arg accepts
+		 * multiple values.
+		 */
 		virtual bool acceptsMultipleValues();
 
+		/**
+		 * Clears the Arg object and allows it to be reused by new
+		 * command lines.
+		 */
+		 virtual void reset();
 };
 
 /**
@@ -640,6 +654,12 @@ inline bool Arg::allowMore()
 inline bool Arg::acceptsMultipleValues()
 {
 	return _acceptsMultipleValues;
+}
+
+inline void Arg::reset()
+{
+	_xorSet = false;
+	_alreadySet = false;
 }
 
 //////////////////////////////////////////////////////////////////////

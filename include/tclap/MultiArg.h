@@ -68,6 +68,9 @@ protected:
 	 */
 	void _extractValue( const std::string& val );
 
+	/**
+	 * Used by XorHandler to decide whether to keep parsing for this arg.
+	 */
 	bool _allowMore;
 
 public:
@@ -215,6 +218,8 @@ public:
 	virtual bool isRequired() const;
 
 	virtual bool allowMore();
+	
+	virtual void reset();
 
 };
 
@@ -403,6 +408,13 @@ bool MultiArg<T>::allowMore()
 	bool am = _allowMore;
 	_allowMore = true;
 	return am;
+}
+
+template<class T>
+void MultiArg<T>::reset()
+{
+	Arg::reset();
+	_values.clear();
 }
 
 } // namespace TCLAP

@@ -301,6 +301,12 @@ private:
 		 * @retval false Parsing exceptions are propagated to the caller.
 		 */
 		bool getExceptionHandling() const;
+
+		/**
+		 * Allows the CmdLine object to be reused.
+		 */
+		void reset();
+
 };
 
 
@@ -593,6 +599,16 @@ inline void CmdLine::setExceptionHandling(const bool state)
 inline bool CmdLine::getExceptionHandling() const
 {
 	return _handleExceptions;
+}
+
+inline void CmdLine::reset()
+{
+	for( ArgListIterator it = _argList.begin(); it != _argList.end(); it++ )
+	{
+		(*it)->reset();
+	}
+	
+	_progName.clear();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

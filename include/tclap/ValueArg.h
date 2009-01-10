@@ -51,6 +51,12 @@ class ValueArg : public Arg
          */
         T _value;
 
+		/**
+		 * Used to support the reset() method so that ValueArg can be
+		 * reset to their constructed value.
+		 */
+        T _default;
+
         /**
          * A human readable description of the type to be parsed.
          * This is a hack, plain and simple.  Ideally we would use RTTI to
@@ -227,6 +233,8 @@ class ValueArg : public Arg
          * \param val - value to be used.
          */
         virtual std::string longID(const std::string& val = "val") const;
+        
+        virtual void reset() ;
 
 };
 
@@ -244,6 +252,7 @@ ValueArg<T>::ValueArg(const std::string& flag,
                       Visitor* v)
 : Arg(flag, name, desc, req, true, v),
   _value( val ),
+  _default( val ),
   _typeDesc( typeDesc ),
   _constraint( NULL )
 { }
@@ -259,6 +268,7 @@ ValueArg<T>::ValueArg(const std::string& flag,
                       Visitor* v)
 : Arg(flag, name, desc, req, true, v),
   _value( val ),
+  _default( val ),
   _typeDesc( typeDesc ),
   _constraint( NULL )
 { 
@@ -275,6 +285,7 @@ ValueArg<T>::ValueArg(const std::string& flag,
                       Visitor* v)
 : Arg(flag, name, desc, req, true, v),
   _value( val ),
+  _default( val ),
   _typeDesc( constraint->shortID() ),
   _constraint( constraint )
 { }
@@ -290,6 +301,7 @@ ValueArg<T>::ValueArg(const std::string& flag,
                       Visitor* v)
 : Arg(flag, name, desc, req, true, v),
   _value( val ),
+  _default( val ),
   _typeDesc( constraint->shortID() ),
   _constraint( constraint )
 { 
@@ -385,6 +397,13 @@ void ValueArg<T>::_extractValue( const std::string& val )
 					  + "' does not meet constraint: " 
 					  + _constraint->description(),
 					  toString() ) );
+}
+
+template<class T>
+void ValueArg<T>::reset()
+{
+	Arg::reset();
+	_value = _default;
 }
 
 } // namespace TCLAP
