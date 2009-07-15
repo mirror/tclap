@@ -87,8 +87,8 @@ class UnlabeledValueArg : public ValueArg<T>
 
 		/**
 		 * UnlabeledValueArg constructor.
-		 * \param name - A one word name for the argument.  Can be
-		 * used as a long flag on the command line.
+		 * \param name - A one word name for the argument.  Note that this is used for
+		 * identification, not as a long flag.
 		 * \param desc - A description of what the argument is for or
 		 * does.
 		 * \param req - Whether the argument is required on the command
@@ -118,8 +118,8 @@ class UnlabeledValueArg : public ValueArg<T>
 						
 		/**
 		 * UnlabeledValueArg constructor.
-		 * \param name - A one word name for the argument.  Can be
-		 * used as a long flag on the command line.
+		 * \param name - A one word name for the argument.  Note that this is used for
+		 * identification, not as a long flag.
 		 * \param desc - A description of what the argument is for or
 		 * does.
 		 * \param req - Whether the argument is required on the command
@@ -146,8 +146,8 @@ class UnlabeledValueArg : public ValueArg<T>
 		
 		/**
 		 * UnlabeledValueArg constructor.
-		 * \param name - A one word name for the argument.  Can be
-		 * used as a long flag on the command line.
+		 * \param name - A one word name for the argument.  Note that this is used for
+		 * identification, not as a long flag.
 		 * \param desc - A description of what the argument is for or
 		 * does.
 		 * \param req - Whether the argument is required on the command
