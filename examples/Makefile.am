@@ -25,4 +25,6 @@ test19_SOURCES = test19.cpp
 
 AM_CPPFLAGS = -I$(top_srcdir)/include
 
-AM_CXXFLAGS = -Wall -Wextra
+if HAVE_GNU_COMPILERS
+  AM_CXXFLAGS = -Wall -Wextra
+endif
