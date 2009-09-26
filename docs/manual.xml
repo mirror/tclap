@@ -30,14 +30,14 @@
 		<othername role='mi'>E</othername>
 	</author>
 	<copyright>
-		<year>2003,2004,2005,2006</year>
+		<year>2003,2004,2005,2006,2009</year>
 		<holder>Michael E. Smoot</holder>
 	</copyright>
 </bookinfo>
 
-<chapter> 
+<chapter id="BASIC_USAGE"> 
 <title>Basic Usage</title>
-<sect1>
+<sect1 id="OVERVIEW">
 <title>Overview</title>
 <para>
 <emphasis>TCLAP</emphasis> has a few key classes to be aware of. 
@@ -52,7 +52,7 @@ argument classes are: <classname>ValueArg</classname>,
 <classname>MultiArg</classname> and 
 <classname>UnlabeledMultiArg</classname>.
 These classes are templatized, which means they can be defined to parse
-a value of any <link linkend="FOOTNOTES"> type**</link>. Once you add the 
+a value of any <link linkend="USING_ARGTRAITS"> type</link>. Once you add the 
 arguments to the <classname>CmdLine</classname> object, it parses the 
 command line 
 and assigns the data it finds to the specific argument objects it
@@ -62,7 +62,7 @@ argument objects.
 </para>
 </sect1>
 
-<sect1>
+<sect1 id="EXAMPLE">
 <title>Example</title>
 <para>
 Here is a simple <ulink url="test1.cpp"> example</ulink> ...
@@ -182,7 +182,7 @@ Where:
 </programlisting>
 </para>
 
-<sect2>
+<sect2 id="LIBRARY_PROPERTIES">
 <title>Library Properties</title>
 <para>
 This example shows a number of different properties of the
@@ -296,7 +296,7 @@ to work on Windows, Sun and Alpha platforms. We've made every
 effort to keep the library compliant with the ANSI C++ standard so
 if your compiler meets the standard, then this library should work
 for you. Please let us know if this is not the case! 
-<sect2>
+<sect2 id="WINDOWS_NOTE">
 <title>Windows Note</title>
 <para>
 As we understand things, Visual C++ does not have the file 
@@ -312,7 +312,7 @@ then simply tell your compiler to define the variable
 the files <filename>ValueArg.h</filename> and <filename>MultiArg.h</filename>.
 </para>
 </sect2>
-<sect2>
+<sect2 id="RANDOM_NOTE">
 <title>Random Note</title>
 <para>
 If your compiler doesn't support the <methodname>using</methodname> syntax used
@@ -343,7 +343,7 @@ of the required arguments, <link linkend="XOR">relationships</link>
 between arguments, and <link linkend="CHANGE_OUTPUT">output</link> generation.
 </para>
 </sect1>
-<sect1>
+<sect1 id="SWITCH_ARG">
 <title><classname>SwitchArg</classname></title>
 <para><classname>SwitchArg</classname>s are what the name implies: 
 simple, on/off, boolean switches. Use <classname>SwitchArg</classname>s 
@@ -354,14 +354,14 @@ don't parse a value. They return <constant>TRUE</constant> or
 on the command line and what the default value was defined as.</para>
 </sect1>
 
-<sect1>
+<sect1 id="VALUE_ARG">
 <title><classname>ValueArg</classname></title>
 <para><classname>ValueArg</classname>s are arguments that read a 
 value of some type
 from the command line. Any time you need a file name, a number,
 etc. use a <classname>ValueArg</classname> or one of its variants. 
 All <classname>ValueArg</classname>s are 
-<link linkend="FOOTNOTES"> templatized**</link> and will attempt to parse
+<link linkend="USING_ARGTRAITS"> templatized</link> and will attempt to parse
 the string its flag matches on the command line as the type it is
 specified as. <classname>ValueArg&lt;int&gt;</classname> 
 will attempt to parse an
@@ -373,7 +373,7 @@ an exception will be thrown.
 </para>
 </sect1>
 
-<sect1>
+<sect1 id="MULTI_ARG">
 <title><classname>MultiArg</classname></title>
 <para>
 A <classname>MultiArg</classname> is a <classname>ValueArg</classname> that
@@ -412,7 +412,7 @@ Note that <classname>MultiArg</classname>s can be added to the
 </para>
 </sect1>
 
-<sect1>
+<sect1 id="MULTI_SWITCH_ARG">
 <title><classname>MultiSwitchArg</classname></title>
 <para>
 A <classname>MultiSwitchArg</classname> is a <classname>SwitchArg</classname> 
@@ -438,7 +438,7 @@ Alternatively, you can specify your own initial value:
 </para>
 </sect1>
 
-<sect1 id="UNLABELED_MULTI_ARG">
+<sect1 id="UNLABELED_VALUE_ARG">
 <title><classname>UnlabeledValueArg</classname></title>
 <para>
 An <classname>UnlabeledValueArg</classname> is a <classname>ValueArg</classname> that is not identified by a flag on the command line.  Instead 
@@ -485,7 +485,7 @@ important for unlabeled arguments.
 </para>
 </sect1>
 
-<sect1>
+<sect1 id="UNLABELED_MULTI_ARG">
 <title><classname>UnlabeledMultiArg</classname></title>
 <para>
 An <classname>UnlabeledMultiArg</classname> is an <classname>UnlabeledValueArg</classname> that allows more than one value to be specified.  Only one
@@ -858,6 +858,7 @@ now responsible for exiting the application (assuming that is the desired
 behavior).
 </para>
 </sect1>
+
 <sect1 id="NO_HELP_VERSION">
 <title>I don't want the --help and --version switches to be created automatically...</title>
 <para>
@@ -951,6 +952,38 @@ The reason that this behavior is not the default behavior for <emphasis>TCLAP</e
 <methodname>setbase()</methodname> is meant to be used.  So while we're making this functionality
 available, we're not turning it on by default for fear of bad things happening in different compilers.  
 If you know otherwise, please let us know.
+</para>
+</sect1>
+
+<sect1 id="USING_ARGTRAITS">
+<title>I want to use different types...</title>
+<para>
+The usual C++ types (int, long, bool, etc.) are supported by <emphasis>TCLAP</emphasis> out 
+of the box. As
+long as operator&gt;&gt; and operator&lt;&lt; are supported, other types should work fine
+too, you'll just need to specify the <classname>ArgTraits</classname> which 
+tells <emphasis>TCLAP</emphasis> how you expect the type to be handled.  
+</para>
+<para>
+For example, assume that you'd like to read one argument on the command line in as a
+<classname>std::pair</classname> object.  All you'll need to do is tell 
+<emphasis>TCLAP</emphasis> whether to treat <classname>std::pair</classname> as a
+String or Value.  StringLike means to treat the string on the command line as a string
+and use it directly, whereas ValueLike means that a value object should be extracted from the 
+string using operator&gt;&gt;.  For <classname>std::pair</classname> we'll choose ValueLike.
+To accomplish this, add the following declaration to your file:
+
+<programlisting>
+
+  template&lt;class T, class U&gt;
+  struct ArgTraits&lt;std::pair&lt;T, U&gt;&gt; {
+    typedef ValueLike ValueCategory;
+  };
+
+</programlisting>
+
+For complete examples see the files <filename>test11.cpp</filename> 
+and <filename>test12.cpp</filename> in the examples directory.
 </para>
 </sect1>
 
@@ -1065,11 +1098,6 @@ distribution.
 <emphasis>Happy coding!</emphasis>
 </para>
 
-<para id="FOOTNOTES">
-** In theory, any type that supports operator&gt;&gt; and
-operator&lt;&lt; should work, although I've really only tried
-things with basic types like int, float, string, etc.
-</para>
 </sect1>
 </chapter>
 </book>
