@@ -86,3 +86,8 @@ that should facilitate the creation of different constraints on Args.
 This has involved changing the constructor interface, so if you've been using
 allowed lists, you'll need to make a small modification to your existing code.
 See examples/test6.cpp for details.
+
+9/26/09 - Whoa, long break.  Primarily a bug-fix release, but we did switch 
+to using traits, which necessitates the minor version bump. Take a look 
+at test11.cpp and test12.cpp for examples on using ArgTraits for extending 
+tclap for different types.
