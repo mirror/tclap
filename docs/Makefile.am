@@ -12,7 +12,7 @@ endif
 
 EXTRA_DIST = manual.xml
 dist_doc_DATA = index.html manual.html style.css
-docdir = ${datadir}/doc/${PACKAGE} 
+docdir = ${datadir}/doc/${PACKAGE}
 
 install-data-local :
 	$(MKDIR_P) $(DESTDIR)$(docdir)
