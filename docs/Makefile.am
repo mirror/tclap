@@ -14,15 +14,15 @@ EXTRA_DIST = manual.xml
 dist_doc_DATA = index.html manual.html style.css
 
 install-data-local :
-	$(MKDIR_P) $(DESTDIR)$(docdir)/html
-	cp -R html $(DESTDIR)$(docdir)/html
+	$(MKDIR_P) $(DESTDIR)$(docdir)
+	cp -R html $(DESTDIR)$(docdir)
 
 uninstall-local :
-	chmod -R +w $(DESTDIR)$(docdir)/html
-	rm -rf $(DESTDIR)$(docdir)/html
+	chmod -R +w $(DESTDIR)$(docdir)
+	rm -rf $(DESTDIR)$(docdir)
 
 dist-hook :
-	$(MKDIR_P) $(distdir)/html
+	$(MKDIR_P) $(distdir)
 	cp -R html $(distdir)
 
 clean-local:
