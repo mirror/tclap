@@ -15,7 +15,7 @@ dist_doc_DATA = index.html manual.html style.css
 docdir = ${datadir}/doc/${PACKAGE}
 
 install-data-local :
-	$(MKDIR_P) $(DESTDIR)$(docdir)
+	$(mkdir_p) $(DESTDIR)$(docdir)
 	cp -R html $(DESTDIR)$(docdir)
 
 uninstall-local :
@@ -23,7 +23,7 @@ uninstall-local :
 	rm -rf $(DESTDIR)$(docdir)
 
 dist-hook :
-	$(MKDIR_P) $(distdir)
+	$(mkdir_p) $(distdir)
 	cp -R html $(distdir)
 
 clean-local:
