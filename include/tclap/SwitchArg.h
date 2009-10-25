@@ -197,7 +197,15 @@ inline bool SwitchArg::processArg(int *i, std::vector<std::string>& args)
 			ret = true;
 
 		if ( _alreadySet || ( !ret && combinedSwitchesMatch( args[*i] ) ) )
-			throw(CmdLineParseException("Argument already set!", toString()));	
+		{
+			if ( _xorSet )
+				throw(CmdLineParseException(
+				      "Mutually exclusive argument already set!", 
+				                            toString()));
+			else
+				throw(CmdLineParseException("Argument already set!", 
+				                            toString()));	
+		}
 
 		_alreadySet = true;
 

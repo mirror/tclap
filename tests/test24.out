@@ -1,5 +1,5 @@
 PARSE ERROR: Argument: -b (--bbb)
-             Argument already set!
+             Mutually exclusive argument already set!
 
 Brief USAGE: 
    ../examples/test5  {-a <string>|-b <string>} {--eee <string>|--fff

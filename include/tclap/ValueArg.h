@@ -335,7 +335,15 @@ bool ValueArg<T>::processArg(int *i, std::vector<std::string>& args)
     if ( argMatches( flag ) )
     {
         if ( _alreadySet )
-			throw( CmdLineParseException("Argument already set!", toString()) );
+		{
+			if ( _xorSet )
+				throw( CmdLineParseException(
+				       "Mutually exclusive argument already set!", 
+				                             toString()) );
+			else
+				throw( CmdLineParseException("Argument already set!", 
+				                             toString()) );
+		}
 
         if ( Arg::delimiter() != ' ' && value == "" )
 			throw( ArgParseException( 
