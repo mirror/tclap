@@ -576,7 +576,7 @@ inline void Arg::setRequireLabel( const std::string& s)
 inline bool Arg::argMatches( const std::string& argFlag ) const
 {
 	if ( ( argFlag == Arg::flagStartString() + _flag && _flag != "" ) ||
-		 argFlag == Arg::nameStartString() + _name )
+	       argFlag == Arg::nameStartString() + _name )
 		return true;
 	else
 		return false;
