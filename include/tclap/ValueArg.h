@@ -236,6 +236,12 @@ class ValueArg : public Arg
         
         virtual void reset() ;
 
+private:
+       /**
+        * Prevent accidental copying
+        */
+       ValueArg<T>(const ValueArg<T>& rhs);
+       ValueArg<T>& operator=(const ValueArg<T>& rhs);
 };
 
 

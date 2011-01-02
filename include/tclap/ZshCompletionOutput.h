@@ -84,6 +84,8 @@ class ZshCompletionOutput : public CmdLineOutput
 };
 
 ZshCompletionOutput::ZshCompletionOutput()
+: common(std::map<std::string, std::string>()),
+  theDelimiter('=')
 {
 	common["host"] = "_hosts";
 	common["hostname"] = "_hosts";

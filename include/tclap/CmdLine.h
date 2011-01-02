@@ -160,6 +160,12 @@ class CmdLine : public CmdLineInterface
 private:
 
 		/**
+		 * Prevent accidental copying.
+		 */
+		CmdLine(const CmdLine& rhs);
+		CmdLine& operator=(const CmdLine& rhs);
+
+		/**
 		 * Encapsulates the code common to the constructors
 		 * (which is all of it).
 		 */
@@ -318,11 +324,17 @@ inline CmdLine::CmdLine(const std::string& m,
 			char delim,
 			const std::string& v,
 			bool help )
-: _progName("not_set_yet"),
+    :
+  _argList(std::list<Arg*>()),
+  _progName("not_set_yet"),
   _message(m),
   _version(v),
   _numRequired(0),
   _delimiter(delim),
+  _xorHandler(XorHandler()),
+  _argDeleteOnExitList(std::list<Arg*>()),
+  _visitorDeleteOnExitList(std::list<Visitor*>()),
+  _output(0),
   _handleExceptions(true),
   _userSetOutput(false),
   _helpAndVersion(help)

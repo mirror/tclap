@@ -49,7 +49,7 @@ class XorHandler
 		/**
 		 * Constructor.  Does nothing.
 		 */
-		XorHandler( ) {}
+		XorHandler( ) : _orList(std::vector< std::vector<Arg*> >()) {}
 
 		/**
 		 * Add a list of Arg*'s that will be orred together.

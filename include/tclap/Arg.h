@@ -65,6 +65,12 @@ class Arg
 {
 	private:
 
+	/**
+	 * Prevent accidental copying
+	 */
+	Arg(const Arg& rhs);
+	Arg& operator=(const Arg& rhs);
+
 		/**
 		 * Indicates whether the rest of the arguments should be ignored.
 		 */
