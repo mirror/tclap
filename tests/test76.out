@@ -1,4 +1,4 @@
-PARSE ERROR: Argument: -a (--atmc)
+PARSE ERROR: Argument: -b (--btmc)
              Mutually exclusive argument already set!
 
 Brief USAGE: 
