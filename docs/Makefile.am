@@ -16,7 +16,7 @@ docdir = ${datadir}/doc/${PACKAGE}
 
 install-data-local :
 	$(mkdir_p) $(DESTDIR)$(docdir)
-	cp -R $(srcdir)/html $(DESTDIR)$(docdir)
+	cp -R $(abs_srcdir)/html $(DESTDIR)$(docdir)
 
 uninstall-local :
 	chmod -R +w $(DESTDIR)$(docdir)
@@ -24,8 +24,8 @@ uninstall-local :
 
 dist-hook :
 	$(mkdir_p) $(distdir)
-	cp -R $(srcdir)/html $(distdir)
+	cp -R $(abs_srcdir)/html $(distdir)
 
 clean-local:
-	$(RM) -rf $(srcdir)/html
+	$(RM) -rf $(abs_srcdir)/html
 
