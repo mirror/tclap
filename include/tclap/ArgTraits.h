@@ -73,7 +73,7 @@ struct ValueLikeTrait {
  * Arg traits are used to get compile type specialization when parsing
  * argument values. Using an ArgTraits you can specify the way that
  * values gets assigned to any particular type during parsing. The two
- * supported types are string like and value like.
+ * supported types are StringLike and ValueLike.
  */
 template<typename T>
 struct ArgTraits {
