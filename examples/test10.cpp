@@ -6,7 +6,7 @@
 using namespace TCLAP;
 int main()
 {
-	char *argv5[] = {"Foo", 0};
+        char *argv5[] = {(char*)"Foo", 0};
 	const char *argv6[] = {"Foo", 0};
 	const char * const argv7[] = {"Foo", 0};
 	char **argv1 = argv5;
