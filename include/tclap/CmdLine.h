@@ -564,6 +564,8 @@ inline CmdLineOutput* CmdLine::getOutput()
 
 inline void CmdLine::setOutput(CmdLineOutput* co)
 {
+	if ( !_userSetOutput )
+		delete _output;
 	_userSetOutput = true;
 	_output = co;
 }
