@@ -27,5 +27,5 @@ dist-hook :
 	cp -R $(abs_srcdir)/html $(distdir)
 
 clean-local:
-	$(RM) -rf $(abs_srcdir)/html
+	$(RM) -rf $(abs_srcdir)/html/*
 
