@@ -30,7 +30,7 @@
 		<othername role='mi'>E</othername>
 	</author>
 	<copyright>
-		<year>2003,2004,2005,2006,2009</year>
+		<year>2003,2004,2005,2006,2009,2011</year>
 		<holder>Michael E. Smoot</holder>
 	</copyright>
 </bookinfo>
@@ -987,6 +987,41 @@ and <filename>test12.cpp</filename> in the examples directory.
 </para>
 </sect1>
 
+<sect1 id="CHANGING_STARTSTRINGS">
+<title>I want to use Windows-style flags like "/x" and "/y"...</title>
+<para>
+It is traditional in Posix environments that the "-" and "--" strings are used to signify
+the beginning of argument flags and long argument names. However, other environments,
+namely Windows, use different strings.  <emphasis>TCLAP</emphasis> allows you to 
+control which strings are used with <methodname>#define</methodname> directives. This allows
+you to use different strings based on your operating environment. Here is an example: 
+
+<programlisting>
+//
+// This illustrates how to change the flag and name start strings for 
+// Windows, otherwise the defaults are used.
+//
+// Note that these defines need to happen *before* tclap is included!
+//
+#ifdef WINDOWS
+#define TCLAP_NAMESTARTSTRING "~~"
+#define TCLAP_FLAGSTARTSTRING "/"
+#endif
+
+#include "tclap/CmdLine.h"
+
+using namespace TCLAP;
+using namespace std;
+
+int main(int argc, char** argv)
+{
+	// Everything else is identical!
+	...
+</programlisting>
+
+
+</para>
+</sect1>
 
 </chapter>
 
