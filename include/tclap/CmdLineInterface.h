@@ -67,17 +67,15 @@ class CmdLineInterface
 		 * not need to be called.
 		 * \param a - Argument to be added and xor'd. 
 		 * \param b - Argument to be added and xor'd. 
-		 * \param required - Require at least one option (defaults to true)
 		 */
-		virtual void xorAdd( Arg& a, Arg& b, bool required=true )=0;
+		virtual void xorAdd( Arg& a, Arg& b )=0;
 
 		/**
 		 * Add a list of Args that will be xor'd.  If this method is used, 
 		 * add does not need to be called.
 		 * \param xors - List of Args to be added and xor'd. 
-		 * \param required - Require at least one option (defaults to true)
 		 */
-		virtual void xorAdd( std::vector<Arg*>& xors, bool required=true )=0;
+		virtual void xorAdd( std::vector<Arg*>& xors )=0;
 
 		/**
 		 * Parses the command line.
