@@ -1,8 +1,12 @@
 #!/bin/bash
 
+# Always run in script-dir
+DIR=`dirname $0`
+cd $DIR
+
 let "suc = 0"
 let "fail = 0"
-NUMTEST=79
+NUMTEST=80
 
 for (( tno = 1 ; $tno <= $NUMTEST ; tno = $tno + 1 )); do     
     ./testCheck.sh $tno
