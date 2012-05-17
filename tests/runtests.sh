@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Always run in script-dir
+DIR=`dirname $0`
+cd $DIR
+
 let "suc = 0"
 let "fail = 0"
 NUMTEST=82
