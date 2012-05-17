@@ -159,6 +159,9 @@ EXTRA_DIST = $(TESTS) \
 			 test76.out \
 			 test77.out \
 			 test78.out \
-			 test79.out
+			 test79.out \
+			 test80.out \
+			 test81.out \
+			 test82.out
 
 CLEANFILES = tmp.out
