@@ -31,7 +31,7 @@ struct Vect : public TCLAP::StringLikeTrait {
 
     std::ostream& print(std::ostream &os) const
         {
-            std::copy(v, v + LEN, std::ostream_iterator<T>(os, " "));
+            std::copy(v, v + LEN, std::ostream_iterator<T>(os, ", "));
             return os;
         }
 
