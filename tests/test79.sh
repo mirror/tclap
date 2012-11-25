@@ -1,7 +1,6 @@
 #!/bin/sh
-
-# success (everything but -n mike should be ignored)
-../examples/test22 asdf -n mike asdf fds xxx > tmp.out 2>&1
+# success
+../examples/test21 > tmp.out 2>&1
 
 if cmp -s tmp.out $srcdir/test79.out; then
 	exit 0

@@ -2,7 +2,7 @@
 
 let "suc = 0"
 let "fail = 0"
-NUMTEST=67
+NUMTEST=79
 
 for (( tno = 1 ; $tno <= $NUMTEST ; tno = $tno + 1 )); do     
     ./testCheck.sh $tno
