@@ -5,9 +5,8 @@ autom4te.cache/
 config.log
 config.status
 config/Makefile
-#	config/Makefile.in
-config/config.h
-config/config.h.in
+config/Makefile.in
+config/config.h*
 config/stamp-h1
 configure
 docs/Doxyfile
@@ -48,6 +47,8 @@ examples/test21
 examples/test21.o
 examples/test22
 examples/test22.o
+examples/test23
+examples/test23.o
 examples/test3
 examples/test3.o
 examples/test4
