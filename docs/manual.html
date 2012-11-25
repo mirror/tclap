@@ -708,8 +708,13 @@ By default, if <span class="emphasis"><em>TCLAP</em></span> sees an argument tha
 match a specified <code class="classname">Arg</code>, it will produce an exception.  
 This strict handling provides some assurance that all input to a program
 is controlled. However, there are times when 
-this strict handling of arguments might not be desirable. The alternative 
-that <span class="emphasis"><em>TCLAP</em></span> provides is to simply ignore any unmatched 
+this strict handling of arguments might not be desirable. 
+<span class="emphasis"><em>TCLAP</em></span> provides two alternatives. The first is to 
+add an <code class="classname">UnlabeledMultiArg</code> to the command line. If
+this is done, all unmatched arguments will get added to this arg.
+
+The second option is that 
+that <span class="emphasis"><em>TCLAP</em></span> can simply ignore any unmatched 
 arguments on the command line. This is accomplished by calling the
 <code class="methodname">ignoreUnmatched</code> method with 
 <em class="parameter"><code>true</code></em> on the 
@@ -744,6 +749,11 @@ The program would succeed and the name <code class="classname">ValueArg</code>
 would be populated with "Mike" but
 the strings "something", "to", and "ignore" would simply be ignored by the
 parser. 
+</p><p>
+<span class="emphasis"><em>NOTE:</em></span> If both <code class="methodname">ignoreUnmatched</code>
+is set to true and an <code class="classname">UnlabeledMultiArg</code> is added to
+the command line, then the <code class="classname">UnlabeledMultiArg</code> will
+"win" and all extra arguments will be added to it rather than be ignored.
 </p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="READING_HEX_INTEGERS"></a>I want to read hex integers as arguments...</h2></div></div></div><p>
 Sometimes it's desirable to read integers formatted in decimal, hexadecimal, 
 and octal format. This is now possible by #defining the <em class="parameter"><code>TCLAP_SETBASE_ZERO</code></em>

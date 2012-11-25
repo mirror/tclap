@@ -910,8 +910,13 @@ By default, if <emphasis>TCLAP</emphasis> sees an argument that doesn't
 match a specified <classname>Arg</classname>, it will produce an exception.  
 This strict handling provides some assurance that all input to a program
 is controlled. However, there are times when 
-this strict handling of arguments might not be desirable. The alternative 
-that <emphasis>TCLAP</emphasis> provides is to simply ignore any unmatched 
+this strict handling of arguments might not be desirable. 
+<emphasis>TCLAP</emphasis> provides two alternatives. The first is to 
+add an <classname>UnlabeledMultiArg</classname> to the command line. If
+this is done, all unmatched arguments will get added to this arg.
+
+The second option is that 
+that <emphasis>TCLAP</emphasis> can simply ignore any unmatched 
 arguments on the command line. This is accomplished by calling the
 <methodname>ignoreUnmatched</methodname> method with 
 <parameter>true</parameter> on the 
@@ -946,6 +951,12 @@ The program would succeed and the name <classname>ValueArg</classname>
 would be populated with "Mike" but
 the strings "something", "to", and "ignore" would simply be ignored by the
 parser. 
+</para>
+<para>
+<emphasis>NOTE:</emphasis> If both <methodname>ignoreUnmatched</methodname>
+is set to true and an <classname>UnlabeledMultiArg</classname> is added to
+the command line, then the <classname>UnlabeledMultiArg</classname> will
+"win" and all extra arguments will be added to it rather than be ignored.
 </para>
 </sect1>
 
