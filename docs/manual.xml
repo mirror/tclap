@@ -30,7 +30,7 @@
 		<othername role='mi'>E</othername>
 	</author>
 	<copyright>
-		<year>2003,2004,2005,2006,2009,2011</year>
+		<year>2003,2004,2005,2006,2009,2011,2012</year>
 		<holder>Michael E. Smoot</holder>
 	</copyright>
 </bookinfo>
@@ -900,6 +900,52 @@ ignore arguments after the <parameter>--</parameter>. To accommodate this,
 we can make both <classname>UnlabeledValueArg</classname>s and 
 <classname>UnlabeledMultiArg</classname>s ignoreable in their constructors. 
 See the <ulink url="html/index.html"> API Documentation</ulink> for details. 
+</para>
+</sect1>
+
+<sect1 id="IGNORE_UNMATCHED">
+<title>I want to ignore unmatched arguments...</title>
+<para>
+By default, if <emphasis>TCLAP</emphasis> sees an argument that doesn't 
+match a specified <classname>Arg</classname>, it will produce an exception.  
+This strict handling provides some assurance that all input to a program
+is controlled. However, there are times when 
+this strict handling of arguments might not be desirable. The alternative 
+that <emphasis>TCLAP</emphasis> provides is to simply ignore any unmatched 
+arguments on the command line. This is accomplished by calling the
+<methodname>ignoreUnmatched</methodname> method with 
+<parameter>true</parameter> on the 
+<classname>CmdLine</classname> object that's been constructed. 
+
+<programlisting>
+
+    // Define the command line object.
+	CmdLine cmd("Command description message", ' ', "0.9");
+
+	// Tell the command line to ignore any unmatched args.
+	cmd.ignoreUnmatched(true);
+
+    // Define a value argument and add it to the command line.
+	ValueArg&lt;string&gt; nameArg("n","name","Name to print",true,"homer","string");
+	cmd.add( nameArg );
+
+    // Parse the args.
+    cmd.parse( argc, argv );
+
+</programlisting>
+
+Given the program above, if a user were to type:
+
+<programlisting>
+
+	% command -n Mike something to ignore
+
+</programlisting>
+
+The program would succeed and the name <classname>ValueArg</classname> 
+would be populated with "Mike" but
+the strings "something", "to", and "ignore" would simply be ignored by the
+parser. 
 </para>
 </sect1>
 
