@@ -220,7 +220,13 @@ class ValueArg : public Arg
         /**
          * Returns the value of the argument.
          */
-        T& getValue() ;
+	/* const */ T& getValue() /* TODO(macbishop): should be const */;
+
+    /**
+     * A ValueArg can be used as as its value type (T) This is the
+     * same as calling getValue()
+     */
+    operator const T&() const { return _value; }
 
         /**
          * Specialization of shortID.
@@ -308,7 +314,8 @@ ValueArg<T>::ValueArg(const std::string& flag,
 : Arg(flag, name, desc, req, true, v),
   _value( val ),
   _default( val ),
-  _typeDesc( constraint->shortID() ),
+  _typeDesc( constraint->shortID() ),  // TODO(macbishop): Will crash
+									   // if constraint is NULL
   _constraint( constraint )
 { 
     parser.add( this );

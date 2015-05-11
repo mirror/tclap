@@ -112,7 +112,14 @@ class SwitchArg : public Arg
 		/**
 		 * Returns bool, whether or not the switch has been set.
 		 */
-		bool getValue();
+		bool getValue() /* TODO(macbishop) should be const */;
+
+		/**
+		 * A SwitchArg can be used as a boolean, indicating
+		 * whether or not the switch has been set. This is the
+		 * same as calling getValue()
+		 */
+		operator bool() const { return _value; }
 		
 		virtual void reset();
 
