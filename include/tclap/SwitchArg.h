@@ -111,7 +111,7 @@ public:
   /**
    * Returns bool, whether or not the switch has been set.
    */
-  bool getValue() /* TODO(macbishop) should be const */;
+  bool getValue() const { return _value; }
 
   /**
    * A SwitchArg can be used as a boolean, indicating
@@ -160,8 +160,6 @@ inline SwitchArg::SwitchArg(const std::string& flag,
 { 
   parser.add( this );
 }
-
-inline bool SwitchArg::getValue() { return _value; }
 
 inline bool SwitchArg::lastCombined(std::string& combinedSwitches ) 
 {

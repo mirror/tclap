@@ -220,13 +220,17 @@ public:
   /**
    * Returns the value of the argument.
    */
-  /* const */ T& getValue() /* TODO(macbishop): should be const */;
+  const T& getValue() const { return _value; }
+
+  // TODO(macbishop): Non-const variant is deprecated, don't
+  // use. Remove in next major.
+  T& getValue() { return _value; }
 
   /**
    * A ValueArg can be used as as its value type (T) This is the
    * same as calling getValue()
    */
-  operator const T&() const { return _value; }
+  operator const T&() const { return getValue(); }
 
   /**
    * Specialization of shortID.
@@ -320,13 +324,6 @@ ValueArg<T>::ValueArg(const std::string& flag,
 { 
   parser.add( this );
 }
-
-
-/**
- * Implementation of getValue().
- */
-template<class T>
-T& ValueArg<T>::getValue() { return _value; }
 
 /**
  * Implementation of processArg().
