@@ -302,7 +302,7 @@ ValueArg<T>::ValueArg(const std::string& flag,
   : Arg(flag, name, desc, req, true, v),
     _value( val ),
     _default( val ),
-    _typeDesc( constraint->shortID() ),
+    _typeDesc( Constraint<T>::shortID(constraint) ),
     _constraint( constraint )
 { }
 
@@ -318,7 +318,7 @@ ValueArg<T>::ValueArg(const std::string& flag,
   : Arg(flag, name, desc, req, true, v),
     _value( val ),
     _default( val ),
-    _typeDesc( constraint->shortID() ),  // TODO(macbishop): Will crash
+    _typeDesc( Constraint<T>::shortID(constraint) ),  // TODO(macbishop): Will crash
     // if constraint is NULL
     _constraint( constraint )
 { 

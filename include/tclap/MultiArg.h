@@ -276,7 +276,7 @@ MultiArg<T>::MultiArg(const std::string& flag,
                       Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
   _values(std::vector<T>()),
-  _typeDesc( constraint->shortID() ),
+  _typeDesc( Constraint<T>::shortID(constraint) ),
   _constraint( constraint ),
   _allowMore(false)
 { 
@@ -293,7 +293,7 @@ MultiArg<T>::MultiArg(const std::string& flag,
                       Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
   _values(std::vector<T>()),
-  _typeDesc( constraint->shortID() ),
+  _typeDesc( Constraint<T>::shortID(constraint) ),
   _constraint( constraint ),
   _allowMore(false)
 { 
