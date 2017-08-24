@@ -82,6 +82,7 @@ struct ArgTraits {
     //typedef ValueLike ValueCategory;
 };
 
+} // namespace
+
 #endif
 
-} // namespace
