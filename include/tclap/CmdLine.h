@@ -237,7 +237,7 @@ private:
 		 * add does not need to be called.
 		 * \param xors - List of Args to be added and xor'd.
 		 */
-		void xorAdd( std::vector<Arg*>& xors );
+		void xorAdd( const std::vector<Arg*>& xors );
 
 		/**
 		 * Parses the command line.
@@ -403,7 +403,7 @@ inline void CmdLine::_constructor()
 	deleteOnExit(v);
 }
 
-inline void CmdLine::xorAdd( std::vector<Arg*>& ors )
+inline void CmdLine::xorAdd( const std::vector<Arg*>& ors )
 {
 	_xorHandler.add( ors );
 

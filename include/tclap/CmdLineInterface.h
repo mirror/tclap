@@ -75,7 +75,7 @@ class CmdLineInterface
 		 * add does not need to be called.
 		 * \param xors - List of Args to be added and xor'd. 
 		 */
-		virtual void xorAdd( std::vector<Arg*>& xors )=0;
+		virtual void xorAdd( const std::vector<Arg*>& xors )=0;
 
 		/**
 		 * Parses the command line.

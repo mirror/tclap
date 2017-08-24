@@ -393,17 +393,17 @@ class Arg
 /**
  * Typedef of an Arg list iterator.
  */
-typedef std::list<Arg*>::iterator ArgListIterator;
+typedef std::list<Arg*>::const_iterator ArgListIterator;
 
 /**
  * Typedef of an Arg vector iterator.
  */
-typedef std::vector<Arg*>::iterator ArgVectorIterator;
+typedef std::vector<Arg*>::const_iterator ArgVectorIterator;
 
 /**
  * Typedef of a Visitor list iterator.
  */
-typedef std::list<Visitor*>::iterator VisitorListIterator;
+typedef std::list<Visitor*>::const_iterator VisitorListIterator;
 
 /*
  * Extract a value of type T from it's string representation contained
