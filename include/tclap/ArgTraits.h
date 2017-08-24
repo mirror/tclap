@@ -115,6 +115,7 @@ public:
 	typedef typename DefaultArgTrait<T, hasTrait>::ValueCategory ValueCategory;
 };
 
+} // namespace
+
 #endif
 
-} // namespace
