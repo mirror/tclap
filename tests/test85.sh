@@ -5,7 +5,7 @@
 # updated
 ../examples/test25 -h > tmp.out 2>&1
 
-if cmp -s tmp.out $srcdir/test82.out; then
+if cmp -s tmp.out $srcdir/test85.out; then
 	exit 0
 else
 	exit 1
