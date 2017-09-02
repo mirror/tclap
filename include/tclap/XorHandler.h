@@ -52,7 +52,7 @@ class XorHandler
 		XorHandler( ) : _orList(std::vector< std::vector<Arg*> >()) {}
 
 		/**
-		 * Add a list of Arg*'s that will be orred together.
+		 * Add a list of Arg*'s that will be xor'd together.
 		 * \param ors - list of Arg* that will be xor'd.
 		 */
 		void add( const std::vector<Arg*>& ors );

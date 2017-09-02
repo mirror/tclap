@@ -29,7 +29,7 @@
 namespace TCLAP {
 
 /**
- * A Vistor that tells the CmdLine to begin ignoring arguments after
+ * A Visitor that tells the CmdLine to begin ignoring arguments after
  * this one is parsed.
  */
 class IgnoreRestVisitor: public Visitor
