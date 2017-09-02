@@ -193,7 +193,7 @@ inline void ZshCompletionOutput::printOption(Arg* a, std::string mutex)
 	std::string name = a->nameStartString() + a->getName();
 	std::string desc = a->getDescription();
 
-	// remove full stop and capitalisation from description as
+	// remove full stop and capitalization from description as
 	// this is the convention for zsh function
 	if (!desc.compare(0, 12, "(required)  "))
 	{

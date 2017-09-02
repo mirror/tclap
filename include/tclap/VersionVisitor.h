@@ -31,7 +31,7 @@
 namespace TCLAP {
 
 /**
- * A Vistor that will call the version method of the given CmdLineOutput
+ * A Visitor that will call the version method of the given CmdLineOutput
  * for the specified CmdLine object and then exit.
  */
 class VersionVisitor: public Visitor
