@@ -5,7 +5,7 @@
  *  file:  ZshCompletionOutput.h
  * 
  *  Copyright (c) 2006, Oliver Kiddle
- *  All rights reverved.
+ *  All rights reserved.
  * 
  *  See the file COPYING in the top directory of this distribution for
  *  more information.
