@@ -4,7 +4,7 @@
  *  file:  UnlabeledMultiArg.h
  * 
  *  Copyright (c) 2003, Michael E. Smoot.
- *  All rights reverved.
+ *  All rights reserved.
  * 
  *  See the file COPYING in the top directory of this distribution for
  *  more information.
