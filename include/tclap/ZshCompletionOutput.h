@@ -5,6 +5,7 @@
  *  file:  ZshCompletionOutput.h
  * 
  *  Copyright (c) 2006, Oliver Kiddle
+ *  Copyright (c) 2017 Google Inc.
  *  All rights reserved.
  * 
  *  See the file COPYING in the top directory of this distribution for
@@ -23,6 +24,10 @@
 #ifndef TCLAP_ZSHCOMPLETIONOUTPUT_H
 #define TCLAP_ZSHCOMPLETIONOUTPUT_H
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <string>
 #include <vector>
 #include <list>
@@ -33,6 +38,7 @@
 #include <tclap/CmdLineOutput.h>
 #include <tclap/XorHandler.h>
 #include <tclap/Arg.h>
+#include <tclap/sstream.h>
 
 namespace TCLAP {
 
@@ -284,7 +290,7 @@ inline std::string ZshCompletionOutput::getMutexList( CmdLineInterface& _cmd, Ar
 		return "(-)";
 	}
 
-	std::ostringstream list;
+	ostringstream list;
 	if ( a->acceptsMultipleValues() )
 	{
 		list << '*';
