@@ -2,6 +2,8 @@
 #include <iterator>
 #include <algorithm>
 
+#include <sstream>
+
 namespace TCLAP {
     template<>
     struct ArgTraits< std::vector<double> > {

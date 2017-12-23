@@ -1,6 +1,8 @@
 #include "tclap/CmdLine.h"
 #include <iterator>
 
+#include <sstream>
+
 using namespace TCLAP;
 
 // Define a simple 3D vector type

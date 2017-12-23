@@ -2,6 +2,8 @@
 #include <iterator>
 #include <algorithm>
 
+#include <sstream>
+
 // Define a simple 3D vector type
 template<typename T, size_t LEN>
 struct Vect {
