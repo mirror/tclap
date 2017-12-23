@@ -2,6 +2,8 @@
 #include <iterator>
 #include <algorithm>
 
+#include <sstream>
+
 using namespace TCLAP;
 
 // Define a simple 3D vector type
