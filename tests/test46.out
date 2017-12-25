@@ -8,7 +8,7 @@ USAGE:
                                         <filename>] [-x <filename>] [-s
                                         <name string>] [-d] [-g <negative
                                         int>] [-f <negative int>] -n <homer
-                                        |marge|bart|lisa|maggie> ...  [--]
+                                        |marge|bart|lisa|maggie> ... [--]
                                         [--version] [-h] <1|2|3> ...
 
 
