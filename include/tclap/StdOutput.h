@@ -164,7 +164,17 @@ inline void StdOutput::failure( CmdLineInterface& _cmd,
 	throw ExitException(1);
 }
 
-inline void 
+// TODO: Remove this
+inline void removeChar( std::string& s, char r)
+{
+	size_t p;
+	while ( (p = s.find_first_of(r)) != std::string::npos )
+	{
+		s.erase(p,1);
+	}
+}
+
+inline void
 StdOutput::_shortUsage( CmdLineInterface& _cmd, 
 						std::ostream& os ) const
 {
@@ -189,11 +199,14 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
 
 	// then the ArgGroups
 	for (std::list<ArgGroup*>::iterator sit = argSets.begin(); sit != argSets.end(); ++sit) {
-		s += " {";
+		s += (*sit)->isRequired() ? " {" : " [";
 		for (ArgGroup::iterator it = (*sit)->begin(); it != (*sit)->end(); ++it) {
-			s += (*it)->shortID() + "|";
+			std::string id = (*it)->shortID();
+			removeChar(id,'[');
+			removeChar(id,']');
+			s += id + "|";
 		}
-		s[s.length()-1] = '}';
+		s[s.length()-1] = (*sit)->isRequired() ? '}' : ']';
 	}
 
 	// then the rest
