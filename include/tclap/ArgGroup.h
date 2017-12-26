@@ -23,6 +23,8 @@
 #ifndef TCLAP_ARG_GROUP_H
 #define TCLAP_ARG_GROUP_H
 
+#include <tclap/Arg.h>
+
 #include <list>
 
 namespace TCLAP {
@@ -137,15 +139,14 @@ inline bool ArgGroup::validate(const std::vector<std::string>& args) {
 }
 
 inline const std::string ArgGroup::getName() const {
-	std::ostringstream oss;
+	std::string name;
 	std::string sep = "{";
 	for (const_iterator it = begin(); it != end(); ++it) {
-		oss << sep << (*it)->getName();
+		name += sep + (*it)->getName();
 		sep = " | ";
 	}
 
-	oss << '}';
-	return oss.str();
+	return name + '}';
 }
 
 } //namespace TCLAP
