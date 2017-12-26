@@ -34,6 +34,8 @@ namespace TCLAP {
 /**
  * This class handles lists of Arg's that are to be XOR'd on the command
  * line.  This is used by CmdLine and you shouldn't ever use it.
+ *
+ * @deprecated Use ArgGroups instead.
  */
 class XorHandler
 {

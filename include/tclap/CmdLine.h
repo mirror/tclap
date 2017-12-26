@@ -231,6 +231,15 @@ private:
 		 */
 		void add( Arg* a );
 
+		/**
+		 * Adds an argument group to the list of arguments to be parsed.
+		 *
+		 * All arguments in the group are added and the ArgGroup
+		 * object will validate that the input matches its
+		 * constraints.
+		 *
+		 * \param args - Argument group to be added.
+		 */
     	void add(ArgGroup &args);
 
 		/**
@@ -238,6 +247,7 @@ private:
 		 * not need to be called.
 		 * \param a - Argument to be added and xor'd.
 		 * \param b - Argument to be added and xor'd.
+		 * \deprecated Use ArgGroups instead.
 		 */
 		void xorAdd( Arg& a, Arg& b );
 
@@ -245,6 +255,7 @@ private:
 		 * Add a list of Args that will be xor'd.  If this method is used,
 		 * add does not need to be called.
 		 * \param xors - List of Args to be added and xor'd.
+		 * \deprecated Use ArgGroups instead.
 		 */
 		void xorAdd( const std::vector<Arg*>& xors );
 
