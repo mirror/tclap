@@ -27,91 +27,126 @@
 
 namespace TCLAP {
 
+/**
+ * ArgGroup is the base class for implementing groups of arguments
+ * that are mutually exclusive (it replaces the deprecated xor
+ * handler). It is not expected to be used directly, rather one of the
+ * EitherOf or OneOf derived classes are used.
+ */
 class ArgGroup {
 public:
     typedef std::list<Arg*>::iterator iterator;
     typedef std::list<Arg*>::const_iterator const_iterator;
 
-	explicit ArgGroup(bool required) : _required(required) {}
+	/**
+	 * Add an arg to this arg group.
+	 */
+    ArgGroup& add(Arg &arg);
 
-    iterator begin() { return _args.begin(); }
+	/**
+	 * Validates that args match the constraints of the ArgGroup.
+	 *
+	 * Throws an CmdLineParseException if there is an issue (except
+	 * missing required argument, in which case true is returned).
+	 *
+	 * @retval true iff a required argument was missing.
+	 */
+    bool validate(const std::vector<std::string>& args);
+
+	/// Returns true if this argument group is required
+	bool isRequired() const { return _required; }
+
+	/// Returns the argument group's name.
+	const std::string getName() const;
+
+	iterator begin() { return _args.begin(); }
     iterator end() { return _args.end(); }
     const_iterator begin() const { return _args.begin(); }
     const_iterator end() const { return _args.end(); }
 
-    ArgGroup& add(Arg &arg) {
-	for(iterator it = begin(); it != end(); it++) {
-	    if (arg == **it) {
-		throw SpecificationException("Argument with same flag/name already exists!",
-					     arg.longID());
-	    }
-	}
+protected:
+	// No direct instantiation
+	explicit ArgGroup(bool required) : _required(required) {}
 
-	_args.push_back(&arg);
-	return *this;
-    }
-
-    bool validate(const std::vector<std::string>& args) {  // override
-		Arg *arg = NULL;
-		std::string flag;
-
-		for (std::vector<std::string>::const_iterator it = args.begin();
-			 it != args.end(); ++it) {
-			Arg *candidate = find(*it);
-			if (candidate != NULL) {  // Found match
-				if (arg != NULL) {
-					// We found a matching argument, but one was
-					// already found previously.
-					throw CmdLineParseException("Only one is allowed.",
-												flag + " AND " + *it
-												+ " provided.");
-				}
-
-				arg = candidate;
-				flag = *it;
+	// Lookup arg that matches s, if any
+    Arg* find(const std::string &s) const {
+		for (const_iterator it = begin(); it != end(); ++it) {
+			if ((*it)->argMatches(s)) {
+				return *it;
 			}
 		}
 
-		return _required && !arg;
-    }
-
-	bool isRequired() const { return _required; }
-	const std::string getName() const {
-		std::ostringstream oss;
-		std::string sep = "{";
-		for (const_iterator it = begin(); it != end(); ++it) {
-			oss << sep << (*it)->getName();
-			sep = " | ";
-		}
-
-		oss << '}';
-		return oss.str();
-	}
-
-protected:
-    Arg* find(const std::string &s) const {
-	for (const_iterator it = begin(); it != end(); ++it) {
-	    if ((*it)->argMatches(s)) {
-		return *it;
-	    }
-	}
-
-	return NULL;
+		return NULL;
     }
 
 	bool _required;
     std::list<Arg*> _args;
 };
 
+/**
+ * Implements a group of arguments where at most one can be selected.
+ */
 class EitherOf : public ArgGroup {
 public:
 	EitherOf() : ArgGroup(false) {}
 };
 
+/**
+ * Implements a group of arguments where exactly one must be
+ * selected. This corresponds to the deprecated "xoradd".
+ */
 class OneOf : public ArgGroup {
 public:
 	OneOf() : ArgGroup(true) {}
 };
+
+inline ArgGroup& ArgGroup::add(Arg &arg) {
+	for(iterator it = begin(); it != end(); it++) {
+	    if (arg == **it) {
+			throw SpecificationException("Argument with same flag/name already exists!",
+										 arg.longID());
+	    }
+	}
+
+	_args.push_back(&arg);
+	return *this;
+}
+
+inline bool ArgGroup::validate(const std::vector<std::string>& args) {
+	Arg *arg = NULL;
+	std::string flag;
+
+	for (std::vector<std::string>::const_iterator it = args.begin();
+		 it != args.end(); ++it) {
+		Arg *candidate = find(*it);
+		if (candidate != NULL) {  // Found match
+			if (arg != NULL) {
+				// We found a matching argument, but one was
+				// already found previously.
+				throw CmdLineParseException("Only one is allowed.",
+											flag + " AND " + *it
+											+ " provided.");
+			}
+
+			arg = candidate;
+			flag = *it;
+		}
+	}
+
+	return _required && !arg;
+}
+
+inline const std::string ArgGroup::getName() const {
+	std::ostringstream oss;
+	std::string sep = "{";
+	for (const_iterator it = begin(); it != end(); ++it) {
+		oss << sep << (*it)->getName();
+		sep = " | ";
+	}
+
+	oss << '}';
+	return oss.str();
+}
 
 } //namespace TCLAP
 
