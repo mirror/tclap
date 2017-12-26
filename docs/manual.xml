@@ -7,6 +7,7 @@
   -  file:  manual.xml
   - 
   -  Copyright (c) 2003, 2004 Michael E. Smoot .
+  -  Copyright (c) 2017 Google LLC.
   -  All rights reserved.
   - 
   -  See the file COPYING in the top directory of this distribution for
@@ -25,14 +26,23 @@
 <bookinfo>
 <title>Templatized C++ Command Line Parser Manual</title>
     <author>
-		<firstname>Michael</firstname>
-		<surname>Smoot</surname>
-		<othername role='mi'>E</othername>
-	</author>
-	<copyright>
-		<year>2003,2004,2005,2006,2009,2011,2012</year>
-		<holder>Michael E. Smoot</holder>
-	</copyright>
+	<firstname>Michael</firstname>
+	<surname>Smoot</surname>
+	<othername role='mi'>E</othername>
+    </author>
+    <copyright>
+	<year>2003,2004,2005,2006,2009,2011,2012</year>
+	<holder>Michael E. Smoot</holder>
+    </copyright>
+
+    <author>
+	<firstname>Daniel</firstname>
+	<surname>Aarno</surname>
+    </author>
+    <copyright>
+	<year>2017</year>
+	<holder>Google LLC</holder>
+    </copyright>
 </bookinfo>
 
 <chapter id="BASIC_USAGE"> 
@@ -339,7 +349,7 @@ the command line and manages the parsing of the command line. The
 <classname>CmdLine</classname> doesn't parse the command line itself it only
 manages the parsing. The actual parsing of individual arguments occurs within
 the arguments themselves. The <classname>CmdLine</classname> keeps track of
-of the required arguments, <link linkend="XOR">relationships</link> 
+of the required arguments, <link linkend="ARG_GROUP">relationships</link> 
 between arguments, and <link linkend="CHANGE_OUTPUT">output</link> generation.
 </para>
 </sect1>
@@ -592,53 +602,35 @@ standards (as I understand them).
 </para>
 </sect1>
 
-<sect1 id="XOR">
+<sect1 id="ARG_GROUP">
 <title>I want one argument or the other, but not both...</title>
 <para>
 Suppose you have a command that must read input from one of two
 possible locations, either a local file or a URL. The command
 <emphasis>must</emphasis> read something, so <emphasis>one</emphasis> 
-argument is required, but
-not both, yet neither argument is strictly necessary by itself.
-This is called "exclusive or" or "XOR". To accommodate this
-situation, there is now an option to add two or more 
-<classname>Arg</classname>s to
-a <classname>CmdLine</classname> that are exclusively or'd with one another:
-<methodname>xorAdd()</methodname>. This means that exactly one of the 
-<classname>Arg</classname>s must be set and no more.
+argument is required, but not both, yet neither argument is strictly
+necessary by itself.
+
+TCLAP can automatically enforce such constraints on a set of arguments
+using an argument group of type <classname>OneOf</classname>.
 </para>
 
 <para>
-<methodname>xorAdd()</methodname> comes in two flavors, either 
-<methodname>xorAdd(Arg&amp; a, Arg&amp; b)</methodname>
-to add just two <classname>Arg</classname>s to be xor'd and 
-<methodname>xorAdd( vector&lt;Arg*&gt; xorList )</methodname> 
-to add more than two <classname>Arg</classname>s.
-
 <programlisting>
 
+        ValueArg&lt;string&gt;  fileArg("f","file","File name to read",false,"/dev/zero", "filename");
+        ValueArg&lt;string&gt;  urlArg("u","url","URL to load",false, "http://example.com", "URL");
 
-        ValueArg&lt;string&gt;  fileArg("f","file","File name to read",true,"/dev/null", "filename");
-        ValueArg&lt;string&gt;  urlArg("u","url","URL to load",true, "http://example.com", "URL");
-
-        cmd.xorAdd( fileArg, urlArg );
+        OneOf input;
+        input.add(fileArg).add(urlArg);
+        cmd.add(input);
         cmd.parse(argc, argv);
 
 </programlisting>
 
-Once one <classname>Arg</classname> in the xor list is matched on the
-<classname>CmdLine</classname> then the others in the xor list will be 
-marked as set. The question then, is how to determine which of the
-<classname>Arg</classname>s has been set? This is accomplished by calling the
-isSet() method for each <classname>Arg</classname>. If the 
-<classname>Arg</classname> has been
-matched on the command line, the <methodname>isSet()</methodname> will return 
-<constant>TRUE</constant>, whereas if the <classname>Arg</classname> 
-has been set as a result of matching the other <classname>Arg</classname> 
-that was xor'd <methodname>isSet()</methodname> will 
-return <constant>FALSE</constant>.
-(Of course, if the <classname>Arg</classname> was not xor'd and 
-wasn't matched, it will also return <constant>FALSE</constant>.)
+If the <classname>Arg</classname> has been matched on the command
+line, the <methodname>isSet()</methodname> will return
+<constant>TRUE</constant>.
 
 <programlisting>
 
@@ -653,27 +645,20 @@ wasn't matched, it will also return <constant>FALSE</constant>.)
 
 </programlisting>
 
-It is helpful to note that <classname>Arg</classname>s of any type can be xor'd together.
-This means that you can xor a <classname>SwitchArg</classname> with a <classname>ValueArg</classname>.
-This is helpful in situations where one of several options is necessary and one of the options
-requires additional information.
+It is helpful to note that <classname>Arg</classname>s of any type can
+be part of the same argument group This means that you can add a
+<classname>SwitchArg</classname> and a
+<classname>ValueArg</classname>. This is helpful in situations where
+one of several options is necessary and one of the options requires
+additional information.
+</para>
 
-<programlisting>
-
-        SwitchArg  stdinArg("s", "stdin", "Read from STDIN", false);
-        ValueArg&lt;string&gt;  fileArg("f","file","File name to read",true,"/dev/null", "filename");
-        ValueArg&lt;string&gt;  urlArg("u","url","URL to load",true, "http://example.com", "URL");
-
-        vector&lt;Arg*&gt;  xorlist;
-        xorlist.push_back(&amp;stdinArg);
-        xorlist.push_back(&amp;fileArg);
-        xorlist.push_back(&amp;urlArg);
-
-        cmd.xorAdd( xorlist );
-
-</programlisting>
-
-
+<para>
+There is also the class <classname>EitherOf</classname> that works the
+same way, except it does not require any argument to be set. This can
+be useful if there is a natural default. For example, selecting the
+encryption algorithm may default to AES, but there may be flags for
+choosing another algorithm and they are all mutually exclusive.
 </para>
 </sect1>
 
@@ -768,14 +753,12 @@ checks whether the value parsed is greater than 0 (done in the
 <sect1 id="ARG_ADD_CMDLINE">
 <title>I want the Args to add themselves to the CmdLine...</title>
 <para>
-New constructors have been added for each <classname>Arg</classname> 
-that take a <classname>CmdLine</classname> object as an argument. 
-Each <classname>Arg</classname> then
-<methodname>add</methodname>s itself to the <classname>CmdLine</classname> 
-object. There is no difference in how the <classname>Arg</classname> 
-is handled between this method and calling the 
-<methodname>add()</methodname> method directly. At the moment, there is
-no way to do an <methodname>xorAdd()</methodname> from the constructor. Here 
+Each <classname>Arg</classname> has a constructor that takes a
+<classname>CmdLine</classname> object as an argument. Each
+<classname>Arg</classname> then <methodname>add</methodname>s itself
+to the <classname>CmdLine</classname> object. There is no difference
+in how the <classname>Arg</classname> is handled between this method
+and calling the <methodname>add()</methodname> method directly. Here
 is an example:
 
 <programlisting>

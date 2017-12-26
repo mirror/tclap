@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Templatized C++ Command Line Parser Manual</title><link rel="stylesheet" href="style.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.71.1" /></head><body><div class="book" lang="en" xml:lang="en"><div class="titlepage"><div><div><h1 class="title"><a id="id417480"></a>Templatized C++ Command Line Parser Manual</h1></div><div><div class="author"><h3 class="author"><span class="firstname">Michael</span> <span class="othername">E</span> <span class="surname">Smoot</span></h3></div></div><div><p class="copyright">Copyright Â© 2003,2004,2005,2006,2009,2011,2012 Michael E. Smoot</p></div></div><hr /></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="chapter"><a href="#BASIC_USAGE">1. Basic Usage</a></span></dt><dd><dl><dt><span class="sect1"><a href="#OVERVIEW">Overview</a></span></dt><dt><span class="sect1"><a href="#EXAMPLE">Example</a></span></dt><dd><dl><dt><span class="sect2"><a href="#LIBRARY_PROPERTIES">Library Properties</a></span></dt><dt><span class="sect2"><a href="#ARG_PROPERTIES">Common Argument Properties</a></span></dt></dl></dd><dt><span class="sect1"><a href="#COMPILING">Compiling</a></span></dt></dl></dd><dt><span class="chapter"><a href="#FUNDAMENTAL_CLASSES">2. Fundamental Classes</a></span></dt><dd><dl><dt><span class="sect1"><a href="#COMMAND_LINE"><code class="classname">CmdLine</code></a></span></dt><dt><span class="sect1"><a href="#SWITCH_ARG"><code class="classname">SwitchArg</code></a></span></dt><dt><span class="sect1"><a href="#VALUE_ARG"><code class="classname">ValueArg</code></a></span></dt><dt><span class="sect1"><a href="#MULTI_ARG"><code class="classname">MultiArg</code></a></span></dt><dt><span class="sect1"><a href="#MULTI_SWITCH_ARG"><code class="classname">MultiSwitchArg</code></a></span></dt><dt><span class="sect1"><a href="#UNLABELED_VALUE_ARG"><code class="classname">UnlabeledValueArg</code></a></span></dt><dt><span class="sect1"><a href="#UNLABELED_MULTI_ARG"><code class="classname">UnlabeledMultiArg</code></a></span></dt></dl></dd><dt><span class="chapter"><a href="#COMPLICATIONS">3. Complications</a></span></dt><dd><dl><dt><span class="sect1"><a href="#COMBINE_SWITCHES">I want to combine multiple switches into one argument...</a></span></dt><dt><span class="sect1"><a href="#XOR">I want one argument or the other, but not both...</a></span></dt><dt><span class="sect1"><a href="#NO_FLAG">I have more arguments than single flags make sense for...</a></span></dt><dt><span class="sect1"><a href="#CONSTRAINT">I want to constrain the values allowed for a particular 
-argument...</a></span></dt><dt><span class="sect1"><a href="#ARG_ADD_CMDLINE">I want the Args to add themselves to the CmdLine...</a></span></dt><dt><span class="sect1"><a href="#CHANGE_OUTPUT">I want different output than what is provided...</a></span></dt><dt><span class="sect1"><a href="#NO_HELP_VERSION">I don't want the --help and --version switches to be created automatically...</a></span></dt><dt><span class="sect1"><a href="#IGNORE_ARGS">I want to ignore certain arguments...</a></span></dt><dt><span class="sect1"><a href="#IGNORE_UNMATCHED">I want to ignore unmatched arguments...</a></span></dt><dt><span class="sect1"><a href="#READING_HEX_INTEGERS">I want to read hex integers as arguments...</a></span></dt><dt><span class="sect1"><a href="#USING_ARGTRAITS">I want to use different types...</a></span></dt><dt><span class="sect1"><a href="#CHANGING_STARTSTRINGS">I want to use Windows-style flags like "/x" and "/y"...</a></span></dt></dl></dd><dt><span class="chapter"><a href="#NOTES">4. Notes</a></span></dt><dd><dl><dt><span class="sect1"><a href="#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></span></dt><dt><span class="sect1"><a href="#VISITORS">Visitors</a></span></dt><dt><span class="sect1"><a href="#MORE_INFO">More Information</a></span></dt></dl></dd></dl></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="BASIC_USAGE"></a>ChapterÂ 1.Â Basic Usage</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="sect1"><a href="#OVERVIEW">Overview</a></span></dt><dt><span class="sect1"><a href="#EXAMPLE">Example</a></span></dt><dd><dl><dt><span class="sect2"><a href="#LIBRARY_PROPERTIES">Library Properties</a></span></dt><dt><span class="sect2"><a href="#ARG_PROPERTIES">Common Argument Properties</a></span></dt></dl></dd><dt><span class="sect1"><a href="#COMPILING">Compiling</a></span></dt></dl></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="OVERVIEW"></a>Overview</h2></div></div></div><p>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Templatized C++ Command Line Parser Manual</title><link rel="stylesheet" type="text/css" href="style.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="book"><div class="titlepage"><div><div><h1 class="title"><a name="idm487264102848"></a>Templatized C++ Command Line Parser Manual</h1></div><div><div class="author"><h3 class="author"><span class="firstname">Michael</span> <span class="othername">E</span> <span class="surname">Smoot</span></h3></div></div><div><div class="author"><h3 class="author"><span class="firstname">Daniel</span> <span class="surname">Aarno</span></h3></div></div><div><p class="copyright">Copyright © 2003,2004,2005,2006,2009,2011,2012 Michael E. Smoot</p></div><div><p class="copyright">Copyright © 2017 Google LLC</p></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="chapter"><a href="#BASIC_USAGE">1. Basic Usage</a></span></dt><dd><dl><dt><span class="sect1"><a href="#OVERVIEW">Overview</a></span></dt><dt><span class="sect1"><a href="#EXAMPLE">Example</a></span></dt><dd><dl><dt><span class="sect2"><a href="#LIBRARY_PROPERTIES">Library Properties</a></span></dt><dt><span class="sect2"><a href="#ARG_PROPERTIES">Common Argument Properties</a></span></dt></dl></dd><dt><span class="sect1"><a href="#COMPILING">Compiling</a></span></dt></dl></dd><dt><span class="chapter"><a href="#FUNDAMENTAL_CLASSES">2. Fundamental Classes</a></span></dt><dd><dl><dt><span class="sect1"><a href="#COMMAND_LINE"><code class="classname">CmdLine</code></a></span></dt><dt><span class="sect1"><a href="#SWITCH_ARG"><code class="classname">SwitchArg</code></a></span></dt><dt><span class="sect1"><a href="#VALUE_ARG"><code class="classname">ValueArg</code></a></span></dt><dt><span class="sect1"><a href="#MULTI_ARG"><code class="classname">MultiArg</code></a></span></dt><dt><span class="sect1"><a href="#MULTI_SWITCH_ARG"><code class="classname">MultiSwitchArg</code></a></span></dt><dt><span class="sect1"><a href="#UNLABELED_VALUE_ARG"><code class="classname">UnlabeledValueArg</code></a></span></dt><dt><span class="sect1"><a href="#UNLABELED_MULTI_ARG"><code class="classname">UnlabeledMultiArg</code></a></span></dt></dl></dd><dt><span class="chapter"><a href="#COMPLICATIONS">3. Complications</a></span></dt><dd><dl><dt><span class="sect1"><a href="#COMBINE_SWITCHES">I want to combine multiple switches into one argument...</a></span></dt><dt><span class="sect1"><a href="#ARG_GROUP">I want one argument or the other, but not both...</a></span></dt><dt><span class="sect1"><a href="#NO_FLAG">I have more arguments than single flags make sense for...</a></span></dt><dt><span class="sect1"><a href="#CONSTRAINT">I want to constrain the values allowed for a particular 
+argument...</a></span></dt><dt><span class="sect1"><a href="#ARG_ADD_CMDLINE">I want the Args to add themselves to the CmdLine...</a></span></dt><dt><span class="sect1"><a href="#CHANGE_OUTPUT">I want different output than what is provided...</a></span></dt><dt><span class="sect1"><a href="#NO_HELP_VERSION">I don't want the --help and --version switches to be created automatically...</a></span></dt><dt><span class="sect1"><a href="#IGNORE_ARGS">I want to ignore certain arguments...</a></span></dt><dt><span class="sect1"><a href="#IGNORE_UNMATCHED">I want to ignore unmatched arguments...</a></span></dt><dt><span class="sect1"><a href="#READING_HEX_INTEGERS">I want to read hex integers as arguments...</a></span></dt><dt><span class="sect1"><a href="#USING_ARGTRAITS">I want to use different types...</a></span></dt><dt><span class="sect1"><a href="#CHANGING_STARTSTRINGS">I want to use Windows-style flags like "/x" and "/y"...</a></span></dt></dl></dd><dt><span class="chapter"><a href="#NOTES">4. Notes</a></span></dt><dd><dl><dt><span class="sect1"><a href="#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></span></dt><dt><span class="sect1"><a href="#VISITORS">Visitors</a></span></dt><dt><span class="sect1"><a href="#MORE_INFO">More Information</a></span></dt></dl></dd></dl></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="BASIC_USAGE"></a>Chapter 1. Basic Usage</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#OVERVIEW">Overview</a></span></dt><dt><span class="sect1"><a href="#EXAMPLE">Example</a></span></dt><dd><dl><dt><span class="sect2"><a href="#LIBRARY_PROPERTIES">Library Properties</a></span></dt><dt><span class="sect2"><a href="#ARG_PROPERTIES">Common Argument Properties</a></span></dt></dl></dd><dt><span class="sect1"><a href="#COMPILING">Compiling</a></span></dt></dl></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="OVERVIEW"></a>Overview</h2></div></div></div><p>
 <span class="emphasis"><em>TCLAP</em></span> has a few key classes to be aware of. 
 The first is the
 <code class="classname">CmdLine</code> (command line) class. This class parses
@@ -14,15 +12,15 @@ argument classes are: <code class="classname">ValueArg</code>,
 <code class="classname">MultiArg</code> and 
 <code class="classname">UnlabeledMultiArg</code>.
 These classes are templatized, which means they can be defined to parse
-a value of any <a href="#USING_ARGTRAITS" title="I want to use different types..."> type</a>. Once you add the 
+a value of any <a class="link" href="#USING_ARGTRAITS" title="I want to use different types..."> type</a>. Once you add the 
 arguments to the <code class="classname">CmdLine</code> object, it parses the 
 command line 
 and assigns the data it finds to the specific argument objects it
 contains. Your program accesses the values parsed by 
 calls to the <code class="methodname">getValue()</code> methods of the 
 argument objects.
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="EXAMPLE"></a>Example</h2></div></div></div><p>
-Here is a simple <a href="test1.cpp" target="_top"> example</a> ...
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="EXAMPLE"></a>Example</h2></div></div></div><p>
+Here is a simple <a class="ulink" href="test1.cpp" target="_top"> example</a> ...
 
 </p><pre class="programlisting">
 #include &lt;string&gt;
@@ -137,11 +135,11 @@ Where:
    Command description message
 
 </pre><p>
-</p><div class="sect2" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="LIBRARY_PROPERTIES"></a>Library Properties</h3></div></div></div><p>
+</p><div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="LIBRARY_PROPERTIES"></a>Library Properties</h3></div></div></div><p>
 This example shows a number of different properties of the
 library...
-</p><div class="itemizedlist"><ul type="disc"><li>Arguments can appear in any order (...mostly, 
-<a href="#COMPLICATIONS" title="ChapterÂ 3.Â Complications"> more</a> on this later).</li><li>The <em class="parameter"><code>help</code></em>, <em class="parameter"><code>version</code></em> 
+</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">Arguments can appear in any order (...mostly, 
+<a class="link" href="#COMPLICATIONS" title="Chapter 3. Complications"> more</a> on this later).</li><li class="listitem">The <em class="parameter"><code>help</code></em>, <em class="parameter"><code>version</code></em> 
 and <em class="parameter"><code>--</code></em><code class="classname">SwitchArg</code>s
 are specified automatically. Using either the <em class="parameter"><code>-h</code></em> or
 <em class="parameter"><code>--help</code></em> flag will cause the USAGE message to be displayed,
@@ -150,31 +148,31 @@ any version information to
 be displayed, and <em class="parameter"><code>--</code></em> or 
 <em class="parameter"><code>--ignore_rest</code></em> will cause the
 remaining labeled arguments to be ignored. These switches are
-included by default on every command line. You can <a href="#">disable this functionality</a> if desired (although we don't recommend it).
+included by default on every command line. You can disable this functionality if desired (although we don't recommend it).
 How we generate the behavior behind these flags is described 
-<a href="#VISITORS" title="Visitors"> later</a>.
-</li><li>If there is an error parsing the command line (e.g. a required
+<a class="link" href="#VISITORS" title="Visitors"> later</a>.
+</li><li class="listitem">If there is an error parsing the command line (e.g. a required
 argument isn't provided), the program exits and displays a brief
-USAGE and an error message.</li><li>The program name is assumed to always be argv[0], so it isn't
-specified directly.</li><li>A value delimiter character can be specified. This means that if you
+USAGE and an error message.</li><li class="listitem">The program name is assumed to always be argv[0], so it isn't
+specified directly.</li><li class="listitem">A value delimiter character can be specified. This means that if you
 prefer arguments of the style <em class="parameter"><code>-s=asdf</code></em> instead of 
-<em class="parameter"><code>-s asdf</code></em>, you can do so.</li><li><span class="emphasis"><em>Always wrap everything in a try block that catches
+<em class="parameter"><code>-s asdf</code></em>, you can do so.</li><li class="listitem"><span class="emphasis"><em>Always wrap everything in a try block that catches
 ArgExceptions!</em></span> Any problems found in constructing the
 <code class="classname">CmdLine</code>, constructing the <code class="classname">Arg</code>s, 
 or parsing the command line will throw an 
 <code class="classname">ArgException</code>.</li></ul></div><p>
-</p></div><div class="sect2" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="ARG_PROPERTIES"></a>Common Argument Properties</h3></div></div></div><p>
+</p></div><div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="ARG_PROPERTIES"></a>Common Argument Properties</h3></div></div></div><p>
 Arguments, whatever their type, have a few common properties.
 These properties are set in the constructors of the arguments.
-</p><div class="itemizedlist"><ul type="disc"><li>First is the flag or the character preceded by a dash(-) that
-signals the beginning of the argument on the command line.</li><li>Arguments also have names, which can also be used
+</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">First is the flag or the character preceded by a dash(-) that
+signals the beginning of the argument on the command line.</li><li class="listitem">Arguments also have names, which can also be used
 as an alternative flag on the command line, this time preceded by two dashes
-(--) [like the familiar <code class="function">getopt_long()</code>].</li><li>Next is the description of the argument. This is a short
+(--) [like the familiar <code class="function">getopt_long()</code>].</li><li class="listitem">Next is the description of the argument. This is a short
 description of the argument displayed in the help/usage message
-when needed.</li><li>The following parameters in the constructors vary depending on
+when needed.</li><li class="listitem">The following parameters in the constructors vary depending on
 the type of argument. Some possible values include:
-<div class="itemizedlist"><ul type="circle"><li>A boolean value indicating whether the Arg is required or not.  </li><li>A default value.</li><li>A <a href="#DESCRIPTION_EXCEPTIONS" title="Type Descriptions">description</a> of the type of value expected.</li><li>A <a href="#CONSTRAINT" title="I want to constrain the values allowed for a particular argument...">constraint</a> on the value expected.</li><li>The CmdLine instance that the Arg should be added to.</li><li>A <a href="#VISITORS" title="Visitors">Visitor</a>.</li></ul></div></li><li>See the <a href="html/index.html" target="_top">API Documentation</a> for more detail.</li></ul></div><p>
-</p></div></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="COMPILING"></a>Compiling</h2></div></div></div><p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">A boolean value indicating whether the Arg is required or not.  </li><li class="listitem">A default value.</li><li class="listitem">A <a class="link" href="#DESCRIPTION_EXCEPTIONS" title="Type Descriptions">description</a> of the type of value expected.</li><li class="listitem">A <a class="link" href="#CONSTRAINT" title="I want to constrain the values allowed for a particular argument...">constraint</a> on the value expected.</li><li class="listitem">The CmdLine instance that the Arg should be added to.</li><li class="listitem">A <a class="link" href="#VISITORS" title="Visitors">Visitor</a>.</li></ul></div></li><li class="listitem">See the <a class="ulink" href="html/index.html" target="_top">API Documentation</a> for more detail.</li></ul></div><p>
+</p></div></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="COMPILING"></a>Compiling</h2></div></div></div><p>
 <span class="emphasis"><em>TCLAP</em></span> is implemented entirely in header files 
 which means you only need to include CmdLine.h to use the library.
 </p><pre class="programlisting">
@@ -204,7 +202,7 @@ to work on Windows, Sun and Alpha platforms. We've made every
 effort to keep the library compliant with the ANSI C++ standard so
 if your compiler meets the standard, then this library should work
 for you. Please let us know if this is not the case! 
-</p><div class="sect2" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="WINDOWS_NOTE"></a>Windows Note</h3></div></div></div><p>
+</p><div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="WINDOWS_NOTE"></a>Windows Note</h3></div></div></div><p>
 As we understand things, Visual C++ does not have the file 
 <code class="filename">config.h</code> which is used to make platform
 specific definitions.  In this situation, we assume that you
@@ -217,7 +215,7 @@ then simply tell your compiler to define the variable
 <span class="emphasis"><em>should</em></span> work.  We think.  Alternatively, just edit
 the files <code class="filename">ValueArg.h</code> and <code class="filename">MultiArg.h</code>.
 </p></div><p>
-</p><div class="sect2" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="RANDOM_NOTE"></a>Random Note</h3></div></div></div><p>
+</p><div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="RANDOM_NOTE"></a>Random Note</h3></div></div></div><p>
 If your compiler doesn't support the <code class="methodname">using</code> syntax used
 in <code class="classname">UnlabeledValueArg</code> and 
 <code class="classname">UnlabeledMultiArg</code> to support two stage name lookup, 
@@ -228,26 +226,26 @@ the <code class="methodname">this</code> pointer syntax: e.g.
 of just <code class="methodname">_ignorable</code> (do this for each variable 
 or method referenced by <code class="methodname">using</code>).
 </p></div><p>
-</p></div></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="FUNDAMENTAL_CLASSES"></a>ChapterÂ 2.Â Fundamental Classes</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="sect1"><a href="#COMMAND_LINE"><code class="classname">CmdLine</code></a></span></dt><dt><span class="sect1"><a href="#SWITCH_ARG"><code class="classname">SwitchArg</code></a></span></dt><dt><span class="sect1"><a href="#VALUE_ARG"><code class="classname">ValueArg</code></a></span></dt><dt><span class="sect1"><a href="#MULTI_ARG"><code class="classname">MultiArg</code></a></span></dt><dt><span class="sect1"><a href="#MULTI_SWITCH_ARG"><code class="classname">MultiSwitchArg</code></a></span></dt><dt><span class="sect1"><a href="#UNLABELED_VALUE_ARG"><code class="classname">UnlabeledValueArg</code></a></span></dt><dt><span class="sect1"><a href="#UNLABELED_MULTI_ARG"><code class="classname">UnlabeledMultiArg</code></a></span></dt></dl></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="COMMAND_LINE"></a><code class="classname">CmdLine</code></h2></div></div></div><p>
+</p></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="FUNDAMENTAL_CLASSES"></a>Chapter 2. Fundamental Classes</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#COMMAND_LINE"><code class="classname">CmdLine</code></a></span></dt><dt><span class="sect1"><a href="#SWITCH_ARG"><code class="classname">SwitchArg</code></a></span></dt><dt><span class="sect1"><a href="#VALUE_ARG"><code class="classname">ValueArg</code></a></span></dt><dt><span class="sect1"><a href="#MULTI_ARG"><code class="classname">MultiArg</code></a></span></dt><dt><span class="sect1"><a href="#MULTI_SWITCH_ARG"><code class="classname">MultiSwitchArg</code></a></span></dt><dt><span class="sect1"><a href="#UNLABELED_VALUE_ARG"><code class="classname">UnlabeledValueArg</code></a></span></dt><dt><span class="sect1"><a href="#UNLABELED_MULTI_ARG"><code class="classname">UnlabeledMultiArg</code></a></span></dt></dl></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="COMMAND_LINE"></a><code class="classname">CmdLine</code></h2></div></div></div><p>
 The <code class="classname">CmdLine</code> class contains the arguments that define
 the command line and manages the parsing of the command line. The 
 <code class="classname">CmdLine</code> doesn't parse the command line itself it only
 manages the parsing. The actual parsing of individual arguments occurs within
 the arguments themselves. The <code class="classname">CmdLine</code> keeps track of
-of the required arguments, <a href="#XOR" title="I want one argument or the other, but not both...">relationships</a> 
-between arguments, and <a href="#CHANGE_OUTPUT" title="I want different output than what is provided...">output</a> generation.
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="SWITCH_ARG"></a><code class="classname">SwitchArg</code></h2></div></div></div><p><code class="classname">SwitchArg</code>s are what the name implies: 
+of the required arguments, <a class="link" href="#ARG_GROUP" title="I want one argument or the other, but not both...">relationships</a> 
+between arguments, and <a class="link" href="#CHANGE_OUTPUT" title="I want different output than what is provided...">output</a> generation.
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="SWITCH_ARG"></a><code class="classname">SwitchArg</code></h2></div></div></div><p><code class="classname">SwitchArg</code>s are what the name implies: 
 simple, on/off, boolean switches. Use <code class="classname">SwitchArg</code>s 
 anytime you want to turn
 some sort of system property on or off. <code class="classname">SwitchArg</code>s 
 don't parse a value. They return <code class="constant">TRUE</code> or 
 <code class="constant">FALSE</code>, depending on whether the switch has been found 
-on the command line and what the default value was defined as.</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="VALUE_ARG"></a><code class="classname">ValueArg</code></h2></div></div></div><p><code class="classname">ValueArg</code>s are arguments that read a 
+on the command line and what the default value was defined as.</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="VALUE_ARG"></a><code class="classname">ValueArg</code></h2></div></div></div><p><code class="classname">ValueArg</code>s are arguments that read a 
 value of some type
 from the command line. Any time you need a file name, a number,
 etc. use a <code class="classname">ValueArg</code> or one of its variants. 
 All <code class="classname">ValueArg</code>s are 
-<a href="#USING_ARGTRAITS" title="I want to use different types..."> templatized</a> and will attempt to parse
+<a class="link" href="#USING_ARGTRAITS" title="I want to use different types..."> templatized</a> and will attempt to parse
 the string its flag matches on the command line as the type it is
 specified as. <code class="classname">ValueArg&lt;int&gt;</code> 
 will attempt to parse an
@@ -256,7 +254,7 @@ parse a float, etc. If <code class="methodname">operator&gt;&gt;</code>
 for the specified type doesn't
 recognize the string on the command line as its defined type, then
 an exception will be thrown.
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="MULTI_ARG"></a><code class="classname">MultiArg</code></h2></div></div></div><p>
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="MULTI_ARG"></a><code class="classname">MultiArg</code></h2></div></div></div><p>
 A <code class="classname">MultiArg</code> is a <code class="classname">ValueArg</code> that
 can be specified more than once on a command line and instead of returning
 a single value, returns a <code class="classname">vector</code> of values.
@@ -285,8 +283,8 @@ a <code class="classname">ValueArg</code>:
 </pre><p>
 Note that <code class="classname">MultiArg</code>s can be added to the 
 <code class="classname">CmdLine</code> in any order (unlike 
-<a href="#UNLABELED_MULTI_ARG" title="UnlabeledMultiArg"> UnlabeledMultiArg</a>). 
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="MULTI_SWITCH_ARG"></a><code class="classname">MultiSwitchArg</code></h2></div></div></div><p>
+<a class="link" href="#UNLABELED_MULTI_ARG" title="UnlabeledMultiArg"> UnlabeledMultiArg</a>). 
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="MULTI_SWITCH_ARG"></a><code class="classname">MultiSwitchArg</code></h2></div></div></div><p>
 A <code class="classname">MultiSwitchArg</code> is a <code class="classname">SwitchArg</code> 
 that can be specified more than once on a command line.  
 This can be useful
@@ -307,7 +305,7 @@ Alternatively, you can specify your own initial value:
 	MultiSwitchArg quiet("q","quiet","Reduce the volume of output",5);
 	cmd.add( quiet );
 </pre><p>
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="UNLABELED_VALUE_ARG"></a><code class="classname">UnlabeledValueArg</code></h2></div></div></div><p>
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="UNLABELED_VALUE_ARG"></a><code class="classname">UnlabeledValueArg</code></h2></div></div></div><p>
 An <code class="classname">UnlabeledValueArg</code> is a <code class="classname">ValueArg</code> that is not identified by a flag on the command line.  Instead 
 <code class="classname">UnlabeledValueArg</code>s are identified by their position in
 the argv array.
@@ -316,7 +314,7 @@ To this point all of our arguments have had labels (flags)
 identifying them on the command line, but there are some
 situations where flags are burdensome and not worth the effort. One
 example might be if you want to implement a magical command we'll
-call <span><strong class="command">copy</strong></span>. All <span><strong class="command">copy</strong></span> does is 
+call <span class="command"><strong>copy</strong></span>. All <span class="command"><strong>copy</strong></span> does is 
 copy the file specified
 in the first argument to the file specified in the second argument.
 We can do this using <code class="classname">UnlabeledValueArg</code>s which are pretty
@@ -348,7 +346,7 @@ args (SwitchArgs and ValueArgs) in between
 or in the declaration), but the <code class="classname">UnlabeledValueArgs</code> 
 will still be parsed in the order they are added. Just remember that order is
 important for unlabeled arguments. 
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="UNLABELED_MULTI_ARG"></a><code class="classname">UnlabeledMultiArg</code></h2></div></div></div><p>
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="UNLABELED_MULTI_ARG"></a><code class="classname">UnlabeledMultiArg</code></h2></div></div></div><p>
 An <code class="classname">UnlabeledMultiArg</code> is an <code class="classname">UnlabeledValueArg</code> that allows more than one value to be specified.  Only one
 <code class="classname">UnlabeledMultiArg</code> can be specified per command line.
 The <code class="classname">UnlabeledMultiArg</code> simply reads the remaining
@@ -356,7 +354,7 @@ values from argv up until -- or the end of the array is reached.
 </p><p>
 Say you want a strange command
 that searches each file specified for a given string (let's call it
-<span><strong class="command">grep</strong></span>), but you don't want to have to type in all of the file
+<span class="command"><strong>grep</strong></span>), but you don't want to have to type in all of the file
 names or write a script to do it for you. Say,
 
 </p><pre class="programlisting">
@@ -364,7 +362,7 @@ names or write a script to do it for you. Say,
 </pre><p>
 
 First remember that the <span class="emphasis"><em>*</em></span> is handled by the shell and
-expanded accordingly, so what the program <span><strong class="command">grep</strong></span> sees is
+expanded accordingly, so what the program <span class="command"><strong>grep</strong></span> sees is
 really something like:
 
 </p><pre class="programlisting">
@@ -413,11 +411,11 @@ be multiple args of multiple types (stings, ints, floats, etc.)
 then just declare the <code class="classname">UnlabeledMultiArg</code> as type
 <code class="classname">string</code> and parse the different values yourself or use
 several <code class="classname">UnlabeledValueArg</code>s. 
-</p></div></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="COMPLICATIONS"></a>ChapterÂ 3.Â Complications</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="sect1"><a href="#COMBINE_SWITCHES">I want to combine multiple switches into one argument...</a></span></dt><dt><span class="sect1"><a href="#XOR">I want one argument or the other, but not both...</a></span></dt><dt><span class="sect1"><a href="#NO_FLAG">I have more arguments than single flags make sense for...</a></span></dt><dt><span class="sect1"><a href="#CONSTRAINT">I want to constrain the values allowed for a particular 
+</p></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="COMPLICATIONS"></a>Chapter 3. Complications</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#COMBINE_SWITCHES">I want to combine multiple switches into one argument...</a></span></dt><dt><span class="sect1"><a href="#ARG_GROUP">I want one argument or the other, but not both...</a></span></dt><dt><span class="sect1"><a href="#NO_FLAG">I have more arguments than single flags make sense for...</a></span></dt><dt><span class="sect1"><a href="#CONSTRAINT">I want to constrain the values allowed for a particular 
 argument...</a></span></dt><dt><span class="sect1"><a href="#ARG_ADD_CMDLINE">I want the Args to add themselves to the CmdLine...</a></span></dt><dt><span class="sect1"><a href="#CHANGE_OUTPUT">I want different output than what is provided...</a></span></dt><dt><span class="sect1"><a href="#NO_HELP_VERSION">I don't want the --help and --version switches to be created automatically...</a></span></dt><dt><span class="sect1"><a href="#IGNORE_ARGS">I want to ignore certain arguments...</a></span></dt><dt><span class="sect1"><a href="#IGNORE_UNMATCHED">I want to ignore unmatched arguments...</a></span></dt><dt><span class="sect1"><a href="#READING_HEX_INTEGERS">I want to read hex integers as arguments...</a></span></dt><dt><span class="sect1"><a href="#USING_ARGTRAITS">I want to use different types...</a></span></dt><dt><span class="sect1"><a href="#CHANGING_STARTSTRINGS">I want to use Windows-style flags like "/x" and "/y"...</a></span></dt></dl></div><p>
 Naturally, what we have seen to this point doesn't satisfy all of
 our needs. 
-</p><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="COMBINE_SWITCHES"></a>I want to combine multiple switches into one argument...</h2></div></div></div><p>
+</p><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="COMBINE_SWITCHES"></a>I want to combine multiple switches into one argument...</h2></div></div></div><p>
 Multiple <code class="classname">SwitchArg</code>s can be combined into a 
 single argument on the command line. If you have switches -a, -b and -c 
 it is valid to do either:
@@ -440,49 +438,31 @@ it is valid to do either:
 
 This is to make this library more in line with the POSIX and GNU
 standards (as I understand them). 
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="XOR"></a>I want one argument or the other, but not both...</h2></div></div></div><p>
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="ARG_GROUP"></a>I want one argument or the other, but not both...</h2></div></div></div><p>
 Suppose you have a command that must read input from one of two
 possible locations, either a local file or a URL. The command
 <span class="emphasis"><em>must</em></span> read something, so <span class="emphasis"><em>one</em></span> 
-argument is required, but
-not both, yet neither argument is strictly necessary by itself.
-This is called "exclusive or" or "XOR". To accommodate this
-situation, there is now an option to add two or more 
-<code class="classname">Arg</code>s to
-a <code class="classname">CmdLine</code> that are exclusively or'd with one another:
-<code class="methodname">xorAdd()</code>. This means that exactly one of the 
-<code class="classname">Arg</code>s must be set and no more.
-</p><p>
-<code class="methodname">xorAdd()</code> comes in two flavors, either 
-<code class="methodname">xorAdd(Arg&amp; a, Arg&amp; b)</code>
-to add just two <code class="classname">Arg</code>s to be xor'd and 
-<code class="methodname">xorAdd( vector&lt;Arg*&gt; xorList )</code> 
-to add more than two <code class="classname">Arg</code>s.
+argument is required, but not both, yet neither argument is strictly
+necessary by itself.
 
+TCLAP can automatically enforce such constraints on a set of arguments
+using an argument group of type <code class="classname">OneOf</code>.
+</p><p>
 </p><pre class="programlisting">
 
+        ValueArg&lt;string&gt;  fileArg("f","file","File name to read",false,"/dev/zero", "filename");
+        ValueArg&lt;string&gt;  urlArg("u","url","URL to load",false, "http://example.com", "URL");
 
-        ValueArg&lt;string&gt;  fileArg("f","file","File name to read",true,"/dev/null", "filename");
-        ValueArg&lt;string&gt;  urlArg("u","url","URL to load",true, "http://example.com", "URL");
-
-        cmd.xorAdd( fileArg, urlArg );
+        OneOf input;
+        input.add(fileArg).add(urlArg);
+        cmd.add(input);
         cmd.parse(argc, argv);
 
 </pre><p>
 
-Once one <code class="classname">Arg</code> in the xor list is matched on the
-<code class="classname">CmdLine</code> then the others in the xor list will be 
-marked as set. The question then, is how to determine which of the
-<code class="classname">Arg</code>s has been set? This is accomplished by calling the
-isSet() method for each <code class="classname">Arg</code>. If the 
-<code class="classname">Arg</code> has been
-matched on the command line, the <code class="methodname">isSet()</code> will return 
-<code class="constant">TRUE</code>, whereas if the <code class="classname">Arg</code> 
-has been set as a result of matching the other <code class="classname">Arg</code> 
-that was xor'd <code class="methodname">isSet()</code> will 
-return <code class="constant">FALSE</code>.
-(Of course, if the <code class="classname">Arg</code> was not xor'd and 
-wasn't matched, it will also return <code class="constant">FALSE</code>.)
+If the <code class="classname">Arg</code> has been matched on the command
+line, the <code class="methodname">isSet()</code> will return
+<code class="constant">TRUE</code>.
 
 </p><pre class="programlisting">
 
@@ -497,28 +477,19 @@ wasn't matched, it will also return <code class="constant">FALSE</code>.)
 
 </pre><p>
 
-It is helpful to note that <code class="classname">Arg</code>s of any type can be xor'd together.
-This means that you can xor a <code class="classname">SwitchArg</code> with a <code class="classname">ValueArg</code>.
-This is helpful in situations where one of several options is necessary and one of the options
-requires additional information.
-
-</p><pre class="programlisting">
-
-        SwitchArg  stdinArg("s", "stdin", "Read from STDIN", false);
-        ValueArg&lt;string&gt;  fileArg("f","file","File name to read",true,"/dev/null", "filename");
-        ValueArg&lt;string&gt;  urlArg("u","url","URL to load",true, "http://example.com", "URL");
-
-        vector&lt;Arg*&gt;  xorlist;
-        xorlist.push_back(&amp;stdinArg);
-        xorlist.push_back(&amp;fileArg);
-        xorlist.push_back(&amp;urlArg);
-
-        cmd.xorAdd( xorlist );
-
-</pre><p>
-
-
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="NO_FLAG"></a>I have more arguments than single flags make sense for...</h2></div></div></div><p>
+It is helpful to note that <code class="classname">Arg</code>s of any type can
+be part of the same argument group This means that you can add a
+<code class="classname">SwitchArg</code> and a
+<code class="classname">ValueArg</code>. This is helpful in situations where
+one of several options is necessary and one of the options requires
+additional information.
+</p><p>
+There is also the class <code class="classname">EitherOf</code> that works the
+same way, except it does not require any argument to be set. This can
+be useful if there is a natural default. For example, selecting the
+encryption algorithm may default to AES, but there may be flags for
+choosing another algorithm and they are all mutually exclusive.
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="NO_FLAG"></a>I have more arguments than single flags make sense for...</h2></div></div></div><p>
 Some commands have so many options that single flags no longer map
 sensibly to the available options. In this case, it is desirable to
 specify <code class="classname">Arg</code>s using only long options. This one is easy to
@@ -534,7 +505,7 @@ option on the command line. The help output is updated accordingly.
         SwitchArg  caseSwitch("","upperCase","Print in upper case",false);
 
 </pre><p>
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="CONSTRAINT"></a>I want to constrain the values allowed for a particular 
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="CONSTRAINT"></a>I want to constrain the values allowed for a particular 
 argument...</h2></div></div></div><p>
 <span class="emphasis"><em>Interface Change!!!</em></span> Sorry folks, but we've changed
 the interface since version 1.0.X for constraining <code class="classname">Arg</code>s.
@@ -587,15 +558,13 @@ implements the <code class="classname">Constraint&lt;int&gt;</code> interface an
 checks whether the value parsed is greater than 0 (done in the
 <code class="methodname">check()</code> method) and create your 
 <code class="classname">Arg</code> with your new <code class="classname">Constraint</code>. 
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="ARG_ADD_CMDLINE"></a>I want the Args to add themselves to the CmdLine...</h2></div></div></div><p>
-New constructors have been added for each <code class="classname">Arg</code> 
-that take a <code class="classname">CmdLine</code> object as an argument. 
-Each <code class="classname">Arg</code> then
-<code class="methodname">add</code>s itself to the <code class="classname">CmdLine</code> 
-object. There is no difference in how the <code class="classname">Arg</code> 
-is handled between this method and calling the 
-<code class="methodname">add()</code> method directly. At the moment, there is
-no way to do an <code class="methodname">xorAdd()</code> from the constructor. Here 
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="ARG_ADD_CMDLINE"></a>I want the Args to add themselves to the CmdLine...</h2></div></div></div><p>
+Each <code class="classname">Arg</code> has a constructor that takes a
+<code class="classname">CmdLine</code> object as an argument. Each
+<code class="classname">Arg</code> then <code class="methodname">add</code>s itself
+to the <code class="classname">CmdLine</code> object. There is no difference
+in how the <code class="classname">Arg</code> is handled between this method
+and calling the <code class="methodname">add()</code> method directly. Here
 is an example:
 
 </p><pre class="programlisting">
@@ -618,7 +587,7 @@ is an example:
         cmd.parse(argc,argv);
 
 </pre><p>
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="CHANGE_OUTPUT"></a>I want different output than what is provided...</h2></div></div></div><p>
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="CHANGE_OUTPUT"></a>I want different output than what is provided...</h2></div></div></div><p>
 It is straightforward to change the output generated by 
 <span class="emphasis"><em>TCLAP</em></span>.  Either subclass the 
 <code class="classname">StdOutput</code> class and re-implement the methods you choose,
@@ -671,7 +640,7 @@ could lead to a (very small) memory leak if you don't take care of the object
 yourself.  Also note that the <code class="methodname">failure</code> method is 
 now responsible for exiting the application (assuming that is the desired
 behavior).
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="NO_HELP_VERSION"></a>I don't want the --help and --version switches to be created automatically...</h2></div></div></div><p>
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="NO_HELP_VERSION"></a>I don't want the --help and --version switches to be created automatically...</h2></div></div></div><p>
 Help and version information is useful for nearly all command line applications
 and as such we generate flags that provide those options automatically.  
 However, there are situations when these flags are undesirable. For these
@@ -681,7 +650,7 @@ false will disable automatic help and version generation.
 </p><pre class="programlisting">
 		CmdLine cmd("this is a message", ' ', "0.99", false );
 </pre><p>
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="IGNORE_ARGS"></a>I want to ignore certain arguments...</h2></div></div></div><p>
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="IGNORE_ARGS"></a>I want to ignore certain arguments...</h2></div></div></div><p>
 The <em class="parameter"><code>--</code></em> flag is automatically included in the 
 <code class="classname">CmdLine</code>.
 As (almost) per POSIX and GNU standards, any argument specified
@@ -702,8 +671,8 @@ Of course, this isn't how POSIX/GNU handle things, they explicitly
 ignore arguments after the <em class="parameter"><code>--</code></em>. To accommodate this, 
 we can make both <code class="classname">UnlabeledValueArg</code>s and 
 <code class="classname">UnlabeledMultiArg</code>s ignoreable in their constructors. 
-See the <a href="html/index.html" target="_top"> API Documentation</a> for details. 
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="IGNORE_UNMATCHED"></a>I want to ignore unmatched arguments...</h2></div></div></div><p>
+See the <a class="ulink" href="html/index.html" target="_top"> API Documentation</a> for details. 
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="IGNORE_UNMATCHED"></a>I want to ignore unmatched arguments...</h2></div></div></div><p>
 By default, if <span class="emphasis"><em>TCLAP</em></span> sees an argument that doesn't 
 match a specified <code class="classname">Arg</code>, it will produce an exception.  
 This strict handling provides some assurance that all input to a program
@@ -754,7 +723,7 @@ parser.
 is set to true and an <code class="classname">UnlabeledMultiArg</code> is added to
 the command line, then the <code class="classname">UnlabeledMultiArg</code> will
 "win" and all extra arguments will be added to it rather than be ignored.
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="READING_HEX_INTEGERS"></a>I want to read hex integers as arguments...</h2></div></div></div><p>
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="READING_HEX_INTEGERS"></a>I want to read hex integers as arguments...</h2></div></div></div><p>
 Sometimes it's desirable to read integers formatted in decimal, hexadecimal, 
 and octal format. This is now possible by #defining the <em class="parameter"><code>TCLAP_SETBASE_ZERO</code></em>
 directive.  Simply define this directive in your code and integer arguments will be parsed
@@ -800,7 +769,7 @@ The reason that this behavior is not the default behavior for <span class="empha
 <code class="methodname">setbase()</code> is meant to be used.  So while we're making this functionality
 available, we're not turning it on by default for fear of bad things happening in different compilers.  
 If you know otherwise, please let us know.
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="USING_ARGTRAITS"></a>I want to use different types...</h2></div></div></div><p>
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="USING_ARGTRAITS"></a>I want to use different types...</h2></div></div></div><p>
 The usual C++ types (int, long, bool, etc.) are supported by <span class="emphasis"><em>TCLAP</em></span> out 
 of the box. As
 long as operator&gt;&gt; and operator&lt;&lt; are supported, other types should work fine
@@ -826,7 +795,7 @@ To accomplish this, add the following declaration to your file:
 
 For complete examples see the files <code class="filename">test11.cpp</code> 
 and <code class="filename">test12.cpp</code> in the examples directory.
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="CHANGING_STARTSTRINGS"></a>I want to use Windows-style flags like "/x" and "/y"...</h2></div></div></div><p>
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="CHANGING_STARTSTRINGS"></a>I want to use Windows-style flags like "/x" and "/y"...</h2></div></div></div><p>
 It is traditional in Posix environments that the "-" and "--" strings are used to signify
 the beginning of argument flags and long argument names. However, other environments,
 namely Windows, use different strings.  <span class="emphasis"><em>TCLAP</em></span> allows you to 
@@ -857,14 +826,14 @@ int main(int argc, char** argv)
 </pre><p>
 
 
-</p></div></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="NOTES"></a>ChapterÂ 4.Â Notes</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="sect1"><a href="#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></span></dt><dt><span class="sect1"><a href="#VISITORS">Visitors</a></span></dt><dt><span class="sect1"><a href="#MORE_INFO">More Information</a></span></dt></dl></div><p>
+</p></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a name="NOTES"></a>Chapter 4. Notes</h1></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="#DESCRIPTION_EXCEPTIONS">Type Descriptions</a></span></dt><dt><span class="sect1"><a href="#VISITORS">Visitors</a></span></dt><dt><span class="sect1"><a href="#MORE_INFO">More Information</a></span></dt></dl></div><p>
 Like all good rules, there are many exceptions.... 
-</p><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="DESCRIPTION_EXCEPTIONS"></a>Type Descriptions</h2></div></div></div><p>
+</p><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="DESCRIPTION_EXCEPTIONS"></a>Type Descriptions</h2></div></div></div><p>
 Ideally this library would use RTTI to return a human readable name
 of the type declared for a particular argument. Unfortunately, at
-least for <span><strong class="command">g++</strong></span>, the names returned aren't 
+least for <span class="command"><strong>g++</strong></span>, the names returned aren't 
 particularly useful.
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="VISITORS"></a>Visitors</h2></div></div></div><p>
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="VISITORS"></a>Visitors</h2></div></div></div><p>
 Disclaimer: Almost no one will have any use for 
 <code class="classname">Visitor</code>s, they were
 added to provide special handling for default arguments. Nothing
@@ -933,8 +902,8 @@ Now, any time the <em class="parameter"><code>-a</code></em> or
 the program will print the author name, Homer J. Simpson and exit
 without processing any further (as specified in the 
 <code class="methodname">visit()</code> method). 
-</p></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="MORE_INFO"></a>More Information</h2></div></div></div><p>
-For more information, look at the <a href="html/index.html" target="_top"> 
+</p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="MORE_INFO"></a>More Information</h2></div></div></div><p>
+For more information, look at the <a class="ulink" href="html/index.html" target="_top"> 
 API Documentation</a> and the examples included with the
 distribution.
 </p><p>
