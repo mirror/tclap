@@ -6,7 +6,7 @@ cd $DIR
 
 let "suc = 0"
 let "fail = 0"
-NUMTEST=89
+NUMTEST=99
 
 for (( tno = 1 ; $tno <= $NUMTEST ; tno = $tno + 1 )); do     
     ./testCheck.sh $tno
