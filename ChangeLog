@@ -1,3 +1,11 @@
+2017-12-26 14:30 macbishop
+	* Bugfix release for 1.2 branch (v1.2.2):
+	    - Fixed a few typos
+	    - Fixed ZshCompletionOutput
+	    - Fixed brief output with TCLAP_NAMESTRING defined
+	    - Initialize theDelimiter (supress warning) in DocBookOutput
+	    - Fixed } outside of include guards in ArgTraits.h
+
 2011-04-10 17:08  mes5k
 
 	* include/tclap/Arg.h: patch that allows arg start strings to be
