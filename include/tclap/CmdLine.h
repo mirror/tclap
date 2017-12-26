@@ -40,6 +40,8 @@
 #include <tclap/Constraint.h>
 #include <tclap/ValuesConstraint.h>
 
+#include <tclap/ArgGroup.h>
+
 #include <string>
 #include <vector>
 #include <list>
@@ -70,12 +72,17 @@ template<typename C> void ClearContainer(C &c)
 class CmdLine : public CmdLineInterface
 {
 	protected:
-
 		/**
 		 * The list of arguments that will be tested against the
 		 * command line.
 		 */
 		std::list<Arg*> _argList;
+
+    	/**
+		 * Some args have set constraints on them (i.e., exactly or at
+		 * most one must be specified.
+		 */
+	    std::list<ArgGroup*> _argGroups;
 
 		/**
 		 * The name of the program.  Set to argv[0].
@@ -137,7 +144,7 @@ class CmdLine : public CmdLineInterface
 		/**
 		 * Throws an exception listing the missing args.
 		 */
-		void missingArgsException();
+	    void missingArgsException(const std::list<ArgGroup*> &missing);
 
 		/**
 		 * Checks whether a name/flag string matches entirely matches
@@ -224,6 +231,8 @@ private:
 		 */
 		void add( Arg* a );
 
+    	void add(ArgGroup &args);
+
 		/**
 		 * Add two Args that will be xor'd.  If this method is used, add does
 		 * not need to be called.
@@ -277,6 +286,8 @@ private:
 		 *
 		 */
 		std::list<Arg*>& getArgList();
+
+    	std::list<ArgGroup*>& getArgGroups() { return _argGroups; }
 
 		/**
 		 *
@@ -423,6 +434,14 @@ inline void CmdLine::xorAdd( Arg& a, Arg& b )
 	xorAdd( ors );
 }
 
+inline void CmdLine::add( ArgGroup& args )
+{
+	for (ArgGroup::iterator it = args.begin(); it != args.end(); ++it) {
+		add(*it);
+	}
+	_argGroups.push_back(&args);
+}
+
 inline void CmdLine::add( Arg& a )
 {
 	add( &a );
@@ -464,6 +483,19 @@ inline void CmdLine::parse(std::vector<std::string>& args)
 		args.erase(args.begin());
 
 		int requiredCount = 0;
+		std::list<ArgGroup*> missingArgGroups;
+
+		// Check that the right amount of arguments are provided for
+		// each ArgGroup, and if there are any required arguments
+		// missing, store them for later. Other errors will cause an
+		// exception to be thrown and parse will exit early.
+		for (std::list<ArgGroup*>::iterator it = _argGroups.begin();
+			 it != _argGroups.end(); ++it) {
+			bool missingRequired = (*it)->validate(args);
+			if (missingRequired) {
+				missingArgGroups.push_back(*it);
+			}
+		}
 
 		for (int i = 0; static_cast<unsigned int>(i) < args.size(); i++) 
 		{
@@ -489,8 +521,9 @@ inline void CmdLine::parse(std::vector<std::string>& args)
 				                            args[i]));
 		}
 
-		if ( requiredCount < _numRequired )
-			missingArgsException();
+		if ( requiredCount < _numRequired || !missingArgGroups.empty()) {
+			missingArgsException(missingArgGroups);
+		}
 
 		if ( requiredCount > _numRequired )
 			throw(CmdLineParseException("Too many arguments!"));
@@ -533,7 +566,7 @@ inline bool CmdLine::_emptyCombined(const std::string& s)
 	return true;
 }
 
-inline void CmdLine::missingArgsException()
+inline void CmdLine::missingArgsException(const std::list<ArgGroup*> &missing)
 {
 		int count = 0;
 
@@ -547,6 +580,14 @@ inline void CmdLine::missingArgsException()
 				count++;
 			}
 		}
+
+		for (std::list<ArgGroup*>::const_iterator it = missing.begin();
+			 it != missing.end(); it++) {
+			missingArgList += (*it)->getName();
+			missingArgList += ", ";
+			count++;
+		}
+
 		missingArgList = missingArgList.substr(0,missingArgList.length()-2);
 
 		std::string msg;

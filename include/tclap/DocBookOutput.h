@@ -134,6 +134,16 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 
 		std::cout << "</group>" << std::endl;
 	}
+	/*
+	// ArgSets
+	for (std::list<ArgSet*>::iterator sit = argSets.begin(); sit != argSets.end(); ++sit) {
+		spacePrint(os, (*sit)->getDescription(), 75, 3, 0);
+		for (ArgSet::iterator it = (*sit)->begin(); it != (*sit)->end(); ++it) {
+			spacePrint( os, (*it)->longID(), 75, 6, 3 );
+			spacePrint( os, (*it)->getDescription(), 75, 8, 0 );
+		}
+	}
+	*/
 
 	// rest of args
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)

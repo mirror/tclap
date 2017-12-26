@@ -31,8 +31,9 @@
 
 
 namespace TCLAP {
-     
+
 class Arg;
+class ArgGroup;
 class CmdLineOutput;
 class XorHandler;
 
@@ -115,6 +116,11 @@ class CmdLineInterface
 		 * Returns the argList. 
 		 */
 		virtual std::list<Arg*>& getArgList()=0;
+
+		/**
+		 * Returns the list of ArgGroups.
+		 */
+		virtual std::list<ArgGroup*>& getArgGroups()=0;
 
 		/**
 		 * Returns the XorHandler. 

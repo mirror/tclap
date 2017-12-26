@@ -33,6 +33,7 @@
 #include <tclap/CmdLineOutput.h>
 #include <tclap/XorHandler.h>
 #include <tclap/Arg.h>
+#include <tclap/ArgGroup.h>
 
 namespace TCLAP {
 
@@ -102,6 +103,16 @@ class StdOutput : public CmdLineOutput
 						 int indentSpaces, 
 						 int secondLineOffset ) const;
 
+	    bool isInArgGroup(const Arg *arg, const std::list<ArgGroup*> &argSets) const {
+			for (std::list<ArgGroup*>::const_iterator it = argSets.begin();
+				 it != argSets.end(); ++it) {
+				if (std::find((*it)->begin(), (*it)->end(), arg) != (*it)->end()) {
+					return true;
+				}
+			}
+
+			return false;
+		}
 };
 
 
@@ -161,6 +172,7 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
 	std::string progName = _cmd.getProgramName();
 	XorHandler xorHandler = _cmd.getXorHandler();
 	std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
+	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
 
 	std::string s = progName + " ";
 
@@ -168,16 +180,25 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
 	for ( int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++ )
 		{
 			s += " {";
-			for ( ArgVectorIterator it = xorList[i].begin(); 
+			for ( ArgVectorIterator it = xorList[i].begin();
 				  it != xorList[i].end(); it++ )
 				s += (*it)->shortID() + "|";
 
 			s[s.length()-1] = '}';
 		}
 
+	// then the ArgGroups
+	for (std::list<ArgGroup*>::iterator sit = argSets.begin(); sit != argSets.end(); ++sit) {
+		s += " {";
+		for (ArgGroup::iterator it = (*sit)->begin(); it != (*sit)->end(); ++it) {
+			s += (*it)->shortID() + "|";
+		}
+		s[s.length()-1] = '}';
+	}
+
 	// then the rest
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
-		if ( !xorHandler.contains( (*it) ) )
+		if (!xorHandler.contains((*it)) && !isInArgGroup(*it, argSets))
 			s += " " + (*it)->shortID();
 
 	// if the program name is too long, then adjust the second line offset 
@@ -196,8 +217,9 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 	std::string message = _cmd.getMessage();
 	XorHandler xorHandler = _cmd.getXorHandler();
 	std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
+	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
 
-	// first the xor 
+	// first the xor (deprecated)
 	for ( int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++ )
 		{
 			for ( ArgVectorIterator it = xorList[i].begin(); 
@@ -213,12 +235,22 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 			os << std::endl << std::endl;
 		}
 
+	// then the ArgGroups
+	for (std::list<ArgGroup*>::iterator sit = argSets.begin(); sit != argSets.end(); ++sit) {
+		const char *desc = (*sit)->isRequired() ? "One of:" : "Either of:";
+		spacePrint(os, desc, 75, 3, 0);
+		for (ArgGroup::iterator it = (*sit)->begin(); it != (*sit)->end(); ++it) {
+			spacePrint( os, (*it)->longID(), 75, 6, 3 );
+			spacePrint( os, (*it)->getDescription(), 75, 8, 0 );
+		}
+	}
+
 	// then the rest
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
-		if ( !xorHandler.contains( (*it) ) )
+		if (!xorHandler.contains((*it)) && !isInArgGroup(*it, argSets))
 			{
-				spacePrint( os, (*it)->longID(), 75, 3, 3 ); 
-				spacePrint( os, (*it)->getDescription(), 75, 5, 0 ); 
+				spacePrint( os, (*it)->longID(), 75, 3, 3 );
+				spacePrint( os, (*it)->getDescription(), 75, 5, 0 );
 				os << std::endl;
 			}
 
