@@ -4,6 +4,8 @@
 	    - Fixed ZshCompletionOutput
 	    - Fixed brief output with TCLAP_NAMESTRING defined
 	    - Initialize theDelimiter (supress warning) in DocBookOutput
+	    - Fixed an issue with config.h and compiling on systems
+	      without sstream.h
 	    - Fixed } outside of include guards in ArgTraits.h
 
 2011-04-10 17:08  mes5k
