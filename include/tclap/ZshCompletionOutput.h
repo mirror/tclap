@@ -239,6 +239,7 @@ inline void ZshCompletionOutput::printOption(Arg* a, std::string mutex)
 		std::string arg = a->shortID();
         // Example arg: "[-A <integer>] ..."
         size_t pos = arg.rfind(" ...");
+
         if (pos != std::string::npos) {
             arg.erase(pos);
         }
