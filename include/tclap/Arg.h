@@ -39,16 +39,6 @@
 
 #include <tclap/sstream.h>
 
-#if defined(HAVE_SSTREAM)
-#include <sstream>
-typedef std::istringstream istringstream;
-#elif defined(HAVE_STRSTREAM)
-#include <strstream>
-typedef std::istrstream istringstream;
-#else
-#error "Need a stringstream (sstream or strstream) to compile!"
-#endif
-
 #include <tclap/ArgException.h>
 #include <tclap/Visitor.h>
 #include <tclap/CmdLineInterface.h>
