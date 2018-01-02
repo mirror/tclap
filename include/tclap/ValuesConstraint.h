@@ -93,15 +93,7 @@ ValuesConstraint<T>::ValuesConstraint(std::vector<T>& allowed)
 { 
     for ( unsigned int i = 0; i < _allowed.size(); i++ )
     {
-
-#if defined(HAVE_SSTREAM)
         std::ostringstream os;
-#elif defined(HAVE_STRSTREAM)
-        std::ostrstream os;
-#else
-#error "Need a stringstream (sstream or strstream) to compile!"
-#endif
-
         os << _allowed[i];
 
         std::string temp( os.str() ); 
