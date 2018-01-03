@@ -161,6 +161,7 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
 	std::string progName = _cmd.getProgramName();
 	XorHandler xorHandler = _cmd.getXorHandler();
 	std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
+	xorListFilterVisibleInHelp(xorList);
 
 	std::string s = progName + " ";
 
@@ -177,7 +178,7 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
 
 	// then the rest
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
-		if ( !xorHandler.contains( (*it) ) )
+		if ( !xorHandler.contains(*it) && (*it)->visibleInHelp())
 			s += " " + (*it)->shortID();
 
 	// if the program name is too long, then adjust the second line offset 
@@ -188,7 +189,7 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
 	spacePrint( os, s, 75, 3, secondLineOffset );
 }
 
-inline void 
+inline void
 StdOutput::_longUsage( CmdLineInterface& _cmd, 
 					   std::ostream& os ) const
 {
@@ -196,6 +197,7 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 	std::string message = _cmd.getMessage();
 	XorHandler xorHandler = _cmd.getXorHandler();
 	std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
+	xorListFilterVisibleInHelp(xorList);
 
 	// first the xor 
 	for ( int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++ )
@@ -215,7 +217,7 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 
 	// then the rest
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
-		if ( !xorHandler.contains( (*it) ) )
+		if ( !xorHandler.contains( (*it) ) && (*it)->visibleInHelp() )
 			{
 				spacePrint( os, (*it)->longID(), 75, 3, 3 ); 
 				spacePrint( os, (*it)->getDescription(), 75, 5, 0 ); 

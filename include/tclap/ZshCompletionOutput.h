@@ -123,10 +123,12 @@ inline void ZshCompletionOutput::usage(CmdLineInterface& _cmd )
 
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
 	{
-		if ( (*it)->shortID().at(0) == '<' )
-			printArg((*it));
-		else if ( (*it)->getFlag() != "-" )
-			printOption((*it), getMutexList(_cmd, *it));
+		if ((*it)->visibleInHelp()) {
+			if ( (*it)->shortID().at(0) == '<' )
+				printArg((*it));
+			else if ( (*it)->getFlag() != "-" )
+				printOption((*it), getMutexList(_cmd, *it));
+		}
 	}
 
 	std::cout << std::endl;
@@ -285,7 +287,8 @@ inline std::string ZshCompletionOutput::getMutexList( CmdLineInterface& _cmd, Ar
 {
 	XorHandler xorHandler = _cmd.getXorHandler();
 	std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
-	
+	xorListFilterVisibleInHelp(xorList);
+
 	if (a->getName() == "help" || a->getName() == "version")
 	{
 		return "(-)";
@@ -322,13 +325,13 @@ inline std::string ZshCompletionOutput::getMutexList( CmdLineInterface& _cmd, Ar
 			return list.str();
 		}
 	}
-	
+
 	// wasn't found in xor list
 	if (!a->getFlag().empty()) {
 		list << "(" << a->flagStartChar() << a->getFlag() << ' ' <<
 			a->nameStartString() << a->getName() << ')';
 	}
-	
+
 	return list.str();
 }
 

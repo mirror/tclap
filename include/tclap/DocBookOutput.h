@@ -100,7 +100,9 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 	std::string xversion = _cmd.getVersion();
 	theDelimiter = _cmd.getDelimiter();
 	XorHandler xorHandler = _cmd.getXorHandler();
-	const std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
+	std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
+	xorListFilterVisibleInHelp(xorList);
+
 	basename(progName);
 
 	std::cout << "<?xml version='1.0'?>" << std::endl;
@@ -137,7 +139,7 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 
 	// rest of args
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
-		if ( !xorHandler.contains( (*it) ) )
+		if ( !xorHandler.contains(*it) && (*it)->visibleInHelp())
 			printShortArg((*it));
 
  	std::cout << "</cmdsynopsis>" << std::endl;
@@ -155,8 +157,11 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 
 	std::cout << "<variablelist>" << std::endl;
 	
-	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
-		printLongArg((*it));
+	for (ArgListIterator it = argList.begin(); it != argList.end(); it++) {
+		if ((*it)->visibleInHelp()) {
+			printLongArg((*it));
+		}
+	}
 
 	std::cout << "</variablelist>" << std::endl;
 	std::cout << "</refsect1>" << std::endl;
