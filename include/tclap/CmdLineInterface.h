@@ -1,3 +1,4 @@
+// -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
 
 /****************************************************************************** 
  * 
@@ -29,6 +30,7 @@
 #include <iostream>
 #include <algorithm>
 
+#include <tclap/ArgContainer.h>
 
 namespace TCLAP {
 
@@ -41,7 +43,7 @@ class XorHandler;
  * The base class that manages the command line definition and passes
  * along the parsing to the appropriate Arg classes.
  */
-class CmdLineInterface
+class CmdLineInterface : public ArgContainer
 {
 	public:
 
@@ -50,28 +52,31 @@ class CmdLineInterface
 		 */
 		virtual ~CmdLineInterface() {}
 
-		/**
-		 * Adds an argument to the list of arguments to be parsed.
-		 * \param a - Argument to be added. 
-		 */
-		virtual void add( Arg& a )=0;
+        /**
+         * Adds an argument. Ownership is not transfered.
+         * @param a - Argument to be added.
+         * @retval A reference to this so that add calls can be chained
+         */
+        virtual ArgContainer& add(Arg& a)=0;
 
-                /**
+        /**
+         * Adds an argument. Ownership is not transfered.
+         * @param a - Argument to be added. 
+         * @retval A reference to this so that add calls can be chained
+         */
+        virtual ArgContainer& add(Arg* a)=0;
+    
+        /**
 		 * Adds an argument group to the list of arguments to be parsed.
 		 *
 		 * All arguments in the group are added and the ArgGroup
 		 * object will validate that the input matches its
 		 * constraints.
 		 *
-		 * \param args - Argument group to be added.
+		 * @param args - Argument group to be added.
+         * @retval A reference to this so that add calls can be chained
 		 */
-		virtual void add(ArgGroup &args)=0;
-
-		/**
-		 * An alternative add.  Functionally identical.
-		 * \param a - Argument to be added. 
-		 */
-		virtual void add( Arg* a )=0;
+		virtual ArgContainer &add(ArgGroup &args)=0;
 
 		/**
 		 * Add two Args that will be xor'd.  

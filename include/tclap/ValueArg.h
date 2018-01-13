@@ -143,7 +143,7 @@ public:
             bool req, 
             T value,
             const std::string& typeDesc,
-            CmdLineInterface& parser,
+            ArgContainer& parser,
             Visitor* v = NULL );
  
   /**
@@ -174,7 +174,7 @@ public:
             bool req, 
             T value,
             Constraint<T>* constraint,
-            CmdLineInterface& parser,
+            ArgContainer& parser,
             Visitor* v = NULL );
           
   /**
@@ -280,7 +280,7 @@ ValueArg<T>::ValueArg(const std::string& flag,
                       bool req, 
                       T val,
                       const std::string& typeDesc,
-                      CmdLineInterface& parser,
+                      ArgContainer& parser,
                       Visitor* v)
   : Arg(flag, name, desc, req, true, v),
     _value( val ),
@@ -313,7 +313,7 @@ ValueArg<T>::ValueArg(const std::string& flag,
                       bool req, 
                       T val,
                       Constraint<T>* constraint,
-                      CmdLineInterface& parser,
+                      ArgContainer& parser,
                       Visitor* v)
   : Arg(flag, name, desc, req, true, v),
     _value( val ),

@@ -98,7 +98,7 @@ class UnlabeledMultiArg : public MultiArg<T>
 				           const std::string& desc,
 						   bool req,
 				           const std::string& typeDesc,
-						   CmdLineInterface& parser,
+						   ArgContainer& parser,
 						   bool ignoreable = false,
 				           Visitor* v = NULL );
 						 
@@ -144,7 +144,7 @@ class UnlabeledMultiArg : public MultiArg<T>
 						   const std::string& desc, 
 						   bool req,
 						   Constraint<T>* constraint,
-						   CmdLineInterface& parser,
+						   ArgContainer& parser,
 						   bool ignoreable = false,
 						   Visitor* v = NULL );
 						 
@@ -201,7 +201,7 @@ UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name,
 				                        const std::string& desc, 
 										bool req,
 					                    const std::string& typeDesc,
-										CmdLineInterface& parser,
+										ArgContainer& parser,
 										bool ignoreable,
 					                    Visitor* v)
 : MultiArg<T>("", name, desc,  req, typeDesc, v)
@@ -230,7 +230,7 @@ UnlabeledMultiArg<T>::UnlabeledMultiArg(const std::string& name,
 				                        const std::string& desc, 
 										bool req,
 					                    Constraint<T>* constraint,
-										CmdLineInterface& parser,
+										ArgContainer& parser,
 										bool ignoreable,
 					                    Visitor* v)
 : MultiArg<T>("", name, desc,  req, constraint, v)

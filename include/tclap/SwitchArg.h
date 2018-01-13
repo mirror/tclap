@@ -1,3 +1,5 @@
+// -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
+
 /******************************************************************************
  * 
  *  file:  SwitchArg.h
@@ -87,7 +89,7 @@ public:
   SwitchArg(const std::string& flag, 
 	    const std::string& name, 
 	    const std::string& desc,
-	    CmdLineInterface& parser,
+	    ArgContainer& parser,
 	    bool def = false,
 	    Visitor* v = NULL);
                                   
@@ -151,7 +153,7 @@ inline SwitchArg::SwitchArg(const std::string& flag,
 inline SwitchArg::SwitchArg(const std::string& flag, 
 			    const std::string& name, 
 			    const std::string& desc, 
-			    CmdLineInterface& parser,
+			    ArgContainer& parser,
 			    bool default_val,
 			    Visitor* v )
   : Arg(flag, name, desc, false, false, v),

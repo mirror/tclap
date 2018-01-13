@@ -90,7 +90,7 @@ class MultiSwitchArg : public SwitchArg
 		MultiSwitchArg(const std::string& flag, 
 				const std::string& name,
 				const std::string& desc,
-				CmdLineInterface& parser,
+				ArgContainer& parser,
 				int init = 0,
 				Visitor* v = NULL);
 
@@ -140,7 +140,7 @@ _default( init )
 inline MultiSwitchArg::MultiSwitchArg(const std::string& flag,
 					const std::string& name, 
 					const std::string& desc, 
-					CmdLineInterface& parser,
+					ArgContainer& parser,
 					int init,
 					Visitor* v )
 : SwitchArg(flag, name, desc, false, v),

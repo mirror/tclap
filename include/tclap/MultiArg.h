@@ -122,7 +122,7 @@ public:
                   const std::string& desc,
                   bool req,
                   const std::string& typeDesc,
-                  CmdLineInterface& parser,
+                  ArgContainer& parser,
                   Visitor* v = NULL );
 
 	/**
@@ -168,7 +168,7 @@ public:
                   const std::string& desc,
                   bool req,
                   Constraint<T>* constraint,
-                  CmdLineInterface& parser,
+                  ArgContainer& parser,
                   Visitor* v = NULL );
 		  
 	/**
@@ -252,7 +252,7 @@ MultiArg<T>::MultiArg(const std::string& flag,
                       const std::string& desc,
                       bool req,
                       const std::string& typeDesc,
-                      CmdLineInterface& parser,
+                      ArgContainer& parser,
                       Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
   _values(std::vector<T>()),
@@ -289,7 +289,7 @@ MultiArg<T>::MultiArg(const std::string& flag,
                       const std::string& desc,
                       bool req,
                       Constraint<T>* constraint,
-                      CmdLineInterface& parser,
+                      ArgContainer& parser,
                       Visitor* v)
 : Arg( flag, name, desc, req, true, v ),
   _values(std::vector<T>()),

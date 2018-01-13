@@ -24,6 +24,8 @@
 #define TCLAP_ARG_GROUP_H
 
 #include <tclap/Arg.h>
+#include <tclap/ArgContainer.h>
+#include <tclap/CmdLineInterface.h>
 
 #include <list>
 
@@ -35,28 +37,65 @@ namespace TCLAP {
  * handler). It is not expected to be used directly, rather one of the
  * EitherOf or OneOf derived classes are used.
  */
-class ArgGroup {
+class ArgGroup : public ArgContainer {
 public:
-    typedef std::list<Arg*>::iterator iterator;
-    typedef std::list<Arg*>::const_iterator const_iterator;
+    typedef std::list<Arg*> Container;
+    typedef Container::iterator iterator;
+    typedef Container::const_iterator const_iterator;
 
-	/**
-	 * Add an arg to this arg group.
-	 */
-    ArgGroup& add(Arg &arg);
+    virtual ~ArgGroup() {}
+
+    /// Add an argument to this arg group
+    ArgContainer &add(Arg &arg) { return add(&arg); }
+
+    /// Add an argument to this arg group
+    ArgContainer &add(Arg *arg);
 
 	/**
 	 * Validates that args match the constraints of the ArgGroup.
 	 *
+     * @internal
 	 * Throws an CmdLineParseException if there is an issue (except
 	 * missing required argument, in which case true is returned).
 	 *
 	 * @retval true iff a required argument was missing.
 	 */
-    bool validate(const std::vector<std::string>& args);
+    virtual bool validate(const std::vector<std::string>& args) = 0;
 
-	/// Returns true if this argument group is required
-	bool isRequired() const { return _required; }
+	/**
+     * Returns true if this argument group is required
+     *
+     * @internal
+     */
+	virtual bool isRequired() const = 0;
+
+    /**
+     * Returns true if this argument group is exclusive.
+     *
+     * @internal
+     * Being exclusive means there is a constraint so that some
+     * arguments cannot be selected at the same time.
+     */
+    virtual bool isExclusive() const = 0;
+
+    /**
+     * Used by the parser to connect itself to this arg group.
+     *
+     * @internal
+     * This is needed so that existing and subsequently added args (in
+     * this arg group) are also added to the parser (and checked for
+     * consistency with other args).
+     */
+    void setParser(CmdLineInterface &parser) {
+        if (_parser) {
+            throw SpecificationException("Arg group can have only one parser");
+        }
+
+        _parser = &parser;
+        for (iterator it = begin(); it != end(); ++it) {
+            parser.add(*it);
+        }
+    }
 
 	/// Returns the argument group's name.
 	const std::string getName() const;
@@ -68,7 +107,7 @@ public:
 
 protected:
 	// No direct instantiation
-	explicit ArgGroup(bool required) : _required(required) {}
+	ArgGroup() : _parser(0), _args() {}
 
 	// Lookup arg that matches s, if any
     Arg* find(const std::string &s) const {
@@ -81,40 +120,72 @@ protected:
 		return NULL;
     }
 
-	bool _required;
-    std::list<Arg*> _args;
+private:
+    explicit ArgGroup(const ArgGroup&);
+    ArgGroup& operator=(const ArgGroup&);  // no copy
+
+    CmdLineInterface *_parser;
+    Container _args;
+};
+
+
+/**
+ * Implements common functionality for exclusive argument groups.
+ *
+ * @internal
+ */
+class ExclusiveArgGroup : public ArgGroup {
+public:
+    bool validate(const std::vector<std::string>& args);
+    bool isExclusive() const { return true; }
+
+protected:
+    ExclusiveArgGroup() {}
+    explicit ExclusiveArgGroup(CmdLineInterface &parser) {
+        parser.add(*this);
+    }
 };
 
 /**
  * Implements a group of arguments where at most one can be selected.
  */
-class EitherOf : public ArgGroup {
+class EitherOf : public ExclusiveArgGroup {
 public:
-	EitherOf() : ArgGroup(false) {}
+	EitherOf() {}
+    explicit EitherOf(CmdLineInterface &parser) : ExclusiveArgGroup(parser) {}
+
+    bool isRequired() const { return false; }
 };
 
 /**
  * Implements a group of arguments where exactly one must be
  * selected. This corresponds to the deprecated "xoradd".
  */
-class OneOf : public ArgGroup {
+class OneOf : public ExclusiveArgGroup {
 public:
-	OneOf() : ArgGroup(true) {}
+	OneOf() {}
+    explicit OneOf(CmdLineInterface &parser) : ExclusiveArgGroup(parser) {}
+
+    bool isRequired() const { return true; }
 };
 
-inline ArgGroup& ArgGroup::add(Arg &arg) {
+inline ArgContainer &ArgGroup::add(Arg *arg) {
 	for(iterator it = begin(); it != end(); it++) {
-	    if (arg == **it) {
+	    if (*arg == **it) {
 			throw SpecificationException("Argument with same flag/name already exists!",
-										 arg.longID());
+										 arg->longID());
 	    }
 	}
 
-	_args.push_back(&arg);
+	_args.push_back(arg);
+    if (_parser) {
+        _parser->add(arg);
+    }
+
 	return *this;
 }
 
-inline bool ArgGroup::validate(const std::vector<std::string>& args) {
+inline bool ExclusiveArgGroup::validate(const std::vector<std::string>& args) {
 	Arg *arg = NULL;
 	std::string flag;
 
@@ -135,12 +206,13 @@ inline bool ArgGroup::validate(const std::vector<std::string>& args) {
 		}
 	}
 
-	return _required && !arg;
+	return isRequired() && !arg;
 }
 
 inline const std::string ArgGroup::getName() const {
 	std::string name;
-	std::string sep = "{";
+	std::string sep = "{";  // TODO: this should change for
+                            // non-exclusive arg groups
 	for (const_iterator it = begin(); it != end(); ++it) {
 		name += sep + (*it)->getName();
 		sep = " | ";

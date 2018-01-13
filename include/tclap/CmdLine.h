@@ -6,6 +6,7 @@
  *
  *  Copyright (c) 2003, Michael E. Smoot .
  *  Copyright (c) 2004, Michael E. Smoot, Daniel Aarno.
+ *  Copyright (c) 2018, Google LLC
  *  All rights reserved.
  *
  *  See the file COPYING in the top directory of this distribution for
@@ -221,15 +222,19 @@ private:
 
 		/**
 		 * Adds an argument to the list of arguments to be parsed.
-		 * \param a - Argument to be added.
+         *
+		 * @param a - Argument to be added.
+         * @retval A reference to this so that add calls can be chained
 		 */
-		void add( Arg& a );
+		ArgContainer &add( Arg& a );
 
 		/**
 		 * An alternative add.  Functionally identical.
-		 * \param a - Argument to be added.
+         *
+		 * @param a - Argument to be added.
+         * @retval A reference to this so that add calls can be chained
 		 */
-		void add( Arg* a );
+		ArgContainer &add( Arg* a );
 
 		/**
 		 * Adds an argument group to the list of arguments to be parsed.
@@ -238,9 +243,10 @@ private:
 		 * object will validate that the input matches its
 		 * constraints.
 		 *
-		 * \param args - Argument group to be added.
+		 * @param args - Argument group to be added.
+         * @retval A reference to this so that add calls can be chained
 		 */
-    	void add(ArgGroup &args);
+        ArgContainer &add(ArgGroup &args);
 
 		/**
 		 * Add two Args that will be xor'd.  If this method is used, add does
@@ -359,7 +365,8 @@ inline CmdLine::CmdLine(const std::string& m,
                         const std::string& v,
                         bool help )
     :
-  _argList(std::list<Arg*>()),
+  _argList(),
+  _argGroups(),
   _progName("not_set_yet"),
   _message(m),
   _version(v),
@@ -445,20 +452,22 @@ inline void CmdLine::xorAdd( Arg& a, Arg& b )
 	xorAdd( ors );
 }
 
-inline void CmdLine::add( ArgGroup& args )
+inline ArgContainer &CmdLine::add( ArgGroup& args )
 {
-	for (ArgGroup::iterator it = args.begin(); it != args.end(); ++it) {
-		add(*it);
-	}
-	_argGroups.push_back(&args);
+    args.setParser(*this);
+    if (args.isExclusive()) {
+        _argGroups.push_back(&args);
+    }
+
+    return *this;
 }
 
-inline void CmdLine::add( Arg& a )
+inline ArgContainer &CmdLine::add( Arg& a )
 {
-	add( &a );
+	return add( &a );
 }
 
-inline void CmdLine::add( Arg* a )
+inline ArgContainer &CmdLine::add( Arg* a )
 {
 	for( ArgListIterator it = _argList.begin(); it != _argList.end(); it++ )
 		if ( *a == *(*it) )
@@ -470,6 +479,8 @@ inline void CmdLine::add( Arg* a )
 
 	if ( a->isRequired() )
 		_numRequired++;
+
+    return *this;
 }
 
 
