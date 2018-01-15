@@ -24,6 +24,7 @@
 #ifndef TCLAP_CMDLINE_H
 #define TCLAP_CMDLINE_H
 
+#include <tclap/AliasArg.h>
 #include <tclap/SwitchArg.h>
 #include <tclap/MultiSwitchArg.h>
 #include <tclap/UnlabeledValueArg.h>
