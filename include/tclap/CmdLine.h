@@ -127,6 +127,12 @@ class CmdLine : public CmdLineInterface
 		std::list<Visitor*> _visitorDeleteOnExitList;
 
 		/**
+		 * A list of ArgGroups to be explicitly deleted when the destructor
+		 * is called.
+		 */
+		std::list<ArgGroup*> _argGroupDeleteOnExitList;
+
+		/**
 		 * Object that handles all output for the CmdLine.
 		 */
 		CmdLineOutput* _output;
@@ -158,6 +164,12 @@ class CmdLine : public CmdLineInterface
 		 * Perform a delete ptr; operation on ptr when this object is deleted.
 		 */
 		void deleteOnExit(Visitor* ptr);
+
+        /**
+		 * Perform a delete ptr; operation on ptr when this object is deleted.
+		 */
+		void deleteOnExit(ArgGroup* ptr);
+
 
 private:
 
@@ -361,8 +373,9 @@ inline CmdLine::CmdLine(const std::string& m,
   _version(v),
   _numRequired(0),
   _delimiter(delim),
-  _argDeleteOnExitList(std::list<Arg*>()),
-  _visitorDeleteOnExitList(std::list<Visitor*>()),
+  _argDeleteOnExitList(),
+  _visitorDeleteOnExitList(),
+  _argGroupDeleteOnExitList(),
   _output(0),
   _handleExceptions(true),
   _userSetOutput(false),
@@ -376,6 +389,7 @@ inline CmdLine::~CmdLine()
 {
 	ClearContainer(_argDeleteOnExitList);
 	ClearContainer(_visitorDeleteOnExitList);
+    ClearContainer(_argGroupDeleteOnExitList);
 
 	if ( !_userSetOutput ) {
 		delete _output;
@@ -420,9 +434,15 @@ inline void CmdLine::_constructor()
 	deleteOnExit(v);
 }
 
-inline void CmdLine::xorAdd( const std::vector<Arg*>&  )
+inline void CmdLine::xorAdd( const std::vector<Arg*>& args)
 {
-    // TODO(macbishop): Implement me
+    OneOf *group = new OneOf(*this);
+    deleteOnExit(group);
+
+    for (std::vector<Arg*>::const_iterator it = args.begin();
+         it != args.end(); ++it) {
+        group->add(**it);
+    }
 }
 
 inline void CmdLine::xorAdd( Arg& a, Arg& b )
@@ -612,6 +632,11 @@ inline void CmdLine::deleteOnExit(Arg* ptr)
 inline void CmdLine::deleteOnExit(Visitor* ptr)
 {
 	_visitorDeleteOnExitList.push_back(ptr);
+}
+
+inline void CmdLine::deleteOnExit(ArgGroup* ptr)
+{
+	_argGroupDeleteOnExitList.push_back(ptr);
 }
 
 inline CmdLineOutput* CmdLine::getOutput()

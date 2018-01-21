@@ -193,7 +193,7 @@ inline bool ExclusiveArgGroup::validate(const std::vector<std::string>& args) {
 		 it != args.end(); ++it) {
 		Arg *candidate = find(*it);
 		if (candidate != NULL) {  // Found match
-			if (arg != NULL) {
+			if (arg != NULL && !(*arg == *candidate)) {
 				// We found a matching argument, but one was
 				// already found previously.
 				throw CmdLineParseException("Only one is allowed.",
