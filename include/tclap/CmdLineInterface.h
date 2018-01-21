@@ -37,7 +37,6 @@ namespace TCLAP {
 class Arg;
 class ArgGroup;
 class CmdLineOutput;
-class XorHandler;
 
 /**
  * The base class that manages the command line definition and passes
@@ -139,11 +138,6 @@ class CmdLineInterface : public ArgContainer
 		 * Returns the list of ArgGroups.
 		 */
 		virtual std::list<ArgGroup*>& getArgGroups()=0;
-
-		/**
-		 * Returns the XorHandler. 
-		 */
-		virtual XorHandler& getXorHandler()=0;
 
 		/**
 		 * Returns the delimiter string.

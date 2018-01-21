@@ -31,7 +31,6 @@
 
 #include <tclap/CmdLineInterface.h>
 #include <tclap/CmdLineOutput.h>
-#include <tclap/XorHandler.h>
 #include <tclap/Arg.h>
 
 namespace TCLAP {
@@ -99,9 +98,8 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 	std::string progName = _cmd.getProgramName();
 	std::string xversion = _cmd.getVersion();
 	theDelimiter = _cmd.getDelimiter();
-	XorHandler xorHandler = _cmd.getXorHandler();
-	std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
-	xorListFilterVisibleInHelp(xorList);
+    // TODO(macbishop): What about ArgGroups?
+	// xorListFilterVisibleInHelp(xorList);
 
 	basename(progName);
 
@@ -126,16 +124,19 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 
 	std::cout << "<command>" << progName << "</command>" << std::endl;
 
-	// xor
-	for ( int i = 0; (unsigned int)i < xorList.size(); i++ )
-	{
-		std::cout << "<group choice='req'>" << std::endl;
-		for ( ArgVectorIterator it = xorList[i].begin(); 
-						it != xorList[i].end(); it++ )
-			printShortArg((*it));
+	// // xor
+	// for ( int i = 0; (unsigned int)i < xorList.size(); i++ )
+	// {
+	// 	std::cout << "<group choice='req'>" << std::endl;
+	// 	for ( ArgVectorIterator it = xorList[i].begin(); 
+	// 					it != xorList[i].end(); it++ )
+	// 		printShortArg((*it));
 
-		std::cout << "</group>" << std::endl;
-	}
+	// 	std::cout << "</group>" << std::endl;
+	// }
+
+
+    // TODO(macbishop): Fix ArgGroups for docbook output
 	/*
 	// ArgSets
 	for (std::list<ArgSet*>::iterator sit = argSets.begin(); sit != argSets.end(); ++sit) {
@@ -149,7 +150,7 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 
 	// rest of args
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
-		if ( !xorHandler.contains(*it) && (*it)->visibleInHelp())
+		if ( /* !xorHandler.contains(*it) && */ (*it)->visibleInHelp())
 			printShortArg((*it));
 
  	std::cout << "</cmdsynopsis>" << std::endl;

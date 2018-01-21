@@ -69,7 +69,8 @@ protected:
 	void _extractValue( const std::string& val );
 
 	/**
-	 * Used by XorHandler to decide whether to keep parsing for this arg.
+	 * Used by MultiArg to decide whether to keep parsing for this
+	 * arg.
 	 */
 	bool _allowMore;
 

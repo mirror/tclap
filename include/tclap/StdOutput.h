@@ -31,7 +31,6 @@
 
 #include <tclap/CmdLineInterface.h>
 #include <tclap/CmdLineOutput.h>
-#include <tclap/XorHandler.h>
 #include <tclap/Arg.h>
 #include <tclap/ArgGroup.h>
 
@@ -180,26 +179,14 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
 {
 	std::list<Arg*> argList = _cmd.getArgList();
 	std::string progName = _cmd.getProgramName();
-	XorHandler xorHandler = _cmd.getXorHandler();
-	std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
 	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
 
-	xorListFilterVisibleInHelp(xorList);
+    // TODO(macbishop): Filter ArgGroups for visibility
+	// xorListFilterVisibleInHelp(xorList);
 
 	std::string s = progName + " ";
 
-	// first the xor
-	for ( int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++ )
-		{
-			s += " {";
-			for ( ArgVectorIterator it = xorList[i].begin();
-				  it != xorList[i].end(); it++ )
-				s += (*it)->shortID() + "|";
-
-			s[s.length()-1] = '}';
-		}
-
-	// then the ArgGroups
+	// First the ArgGroups
 	for (std::list<ArgGroup*>::iterator sit = argSets.begin(); sit != argSets.end(); ++sit) {
 		s += (*sit)->isRequired() ? " {" : " [";
 		for (ArgGroup::iterator it = (*sit)->begin(); it != (*sit)->end(); ++it) {
@@ -213,9 +200,7 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
 
 	// then the rest
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++) {
-		if (!xorHandler.contains((*it))
-            && !isInArgGroup(*it, argSets)
-            && (*it)->visibleInHelp()) {
+		if (!isInArgGroup(*it, argSets) && (*it)->visibleInHelp()) {
 			s += " " + (*it)->shortID();
         }
     }
@@ -234,29 +219,11 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 {
 	std::list<Arg*> argList = _cmd.getArgList();
 	std::string message = _cmd.getMessage();
-	XorHandler xorHandler = _cmd.getXorHandler();
-	std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
 	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
+    // TODO(macbishop): Filter ArgGroups for visibility
+	// xorListFilterVisibleInHelp(xorList);
 
-	xorListFilterVisibleInHelp(xorList);
-
-	// first the xor (deprecated)
-	for ( int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++ )
-		{
-			for ( ArgVectorIterator it = xorList[i].begin(); 
-				  it != xorList[i].end(); 
-				  it++ )
-				{
-					spacePrint( os, (*it)->longID(), 75, 3, 3 );
-					spacePrint( os, (*it)->getDescription(), 75, 5, 0 );
-
-					if ( it+1 != xorList[i].end() )
-						spacePrint(os, "-- OR --", 75, 9, 0);
-				}
-			os << std::endl << std::endl;
-		}
-
-	// then the ArgGroups
+	// First the ArgGroups
 	for (std::list<ArgGroup*>::iterator sit = argSets.begin(); sit != argSets.end(); ++sit) {
 		const char *desc = (*sit)->isRequired() ? "One of:" : "Either of:";
 		spacePrint(os, desc, 75, 3, 0);
@@ -268,9 +235,7 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 
 	// then the rest
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++) {
-		if (!xorHandler.contains((*it))
-            && !isInArgGroup(*it, argSets)
-            && (*it)->visibleInHelp()) {
+		if (!isInArgGroup(*it, argSets) && (*it)->visibleInHelp()) {
 				spacePrint( os, (*it)->longID(), 75, 3, 3 );
 				spacePrint( os, (*it)->getDescription(), 75, 5, 0 );
 				os << std::endl;

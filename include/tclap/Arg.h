@@ -289,14 +289,12 @@ class Arg
 		virtual bool isRequired() const;
 
 		/**
-		 * Sets _required to true. This is used by the XorHandler.
-		 * You really have no reason to ever use it.
+         * @deprecated Used only by deprecated XorHandler
 		 */
 		void forceRequired();
 
 		/**
-		 * Sets the _alreadySet value to true.  This is used by the XorHandler.
-		 * You really have no reason to ever use it.
+         * @deprecated Used only by deprecated XorHandler
 		 */
 		void xorSet();
 
@@ -362,15 +360,13 @@ class Arg
 		bool _hasBlanks( const std::string& s ) const;
 
 		/**
-		 * Sets the requireLabel. Used by XorHandler.  You shouldn't ever
-		 * use this.
-		 * \param s - Set the requireLabel to this value.
+         * @deprecated Used only by deprecated XorHandler
 		 */
 		void setRequireLabel( const std::string& s );
 
 		/**
-		 * Used for MultiArgs and XorHandler to determine whether args
-		 * can still be set.
+		 * Used for MultiArgs to determine whether args can still be
+		 * set.
 		 */
 		virtual bool allowMore();
 
@@ -698,4 +694,3 @@ inline void Arg::reset()
 } //namespace TCLAP
 
 #endif
-

@@ -30,7 +30,6 @@
 #include <tclap/UnlabeledValueArg.h>
 #include <tclap/UnlabeledMultiArg.h>
 
-#include <tclap/XorHandler.h>
 #include <tclap/HelpVisitor.h>
 #include <tclap/VersionVisitor.h>
 #include <tclap/IgnoreRestVisitor.h>
@@ -112,11 +111,6 @@ class CmdLine : public CmdLineInterface
 		 * from the value.  Defaults to ' ' (space).
 		 */
 		char _delimiter;
-
-		/**
-		 * The handler that manages xoring lists of args.
-		 */
-		XorHandler _xorHandler;
 
 		/**
 		 * A list of Args to be explicitly deleted when the destructor
@@ -309,11 +303,6 @@ private:
 		/**
 		 *
 		 */
-		XorHandler& getXorHandler();
-
-		/**
-		 *
-		 */
 		char getDelimiter();
 
 		/**
@@ -372,7 +361,6 @@ inline CmdLine::CmdLine(const std::string& m,
   _version(v),
   _numRequired(0),
   _delimiter(delim),
-  _xorHandler(XorHandler()),
   _argDeleteOnExitList(std::list<Arg*>()),
   _visitorDeleteOnExitList(std::list<Visitor*>()),
   _output(0),
@@ -432,16 +420,9 @@ inline void CmdLine::_constructor()
 	deleteOnExit(v);
 }
 
-inline void CmdLine::xorAdd( const std::vector<Arg*>& ors )
+inline void CmdLine::xorAdd( const std::vector<Arg*>&  )
 {
-	_xorHandler.add( ors );
-
-	for (ArgVectorIterator it = ors.begin(); it != ors.end(); it++)
-	{
-		(*it)->forceRequired();
-		(*it)->setRequireLabel( "OR required" );
-		add( *it );
-	}
+    // TODO(macbishop): Implement me
 }
 
 inline void CmdLine::xorAdd( Arg& a, Arg& b )
@@ -526,7 +507,7 @@ inline void CmdLine::parse(std::vector<std::string>& args)
 			     it != _argList.end(); it++) {
 				if ( (*it)->processArg( &i, args ) )
 				{
-					requiredCount += _xorHandler.check( *it );
+					requiredCount += (*it)->isRequired() ? 1 : 0;
 					matched = true;
 					break;
 				}
@@ -659,11 +640,6 @@ inline std::string& CmdLine::getProgramName()
 inline std::list<Arg*>& CmdLine::getArgList()
 {
 	return _argList;
-}
-
-inline XorHandler& CmdLine::getXorHandler()
-{
-	return _xorHandler;
 }
 
 inline char CmdLine::getDelimiter()

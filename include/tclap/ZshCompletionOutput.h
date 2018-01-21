@@ -36,7 +36,6 @@
 
 #include <tclap/CmdLineInterface.h>
 #include <tclap/CmdLineOutput.h>
-#include <tclap/XorHandler.h>
 #include <tclap/Arg.h>
 #include <tclap/sstream.h>
 
@@ -283,8 +282,12 @@ inline void ZshCompletionOutput::printOption(Arg* a, std::string mutex)
 	std::cout << '\'';
 }
 
-inline std::string ZshCompletionOutput::getMutexList( CmdLineInterface& _cmd, Arg* a)
+inline std::string ZshCompletionOutput::getMutexList( CmdLineInterface& , Arg* )
 {
+    // TODO(macbishop): Rewrite this for ArgGroups (if needed)
+    return "";
+
+    /*
 	XorHandler xorHandler = _cmd.getXorHandler();
 	std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
 	xorListFilterVisibleInHelp(xorList);
@@ -333,6 +336,7 @@ inline std::string ZshCompletionOutput::getMutexList( CmdLineInterface& _cmd, Ar
 	}
 
 	return list.str();
+    */
 }
 
 } //namespace TCLAP
