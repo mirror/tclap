@@ -149,6 +149,12 @@ class Arg
 		bool _acceptsMultipleValues;
 
 		/**
+		 * Indicates if the argument is visible in the help output (e.g.,
+	     * when specifying --help).
+		 */
+	    bool _visibleInHelp;
+
+		/**
 		 * Performs the special handling described by the Visitor.
 		 */
 		void _checkWithVisitor() const;
@@ -379,6 +385,17 @@ class Arg
 		 * command lines.
 		 */
 		 virtual void reset();
+
+	    /**
+		 * Hide this argument from the help output (e.g., when
+	     * specifying the --help flag or on error.
+		 */
+	     virtual void hideFromHelp(bool hide=true) { _visibleInHelp = !hide; }
+
+	     /**
+		  * Returns true if this Arg is visible in the help output.
+		  */
+	     virtual bool visibleInHelp() const { return _visibleInHelp; }
 };
 
 /**
@@ -466,7 +483,8 @@ inline Arg::Arg(const std::string& flag,
   _visitor( v ),
   _ignoreable(true),
   _xorSet(false),
-  _acceptsMultipleValues(false)
+  _acceptsMultipleValues(false),
+  _visibleInHelp(true)
 {
 	if ( _flag.length() > 1 )
 		throw(SpecificationException(

@@ -157,6 +157,33 @@ inline const std::vector< std::vector<Arg*> >& XorHandler::getXorList() const
 	return _orList;
 }
 
+/**
+ * Remove all Args that are not visible on in the help.
+ *
+ * If one inner Arg vector becomes completely empty, remove it from
+ * the outer vector.
+ */
+inline void
+xorListFilterVisibleInHelp(std::vector< std::vector<Arg*> > &xorList)
+{
+    for (std::vector< std::vector<Arg*> >::iterator it = xorList.begin();
+	 it != xorList.end();) {
+	std::vector<Arg*> &args = *it;
+	for (ArgVectorIterator a = args.begin(); a != args.end();) {
+	    if (!(*a)->visibleInHelp()) {
+		a = args.erase(a);
+	    } else {
+		++a;
+	    }
+	}
+
+	if (args.empty()) {
+	    it = xorList.erase(it);
+	} else {
+	    ++it;
+	}
+    }
+}
 
 
 //////////////////////////////////////////////////////////////////////

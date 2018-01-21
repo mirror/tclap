@@ -184,6 +184,8 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
 	std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
 	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
 
+	xorListFilterVisibleInHelp(xorList);
+
 	std::string s = progName + " ";
 
 	// first the xor
@@ -210,9 +212,13 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
 	}
 
 	// then the rest
-	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
-		if (!xorHandler.contains((*it)) && !isInArgGroup(*it, argSets))
+	for (ArgListIterator it = argList.begin(); it != argList.end(); it++) {
+		if (!xorHandler.contains((*it))
+            && !isInArgGroup(*it, argSets)
+            && (*it)->visibleInHelp()) {
 			s += " " + (*it)->shortID();
+        }
+    }
 
 	// if the program name is too long, then adjust the second line offset 
 	int secondLineOffset = static_cast<int>(progName.length()) + 2;
@@ -222,7 +228,7 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
 	spacePrint( os, s, 75, 3, secondLineOffset );
 }
 
-inline void 
+inline void
 StdOutput::_longUsage( CmdLineInterface& _cmd, 
 					   std::ostream& os ) const
 {
@@ -231,6 +237,8 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 	XorHandler xorHandler = _cmd.getXorHandler();
 	std::vector< std::vector<Arg*> > xorList = xorHandler.getXorList();
 	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
+
+	xorListFilterVisibleInHelp(xorList);
 
 	// first the xor (deprecated)
 	for ( int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++ )
@@ -259,13 +267,15 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 	}
 
 	// then the rest
-	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
-		if (!xorHandler.contains((*it)) && !isInArgGroup(*it, argSets))
-			{
+	for (ArgListIterator it = argList.begin(); it != argList.end(); it++) {
+		if (!xorHandler.contains((*it))
+            && !isInArgGroup(*it, argSets)
+            && (*it)->visibleInHelp()) {
 				spacePrint( os, (*it)->longID(), 75, 3, 3 );
 				spacePrint( os, (*it)->getDescription(), 75, 5, 0 );
 				os << std::endl;
 			}
+    }
 
 	os << std::endl;
 

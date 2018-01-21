@@ -99,6 +99,12 @@ TESTS = test1.sh \
 		test97.sh \
 		test98.sh \
 		test99.sh \
+		test100.sh \
+		test101.sh \
+		test102.sh \
+		test103.sh \
+		test104.sh \
+		test105.sh \
 		test106.sh \
 		test107.sh \
 		test108.sh
@@ -203,6 +209,12 @@ EXTRA_DIST = $(TESTS) \
 			 test97.out \
 			 test98.out \
 			 test99.out \
+			 test100.out \
+			 test101.out \
+			 test102.out \
+			 test103.out \
+			 test104.out \
+			 test105.out \
 			 test106.out \
 			 test107.out \
 			 test108.out
