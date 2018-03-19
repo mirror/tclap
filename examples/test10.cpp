@@ -1,3 +1,5 @@
+// -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
+
 // Test only makes sure we can use different argv types for the
 // parser. Don't run, just compile.
 

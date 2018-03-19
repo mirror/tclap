@@ -1,3 +1,5 @@
+// -*- Mode: c++; c-basic-offset: 4; tab-width: 4; -*-
+
 
 // This illustrates how to change the flag and name start strings.
 // Note that these defines need to happen *before* tclap is included!
