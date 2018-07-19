@@ -19,7 +19,7 @@ install-data-local :
 	cp -R $(abs_srcdir)/html $(DESTDIR)$(docdir)
 
 uninstall-local :
-	chmod -R +w $(DESTDIR)$(docdir)
+	chmod -R o+w $(DESTDIR)$(docdir)
 	rm -rf $(DESTDIR)$(docdir)
 
 dist-hook :
@@ -27,5 +27,6 @@ dist-hook :
 	cp -R $(abs_srcdir)/html $(distdir)
 
 clean-local:
-	$(RM) -rf $(abs_srcdir)/html/*
+	$(RM) -rf $(abs_builddir)/html/*
+	$(RM) -rf $(abs_builddir)/doxygen_sqlite3.db
 

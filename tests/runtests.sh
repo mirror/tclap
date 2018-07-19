@@ -1,29 +1,7 @@
 #!/bin/bash
 
-let "suc = 0"
-let "fail = 0"
-NUMTEST=79
+# Always run in script-dir
+DIR=`dirname $0`
+cd $DIR
 
-for (( tno = 1 ; $tno <= $NUMTEST ; tno = $tno + 1 )); do     
-    ./testCheck.sh $tno
-    if [ "$?" -eq "0" ]; then 
-	echo "OK" 
-	let "suc = $(($suc + 1))"
-    else
-	echo "FAIL" 
-	let "fail = $(($fail + 1))"
-    fi
-done
-
-let "total = $(($suc + $fail))"
-echo "======================"
-echo "|     TESTS DONE     |"
-echo "======================"
-echo " TOTAL: $total"
-echo "    OK: $suc"
-echo "FAILED: $fail"
-
-if [ $fail -ne 0 ]; then
-    exit 1
-fi
-    
+make check

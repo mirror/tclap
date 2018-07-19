@@ -4,7 +4,7 @@
  *  file:  Visitor.h
  * 
  *  Copyright (c) 2003, Michael E. Smoot .
- *  All rights reverved.
+ *  All rights reserved.
  * 
  *  See the file COPYING in the top directory of this distribution for
  *  more information.
@@ -43,9 +43,10 @@ class Visitor
 		virtual ~Visitor() { }
 
 		/**
-		 * Does nothing. Should be overridden by child.
+		 * This method (to implemented by children) will be
+		 * called when the visitor is visited.
 		 */
-		virtual void visit() { }
+		virtual void visit() = 0;
 };
 
 }

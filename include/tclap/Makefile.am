@@ -2,27 +2,28 @@
 libtclapincludedir = $(includedir)/tclap
 
 libtclapinclude_HEADERS = \
-			 CmdLineInterface.h \
+			 Arg.h \
 			 ArgException.h \
-			 CmdLine.h \
-			 XorHandler.h \
-			 MultiArg.h \
-			 UnlabeledMultiArg.h \
-			 ValueArg.h \
-			 UnlabeledValueArg.h \
-			 Visitor.h Arg.h \
-			 HelpVisitor.h \
-			 SwitchArg.h \
-			 MultiSwitchArg.h \
-			 VersionVisitor.h \
-			 IgnoreRestVisitor.h \
-			 CmdLineOutput.h \
-			 StdOutput.h \
-			 DocBookOutput.h \
-			 ZshCompletionOutput.h \
-			 OptionalUnlabeledTracker.h \
-			 Constraint.h \
-			 ValuesConstraint.h \
 			 ArgTraits.h \
-			 StandardTraits.h
-
+			 CmdLine.h \
+			 CmdLineInterface.h \
+			 CmdLineOutput.h \
+			 Constraint.h \
+			 DocBookOutput.h \
+			 HelpVisitor.h \
+			 IgnoreRestVisitor.h \
+			 MultiArg.h \
+			 MultiSwitchArg.h \
+			 OptionalUnlabeledTracker.h \
+			 StandardTraits.h \
+			 StdOutput.h \
+			 SwitchArg.h \
+			 UnlabeledMultiArg.h \
+			 UnlabeledValueArg.h \
+			 ValueArg.h \
+			 ValuesConstraint.h \
+			 VersionVisitor.h \
+			 Visitor.h \
+			 XorHandler.h \
+			 ZshCompletionOutput.h \
+			 sstream.h
