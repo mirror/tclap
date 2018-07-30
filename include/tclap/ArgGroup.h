@@ -221,6 +221,19 @@ inline const std::string ArgGroup::getName() const {
 	return name + '}';
 }
 
+/// @internal
+inline int
+CountVisibleArgs(const ArgGroup &g) {
+	int visible = 0;
+	for (ArgGroup::const_iterator it = g.begin(); it != g.end(); ++it) {
+		if ((*it)->visibleInHelp()) {
+			visible++;
+		}
+	}
+
+	return visible;
+}
+
 } //namespace TCLAP
 
 #endif

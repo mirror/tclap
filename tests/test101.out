@@ -1,14 +1,13 @@
 
 USAGE: 
 
-   ../examples/test35  {-c <int>} [-a <int>] [--] [--version] [-h]
+   ../examples/test35  [-c <int>] [-a <int>] [--] [--version] [-h]
 
 
 Where: 
 
    -c <int>,  --c_int <int>
-     (OR required)  int arg
-
+     int arg
 
    -a <int>,  --a_int <int>
      int arg

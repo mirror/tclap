@@ -101,17 +101,6 @@ class StdOutput : public CmdLineOutput
 						 int maxWidth, 
 						 int indentSpaces, 
 						 int secondLineOffset ) const;
-
-	    bool isInArgGroup(const Arg *arg, const std::list<ArgGroup*> &argSets) const {
-			for (std::list<ArgGroup*>::const_iterator it = argSets.begin();
-				 it != argSets.end(); ++it) {
-				if (std::find((*it)->begin(), (*it)->end(), arg) != (*it)->end()) {
-					return true;
-				}
-			}
-
-			return false;
-		}
 };
 
 
@@ -173,34 +162,72 @@ inline void removeChar( std::string& s, char r)
 	}
 }
 
+inline bool isInArgGroup(const Arg *arg, const std::list<ArgGroup*> &argSets) {
+	for (std::list<ArgGroup*>::const_iterator it = argSets.begin();
+		 it != argSets.end(); ++it) {
+		if (std::find((*it)->begin(), (*it)->end(), arg) != (*it)->end()) {
+			return true;
+		}
+	}
+	return false;
+}
+
 inline void
-StdOutput::_shortUsage( CmdLineInterface& _cmd, 
-						std::ostream& os ) const
-{
+removeArgsInArgGroups(std::list<Arg*> &argList,
+					  const std::list<ArgGroup*> &argSets) {
+	for (ArgListIterator it = argList.begin(); it != argList.end();) {
+		if (isInArgGroup(*it, argSets)) {
+			it = argList.erase(it);
+        } else {
+			++it;
+		}
+    }
+}
+
+inline void
+StdOutput::_shortUsage( CmdLineInterface& _cmd,
+						std::ostream& os ) const {
 	std::list<Arg*> argList = _cmd.getArgList();
-	std::string progName = _cmd.getProgramName();
 	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
+	removeArgsInArgGroups(argList, argSets);
 
-    // TODO(macbishop): Filter ArgGroups for visibility
-	// xorListFilterVisibleInHelp(xorList);
-
+	std::string progName = _cmd.getProgramName();
 	std::string s = progName + " ";
 
 	// First the ArgGroups
-	for (std::list<ArgGroup*>::iterator sit = argSets.begin(); sit != argSets.end(); ++sit) {
-		s += (*sit)->isRequired() ? " {" : " [";
-		for (ArgGroup::iterator it = (*sit)->begin(); it != (*sit)->end(); ++it) {
+	for (std::list<ArgGroup*>::iterator sit = argSets.begin();
+		 sit != argSets.end(); ++sit) {
+		// TODO(macbishop): This should be refactored and simplified
+		// so we don't have to repeat the logic everywhere (same in
+		// _longUsage).
+		int visible = CountVisibleArgs(**sit);
+		if (visible > 1) {
+			s += (*sit)->isRequired() ? " {" : " [";
+		}
+		for (ArgGroup::iterator it = (*sit)->begin();
+			 it != (*sit)->end(); ++it) {
+			if (!(*it)->visibleInHelp()) {
+				continue;
+			}
+
+			if (visible == 1) {
+				argList.push_front(*it);
+				continue;
+			}
+
 			std::string id = (*it)->shortID();
 			removeChar(id,'[');
 			removeChar(id,']');
 			s += id + "|";
 		}
-		s[s.length()-1] = (*sit)->isRequired() ? '}' : ']';
+		if (visible > 1) {
+			s[s.length()-1] = (*sit)->isRequired() ? '}' : ']';
+		}
 	}
 
 	// then the rest
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++) {
-		if (!isInArgGroup(*it, argSets) && (*it)->visibleInHelp()) {
+		if ((*it)->visibleInHelp()) {
 			s += " " + (*it)->shortID();
         }
     }
@@ -220,14 +247,28 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 	std::list<Arg*> argList = _cmd.getArgList();
 	std::string message = _cmd.getMessage();
 	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
-    // TODO(macbishop): Filter ArgGroups for visibility
-	// xorListFilterVisibleInHelp(xorList);
+	removeArgsInArgGroups(argList, argSets);
 
 	// First the ArgGroups
-	for (std::list<ArgGroup*>::iterator sit = argSets.begin(); sit != argSets.end(); ++sit) {
+	for (std::list<ArgGroup*>::iterator sit = argSets.begin();
+		 sit != argSets.end(); ++sit) {
+		int visible = CountVisibleArgs(**sit);
+
 		const char *desc = (*sit)->isRequired() ? "One of:" : "Either of:";
-		spacePrint(os, desc, 75, 3, 0);
-		for (ArgGroup::iterator it = (*sit)->begin(); it != (*sit)->end(); ++it) {
+		if (visible > 2) {
+			spacePrint(os, desc, 75, 3, 0);
+		}
+		for (ArgGroup::iterator it = (*sit)->begin();
+			 it != (*sit)->end(); ++it) {
+			if (!(*it)->visibleInHelp()) {
+				continue;
+			}
+
+			if (visible == 1) {
+				argList.push_front(*it);
+				continue;
+			}
+
 			spacePrint( os, (*it)->longID(), 75, 6, 3 );
 			spacePrint( os, (*it)->getDescription(), 75, 8, 0 );
 		}
@@ -235,11 +276,11 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 
 	// then the rest
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++) {
-		if (!isInArgGroup(*it, argSets) && (*it)->visibleInHelp()) {
-				spacePrint( os, (*it)->longID(), 75, 3, 3 );
-				spacePrint( os, (*it)->getDescription(), 75, 5, 0 );
-				os << std::endl;
-			}
+		if ((*it)->visibleInHelp()) {
+			spacePrint( os, (*it)->longID(), 75, 3, 3 );
+			spacePrint( os, (*it)->getDescription(), 75, 5, 0 );
+			os << std::endl;
+		}
     }
 
 	os << std::endl;
