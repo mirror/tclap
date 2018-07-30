@@ -24,3 +24,4 @@ tclap.pc
 tests/tmp.out
 tests/test*.log
 tests/test*.trs
+config/test-driver
