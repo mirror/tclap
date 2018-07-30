@@ -441,6 +441,7 @@ inline void CmdLine::xorAdd( const std::vector<Arg*>& args)
 
     for (std::vector<Arg*>::const_iterator it = args.begin();
          it != args.end(); ++it) {
+		(*it)->forceRequired(false);
         group->add(**it);
     }
 }

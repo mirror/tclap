@@ -291,7 +291,7 @@ class Arg
 		/**
          * @deprecated Used only by deprecated XorHandler
 		 */
-		void forceRequired();
+		void forceRequired(bool r=true);
 
 		/**
          * @deprecated Used only by deprecated XorHandler
@@ -652,9 +652,9 @@ inline bool Arg::_hasBlanks( const std::string& s ) const
 	return false;
 }
 
-inline void Arg::forceRequired()
+inline void Arg::forceRequired(bool r)
 {
-	_required = true;
+	_required = r;
 }
 
 inline void Arg::xorSet()
