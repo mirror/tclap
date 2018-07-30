@@ -22,3 +22,5 @@ examples/test[0-9]
 Makefile
 tclap.pc
 tests/tmp.out
+tests/test*.log
+tests/test*.trs
