@@ -1,11 +1,3 @@
 #!/bin/sh
-
 # success
-../examples/test3 --help  > tmp.out 2>&1
-
-if cmp -s tmp.out $srcdir/test42.out; then
-	exit 0
-else
-	exit 1
-fi
-
+./simple-test.sh `basename $0 .sh` test3 --help 

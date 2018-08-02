@@ -23,9 +23,5 @@ Makefile
 tclap.pc
 config/test-driver
 tests/tmp.out
-tests/*.trs
-tests/*.log
-
-
-
-
+tests/test*.log
+tests/test*.trs
