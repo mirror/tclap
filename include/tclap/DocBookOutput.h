@@ -96,12 +96,12 @@ inline void DocBookOutput::version(CmdLineInterface& _cmd)
 inline void DocBookOutput::usage(CmdLineInterface& _cmd ) 
 {
 	std::list<Arg*> argList = _cmd.getArgList();
+	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
 	std::string progName = _cmd.getProgramName();
 	std::string xversion = _cmd.getVersion();
 	theDelimiter = _cmd.getDelimiter();
-    // TODO(macbishop): What about ArgGroups?
-	// xorListFilterVisibleInHelp(xorList);
-
+    removeArgsInArgGroups(argList, argSets);
+    
 	basename(progName);
 
 	std::cout << "<?xml version='1.0'?>" << std::endl;
@@ -125,33 +125,35 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 
 	std::cout << "<command>" << progName << "</command>" << std::endl;
 
-	// // xor
-	// for ( int i = 0; (unsigned int)i < xorList.size(); i++ )
-	// {
-	// 	std::cout << "<group choice='req'>" << std::endl;
-	// 	for ( ArgVectorIterator it = xorList[i].begin(); 
-	// 					it != xorList[i].end(); it++ )
-	// 		printShortArg((*it));
+	// First the ArgGroups
+	for (std::list<ArgGroup*>::iterator sit = argSets.begin();
+		 sit != argSets.end(); ++sit) {
+		int visible = CountVisibleArgs(**sit);
+		if (visible > 1) {
+            std::cout << "<group choice='req'>" << std::endl;
+		}
+		for (ArgGroup::iterator it = (*sit)->begin();
+			 it != (*sit)->end(); ++it) {
+			if (!(*it)->visibleInHelp()) {
+				continue;
+			}
 
-	// 	std::cout << "</group>" << std::endl;
-	// }
+			if (visible == 1) {
+                (*it)->forceRequired();
+				argList.push_front(*it);
+				continue;
+			}
 
-
-    // TODO(macbishop): Fix ArgGroups for docbook output
-	/*
-	// ArgSets
-	for (std::list<ArgSet*>::iterator sit = argSets.begin(); sit != argSets.end(); ++sit) {
-		spacePrint(os, (*sit)->getDescription(), 75, 3, 0);
-		for (ArgSet::iterator it = (*sit)->begin(); it != (*sit)->end(); ++it) {
-			spacePrint( os, (*it)->longID(), 75, 6, 3 );
-			spacePrint( os, (*it)->getDescription(), 75, 8, 0 );
+            printShortArg((*it));
+		}
+		if (visible > 1) {
+            std::cout << "</group>" << std::endl;
 		}
 	}
-	*/
 
 	// rest of args
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
-		if ( /* !xorHandler.contains(*it) && */ (*it)->visibleInHelp())
+		if ((*it)->visibleInHelp())
 			printShortArg((*it));
 
  	std::cout << "</cmdsynopsis>" << std::endl;
@@ -169,7 +171,8 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 
 	std::cout << "<variablelist>" << std::endl;
 	
-	for (ArgListIterator it = argList.begin(); it != argList.end(); it++) {
+    
+	for (ArgListIterator it = _cmd.getArgList().begin(); it != _cmd.getArgList().end(); it++) {
 		if ((*it)->visibleInHelp()) {
 			printLongArg((*it));
 		}

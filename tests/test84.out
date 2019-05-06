@@ -15,8 +15,8 @@
 <cmdsynopsis>
 <command>test25</command>
 <group choice='req'>
-<arg choice='plain'>-s <replaceable>string</replaceable></arg>
-<arg choice='plain'>-B</arg>
+<arg choice='opt'>-s <replaceable>string</replaceable></arg>
+<arg choice='opt'>-B</arg>
 </group>
 <arg choice='opt' rep='repeat'>-A <replaceable></replaceable></arg>
 <arg choice='opt'>--</arg>
@@ -55,7 +55,7 @@ exist Test A
 </term>
 <listitem>
 <para>
-(OR required)  exist Test B
+exist Test B
 </para>
 </listitem>
 </varlistentry>
@@ -68,7 +68,7 @@ exist Test A
 </term>
 <listitem>
 <para>
-(OR required)  string test
+string test
 </para>
 </listitem>
 </varlistentry>

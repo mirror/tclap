@@ -14,9 +14,7 @@
 <refsynopsisdiv>
 <cmdsynopsis>
 <command>test36</command>
-<group choice='req'>
 <arg choice='plain'>-c <replaceable>int</replaceable></arg>
-</group>
 <arg choice='opt'>-a <replaceable>int</replaceable></arg>
 <arg choice='opt'>--</arg>
 <arg choice='opt'>--version</arg>
@@ -41,7 +39,7 @@
 </term>
 <listitem>
 <para>
-(OR required)  int arg
+(required)  int arg
 </para>
 </listitem>
 </varlistentry>

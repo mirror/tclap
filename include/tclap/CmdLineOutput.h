@@ -33,6 +33,9 @@
 #include <iomanip>
 #include <algorithm>
 
+#include <tclap/Arg.h>
+#include <tclap/ArgGroup.h>
+
 namespace TCLAP {
 
 class CmdLineInterface;
@@ -72,6 +75,28 @@ class CmdLineOutput
 						      ArgException& e )=0;
 
 };
+
+inline bool isInArgGroup(const Arg *arg, const std::list<ArgGroup*> &argSets) {
+	for (std::list<ArgGroup*>::const_iterator it = argSets.begin();
+		 it != argSets.end(); ++it) {
+		if (std::find((*it)->begin(), (*it)->end(), arg) != (*it)->end()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+inline void
+removeArgsInArgGroups(std::list<Arg*> &argList,
+					  const std::list<ArgGroup*> &argSets) {
+	for (std::list<Arg*>::iterator it = argList.begin(); it != argList.end();) {
+		if (isInArgGroup(*it, argSets)) {
+			it = argList.erase(it);
+        } else {
+			++it;
+		}
+    }
+}
 
 } //namespace TCLAP
 #endif 
