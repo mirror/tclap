@@ -26,5 +26,4 @@ libtclapinclude_HEADERS = \
 			 ValuesConstraint.h \
 			 VersionVisitor.h \
 			 Visitor.h \
-			 ZshCompletionOutput.h \
 			 sstream.h

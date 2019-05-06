@@ -3,8 +3,6 @@
 
 
 #include "tclap/CmdLine.h"
-#include "tclap/DocBookOutput.h"
-#include "tclap/ZshCompletionOutput.h"
 #include <iostream>
 #include <string>
 
@@ -69,8 +67,6 @@ void parseOptions(int argc, char** argv)
 
 	// set the output
 	MyOutput my;
-	//ZshCompletionOutput my;
-	//DocBookOutput my;
 	cmd.setOutput(&my);
 
 	//

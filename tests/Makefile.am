@@ -84,7 +84,6 @@ TESTS = test1.sh \
 		test82.sh \
 		test83.sh \
 		test84.sh \
-		test85.sh \
 		test86.sh \
 		test87.sh \
 		test88.sh \
@@ -103,8 +102,6 @@ TESTS = test1.sh \
 		test101.sh \
 		test102.sh \
 		test103.sh \
-		test104.sh \
-		test105.sh \
 		test106.sh \
 		test107.sh \
 		test108.sh
@@ -194,7 +191,6 @@ EXTRA_DIST = $(TESTS) \
 			 test82.out \
 			 test83.out \
 			 test84.out \
-			 test85.out \
 			 test86.out \
 			 test87.out \
 			 test88.out \
@@ -213,8 +209,6 @@ EXTRA_DIST = $(TESTS) \
 			 test101.out \
 			 test102.out \
 			 test103.out \
-			 test104.out \
-			 test105.out \
 			 test106.out \
 			 test107.out \
 			 test108.out

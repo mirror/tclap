@@ -1,8 +1,0 @@
-#compdef test37
-
-# test37 version none
-
-_arguments -s -S \
-  '(-a --a_int)'{-a,--a_int}'[int arg]:int' \
-  '(-)--version[displays version information and exits]' \
-  '(-)'{-h,--help}'[displays usage information and exits]'
