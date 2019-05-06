@@ -272,7 +272,9 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 			spacePrint( os, (*it)->longID(), 75, 6, 3 );
 			spacePrint( os, (*it)->getDescription(), 75, 8, 0 );
 		}
-        os << std::endl;
+		if (visible > 1) {
+            os << std::endl;
+        }
 	}
 
 	// then the rest

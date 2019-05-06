@@ -1,5 +1,5 @@
-PARSE ERROR: Argument: -b (--bbb)
-             Mutually exclusive argument already set!
+PARSE ERROR: Argument: -a AND -b provided.
+             Only one is allowed.
 
 Brief USAGE: 
    ../examples/test5  {-a <string>|-b <string>} {--eee <string>|--fff

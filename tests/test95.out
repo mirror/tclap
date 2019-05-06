@@ -13,6 +13,7 @@ Where:
         second int arg
       -s <str>,  --str <str>
         string arg
+
    --,  --ignore_rest
      Ignores the rest of the labeled arguments following this flag.
 
