@@ -175,7 +175,7 @@ inline bool isInArgGroup(const Arg *arg, const std::list<ArgGroup*> &argSets) {
 inline void
 removeArgsInArgGroups(std::list<Arg*> &argList,
 					  const std::list<ArgGroup*> &argSets) {
-	for (ArgListIterator it = argList.begin(); it != argList.end();) {
+	for (std::list<Arg*>::iterator it = argList.begin(); it != argList.end();) {
 		if (isInArgGroup(*it, argSets)) {
 			it = argList.erase(it);
         } else {
