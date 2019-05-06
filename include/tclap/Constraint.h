@@ -6,6 +6,7 @@
  *  file:  Constraint.h
  *
  *  Copyright (c) 2005, Michael E. Smoot
+ *  Copyright (c) 2017, Google LLC
  *  All rights reserved.
  *
  *  See the file COPYING in the top directory of this distribution for
