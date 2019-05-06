@@ -255,7 +255,7 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 		int visible = CountVisibleArgs(**sit);
 
 		const char *desc = (*sit)->isRequired() ? "One of:" : "Either of:";
-		if (visible > 2) {
+		if (visible > 1) {
 			spacePrint(os, desc, 75, 3, 0);
 		}
 		for (ArgGroup::iterator it = (*sit)->begin();
@@ -272,6 +272,7 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 			spacePrint( os, (*it)->longID(), 75, 6, 3 );
 			spacePrint( os, (*it)->getDescription(), 75, 8, 0 );
 		}
+        os << std::endl;
 	}
 
 	// then the rest

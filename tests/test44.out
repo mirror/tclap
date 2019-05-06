@@ -8,29 +8,25 @@ USAGE:
 
 Where: 
 
-   -a <string>,  --aaa <string>
-     (OR required)  or test a
-         -- OR --
-   -b <string>,  --bbb <string>
-     (OR required)  or test b
+   One of:
+      -a <string>,  --aaa <string>
+        or test a
+      -b <string>,  --bbb <string>
+        or test b
 
+   One of:
+      --eee <string>
+        e test
+      --fff <string>
+        f test
+      -g <string>,  --ggg <string>
+        g test
 
-   --eee <string>
-     (OR required)  e test
-         -- OR --
-   --fff <string>
-     (OR required)  f test
-         -- OR --
-   -g <string>,  --ggg <string>
-     (OR required)  g test
-
-
-   -i <string>,  --iii <string>  (accepted multiple times)
-     (OR required)  or test i
-         -- OR --
-   -j <string>,  --jjj <string>  (accepted multiple times)
-     (OR required)  or test j
-
+   One of:
+      -i <string>,  --iii <string>  (accepted multiple times)
+        or test i
+      -j <string>,  --jjj <string>  (accepted multiple times)
+        or test j
 
    --ddd
      d test
