@@ -211,10 +211,6 @@ inline bool SwitchArg::combinedSwitchesMatch(std::string& combinedSwitches )
 
 inline void SwitchArg::commonProcessing()
 {
-  if ( _xorSet )
-    throw(CmdLineParseException(
-				"Mutually exclusive argument already set!", toString()));
-
   if ( _alreadySet ) 
     throw(CmdLineParseException("Argument already set!", toString()));
 

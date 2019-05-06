@@ -144,12 +144,6 @@ class Arg
 		 */
 		bool _ignoreable;
 
-		/**
-		 * Indicates that the arg was set as part of an XOR and not on the
-		 * command line.
-		 */
-		bool _xorSet;
-
 		bool _acceptsMultipleValues;
 
 		/**
@@ -296,11 +290,6 @@ class Arg
          * @deprecated Used only by deprecated XorHandler
 		 */
 		void forceRequired(bool r=true);
-
-		/**
-         * @deprecated Used only by deprecated XorHandler
-		 */
-		void xorSet();
 
 		/**
 		 * Indicates whether a value must be specified for argument.
@@ -490,7 +479,6 @@ inline Arg::Arg(const std::string& flag,
   _setBy(),
   _visitor( v ),
   _ignoreable(true),
-  _xorSet(false),
   _acceptsMultipleValues(false),
   _visibleInHelp(true)
 {
@@ -589,13 +577,7 @@ inline bool Arg::isRequired() const { return _required; }
 
 inline bool Arg::isValueRequired() const { return _valueRequired; }
 
-inline bool Arg::isSet() const
-{
-	if ( _alreadySet && !_xorSet )
-		return true;
-	else
-		return false;
-}
+inline bool Arg::isSet() const { return _alreadySet; }
 
 inline bool Arg::isIgnoreable() const { return _ignoreable; }
 
@@ -669,12 +651,6 @@ inline void Arg::forceRequired(bool r)
 	_required = r;
 }
 
-inline void Arg::xorSet()
-{
-	_alreadySet = true;
-	_xorSet = true;
-}
-
 /**
  * Overridden by Args that need to added to the end of the list.
  */
@@ -693,11 +669,7 @@ inline bool Arg::acceptsMultipleValues()
 	return _acceptsMultipleValues;
 }
 
-inline void Arg::reset()
-{
-	_xorSet = false;
-	_alreadySet = false;
-}
+inline void Arg::reset() { _alreadySet = false; }
 
 //////////////////////////////////////////////////////////////////////
 //END Arg.cpp

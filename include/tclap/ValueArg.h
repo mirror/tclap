@@ -349,10 +349,6 @@ bool ValueArg<T>::processArg(int *i, std::vector<std::string>& args)
     {
       if ( _alreadySet )
         {
-          if ( _xorSet )
-            throw( CmdLineParseException("Mutually exclusive argument"
-                                         " already set!", toString()));
-          else
             throw( CmdLineParseException("Argument already set!", 
                                          toString()) );
         }
