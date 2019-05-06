@@ -373,6 +373,7 @@ bool ValueArg<T>::processArg(int *i, std::vector<std::string>& args)
         _extractValue( value );
                                 
       _alreadySet = true;
+      _setBy = flag;
       _checkWithVisitor();
       return true;
     }   

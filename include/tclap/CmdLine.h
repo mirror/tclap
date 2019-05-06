@@ -513,6 +513,7 @@ inline void CmdLine::parse(std::vector<std::string>& args)
 		// each ArgGroup, and if there are any required arguments
 		// missing, store them for later. Other errors will cause an
 		// exception to be thrown and parse will exit early.
+        /*
 		for (std::list<ArgGroup*>::iterator it = _argGroups.begin();
 			 it != _argGroups.end(); ++it) {
 			bool missingRequired = (*it)->validate(args);
@@ -520,6 +521,7 @@ inline void CmdLine::parse(std::vector<std::string>& args)
 				missingArgGroups.push_back(*it);
 			}
 		}
+        */
 
 		for (int i = 0; static_cast<unsigned int>(i) < args.size(); i++) 
 		{
@@ -543,6 +545,16 @@ inline void CmdLine::parse(std::vector<std::string>& args)
 				throw(CmdLineParseException("Couldn't find match "
 				                            "for argument",
 				                            args[i]));
+		}
+
+        // Once all arguments have been parsed, check that we don't
+        // violate any constraints.
+        for (std::list<ArgGroup*>::iterator it = _argGroups.begin();
+             it != _argGroups.end(); ++it) {
+			bool missingRequired = (*it)->validate();
+			if (missingRequired) {
+				missingArgGroups.push_back(*it);
+			}
 		}
 
 		if ( requiredCount < _numRequired || !missingArgGroups.empty()) {

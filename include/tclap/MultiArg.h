@@ -347,6 +347,7 @@ bool MultiArg<T>::processArg(int *i, std::vector<std::string>& args)
 		*/
 
 		_alreadySet = true;
+        _setBy = flag;
 		_checkWithVisitor();
 
 		return true;

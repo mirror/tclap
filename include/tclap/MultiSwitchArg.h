@@ -161,6 +161,7 @@ inline bool MultiSwitchArg::processArg(int *i, std::vector<std::string>& args)
 	{
 		// so the isSet() method will work
 		_alreadySet = true;
+        _setBy = args[*i];
 
 		// Matched argument: increment value.
 		++_value;

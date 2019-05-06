@@ -51,6 +51,7 @@ class UnlabeledMultiArg : public MultiArg<T>
 	using MultiArg<T>::_name;
 	using MultiArg<T>::_description;
 	using MultiArg<T>::_alreadySet;
+	using MultiArg<T>::_setBy;
 	using MultiArg<T>::toString;
 
 	public:
@@ -265,6 +266,7 @@ bool UnlabeledMultiArg<T>::processArg(int *i, std::vector<std::string>& args)
 	*/
 
 	_alreadySet = true;
+    _setBy = args[*i];
 
 	return true;
 }

@@ -190,18 +190,19 @@ inline bool SwitchArg::combinedSwitchesMatch(std::string& combinedSwitches )
 
   // ok, we're not specifying a ValueArg, so we know that we have
   // a combined switch list.  
-  for ( unsigned int i = 1; i < combinedSwitches.length(); i++ )
-    if ( _flag.length() > 0 && 
-	 combinedSwitches[i] == _flag[0] &&
-	 _flag[0] != Arg::flagStartString()[0] ) 
-      {
-	// update the combined switches so this one is no longer present
-	// this is necessary so that no unlabeled args are matched
-	// later in the processing.
-	//combinedSwitches.erase(i,1);
-	combinedSwitches[i] = Arg::blankChar(); 
-	return true;
+  for ( unsigned int i = 1; i < combinedSwitches.length(); i++ ) {
+      if ( _flag.length() > 0 && 
+           combinedSwitches[i] == _flag[0] &&
+           _flag[0] != Arg::flagStartString()[0] ) {
+          // update the combined switches so this one is no longer
+          // present this is necessary so that no unlabeled args are
+          // matched later in the processing.
+          // combinedSwitches.erase(i,1);
+          _setBy = Arg::flagStartString() + combinedSwitches[i];
+          combinedSwitches[i] = Arg::blankChar(); 
+          return true;
       }
+  }
 
   // none of the switches passed in the list match. 
   return false;   
@@ -234,6 +235,7 @@ inline bool SwitchArg::processArg(int *i, std::vector<std::string>& args)
   // if the whole string matches the flag or name string
   if ( argMatches( args[*i] ) )
     {
+        _setBy = args[*i];
       commonProcessing();
 
       return true;

@@ -127,6 +127,10 @@ class Arg
 		 */
 		bool _alreadySet;
 
+        /** Indicates the value specified to set this flag (like -a or --all).
+         */
+        std::string _setBy;
+
 		/**
 		 * A pointer to a visitor object.
 		 * The visitor allows special handling to occur as soon as the
@@ -309,6 +313,13 @@ class Arg
 		 */
 		bool isSet() const;
 
+        /**
+         * Returns the value specified to set this flag (like -a or --all).
+         */
+         const std::string &setBy() const {
+            return _setBy;
+        }
+
 		/**
 		 * Indicates whether the argument can be ignored, if desired.
 		 */
@@ -476,6 +487,7 @@ inline Arg::Arg(const std::string& flag,
   _requireLabel("required"),
   _valueRequired(valreq),
   _alreadySet(false),
+  _setBy(),
   _visitor( v ),
   _ignoreable(true),
   _xorSet(false),

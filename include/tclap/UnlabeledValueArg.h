@@ -54,6 +54,7 @@ class UnlabeledValueArg : public ValueArg<T>
 	using ValueArg<T>::_name;
 	using ValueArg<T>::_description;
 	using ValueArg<T>::_alreadySet;
+    using ValueArg<T>::_setBy;
 	using ValueArg<T>::toString;
 
 	public:
@@ -293,6 +294,7 @@ bool UnlabeledValueArg<T>::processArg(int *i, std::vector<std::string>& args)
 	
 	_extractValue( args[*i] );
 	_alreadySet = true;
+    _setBy = args[*i];
 	return true;
 }
 

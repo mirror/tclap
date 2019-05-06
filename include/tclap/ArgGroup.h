@@ -52,7 +52,7 @@ public:
     ArgContainer &add(Arg *arg);
 
 	/**
-	 * Validates that args match the constraints of the ArgGroup.
+	 * Validates that the constraints of the ArgGroup are satisfied.
 	 *
      * @internal
 	 * Throws an CmdLineParseException if there is an issue (except
@@ -60,7 +60,7 @@ public:
 	 *
 	 * @retval true iff a required argument was missing.
 	 */
-    virtual bool validate(const std::vector<std::string>& args) = 0;
+    virtual bool validate() = 0;
 
 	/**
      * Returns true if this argument group is required
@@ -109,17 +109,6 @@ protected:
 	// No direct instantiation
 	ArgGroup() : _parser(0), _args() {}
 
-	// Lookup arg that matches s, if any
-    Arg* find(const std::string &s) const {
-		for (const_iterator it = begin(); it != end(); ++it) {
-			if ((*it)->argMatches(s)) {
-				return *it;
-			}
-		}
-
-		return NULL;
-    }
-
 private:
     explicit ArgGroup(const ArgGroup&);
     ArgGroup& operator=(const ArgGroup&);  // no copy
@@ -136,7 +125,7 @@ private:
  */
 class ExclusiveArgGroup : public ArgGroup {
 public:
-    bool validate(const std::vector<std::string>& args);
+    inline bool validate();
     bool isExclusive() const { return true; }
 
 protected:
@@ -185,26 +174,24 @@ inline ArgContainer &ArgGroup::add(Arg *arg) {
 	return *this;
 }
 
-inline bool ExclusiveArgGroup::validate(const std::vector<std::string>& args) {
+inline bool ExclusiveArgGroup::validate() {
 	Arg *arg = NULL;
 	std::string flag;
 
-	for (std::vector<std::string>::const_iterator it = args.begin();
-		 it != args.end(); ++it) {
-		Arg *candidate = find(*it);
-		if (candidate != NULL) {  // Found match
-			if (arg != NULL && !(*arg == *candidate)) {
+    for (const_iterator it = begin(); it != end(); ++it) {
+        if ((*it)->isSet()) {
+			if (arg != NULL && !(*arg == **it)) {
 				// We found a matching argument, but one was
 				// already found previously.
 				throw CmdLineParseException("Only one is allowed.",
-											flag + " AND " + *it
+											flag + " AND " + (*it)->setBy()
 											+ " provided.");
 			}
 
-			arg = candidate;
-			flag = *it;
-		}
-	}
+            arg = *it;
+            flag = arg->setBy();
+        }
+    }
 
 	return isRequired() && !arg;
 }
