@@ -158,6 +158,24 @@ public:
     bool isRequired() const { return true; }
 };
 
+/**
+ * Implements a group of arguments where any combination is possible
+ * (including all or none). This is mostly used in case one optional
+ * argument allows additional arguments to be specified (for example
+ * [-c [-de] [-n <int>]]).
+ */
+class AnyOf : public ArgGroup {
+public:
+    AnyOf() {}
+    explicit AnyOf(CmdLineInterface &parser) {
+        parser.add(*this);
+    }
+
+    bool validate() {return true; };
+    bool isExclusive() const { return false; }
+    bool isRequired() const { return false; }
+};
+
 inline ArgContainer &ArgGroup::add(Arg *arg) {
 	for(iterator it = begin(); it != end(); it++) {
 	    if (*arg == **it) {

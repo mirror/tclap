@@ -1,0 +1,5 @@
+
+USAGE: 
+
+   ../examples/test41  [-aDde] [-b <int>] [-m <str>] [--]
+                       [--version] [-h] <int> <str> <int> ...

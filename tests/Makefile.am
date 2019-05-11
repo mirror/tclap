@@ -104,7 +104,9 @@ TESTS = test1.sh \
 		test103.sh \
 		test106.sh \
 		test107.sh \
-		test108.sh
+		test108.sh \
+		test109.sh \
+		test110.sh
 
 EXTRA_DIST = $(TESTS) \
 			 test1.out \
@@ -211,6 +213,8 @@ EXTRA_DIST = $(TESTS) \
 			 test103.out \
 			 test106.out \
 			 test107.out \
-			 test108.out
+			 test108.out \
+			 test109.out \
+			 test110.out
 
 CLEANFILES = tmp.out
