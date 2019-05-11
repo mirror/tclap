@@ -255,19 +255,12 @@ private:
         ArgContainer &add(ArgGroup &args);
 
 		/**
-		 * Add two Args that will be xor'd.  If this method is used, add does
-		 * not need to be called.
-		 * \param a - Argument to be added and xor'd.
-		 * \param b - Argument to be added and xor'd.
-		 * \deprecated Use ArgGroups instead.
+		 * \deprecated Use OneOf instead.
 		 */
 		void xorAdd( Arg& a, Arg& b );
 
 		/**
-		 * Add a list of Args that will be xor'd.  If this method is used,
-		 * add does not need to be called.
-		 * \param xors - List of Args to be added and xor'd.
-		 * \deprecated Use ArgGroups instead.
+		 * \deprecated Use OneOf instead.
 		 */
 		void xorAdd( const std::vector<Arg*>& xors );
 

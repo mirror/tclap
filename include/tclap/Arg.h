@@ -360,11 +360,6 @@ class Arg
 		bool _hasBlanks( const std::string& s ) const;
 
 		/**
-         * @deprecated Used only by deprecated XorHandler
-		 */
-		void setRequireLabel( const std::string& s );
-
-		/**
 		 * Used for MultiArgs to determine whether args can still be
 		 * set.
 		 */
@@ -580,11 +575,6 @@ inline bool Arg::isValueRequired() const { return _valueRequired; }
 inline bool Arg::isSet() const { return _alreadySet; }
 
 inline bool Arg::isIgnoreable() const { return _ignoreable; }
-
-inline void Arg::setRequireLabel( const std::string& s)
-{
-	_requireLabel = s;
-}
 
 inline bool Arg::argMatches( const std::string& argFlag ) const
 {
