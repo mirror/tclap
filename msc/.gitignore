@@ -1,2 +1,5 @@
 /examples/Release/
 /examples/Debug/
+/packages/
+/test/bin/
+/test/obj/
