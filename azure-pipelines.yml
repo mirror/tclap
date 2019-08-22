@@ -34,6 +34,7 @@ steps:
 
 - task: MSBuild@1
   inputs:
+    msbuildVersion: '15.0'
     platform: '$(buildPlatform)'
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
