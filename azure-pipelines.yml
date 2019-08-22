@@ -4,7 +4,10 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+  branches:
+    include:
+    - master
+    - feat/*
 
 pool:
   vmImage: 'windows-latest'
@@ -35,4 +38,4 @@ steps:
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
     #msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
-    msbuildArgs: '/m
+    msbuildArgs: '/m'
