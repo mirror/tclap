@@ -1,8 +1,4 @@
 # Universal Windows Platform
-- task: VisualStudioTestPlatformInstaller@1
-  inputs:
-    packageFeedSelector: 'nugetOrg'
-    versionSelector: 'latestPreRelease'
 # Build a Universal Windows Platform project using Visual Studio.
 # Add steps that test and distribute an app, save build artifacts, and more:
 # https://aka.ms/yaml
@@ -24,7 +20,7 @@ variables:
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
 steps:
-#- task: NuGetToolInstaller@1
+- task: NuGetToolInstaller@1
 
 #- task: NuGetCommand@2
 #  inputs:
@@ -35,6 +31,11 @@ steps:
 #    platform: 'x86'
 #    solution: '$(solution)'
 #    configuration: '$(buildConfiguration)'
+
+- task: VisualStudioTestPlatformInstaller@1
+  inputs:
+    packageFeedSelector: 'nugetOrg'
+    versionSelector: 'latestPreRelease'
 
 - task: MSBuild@1
   inputs:
