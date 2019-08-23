@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices.ComTypes;
+//using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -20,11 +20,29 @@ namespace tclap.test
           Arguments = arguments,
           RedirectStandardInput = true,
           RedirectStandardOutput = true,
+          RedirectStandardError = true,
           UseShellExecute = false
         };
         p.StartInfo = desc;
         p.Start();
-        return p.StandardOutput.ReadLine();
+        var output = p.StandardOutput.ReadLine();
+
+        if (null == output)
+        {
+          output = p.StandardError.ReadLine();
+        }
+
+        if (null == output)
+        {
+          output = string.Empty;
+        }
+
+        if (output.StartsWith("PARSE ERROR"))
+        {
+          // TODO Check the while multiline text
+          output = "PARSE ERROR ...";
+        }
+        return output;
       }
     }
 
@@ -55,7 +73,9 @@ namespace tclap.test
         var testHelper = string.Empty;
         var testArgs = string.Empty;
         var expectedOutput = string.Empty;
+        var isInconclusive = false;
 
+        // Exceptional test scripts, which do not match the pattern below
         if (testScriptFile.EndsWith("testCheck.sh"))
         {
           continue;
@@ -66,10 +86,19 @@ namespace tclap.test
           string line;
           while ((line = stream.ReadLine()) != null)
           {
-            var matches = Regex.Matches(line, @"(test\d+) .*(-.+$)");
-            if (0 < matches.Count && 2 < matches[0].Groups.Count)
+            var matches = Regex.Matches(line, @"(test\d+)(?:\s?$| .*?(?:([-~\/].+$)|>.*$))");
+            if (0 < matches.Count && 1 < matches[0].Groups.Count)
             {
               testHelper = matches[0].Groups[1].Value;
+              var helperMatches = Regex.Matches(testHelper, "test[1-8]$");
+              if (0 == helperMatches.Count)
+              {
+                // TODO Only tests using the first 8 helper programs are supported yet
+                isInconclusive = true;
+              }
+            }
+            if (0 < matches.Count && 2 < matches[0].Groups.Count)
+            {
               testArgs = matches[0].Groups[2].Value;
             }
           }
@@ -79,9 +108,22 @@ namespace tclap.test
         using (var stream = new StreamReader(testOutFile))
         {
           expectedOutput = stream.ReadLine();
+          if (expectedOutput.StartsWith("PARSE ERROR"))
+          {
+            // TODO Compare the whole multiline text
+            expectedOutput = "PARSE ERROR ...";
+          }
         }
 
-        yield return new[] { testHelper, testArgs, expectedOutput };
+        if (isInconclusive)
+        {
+          yield return new[] { "Inconclusive", "", "" };
+        }
+        else
+        {
+          yield return new[] { testHelper, testArgs, expectedOutput };
+        }
+        isInconclusive = false;
       }
     }
 
@@ -89,6 +131,11 @@ namespace tclap.test
     [DynamicData(nameof(GetExamplesData), DynamicDataSourceType.Method)]
     public void TestExamples(string testHelper, string testArgs, string expectedOutput)
     {
+      if ("Inconclusive" == testHelper)
+      {
+        Assert.Inconclusive("Only tests using the first 8 helper programs are supported yet");
+      }
+
       var testProg = @"..\..\..\examples\Release\" + testHelper + ".exe";
       var testOutput = RunProcess(testProg, testArgs);
       Assert.AreEqual(expectedOutput, testOutput,
