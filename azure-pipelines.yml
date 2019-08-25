@@ -22,6 +22,12 @@ variables:
 steps:
 - task: NuGetToolInstaller@1
 
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: 'msc/*.sln'
+    #feedsToUse: 'select'
+
 #- task: NuGetCommand@2
 #  inputs:
 #    restoreSolution: '$(solution)'
