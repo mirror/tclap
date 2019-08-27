@@ -18,3 +18,16 @@ test:
   assemblies:
     only:
     - msc\test\bin\Release\tclap.test.dll
+before_deploy:
+- ps: Compress-Archive -Force -Path include -DestinationPath tclap-include.zip
+deploy:
+- provider: BinTray
+  username: salchint
+  api_key:
+    secure: 9O8IbiaO8ClOoN88xpPPeVMI6cr7pyP397cZnWkoVlSK1rgK1tubuHcVBuGckAZF
+  subject: salchint
+  repo: tclap
+  package: tclap
+  artifact: tcalp-include.zip
+  publish: true
+  override: true
