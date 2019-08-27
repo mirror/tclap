@@ -7,8 +7,6 @@ branches:
 configuration: Release
 platform:
 - x86
-- x64
-- Any CPU
 before_build:
 - ps: >-
       nuget restore msc/tclap-beta.sln
