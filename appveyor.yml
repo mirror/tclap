@@ -18,8 +18,10 @@ test:
   assemblies:
     only:
     - msc\test\bin\Release\tclap.test.dll
-before_deploy:
+after_test:
 - ps: Compress-Archive -Force -Path include -DestinationPath tclap-include.zip
+artifacts:
+- path: tclap-include.zip
 deploy:
 - provider: BinTray
   username: salchint
