@@ -1,4 +1,4 @@
-TCLAP - Templatized Command Line Argument Parser
+# TCLAP - Templatized Command Line Argument Parser
 
 [![Build status](https://ci.appveyor.com/api/projects/status/t29pcolgkin1q4b8/branch/master?svg=true)](https://ci.appveyor.com/project/salchint/tclap/branch/master)
 
