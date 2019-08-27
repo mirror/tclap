@@ -30,6 +30,6 @@ deploy:
   subject: salchint
   repo: tclap
   package: tclap
-  artifact: tcalp-include.zip
+  artifact: /.*\.zip/
   publish: true
   override: true
