@@ -1,0 +1,22 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+branches:
+  only:
+    - master
+    - feat/*
+configuration: Release
+platform:
+- x86
+- x64
+- Any CPU
+before_build:
+- ps: >-
+      nuget restore msc/tclap-beta.sln
+build:
+  project: msc/tclap-beta.sln
+  parallel: true
+  verbosity: normal
+test:
+  assemblies:
+    only:
+    - msc\test\bin\Release\tclap.test.dll
