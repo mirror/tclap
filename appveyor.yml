@@ -13,8 +13,7 @@ platform:
   - x86
 
 before_build:
-  - ps: >-
-    nuget restore msc/tclap-beta.sln
+  - ps: nuget restore msc/tclap-beta.sln
 
 build:
   project: msc/tclap-beta.sln
