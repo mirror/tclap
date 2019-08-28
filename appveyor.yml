@@ -6,6 +6,7 @@ branches:
   only:
     - master
     - /feat\/.*/
+    - /hf\/.*/
 
 configuration: Release
 
@@ -26,16 +27,16 @@ test:
       - msc\test\bin\Release\tclap.test.dll
 
 after_test:
-  - ps: Compress-Archive -Force -Path include -DestinationPath tclap-include_{version}.zip
+  - ps: Compress-Archive -Force -Path include -DestinationPath tclap-include_$env:APPVEYOR_BUILD_VERSION.zip
 
 artifacts:
-  - path: tclap-include_{version}.zip
+  - path: tclap-include_$env:APPVEYOR_BUILD_VERSION.zip
 
 deploy:
   - provider: BinTray
     username: salchint
     api_key:
-      secure: 9O8IbiaO8ClOoN88xpPPeVMI6cr7pyP397cZnWkoVlSK1rgK1tubuHcVBuGckAZF
+      secure: YKbIlMo0us19wyFS4O0DFqm5WGHRpVpE92utaOep5F9SmeSGVnRctPAkiXuvluViPVhu4ur0evYPHwz4VCmDuCK8u5bHhMIR4X4h4fJNtZE=
     subject: salchint
     repo: tclap
     package: tclap
