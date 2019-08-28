@@ -30,16 +30,17 @@ after_test:
   - ps: Compress-Archive -Force -Path include -DestinationPath tclap-include_$env:APPVEYOR_BUILD_VERSION.zip
 
 artifacts:
-  - path: tclap-include_$env:APPVEYOR_BUILD_VERSION.zip
+  - path: tclap-include_$(APPVEYOR_BUILD_VERSION).zip
 
 deploy:
   - provider: BinTray
     username: salchint
     api_key:
-      secure: YKbIlMo0us19wyFS4O0DFqm5WGHRpVpE92utaOep5F9SmeSGVnRctPAkiXuvluViPVhu4ur0evYPHwz4VCmDuCK8u5bHhMIR4X4h4fJNtZE=
+      secure: e+XJ/CLKhXIFu9dxngMS1D2L1T+mSCHecvIV/O/2Sb0LCMBWer7zGDsTZFFqyIey
     subject: salchint
     repo: tclap
     package: tclap
     artifact: /.*\.zip/
     publish: true
     override: true
+
