@@ -2,6 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/t29pcolgkin1q4b8/branch/master?svg=true)](https://ci.appveyor.com/project/salchint/tclap/branch/master)
 [ ![Download](https://api.bintray.com/packages/salchint/tclap/tclap/images/download.svg) ](https://bintray.com/salchint/tclap/tclap/_latestVersion)
+[![Build Status](https://dev.azure.com/salchint/tclap/_apis/build/status/salchint.tclap?branchName=master)](https://dev.azure.com/salchint/tclap/_build/latest?definitionId=1&branchName=master)
 
 This is a simple C++ library that facilitates parsing command line
 arguments in a type independent manner. It doesn't conform exactly
