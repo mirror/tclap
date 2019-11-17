@@ -173,7 +173,9 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * Returns the a long id string.  Used in the usage.
 		 * \param val - value to be used.
 		 */
-		virtual std::string longID(const std::string& val="val") const;
+        virtual std::string longID(const std::string&) const {
+            return Arg::getName() + " (accepted multiple times)";
+        }
 
 		/**
 		 * Operator ==.
@@ -273,13 +275,6 @@ bool UnlabeledMultiArg<T>::processArg(int *i, std::vector<std::string>& args)
     _setBy = args[*i];
 
 	return true;
-}
-
-template<class T>
-std::string UnlabeledMultiArg<T>::longID(const std::string& val) const
-{
-	static_cast<void>(val); // Ignore input, don't warn
-	return std::string("<") + _typeDesc + ">  (accepted multiple times)";
 }
 
 template<class T>

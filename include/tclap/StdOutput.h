@@ -409,6 +409,7 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 	std::string message = _cmd.getMessage();
 	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
 
+    std::list<Arg*> unlabled;
 	for (std::list<ArgGroup*>::iterator sit = argSets.begin();
 		 sit != argSets.end(); ++sit) {
         ArgGroup &argGroup = **sit;
@@ -425,6 +426,11 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 				continue;
 			}
 
+            if (!arg.hasLabel()) {
+                unlabled.push_back(&arg);
+                continue;
+            }
+
             if (exclusive) {
                 spacePrint( os, arg.longID(), 75, 6, 3 );
                 spacePrint( os, arg.getDescription(), 75, 8, 0 );
@@ -432,17 +438,22 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
                 spacePrint( os, arg.longID(), 75, 3, 0 );
                 spacePrint( os, arg.getDescription(), 75, 5, 0 );
             }
-            os << std::endl;
+            os << '\n';
 		}
-        // if desc?
-        // os << std::endl;  
 	}
 
-	os << std::endl;
+    for (ArgListIterator it = unlabled.begin(); it != unlabled.end(); ++it) {
+        const Arg &arg = **it;
+        spacePrint( os, arg.longID(), 75, 3, 0 );
+        spacePrint( os, arg.getDescription(), 75, 5, 0 );
+        os << '\n';
+    }
 
     if (!message.empty()) {
         spacePrint( os, message, 75, 3, 0 );
     }
+
+    os.flush();
 }
 
 inline void StdOutput::spacePrint( std::ostream& os, 

@@ -197,7 +197,9 @@ class UnlabeledValueArg : public ValueArg<T>
 		/**
 		 * Overrides longID for specific behavior.
 		 */
-		virtual std::string longID(const std::string& val="val") const;
+        virtual std::string longID(const std::string&) const {
+            return Arg::getName();
+        }
 
 		/**
 		 * Overrides operator== for specific behavior.
@@ -300,20 +302,6 @@ bool UnlabeledValueArg<T>::processArg(int *i, std::vector<std::string>& args)
 	_alreadySet = true;
     _setBy = args[*i];
 	return true;
-}
-
-/**
- * Overriding longID for specific output.
- */
-template<class T>
-std::string UnlabeledValueArg<T>::longID(const std::string& val) const
-{
-	static_cast<void>(val); // Ignore input, don't warn
-
-	// Ideally we would like to be able to use RTTI to return the name
-	// of the type required for this argument.  However, g++ at least, 
-	// doesn't appear to return terribly useful "names" of the types.  
-	return std::string("<") + _typeDesc + ">";
 }
 
 /**
