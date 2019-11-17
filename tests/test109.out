@@ -1,5 +1,5 @@
 
 USAGE: 
 
-   ../examples/test41  [-aDde] [-b <int>] [-m <str>] [--]
-                       [--version] [-h] <int> <str> <int> ...
+   ../examples/test41  [-aDdeh] [--version] [-b b_arg] [-m m_arg] req1 req2
+                       [opt1 ...]

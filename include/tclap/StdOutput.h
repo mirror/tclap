@@ -163,107 +163,252 @@ inline void removeChar( std::string& s, char r)
 	}
 }
 
+inline bool cmpSwitch(const char &a, const char &b) {
+    int lowa = std::tolower(a);
+    int lowb = std::tolower(b);
+
+    if (lowa == lowb) {
+        return a < b;
+    }
+
+    return lowa < lowb;
+}
+
+namespace {
+inline bool IsVisibleShortSwitch(const Arg &arg) {
+    return !(arg.getName() == Arg::ignoreNameString() || arg.isValueRequired()
+             || arg.getFlag() == "") && arg.visibleInHelp();
+}
+
+inline bool IsVisibleLongSwitch(const Arg &arg) {
+    return (arg.getName() != Arg::ignoreNameString()
+            && !arg.isValueRequired()
+            && arg.getFlag() == ""
+            && arg.visibleInHelp());
+}
+
+inline bool IsVisibleOption(const Arg &arg) {
+    return (arg.getName() != Arg::ignoreNameString()
+            && arg.isValueRequired()
+            && arg.hasLabel()
+            && arg.visibleInHelp());
+}
+
+inline bool CompareShortID(const Arg *a, const Arg *b) {
+    return a->shortID() < b->shortID();
+}
+
+inline bool CompareOptions(const Arg *a, const Arg *b) {
+    // First optional, then required
+    if (!a->isRequired() && b->isRequired()) {
+        return true;
+    }
+    if (a->isRequired() && !b->isRequired()) {
+        return false;
+    }
+
+    return CompareShortID(a, b);
+}
+
+}
+
+/**
+ * Usage statements should look like the manual pages.  Options w/o
+ * operands come first, in alphabetical order inside a single set of
+ * braces, upper case before lower case (AaBbCc...).  Next are options
+ * with operands, in the same order, each in braces.  Then required
+ * arguments in the order they are specified, followed by optional
+ * arguments in the order they are specified.  A bar (`|') separates
+ * either/or options/arguments, and multiple options/arguments which
+ * are specified together are placed in a single set of braces.
+ *
+ * Use getprogname() instead of hardcoding the program name.
+ *
+ * "usage: f [-aDde] [-b b_arg] [-m m_arg] req1 req2 [opt1 [opt2]]\n"
+ * "usage: f [-a | -b] [-c [-de] [-n number]]\n"
+ */
 inline void
 StdOutput::_shortUsage( CmdLineInterface& _cmd,
 						std::ostream& os ) const {
-	std::list<Arg*> argList = _cmd.getArgList();
+    //"usage: f [-aDde] [-b b_arg] [-m m_arg] req1 req2 [opt1 [opt2]]"
 	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
-	removeArgsInArgGroups(argList, argSets);
 
-	std::string progName = _cmd.getProgramName();
-	std::string s = progName + " ";
+    std::ostringstream outp;
+	outp << _cmd.getProgramName() + " ";
 
-	// First the ArgGroups
+    std::string switches = Arg::flagStartString();
+
+	std::list<ArgGroup*> exclusiveGroups;
+	std::list<ArgGroup*> nonExclusiveGroups;
 	for (std::list<ArgGroup*>::iterator sit = argSets.begin();
 		 sit != argSets.end(); ++sit) {
-		// TODO(macbishop): This should be refactored and simplified
-		// so we don't have to repeat the logic everywhere (same in
-		// _longUsage).
-		int visible = CountVisibleArgs(**sit);
-		if (visible > 1) {
-			s += (*sit)->isRequired() ? " {" : " [";
-		}
+        if (CountVisibleArgs(**sit) <= 0) {
+            continue;
+        }
+
+        if ((*sit)->isExclusive()) {
+            exclusiveGroups.push_back(*sit);
+        } else {
+            nonExclusiveGroups.push_back(*sit);
+        }
+    }
+    
+    // First short switches
+	for (std::list<ArgGroup*>::iterator sit = nonExclusiveGroups.begin();
+		 sit != nonExclusiveGroups.end(); ++sit) {
+		for (ArgGroup::iterator it = (*sit)->begin();
+             it != (*sit)->end(); ++it) {
+            if (IsVisibleShortSwitch(**it)) {
+                switches += (*it)->getFlag();
+            }
+        }
+
+        std::sort(switches.begin(), switches.end(), cmpSwitch);
+    }
+
+    outp << " [" << switches << ']';
+
+    // Now do long switches (e.g., --version, but no -v)
+    std::vector<Arg*> longSwitches;
+	for (std::list<ArgGroup*>::iterator sit = nonExclusiveGroups.begin();
+		 sit != nonExclusiveGroups.end(); ++sit) {
 		for (ArgGroup::iterator it = (*sit)->begin();
 			 it != (*sit)->end(); ++it) {
-			if (!(*it)->visibleInHelp()) {
-				continue;
-			}
-
-			if (visible == 1) {
-				argList.push_front(*it);
-				continue;
-			}
-
-			std::string id = (*it)->shortID();
-			removeChar(id,'[');
-			removeChar(id,']');
-			s += id + "|";
-		}
-		if (visible > 1) {
-			s[s.length()-1] = (*sit)->isRequired() ? '}' : ']';
-		}
-	}
-
-	// then the rest
-	for (ArgListIterator it = argList.begin(); it != argList.end(); it++) {
-		if ((*it)->visibleInHelp()) {
-			s += " " + (*it)->shortID();
+            Arg &arg = **it;
+            if (IsVisibleLongSwitch(arg)) {
+                longSwitches.push_back(&arg);
+            }
         }
     }
 
+    std::sort(longSwitches.begin(), longSwitches.end(), CompareShortID);
+    for (std::vector<Arg*>::const_iterator it = longSwitches.begin();
+         it != longSwitches.end(); ++it) {
+        outp << " [" << (**it).shortID() << ']';
+    }
+
+    // Now do all exclusive groups
+	for (std::list<ArgGroup*>::iterator sit = exclusiveGroups.begin();
+		 sit != exclusiveGroups.end(); ++sit) {
+        ArgGroup &argGroup = **sit;
+        outp << (argGroup.isRequired() ? " {" : " [");
+
+        std::vector<Arg*> args;
+		for (ArgGroup::iterator it = argGroup.begin();
+			 it != argGroup.end(); ++it) {
+            args.push_back(*it);
+        }
+        
+        std::sort(args.begin(), args.end(), CompareShortID);
+        std::string sep = "";
+        for (std::vector<Arg*>::const_iterator it = args.begin();
+             it != args.end(); ++it) {
+            outp << sep << (**it).shortID();
+            sep = "|";         
+        }
+
+        outp << (argGroup.isRequired() ? '}' : ']');
+    }    
+
+    // Next do optional options
+    std::vector<Arg*> options;
+	for (std::list<ArgGroup*>::iterator sit = nonExclusiveGroups.begin();
+		 sit != nonExclusiveGroups.end(); ++sit) {
+		for (ArgGroup::iterator it = (*sit)->begin();
+			 it != (*sit)->end(); ++it) {
+            if (IsVisibleOption(**it)) {
+                options.push_back(*it);
+            }
+        }
+	}
+
+    std::sort(options.begin(), options.end(), CompareOptions);
+    for (std::vector<Arg*>::const_iterator it = options.begin();
+         it != options.end(); ++it) {
+        Arg &arg = **it;
+        if (arg.getFlag() == "") {
+            outp << (arg.isRequired() ? " " : " [");
+            outp << arg.shortID();
+            outp << (arg.isRequired() ? "" : "]");
+        } else {
+            outp << (arg.isRequired() ? " " : " [");
+            outp << arg.shortID();
+            outp << (arg.isRequired() ? "" : "]");
+        }
+    }
+
+    // Next do argsuments ("unlabled") in order of definition
+	for (std::list<ArgGroup*>::iterator sit = nonExclusiveGroups.begin();
+		 sit != nonExclusiveGroups.end(); ++sit) {
+		for (ArgGroup::iterator it = (*sit)->begin();
+			 it != (*sit)->end(); ++it) {
+            Arg &arg = **it;
+            if (arg.getName() == Arg::ignoreNameString()) {
+                continue;
+            }
+
+            if (arg.isValueRequired() && !arg.hasLabel() && arg.visibleInHelp()) {
+                if (arg.getFlag() == "") {
+                    outp << (arg.isRequired() ? " " : " [");
+                    outp << arg.shortID();
+                    outp << (arg.isRequired() ? "" : "]");
+                } else {
+                    outp << (arg.isRequired() ? " " : " [");
+                    outp << arg.shortID();
+                    outp << (arg.isRequired() ? "" : "]");
+                }
+            }
+        }
+	}
+
 	// if the program name is too long, then adjust the second line offset 
-	int secondLineOffset = static_cast<int>(progName.length()) + 2;
+	int secondLineOffset = static_cast<int>(_cmd.getProgramName().length()) + 2;
 	if ( secondLineOffset > 75/2 )
 		secondLineOffset = static_cast<int>(75/2);
 
-	spacePrint( os, s, 75, 3, secondLineOffset );
+	spacePrint( os, outp.str(), 75, 3, secondLineOffset );
 }
 
 inline void
 StdOutput::_longUsage( CmdLineInterface& _cmd, 
 					   std::ostream& os ) const
 {
-	std::list<Arg*> argList = _cmd.getArgList();
 	std::string message = _cmd.getMessage();
 	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
-	removeArgsInArgGroups(argList, argSets);
 
 	// First the ArgGroups
 	for (std::list<ArgGroup*>::iterator sit = argSets.begin();
 		 sit != argSets.end(); ++sit) {
-		int visible = CountVisibleArgs(**sit);
+        ArgGroup &argGroup = **sit;
 
-		const char *desc = (*sit)->isRequired() ? "One of:" : "Either of:";
-		if (visible > 1) {
+		int visible = CountVisibleArgs(argGroup);        
+		const char *desc = 0;
+        if (argGroup.isExclusive()) {
+            desc = argGroup.isRequired() ? "One of:" : "Either of";
+        }        
+		if (visible > 1 && desc) {
 			spacePrint(os, desc, 75, 3, 0);
 		}
-		for (ArgGroup::iterator it = (*sit)->begin();
-			 it != (*sit)->end(); ++it) {
-			if (!(*it)->visibleInHelp()) {
+
+		for (ArgGroup::iterator it = argGroup.begin();
+			 it != argGroup.end(); ++it) {
+            Arg &arg = **it;
+			if (!arg.visibleInHelp()) {
 				continue;
 			}
 
-			if (visible == 1) {
-				argList.push_front(*it);
-				continue;
-			}
-
-			spacePrint( os, (*it)->longID(), 75, 6, 3 );
-			spacePrint( os, (*it)->getDescription(), 75, 8, 0 );
-		}
-		if (visible > 1) {
+            if (desc) {
+                spacePrint( os, arg.longID(), 75, 6, 3 );
+                spacePrint( os, arg.getDescription(), 75, 8, 0 );
+            } else {
+                spacePrint( os, arg.longID(), 75, 3, 0 );
+                spacePrint( os, arg.getDescription(), 75, 5, 0 );
+            }
             os << std::endl;
-        }
-	}
-
-	// then the rest
-	for (ArgListIterator it = argList.begin(); it != argList.end(); it++) {
-		if ((*it)->visibleInHelp()) {
-			spacePrint( os, (*it)->longID(), 75, 3, 3 );
-			spacePrint( os, (*it)->getDescription(), 75, 5, 0 );
-			os << std::endl;
 		}
-    }
+        // if desc?
+        // os << std::endl;  
+	}
 
 	os << std::endl;
 

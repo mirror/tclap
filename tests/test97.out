@@ -2,7 +2,7 @@ PARSE ERROR: Argument: -b AND -s provided.
              Only one is allowed.
 
 Brief USAGE: 
-   ../examples/test32  {-a <int>|-b <int>|-s <str>} [--] [--version] [-h]
+   ../examples/test32  [-h] [--version] {-a int|-b int|-s str}
 
 For complete USAGE and HELP type: 
    ../examples/test32 --help

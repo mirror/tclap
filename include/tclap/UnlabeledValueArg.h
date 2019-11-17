@@ -190,7 +190,9 @@ class UnlabeledValueArg : public ValueArg<T>
 		/**
 		 * Overrides shortID for specific behavior.
 		 */
-		virtual std::string shortID(const std::string& val="val") const;
+        virtual std::string shortID(const std::string&) const {
+            return Arg::getName();
+        }
 
 		/**
 		 * Overrides longID for specific behavior.
@@ -208,6 +210,7 @@ class UnlabeledValueArg : public ValueArg<T>
 		 */
 		virtual void addToList( std::list<Arg*>& argList ) const;
 
+        virtual bool hasLabel() const { return false; }
 };
 
 /**
@@ -297,16 +300,6 @@ bool UnlabeledValueArg<T>::processArg(int *i, std::vector<std::string>& args)
 	_alreadySet = true;
     _setBy = args[*i];
 	return true;
-}
-
-/**
- * Overriding shortID for specific output.
- */
-template<class T>
-std::string UnlabeledValueArg<T>::shortID(const std::string& val) const
-{
-	static_cast<void>(val); // Ignore input, don't warn
-	return std::string("<") + _typeDesc + ">";
 }
 
 /**

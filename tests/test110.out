@@ -1,5 +1,5 @@
 
 USAGE: 
 
-   ../examples/test42  [-a | -b] [-c [-de] [-n <int>]] [--] [--version]
-                       [-h]
+   ../examples/test42  [-cdeh] [--version] [-a | -b] {-f | --gopt} [-n
+                       number] req1

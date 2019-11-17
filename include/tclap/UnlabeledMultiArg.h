@@ -164,9 +164,10 @@ class UnlabeledMultiArg : public MultiArg<T>
 
 		/**
 		 * Returns the a short id string.  Used in the usage.
-		 * \param val - value to be used.
 		 */
-		virtual std::string shortID(const std::string& val="val") const;
+        virtual std::string shortID(const std::string&) const {
+            return Arg::getName() + " ...";
+        }
 
 		/**
 		 * Returns the a long id string.  Used in the usage.
@@ -185,6 +186,8 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * \param argList - The list this should be added to.
 		 */
 		virtual void addToList( std::list<Arg*>& argList ) const;
+
+        virtual bool hasLabel() const { return false; }
 };
 
 template<class T>
@@ -270,13 +273,6 @@ bool UnlabeledMultiArg<T>::processArg(int *i, std::vector<std::string>& args)
     _setBy = args[*i];
 
 	return true;
-}
-
-template<class T>
-std::string UnlabeledMultiArg<T>::shortID(const std::string& val) const
-{
-	static_cast<void>(val); // Ignore input, don't warn
-	return std::string("<") + _typeDesc + "> ...";
 }
 
 template<class T>

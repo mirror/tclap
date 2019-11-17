@@ -65,7 +65,12 @@ class CmdLineInterface : public ArgContainer
          * @retval A reference to this so that add calls can be chained
          */
         virtual ArgContainer& add(Arg* a)=0;
-    
+ 
+        // TODO: Rename this to something smarter or refactor this logic so
+        // it's not needed.
+        // Internal - do not use
+        virtual void addToArgList( Arg* a )=0;
+
         /**
 		 * Adds an argument group to the list of arguments to be parsed.
 		 *

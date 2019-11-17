@@ -45,10 +45,15 @@ int main(int argc, char** argv)
 
         AnyOf other(cmd);
         SwitchArg c("c", "copt", "c", other);
-        c.forceRequired(); // HACK
         SwitchArg d("d", "dopt", "d", other);
         SwitchArg e("e", "eopt", "e", other);
-        ValueArg<int> n_arg("n", "narg", "n_arg", false, 4711, "int", other);
+        ValueArg<int> n_arg("n", "narg", "n_arg", false, 4711, "number", other);
+        
+        OneOf x(cmd);
+        SwitchArg f("f", "fopt", "f", x);
+        SwitchArg g("", "gopt", "g", x);
+
+        UnlabeledValueArg<int> req1("req1", "req_1", true, 47, "int", cmd);
 
         cmd.parse(argc, argv);
         

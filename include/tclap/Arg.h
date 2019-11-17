@@ -387,6 +387,8 @@ class Arg
 		  * Returns true if this Arg is visible in the help output.
 		  */
 	     virtual bool visibleInHelp() const { return _visibleInHelp; }
+
+         virtual bool hasLabel() const { return true; }
 };
 
 /**
@@ -512,10 +514,7 @@ inline std::string Arg::shortID( const std::string& valueId ) const
 		id = Arg::nameStartString() + _name;
 
 	if ( _valueRequired )
-		id += std::string( 1, Arg::delimiter() ) + "<" + valueId  + ">";
-
-	if ( !_required )
-		id = "[" + id + "]";
+		id += std::string( 1, Arg::delimiter() ) + valueId;
 
 	return id;
 }
@@ -529,7 +528,7 @@ inline std::string Arg::longID( const std::string& valueId ) const
 		id += Arg::flagStartString() + _flag;
 
 		if ( _valueRequired )
-			id += std::string( 1, Arg::delimiter() ) + "<" + valueId + ">";
+			id += std::string( 1, Arg::delimiter() ) + valueId;
 
 		id += ",  ";
 	}
@@ -537,7 +536,7 @@ inline std::string Arg::longID( const std::string& valueId ) const
 	id += Arg::nameStartString() + _name;
 
 	if ( _valueRequired )
-		id += std::string( 1, Arg::delimiter() ) + "<" + valueId + ">";
+		id += std::string( 1, Arg::delimiter() ) + valueId;
 
 	return id;
 

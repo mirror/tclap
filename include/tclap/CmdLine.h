@@ -65,6 +65,25 @@ template<typename C> void ClearContainer(C &c)
 }
 
 
+class StandaloneArgs : public AnyOf {
+public:
+    StandaloneArgs() {}
+
+    ArgContainer &add(Arg *arg) {
+        //std::cerr << "Adding " << arg->getName() << " to StandaloneArgs\n";
+        for(iterator it = begin(); it != end(); it++) {
+            if (*arg == **it) {
+                throw SpecificationException("Argument with same flag/name already exists!",
+                                             arg->longID());
+            }
+        }
+
+        _args.push_back(arg);
+
+        return *this;
+    }
+};
+
 /**
  * The base class that manages the command line definition and passes
  * along the parsing to the appropriate Arg classes.
@@ -77,6 +96,9 @@ class CmdLine : public CmdLineInterface
 		 * command line.
 		 */
 		std::list<Arg*> _argList;
+
+        StandaloneArgs _standaloneArgs;
+        StandaloneArgs _autoArgs;  // --help, --version, etc
 
     	/**
 		 * Some args have set constraints on them (i.e., exactly or at
@@ -254,6 +276,9 @@ private:
 		 */
         ArgContainer &add(ArgGroup &args);
 
+        // Internal, do not use
+        void addToArgList( Arg* a );
+
 		/**
 		 * \deprecated Use OneOf instead.
 		 */
@@ -360,6 +385,8 @@ inline CmdLine::CmdLine(const std::string& m,
                         bool help )
     :
   _argList(),
+  _standaloneArgs(),
+  _autoArgs(),
   _argGroups(),
   _progName("not_set_yet"),
   _message(m),
@@ -397,6 +424,18 @@ inline void CmdLine::_constructor()
 	Arg::setDelimiter( _delimiter );
 
 	Visitor* v;
+    add(_standaloneArgs);
+    add(_autoArgs);
+
+	v = new IgnoreRestVisitor();
+	SwitchArg* ignore  = new SwitchArg(Arg::flagStartString(),
+	          Arg::ignoreNameString(),
+	          "Ignores the rest of the labeled arguments following this flag.",
+	          false, v);
+	deleteOnExit(ignore);
+	deleteOnExit(v);
+	_autoArgs.add( ignore );
+    addToArgList(ignore);
 
 	if ( _helpAndVersion )
 	{
@@ -404,7 +443,6 @@ inline void CmdLine::_constructor()
 		SwitchArg* help = new SwitchArg("h","help",
 		                      "Displays usage information and exits.",
 		                      false, v);
-		add( help );
 		deleteOnExit(help);
 		deleteOnExit(v);
 
@@ -412,19 +450,17 @@ inline void CmdLine::_constructor()
 		SwitchArg* vers = new SwitchArg("","version",
 		                      "Displays version information and exits.",
 		                      false, v);
-		add( vers );
 		deleteOnExit(vers);
 		deleteOnExit(v);
+
+        // A bit of a hack on the order to make tests easier to fix,
+        // to be reverted
+        _autoArgs.add( vers );
+        addToArgList(vers);
+        _autoArgs.add( help );
+        addToArgList(help);
 	}
 
-	v = new IgnoreRestVisitor();
-	SwitchArg* ignore  = new SwitchArg(Arg::flagStartString(),
-	          Arg::ignoreNameString(),
-	          "Ignores the rest of the labeled arguments following this flag.",
-	          false, v);
-	add( ignore );
-	deleteOnExit(ignore);
-	deleteOnExit(v);
 }
 
 inline void CmdLine::xorAdd( const std::vector<Arg*>& args)
@@ -450,9 +486,7 @@ inline void CmdLine::xorAdd( Arg& a, Arg& b )
 inline ArgContainer &CmdLine::add( ArgGroup& args )
 {
     args.setParser(*this);
-    if (args.isExclusive()) {
-        _argGroups.push_back(&args);
-    }
+    _argGroups.push_back(&args);
 
     return *this;
 }
@@ -462,7 +496,9 @@ inline ArgContainer &CmdLine::add( Arg& a )
 	return add( &a );
 }
 
-inline ArgContainer &CmdLine::add( Arg* a )
+// TODO: Rename this to something smarter or refactor this logic so
+// it's not needed.
+inline void CmdLine::addToArgList( Arg* a )
 {
 	for( ArgListIterator it = _argList.begin(); it != _argList.end(); it++ )
 		if ( *a == *(*it) )
@@ -474,6 +510,12 @@ inline ArgContainer &CmdLine::add( Arg* a )
 
 	if ( a->isRequired() )
 		_numRequired++;
+}
+
+inline ArgContainer &CmdLine::add( Arg* a )
+{
+    addToArgList(a);
+    _standaloneArgs.add(a);
 
     return *this;
 }

@@ -93,7 +93,7 @@ public:
 
         _parser = &parser;
         for (iterator it = begin(); it != end(); ++it) {
-            parser.add(*it);
+            parser.addToArgList(*it);
         }
     }
 
@@ -113,6 +113,7 @@ private:
     explicit ArgGroup(const ArgGroup&);
     ArgGroup& operator=(const ArgGroup&);  // no copy
 
+protected:
     CmdLineInterface *_parser;
     Container _args;
 };
@@ -171,7 +172,7 @@ public:
         parser.add(*this);
     }
 
-    bool validate() {return true; };
+    bool validate() { return false; /* All good */ };
     bool isExclusive() const { return false; }
     bool isRequired() const { return false; }
 };
@@ -186,7 +187,7 @@ inline ArgContainer &ArgGroup::add(Arg *arg) {
 
 	_args.push_back(arg);
     if (_parser) {
-        _parser->add(arg);
+        _parser->addToArgList(arg);
     }
 
 	return *this;
