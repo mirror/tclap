@@ -435,7 +435,7 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
                 spacePrint( os, arg.longID(), 75, 6, 3 );
                 spacePrint( os, arg.getDescription(), 75, 8, 0 );
             } else {
-                spacePrint( os, arg.longID(), 75, 3, 0 );
+                spacePrint( os, arg.longID(), 75, 3, 3 );
                 spacePrint( os, arg.getDescription(), 75, 5, 0 );
             }
             os << '\n';
@@ -444,7 +444,7 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 
     for (ArgListIterator it = unlabled.begin(); it != unlabled.end(); ++it) {
         const Arg &arg = **it;
-        spacePrint( os, arg.longID(), 75, 3, 0 );
+        spacePrint( os, arg.longID(), 75, 3, 3 );
         spacePrint( os, arg.getDescription(), 75, 5, 0 );
         os << '\n';
     }

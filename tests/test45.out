@@ -1,8 +1,8 @@
 
 USAGE: 
 
-   ../examples/test6  -n <homer|marge|bart|lisa|maggie> [--version]
-                      [-h] <1|2|3>
+   ../examples/test6  [-h] [--version] -n <homer|marge|bart|lisa|maggie>
+                      times
 
 
 Where: 
@@ -20,9 +20,8 @@ Where:
    -h,  --help
      Displays usage information and exits.
 
-   <1|2|3>
+   times <1|2|3>
      (required) Number of times to print
-
 
    Command description message
 

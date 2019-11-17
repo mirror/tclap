@@ -28,13 +28,13 @@ Where:
    -h,  --help
      Displays usage information and exits.
 
-   unTest1
+   unTest1 string
      (required) unlabeled test one
 
-   unTest2
+   unTest2 string
      (required) unlabeled test two
 
-   fileName (accepted multiple times)
+   fileName (accepted multiple times) fileNameString
      file names
 
    this is a message

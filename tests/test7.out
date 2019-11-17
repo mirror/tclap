@@ -34,10 +34,10 @@ Where:
    -h,  --help
      Displays usage information and exits.
 
-   unTest
+   unTest string
      (required) unlabeld test
 
-   fileName (accepted multiple times)
+   fileName (accepted multiple times) string
      file names
 
    this is a message

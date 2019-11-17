@@ -2,7 +2,6 @@ test102.sh # Docbook output not fixed after bsd style changes
 test103.sh # Docbook output not fixed after bsd style changes
 test38.sh  # Very long program name
 test39.sh  # Very long program name
-test45.sh
 test46.sh
 test54.sh
 test57.sh

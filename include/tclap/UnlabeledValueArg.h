@@ -198,7 +198,7 @@ class UnlabeledValueArg : public ValueArg<T>
 		 * Overrides longID for specific behavior.
 		 */
         virtual std::string longID(const std::string&) const {
-            return Arg::getName();
+            return Arg::getName() + " " + _typeDesc;
         }
 
 		/**
