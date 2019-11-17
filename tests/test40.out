@@ -1,7 +1,7 @@
 
 USAGE: 
 
-   ../examples/test1  [-r] -n <string> [--] [--version] [-h]
+   ../examples/test1  [-r] -n string [--version] [-h]
 
 
 Where: 
@@ -9,7 +9,7 @@ Where:
    -r,  --reverse
      Print name backwards
 
-   -n <string>,  --name <string>
+   -n string,  --name string
      (required)  Name to print
 
    --,  --ignore_rest

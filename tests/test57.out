@@ -2,9 +2,9 @@ PARSE ERROR: Argument: -i AND -j provided.
              Only one is allowed.
 
 Brief USAGE: 
-   ../examples/test5  {-a <string>|-b <string>} {--eee <string>|--fff
-                      <string>|-g <string>} {-i <string> ...|-j <string>
-                      ...} [--ddd] -c <string> [--] [--version] [-h]
+   ../examples/test5  {-a string|-b string} {--eee string|--fff
+                      string|-g string} {-i string ...|-j string
+                      ...} [--ddd] -c string [--version] [-h]
 
 For complete USAGE and HELP type: 
    ../examples/test5 --help

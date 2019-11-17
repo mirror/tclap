@@ -1,19 +1,19 @@
 
 USAGE: 
 
-   ../examples/test2  [-f <float>] -i <int> -s <string> [-A] [-C] [-B] [--]
-                      [--version] [-h] <string> <string> ...
+   ../examples/test2  [-f float] -i int -s string [-A] [-C] [-B]
+                      [--version] [-h] string string ...
 
 
 Where: 
 
-   -f <float>,  --floatTest <float>
+   -f float,  --floatTest float
      float test
 
-   -i <int>,  --intTest <int>
+   -i int,  --intTest int
      (required)  integer test
 
-   -s <string>,  --stringTest <string>
+   -s string,  --stringTest string
      (required)  string test
 
    -A,  --existTestA
@@ -34,10 +34,10 @@ Where:
    -h,  --help
      Displays usage information and exits.
 
-   <string>
+   string
      (required)  unlabeld test
 
-   <string>  (accepted multiple times)
+   string  (accepted multiple times)
      file names
 
 

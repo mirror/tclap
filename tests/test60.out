@@ -4,7 +4,7 @@ PARSE ERROR: Argument: -r (--reverse)
 
 USAGE: 
 
-   ../examples/test9  [-N] ... [-V] ... [-r] [--] <won't see this>
+   ../examples/test9  [-N] ... [-V] ... [-r] <won't see this>
 
 
 Where: 

@@ -1,17 +1,17 @@
 
 USAGE: 
 
-   ../examples/test29  [-a <int>|-b <int>|-s <str>] [--] [--version] [-h]
+   ../examples/test29  [-a int|-b int|-s str] [--version] [-h]
 
 
 Where: 
 
    Either of:
-      -a <int>,  --a_int <int>
+      -a int,  --a_int int
         first int arg
-      -b <int>,  --b_int <int>
+      -b int,  --b_int int
         second int arg
-      -s <str>,  --str <str>
+      -s str,  --str str
         string arg
 
    --,  --ignore_rest

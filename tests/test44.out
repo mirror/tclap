@@ -1,37 +1,37 @@
 
 USAGE: 
 
-   ../examples/test5  {-a <string>|-b <string>} {--eee <string>|--fff
-                      <string>|-g <string>} {-i <string> ...|-j <string>
-                      ...} [--ddd] -c <string> [--] [--version] [-h]
+   ../examples/test5  {-a string|-b string} {--eee string|--fff
+                      string|-g string} {-i string ...|-j string
+                      ...} [--ddd] -c string [--version] [-h]
 
 
 Where: 
 
    One of:
-      -a <string>,  --aaa <string>
+      -a string,  --aaa string
         or test a
-      -b <string>,  --bbb <string>
+      -b string,  --bbb string
         or test b
 
    One of:
-      --eee <string>
+      --eee string
         e test
-      --fff <string>
+      --fff string
         f test
-      -g <string>,  --ggg <string>
+      -g string,  --ggg string
         g test
 
    One of:
-      -i <string>,  --iii <string>  (accepted multiple times)
+      -i string,  --iii string  (accepted multiple times)
         or test i
-      -j <string>,  --jjj <string>  (accepted multiple times)
+      -j string,  --jjj string  (accepted multiple times)
         or test j
 
    --ddd
      d test
 
-   -c <string>,  --ccc <string>
+   -c string,  --ccc string
      (required)  c test
 
    --,  --ignore_rest

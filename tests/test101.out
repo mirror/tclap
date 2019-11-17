@@ -1,15 +1,15 @@
 
 USAGE: 
 
-   ../examples/test35  [-c <int>] [-a <int>] [--] [--version] [-h]
+   ../examples/test35  [-c int] [-a int] [--version] [-h]
 
 
 Where: 
 
-   -c <int>,  --c_int <int>
+   -c int,  --c_int int
      int arg
 
-   -a <int>,  --a_int <int>
+   -a int,  --a_int int
      int arg
 
    --,  --ignore_rest

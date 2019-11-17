@@ -1,7 +1,7 @@
 
 USAGE: 
 
-   ../examples/test6  -n <homer|marge|bart|lisa|maggie> [--] [--version]
+   ../examples/test6  -n <homer|marge|bart|lisa|maggie> [--version]
                       [-h] <1|2|3>
 
 

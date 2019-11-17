@@ -2,7 +2,7 @@ PARSE ERROR:
              Required argument missing: vect
 
 Brief USAGE: 
-   ../examples/test12  -v <3D vector> ... [--] [--version] [-h]
+   ../examples/test12  -v <3D vector> ... [--version] [-h]
 
 For complete USAGE and HELP type: 
    ../examples/test12 --help

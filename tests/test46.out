@@ -3,18 +3,18 @@ USAGE:
 
    ThisIsAVeryLongProgramNameDesignedToTestSpacePrintWhichUsedToHaveProblem
                                         sWithLongProgramNamesIThinkItIsNowL
-                                        ongEnough  [-l <int>] [-u <float
+                                        ongEnough  [-l int] [-u <float
                                         lte 1>] [-b <float lte 1>] [-z
                                         <filename>] [-x <filename>] [-s
                                         <name string>] [-d] [-g <negative
                                         int>] [-f <negative int>] -n <homer
-                                        |marge|bart|lisa|maggie> ... [--]
+                                        |marge|bart|lisa|maggie> ...
                                         [--version] [-h] <1|2|3> ...
 
 
 Where: 
 
-   -l <int>,  --limit <int>
+   -l int,  --limit int
      Max number of alignments allowed
 
    -u <float lte 1>,  --upperBound <float lte 1>
