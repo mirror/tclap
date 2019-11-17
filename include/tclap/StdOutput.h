@@ -409,18 +409,13 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 	std::string message = _cmd.getMessage();
 	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
 
-	// First the ArgGroups
 	for (std::list<ArgGroup*>::iterator sit = argSets.begin();
 		 sit != argSets.end(); ++sit) {
         ArgGroup &argGroup = **sit;
 
-		int visible = CountVisibleArgs(argGroup);        
-		const char *desc = 0;
-        if (visible > 1 && argGroup.isExclusive()) {
-            desc = argGroup.isRequired() ? "One of:" : "Either of";
-        }        
-		if (desc) {
-			spacePrint(os, desc, 75, 3, 0);
+        bool exclusive = CountVisibleArgs(argGroup) > 1 && argGroup.isExclusive();
+        if (exclusive) {
+			spacePrint(os, argGroup.isRequired() ? "One of:" : "Either of", 75, 3, 0);
 		}
 
 		for (ArgGroup::iterator it = argGroup.begin();
@@ -430,7 +425,7 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 				continue;
 			}
 
-            if (desc) {
+            if (exclusive) {
                 spacePrint( os, arg.longID(), 75, 6, 3 );
                 spacePrint( os, arg.getDescription(), 75, 8, 0 );
             } else {
@@ -445,8 +440,9 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 
 	os << std::endl;
 
-    // TODO: where should message go?
-	// spacePrint( os, message, 75, 3, 0 );
+    if (!message.empty()) {
+        spacePrint( os, message, 75, 3, 0 );
+    }
 }
 
 inline void StdOutput::spacePrint( std::ostream& os, 
