@@ -1,29 +1,29 @@
 
 USAGE: 
 
-   ../examples/test2  [-f float] -i int -s string [-A] [-C] [-B]
-                      [--version] [-h] string string ...
+   ../examples/test2  [-ABCh] [--version] [-f float] -i int -s string
+                      unTest [fileName ...]
 
 
 Where: 
 
-   -f float,  --floatTest float
-     float test
-
-   -i int,  --intTest int
-     (required) integer test
-
-   -s string,  --stringTest string
-     (required) string test
-
-   -A,  --existTestA
-     tests for the existence of A
+   -B,  --existTestB
+     tests for the existence of B
 
    -C,  --existTestC
      tests for the existence of C
 
-   -B,  --existTestB
-     tests for the existence of B
+   -A,  --existTestA
+     tests for the existence of A
+
+   -s string,  --stringTest string
+     (required) string test
+
+   -i int,  --intTest int
+     (required) integer test
+
+   -f float,  --floatTest float
+     float test
 
    --,  --ignore_rest
      Ignores the rest of the labeled arguments following this flag.
@@ -34,12 +34,11 @@ Where:
    -h,  --help
      Displays usage information and exits.
 
-   string
+   unTest
      (required) unlabeld test
 
-   string  (accepted multiple times)
+   fileName (accepted multiple times)
      file names
-
 
    this is a message
 

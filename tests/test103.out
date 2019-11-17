@@ -39,7 +39,7 @@
 </term>
 <listitem>
 <para>
-(required)  int arg
+(required) int arg
 </para>
 </listitem>
 </varlistentry>
