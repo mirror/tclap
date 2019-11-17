@@ -15,7 +15,7 @@ Where:
      multi int test
 
    -s=string,  --stringTest=string
-     (required)  string test
+     (required) string test
 
    -B,  --existTestB
      exist Test B
@@ -30,10 +30,10 @@ Where:
      Displays usage information and exits.
 
    string
-     (required)  unlabeled test one
+     (required) unlabeled test one
 
    string
-     (required)  unlabeled test two
+     (required) unlabeled test two
 
    <fileNameString>  (accepted multiple times)
      file names

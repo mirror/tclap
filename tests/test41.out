@@ -11,10 +11,10 @@ Where:
      float test
 
    -i int,  --intTest int
-     (required)  integer test
+     (required) integer test
 
    -s string,  --stringTest string
-     (required)  string test
+     (required) string test
 
    -A,  --existTestA
      tests for the existence of A
@@ -35,7 +35,7 @@ Where:
      Displays usage information and exits.
 
    string
-     (required)  unlabeld test
+     (required) unlabeld test
 
    string  (accepted multiple times)
      file names

@@ -32,7 +32,7 @@ Where:
      d test
 
    -c string,  --ccc string
-     (required)  c test
+     (required) c test
 
    --,  --ignore_rest
      Ignores the rest of the labeled arguments following this flag.

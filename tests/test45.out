@@ -9,7 +9,7 @@ Where:
 
    -n <homer|marge|bart|lisa|maggie>,  --name <homer|marge|bart|lisa
       |maggie>
-     (required)  Name to print
+     (required) Name to print
 
    --,  --ignore_rest
      Ignores the rest of the labeled arguments following this flag.
@@ -21,7 +21,7 @@ Where:
      Displays usage information and exits.
 
    <1|2|3>
-     (required)  Number of times to print
+     (required) Number of times to print
 
 
    Command description message
