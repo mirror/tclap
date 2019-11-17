@@ -1,7 +1,5 @@
 test102.sh # Docbook output not fixed after bsd style changes
 test103.sh # Docbook output not fixed after bsd style changes
-test35.sh
-test36.sh
 test38.sh
 test39.sh
 test40.sh

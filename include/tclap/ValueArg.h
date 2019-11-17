@@ -321,8 +321,7 @@ ValueArg<T>::ValueArg(const std::string& flag,
   : Arg(flag, name, desc, req, true, v),
     _value( val ),
     _default( val ),
-    _typeDesc( Constraint<T>::shortID(constraint) ),  // TODO(macbishop): Will crash
-    // if constraint is NULL
+    _typeDesc( Constraint<T>::shortID(constraint) ),
     _constraint( constraint )
 { 
   parser.add( this );
@@ -382,10 +381,9 @@ bool ValueArg<T>::processArg(int *i, std::vector<std::string>& args)
  * Implementation of shortID.
  */
 template<class T>
-std::string ValueArg<T>::shortID(const std::string& val) const
+std::string ValueArg<T>::shortID(const std::string&) const
 {
-  static_cast<void>(val); // Ignore input, don't warn
-  return Arg::shortID( _typeDesc ); 
+  return Arg::shortID(_typeDesc); 
 }
 
 /**
