@@ -1,13 +1,10 @@
 
 USAGE: 
 
-   ../examples/test35  [-c int] [-a int] [--version] [-h]
+   ../examples/test35  [-h] [--version] [-a int] -c int
 
 
 Where: 
-
-   -c int,  --c_int int
-     int arg
 
    -a int,  --a_int int
      int arg
@@ -21,6 +18,8 @@ Where:
    -h,  --help
      Displays usage information and exits.
 
+   -c int,  --c_int int
+     (required) int arg
 
-   
+
 

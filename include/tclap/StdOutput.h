@@ -195,9 +195,17 @@ inline bool IsVisibleOption(const Arg &arg) {
 }
 
 inline bool CompareShortID(const Arg *a, const Arg *b) {
+    if (a->getFlag() == "" && b->getFlag() != "") {
+        return false;
+    }
+    if (b->getFlag() == "" && a->getFlag() != "") {
+        return true;
+    }
+
     return a->shortID() < b->shortID();
 }
 
+// TODO: Fix me not to put --gopt before -f
 inline bool CompareOptions(const Arg *a, const Arg *b) {
     // First optional, then required
     if (!a->isRequired() && b->isRequired()) {
@@ -252,8 +260,23 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
             nonExclusiveGroups.push_back(*sit);
         }
     }
+
+    // Move "exclusive groups" that have at most a single item to
+    // non-exclusive groups as exclusivit doesn't make sense with a
+    // single option. This can happen if args are hidden in help for
+    // example.
+	for (std::list<ArgGroup*>::iterator it = exclusiveGroups.begin();
+		 it != exclusiveGroups.end();) {
+        if (CountVisibleArgs(**it) < 2) {
+            nonExclusiveGroups.push_back(*it);
+            it = exclusiveGroups.erase(it);
+        } else {
+            ++it;
+        }
+    }    
     
-    // First short switches
+    // First short switches (needs to be special because they are all
+    // stuck together).
 	for (std::list<ArgGroup*>::iterator sit = nonExclusiveGroups.begin();
 		 sit != nonExclusiveGroups.end(); ++sit) {
 		for (ArgGroup::iterator it = (*sit)->begin();
@@ -296,7 +319,9 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
         std::vector<Arg*> args;
 		for (ArgGroup::iterator it = argGroup.begin();
 			 it != argGroup.end(); ++it) {
-            args.push_back(*it);
+            if ((**it).visibleInHelp()) {
+                args.push_back(*it);
+            }
         }
         
         std::sort(args.begin(), args.end(), CompareShortID);
@@ -306,18 +331,26 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
             outp << sep << (**it).shortID();
             sep = "|";         
         }
-
+        
         outp << (argGroup.isRequired() ? '}' : ']');
     }    
 
-    // Next do optional options
+    // Next do options, we sort them later by optional first.
     std::vector<Arg*> options;
 	for (std::list<ArgGroup*>::iterator sit = nonExclusiveGroups.begin();
 		 sit != nonExclusiveGroups.end(); ++sit) {
 		for (ArgGroup::iterator it = (*sit)->begin();
 			 it != (*sit)->end(); ++it) {
-            if (IsVisibleOption(**it)) {
-                options.push_back(*it);
+            Arg &arg = **it;
+            int visible = CountVisibleArgs(**sit);
+            if (IsVisibleOption(arg)) {
+                if (visible == 1 && (**sit).isRequired()) {
+                    // A bit of a hack to make it look required if
+                    // group is required.
+                    arg.forceRequired();
+                }
+
+                options.push_back(&arg);
             }
         }
 	}
@@ -383,10 +416,10 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 
 		int visible = CountVisibleArgs(argGroup);        
 		const char *desc = 0;
-        if (argGroup.isExclusive()) {
+        if (visible > 1 && argGroup.isExclusive()) {
             desc = argGroup.isRequired() ? "One of:" : "Either of";
         }        
-		if (visible > 1 && desc) {
+		if (desc) {
 			spacePrint(os, desc, 75, 3, 0);
 		}
 
@@ -412,7 +445,8 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 
 	os << std::endl;
 
-	spacePrint( os, message, 75, 3, 0 );
+    // TODO: where should message go?
+	// spacePrint( os, message, 75, 3, 0 );
 }
 
 inline void StdOutput::spacePrint( std::ostream& os, 

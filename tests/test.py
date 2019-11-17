@@ -5,7 +5,8 @@ import subprocess
 from typing import Sequence
 
 def test(tests: Sequence[str], expected_fail: Sequence[str]) -> None:
-    expected_fail = frozenset(t.strip() for t in expected_fail)
+    expected_fail = frozenset(t.split()[0].strip() for t in expected_fail
+                              if len(t.split()) > 0)
     passing = 0
     failing = 0
     for t in tests:

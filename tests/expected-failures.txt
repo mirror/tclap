@@ -1,12 +1,5 @@
-test101.sh
-test102.sh
-test103.sh
-test11.sh
-test110.sh
-test12.sh
-test15.sh
-test16.sh
-test17.sh
+test102.sh # Docbook output not fixed after bsd style changes
+test103.sh # Docbook output not fixed after bsd style changes
 test22.sh
 test23.sh
 test24.sh
@@ -15,8 +8,6 @@ test27.sh
 test28.sh
 test29.sh
 test30.sh
-test31.sh
-test32.sh
 test35.sh
 test36.sh
 test38.sh
@@ -29,11 +20,6 @@ test43.sh
 test44.sh
 test45.sh
 test46.sh
-test49.sh
-test50.sh
-test51.sh
-test52.sh
-test53.sh
 test54.sh
 test57.sh
 test60.sh
