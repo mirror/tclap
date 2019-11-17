@@ -1,38 +1,42 @@
 
 USAGE: 
 
-   ../examples/test5  {-a string|-b string} {--eee string|--fff
-                      string|-g string} {-i string ...|-j string
-                      ...} [--ddd] -c string [--version] [-h]
+   ../examples/test5  [-h] [--ddd] [--version] {-a string|-b string} {-g
+                      string|--eee string|--fff string} {-i string ...|-j
+                      string ...} -c string
 
 
 Where: 
 
+   -c string,  --ccc string
+     (required) c test
+
+   --ddd
+     d test
+
    One of:
       -a string,  --aaa string
         or test a
+
       -b string,  --bbb string
         or test b
 
    One of:
       --eee string
         e test
+
       --fff string
         f test
+
       -g string,  --ggg string
         g test
 
    One of:
       -i string,  --iii string  (accepted multiple times)
         or test i
+
       -j string,  --jjj string  (accepted multiple times)
         or test j
-
-   --ddd
-     d test
-
-   -c string,  --ccc string
-     (required) c test
 
    --,  --ignore_rest
      Ignores the rest of the labeled arguments following this flag.
