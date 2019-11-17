@@ -328,7 +328,11 @@ private:
 		 */
 		std::list<Arg*>& getArgList();
 
-    	std::list<ArgGroup*>& getArgGroups() { return _argGroups; }
+    	std::list<ArgGroup*> getArgGroups() {
+            std::list<ArgGroup*> groups = _argGroups;
+            groups.push_back(&_autoArgs);
+            return groups;
+        }
 
 		/**
 		 *
@@ -425,7 +429,8 @@ inline void CmdLine::_constructor()
 
 	Visitor* v;
     add(_standaloneArgs);
-    add(_autoArgs);
+    _autoArgs.setParser(*this);
+    //add(_autoArgs);
 
 	v = new IgnoreRestVisitor();
 	SwitchArg* ignore  = new SwitchArg(Arg::flagStartString(),

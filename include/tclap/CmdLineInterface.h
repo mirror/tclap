@@ -135,7 +135,7 @@ class CmdLineInterface : public ArgContainer
 		/**
 		 * Returns the list of ArgGroups.
 		 */
-		virtual std::list<ArgGroup*>& getArgGroups()=0;
+		virtual std::list<ArgGroup*> getArgGroups()=0;
 
 		/**
 		 * Returns the delimiter string.
