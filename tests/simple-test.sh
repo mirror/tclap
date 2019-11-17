@@ -14,6 +14,6 @@ if cmp -s tmp.out $TEST_RESULT.out; then
     exit 0
 else
     echo "FAIL"
-    diff tmp.out $TEST_RESULT.out
+    diff -u tmp.out $TEST_RESULT.out
     exit 1
 fi
