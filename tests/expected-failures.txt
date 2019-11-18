@@ -4,17 +4,3 @@ test84.sh # Docbook output not fixed after bsd style changes
 test38.sh  # Very long program name
 test39.sh  # Very long program name
 test46.sh  # Very long program name
-test62.sh
-test63.sh
-test66.sh
-test67.sh
-test70.sh
-test74.sh
-test75.sh
-test76.sh
-test77.sh
-test79.sh
-test81.sh
-test90.sh
-test92.sh
-test95.sh

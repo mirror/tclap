@@ -1,7 +1,7 @@
 
 USAGE: 
 
-   ../examples/test18  [--version] [-h]
+   ../examples/test18  [-h] [--version]
 
 
 Where: 
@@ -14,7 +14,6 @@ Where:
 
    -h,  --help
      Displays usage information and exits.
-
 
    Command description message
 

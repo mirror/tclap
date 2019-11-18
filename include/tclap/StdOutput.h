@@ -416,7 +416,7 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 
         bool exclusive = CountVisibleArgs(argGroup) > 1 && argGroup.isExclusive();
         if (exclusive) {
-			spacePrint(os, argGroup.isRequired() ? "One of:" : "Either of", 75, 3, 0);
+			spacePrint(os, argGroup.isRequired() ? "One of:" : "Either of:", 75, 3, 0);
 		}
 
 		for (ArgGroup::iterator it = argGroup.begin();
