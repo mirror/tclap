@@ -2,7 +2,7 @@ PARSE ERROR: Argument: -i (--intTest)
              Couldn't read argument value from string '2a'
 
 Brief USAGE: 
-   ../examples/test2  [-ABCh] [--version] [-f float] -i int -s string
+   ../examples/test2  [-ABCh] [--version] [-f <float>] -i <int> -s <string>
                       unTest [fileName ...]
 
 For complete USAGE and HELP type: 

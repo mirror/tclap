@@ -70,7 +70,7 @@ class Constraint
 		static std::string shortID(Constraint<T> *constraint) {
 		  if (!constraint)
 		    throw std::logic_error("Cannot create a ValueArg with a NULL constraint");
-		  return "<" + constraint->shortID() + ">";
+		  return constraint->shortID();
 		}
 };
 

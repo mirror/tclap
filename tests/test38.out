@@ -4,7 +4,7 @@ PARSE ERROR: Argument: -n (--name)
 Brief USAGE: 
    ThisIsAVeryLongProgramNameDesignedToTestSpacePrintWhichUsedToHaveProblem
                                         sWithLongProgramNamesIThinkItIsNowL
-                                        ongEnough  [-l int] [-u <float
+                                        ongEnough  [-l <int>] [-u <float
                                         lte 1>] [-b <float lte 1>] [-z
                                         <filename>] [-x <filename>] [-s
                                         <name string>] [-d] [-g <negative

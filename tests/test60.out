@@ -4,26 +4,25 @@ PARSE ERROR: Argument: -r (--reverse)
 
 USAGE: 
 
-   ../examples/test9  [-N] ... [-V] ... [-r] <won't see this>
+   ../examples/test9  [-NrV] [word]
 
 
 Where: 
 
-   -N,  --noise  (accepted multiple times)
-     Level of noise
+   -r,  --reverse
+     REVERSE instead of FORWARDS
 
    -V,  --verbose  (accepted multiple times)
      Level of verbosity
 
-   -r,  --reverse
-     REVERSE instead of FORWARDS
+   -N,  --noise  (accepted multiple times)
+     Level of noise
 
    --,  --ignore_rest
      Ignores the rest of the labeled arguments following this flag.
 
-   <won't see this>
+   word <won't see this>
      a random word
-
 
    Command description message
 

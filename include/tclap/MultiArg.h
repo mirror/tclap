@@ -364,7 +364,7 @@ template<class T>
 std::string MultiArg<T>::shortID(const std::string& val) const
 {
 	static_cast<void>(val); // Ignore input, don't warn
-	return Arg::shortID(_typeDesc) + " ...";
+	return Arg::shortID("<" + _typeDesc + ">") + " ...";
 }
 
 /**
@@ -374,7 +374,7 @@ template<class T>
 std::string MultiArg<T>::longID(const std::string& val) const
 {
 	static_cast<void>(val); // Ignore input, don't warn
-	return Arg::longID(_typeDesc) + "  (accepted multiple times)";
+	return Arg::longID("<" + _typeDesc + ">") + "  (accepted multiple times)";
 }
 
 /**

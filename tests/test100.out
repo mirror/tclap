@@ -1,12 +1,12 @@
 
 USAGE: 
 
-   ../examples/test35  [-h] [--version] [-a int]
+   ../examples/test35  [-h] [--version] [-a <int>]
 
 
 Where: 
 
-   -a int,  --a_int int
+   -a <int>,  --a_int <int>
      int arg
 
    --,  --ignore_rest

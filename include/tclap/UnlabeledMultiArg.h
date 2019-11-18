@@ -174,7 +174,7 @@ class UnlabeledMultiArg : public MultiArg<T>
 		 * \param val - value to be used.
 		 */
         virtual std::string longID(const std::string&) const {
-            return Arg::getName() + " (accepted multiple times) " + _typeDesc;
+            return Arg::getName() + " (accepted multiple times) <" + _typeDesc + ">";
         }
 
 		/**

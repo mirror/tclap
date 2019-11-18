@@ -1,12 +1,12 @@
 
 USAGE: 
 
-   ../examples/test1  [-hr] [--version] -n string
+   ../examples/test1  [-hr] [--version] -n <string>
 
 
 Where: 
 
-   -n string,  --name string
+   -n <string>,  --name <string>
      (required) Name to print
 
    -r,  --reverse
