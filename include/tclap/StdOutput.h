@@ -206,16 +206,16 @@ inline bool CompareShortID(const Arg *a, const Arg *b) {
 }
 
 // TODO: Fix me not to put --gopt before -f
-inline bool CompareOptions(const Arg *a, const Arg *b) {
+inline bool CompareOptions(std::pair<const Arg*, bool> a, std::pair<const Arg*, bool> b) {
     // First optional, then required
-    if (!a->isRequired() && b->isRequired()) {
+    if (!a.second && b.second) {
         return true;
     }
-    if (a->isRequired() && !b->isRequired()) {
+    if (a.second && !b.second) {
         return false;
     }
 
-    return CompareShortID(a, b);
+    return CompareShortID(a.first, b.first);
 }
 
 }
@@ -336,38 +336,32 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
     }    
 
     // Next do options, we sort them later by optional first.
-    std::vector<Arg*> options;
+    std::vector<std::pair<const Arg*, bool> > options;
 	for (std::list<ArgGroup*>::iterator sit = nonExclusiveGroups.begin();
 		 sit != nonExclusiveGroups.end(); ++sit) {
 		for (ArgGroup::iterator it = (*sit)->begin();
 			 it != (*sit)->end(); ++it) {
             Arg &arg = **it;
             int visible = CountVisibleArgs(**sit);
+            bool required = arg.isRequired();
             if (IsVisibleOption(arg)) {
                 if (visible == 1 && (**sit).isRequired()) {
-                    // A bit of a hack to make it look required if
-                    // group is required.
-                    arg.forceRequired();
+                    required = true;
                 }
 
-                options.push_back(&arg);
+                options.push_back(std::make_pair(&arg, required));
             }
         }
 	}
 
     std::sort(options.begin(), options.end(), CompareOptions);
-    for (std::vector<Arg*>::const_iterator it = options.begin();
+    for (std::vector<std::pair<const Arg*, bool> >::const_iterator it = options.begin();
          it != options.end(); ++it) {
-        Arg &arg = **it;
-        if (arg.getFlag() == "") {
-            outp << (arg.isRequired() ? " " : " [");
-            outp << arg.shortID();
-            outp << (arg.isRequired() ? "" : "]");
-        } else {
-            outp << (arg.isRequired() ? " " : " [");
-            outp << arg.shortID();
-            outp << (arg.isRequired() ? "" : "]");
-        }
+        const Arg &arg = *it->first;
+        bool required = it->second;
+        outp << (required ? " " : " [");
+        outp << arg.shortID();
+        outp << (required ? "" : "]");
     }
 
     // Next do argsuments ("unlabled") in order of definition
@@ -381,15 +375,9 @@ StdOutput::_shortUsage( CmdLineInterface& _cmd,
             }
 
             if (arg.isValueRequired() && !arg.hasLabel() && arg.visibleInHelp()) {
-                if (arg.getFlag() == "") {
-                    outp << (arg.isRequired() ? " " : " [");
-                    outp << arg.shortID();
-                    outp << (arg.isRequired() ? "" : "]");
-                } else {
-                    outp << (arg.isRequired() ? " " : " [");
-                    outp << arg.shortID();
-                    outp << (arg.isRequired() ? "" : "]");
-                }
+                outp << (arg.isRequired() ? " " : " [");
+                outp << arg.shortID();
+                outp << (arg.isRequired() ? "" : "]");
             }
         }
 	}
@@ -414,7 +402,9 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
 		 sit != argSets.end(); ++sit) {
         ArgGroup &argGroup = **sit;
 
-        bool exclusive = CountVisibleArgs(argGroup) > 1 && argGroup.isExclusive();
+        int visible = CountVisibleArgs(argGroup);
+        bool exclusive = visible > 1 && argGroup.isExclusive();
+        bool forceRequired = visible == 1 && argGroup.isRequired();
         if (exclusive) {
 			spacePrint(os, argGroup.isRequired() ? "One of:" : "Either of:", 75, 3, 0);
 		}
@@ -431,12 +421,13 @@ StdOutput::_longUsage( CmdLineInterface& _cmd,
                 continue;
             }
 
+            bool required = arg.isRequired() || forceRequired;
             if (exclusive) {
                 spacePrint( os, arg.longID(), 75, 6, 3 );
-                spacePrint( os, arg.getDescription(), 75, 8, 0 );
+                spacePrint( os, arg.getDescription(required), 75, 8, 0 );
             } else {
                 spacePrint( os, arg.longID(), 75, 3, 3 );
-                spacePrint( os, arg.getDescription(), 75, 5, 0 );
+                spacePrint( os, arg.getDescription(required), 75, 5, 0 );
             }
             os << '\n';
 		}

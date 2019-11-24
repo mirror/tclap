@@ -82,7 +82,7 @@ class DocBookOutput : public CmdLineOutput
 		void removeChar( std::string& s, char r) const;
 		void basename( std::string& s ) const;
 
-		void printShortArg(Arg* it);
+        void printShortArg(Arg* it, bool required);
 		void printLongArg(const ArgGroup &it) const;
 
 		char theDelimiter;
@@ -150,11 +150,8 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 				continue;
 			}
 
-			if (visible == 1 && (**sit).isRequired()) {
-                (*it)->forceRequired();
-			}
-
-            printShortArg((*it));
+            printShortArg(*it, (*it)->isRequired()
+                          || (visible == 1 && (**sit).isRequired()));
 		}
 		if (visible > 1) {
             std::cout << "</group>\n";
@@ -233,7 +230,7 @@ inline void DocBookOutput::basename(std::string& s) const
 	}
 }
 
-inline void DocBookOutput::printShortArg(Arg* a)
+inline void DocBookOutput::printShortArg(Arg* a, bool required)
 {
 	std::string lt = "&lt;"; 
 	std::string gt = "&gt;"; 
@@ -245,8 +242,9 @@ inline void DocBookOutput::printShortArg(Arg* a)
 	removeChar(id,']');
 	
 	std::string choice = "opt";
-	if ( a->isRequired() )
+	if (required) {
 		choice = "plain";
+    }
 
 	std::cout << "<arg choice='" << choice << '\'';
 	if ( a->acceptsMultipleValues() )
@@ -280,14 +278,14 @@ inline void DocBookOutput::printLongArg(const ArgGroup& group) const
 	const std::string gt = "&gt;"; 
 
     
-
+    bool forceRequired = group.isRequired() && CountVisibleArgs(group) == 1;
     for (ArgGroup::const_iterator it = group.begin(); it != group.end(); ++it) {
         Arg &a = **it;
         if (!a.visibleInHelp()) {
             continue;
         }
 
-        std::string desc = a.getDescription();
+        std::string desc = a.getDescription(forceRequired || a.isRequired());
         substituteSpecialChars(desc,'<',lt);
         substituteSpecialChars(desc,'>',gt);
 

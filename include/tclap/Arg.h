@@ -105,7 +105,7 @@ class Arg
 		/**
 		 * Indicating whether the argument is required.
 		 */
-		bool _required;
+        const bool _required;
 
 		/**
 		 * Label to be used in usage description.  Normally set to
@@ -279,17 +279,24 @@ class Arg
 		/**
 		 * Returns the argument description.
 		 */
-		std::string getDescription() const;
+        std::string getDescription() const {
+            return getDescription(_required);
+        }
+
+		/**
+		 * Returns the argument description.
+         *
+         * @param required if the argument should be treated as
+         * required when described.
+		 */
+        std::string getDescription(bool required) const {
+            return (required ? "(" + _requireLabel + ") " : "") + _description;
+        }
 
 		/**
 		 * Indicates whether the argument is required.
 		 */
 		virtual bool isRequired() const;
-
-		/**
-         * @deprecated Used only by deprecated XorHandler
-		 */
-		void forceRequired(bool r=true);
 
 		/**
 		 * Indicates whether a value must be specified for argument.
@@ -550,19 +557,6 @@ inline bool Arg::operator==(const Arg& a) const
 		return false;
 }
 
-inline std::string Arg::getDescription() const
-{
-	std::string desc = "";
-	if ( _required )
-		desc = "(" + _requireLabel + ") ";
-
-//	if ( _valueRequired )
-//		desc += "(value required)  ";
-
-	desc += _description;
-	return desc;
-}
-
 inline const std::string& Arg::getFlag() const { return _flag; }
 
 inline const std::string& Arg::getName() const { return _name; }
@@ -633,11 +627,6 @@ inline bool Arg::_hasBlanks( const std::string& s ) const
 			return true;
 
 	return false;
-}
-
-inline void Arg::forceRequired(bool r)
-{
-	_required = r;
 }
 
 /**
