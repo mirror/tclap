@@ -3160,7 +3160,7 @@ def CheckComment(line, filename, linenum, next_line_start, error):
                 'Too many spaces before TODO')
 
         username = match.group(2)
-        if not username:
+        if not username and False:
           error(filename, linenum, 'readability/todo', 2,
                 'Missing username in TODO; it should look like '
                 '"// TODO(my_username): Stuff."')
