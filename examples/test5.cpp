@@ -39,8 +39,8 @@ void parseOptions(int argc, char** argv)
 	// Define arguments
 	//
 
-	ValueArg<string> atest("a", "aaa", "or test a", true, "homer", "string");
-	ValueArg<string> btest("b", "bbb", "or test b", true, "homer", "string");
+	ValueArg<string> atest("a", "aaa", "or test a", false, "homer", "string");
+	ValueArg<string> btest("b", "bbb", "or test b", false, "homer", "string");
 	cmd.xorAdd( atest, btest );
 
 	ValueArg<string> ctest("c", "ccc", "c test", true, "homer", "string");
@@ -58,8 +58,8 @@ void parseOptions(int argc, char** argv)
 	xorlist.push_back(&gtest);
 	cmd.xorAdd( xorlist );
 
-	MultiArg<string> itest("i", "iii", "or test i", true, "string");
-	MultiArg<string> jtest("j", "jjj", "or test j", true, "string");
+	MultiArg<string> itest("i", "iii", "or test i", false, "string");
+	MultiArg<string> jtest("j", "jjj", "or test j", false, "string");
 	cmd.xorAdd( itest, jtest );
 
 	//

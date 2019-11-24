@@ -46,10 +46,10 @@ public:
     virtual ~ArgGroup() {}
 
     /// Add an argument to this arg group
-    ArgContainer &add(Arg &arg) { return add(&arg); }
+    virtual ArgContainer &add(Arg &arg) { return add(&arg); }
 
     /// Add an argument to this arg group
-    ArgContainer &add(Arg *arg);
+    virtual ArgContainer &add(Arg *arg);
 
 	/**
 	 * Validates that the constraints of the ArgGroup are satisfied.
@@ -135,6 +135,16 @@ class ExclusiveArgGroup : public ArgGroup {
 public:
     inline bool validate();
     bool isExclusive() const { return true; }
+    ArgContainer &add(Arg &arg) { return add(&arg); }
+    ArgContainer &add(Arg *arg) {
+        if (arg->isRequired()) {
+            throw SpecificationException("Required arguments are not allowed"
+                                         " in an exclusive grouping.",
+										 arg->longID());
+        }
+
+        return ArgGroup::add(arg);
+    }
 
 protected:
     ExclusiveArgGroup() {}

@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 	SwitchArg btest("B","sB", "exist Test B", false);
 	MultiArg<int> atest("A","sA", "exist Test A", false, "integer");
 
-	ValueArg<string> stest("s", "Bs", "string test", true, "homer",
+	ValueArg<string> stest("s", "Bs", "string test", false, "homer",
 						   "string");
 
 	cmd.xorAdd(stest, btest);
