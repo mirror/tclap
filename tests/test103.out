@@ -14,11 +14,13 @@
 <refsynopsisdiv>
 <cmdsynopsis>
 <command>test36</command>
-<arg choice='plain'>-c <replaceable>int</replaceable></arg>
 <arg choice='opt'>-a <replaceable>int</replaceable></arg>
+<group choice='opt'>
 <arg choice='opt'>--</arg>
 <arg choice='opt'>--version</arg>
 <arg choice='opt'>-h</arg>
+</group>
+<arg choice='plain'>-c <replaceable>int</replaceable></arg>
 </cmdsynopsis>
 </refsynopsisdiv>
 <refsect1>
@@ -58,14 +60,14 @@ int arg
 </varlistentry>
 <varlistentry>
 <term>
-<option>--</option>
+<option>-h</option>
 </term>
 <term>
-<option>--ignore_rest</option>
+<option>--help</option>
 </term>
 <listitem>
 <para>
-Ignores the rest of the labeled arguments following this flag.
+Displays usage information and exits.
 </para>
 </listitem>
 </varlistentry>
@@ -81,14 +83,14 @@ Displays version information and exits.
 </varlistentry>
 <varlistentry>
 <term>
-<option>-h</option>
+<option>--</option>
 </term>
 <term>
-<option>--help</option>
+<option>--ignore_rest</option>
 </term>
 <listitem>
 <para>
-Displays usage information and exits.
+Ignores the rest of the labeled arguments following this flag.
 </para>
 </listitem>
 </varlistentry>

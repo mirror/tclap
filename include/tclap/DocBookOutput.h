@@ -130,7 +130,8 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 		 sit != argSets.end(); ++sit) {
 		int visible = CountVisibleArgs(**sit);
 		if (visible > 1) {
-            std::cout << "<group choice='req'>" << std::endl;
+            std::cout << "<group choice='"
+                      << ((**sit).isRequired() ?  "req" : "opt") << "'>\n";
 		}
 		for (ArgGroup::iterator it = (*sit)->begin();
 			 it != (*sit)->end(); ++it) {
@@ -138,7 +139,7 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 				continue;
 			}
 
-			if (visible == 1) {
+			if (visible == 1 && (**sit).isRequired()) {
                 (*it)->forceRequired();
 				argList.push_front(*it);
 				continue;
@@ -152,6 +153,8 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 	}
 
 	// rest of args
+    // TODO: See if we can't get rid of this, everything should be in
+    // groups.
 	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
 		if ((*it)->visibleInHelp())
 			printShortArg((*it));
