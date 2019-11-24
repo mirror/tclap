@@ -22,14 +22,14 @@
  *
  *****************************************************************************/
 
-#ifndef TCLAP_MULTIPLE_ARGUMENT_H
-#define TCLAP_MULTIPLE_ARGUMENT_H
-
-#include <string>
-#include <vector>
+#ifndef TCLAP_MULTI_ARG_H
+#define TCLAP_MULTI_ARG_H
 
 #include <tclap/Arg.h>
 #include <tclap/Constraint.h>
+
+#include <string>
+#include <vector>
 
 namespace TCLAP {
 /**
@@ -288,24 +288,18 @@ bool MultiArg<T>::processArg(int *i, std::vector<std::string> &args) {
             else
                 throw(ArgParseException("Missing a value for this argument!",
                                         toString()));
-        } else
+        } else {
             _extractValue(value);
-
-        /*
-        // continuing taking the args until we hit one with a start string
-        while ( (unsigned int)(*i)+1 < args.size() &&
-                args[(*i)+1].find_first_of( Arg::flagStartString() ) != 0 &&
-                args[(*i)+1].find_first_of( Arg::nameStartString() ) != 0 )
-                _extractValue( args[++(*i)] );
-        */
+        }
 
         _alreadySet = true;
         _setBy = flag;
         _checkWithVisitor();
 
         return true;
-    } else
+    } else {
         return false;
+    }
 }
 
 /**
@@ -359,4 +353,4 @@ void MultiArg<T>::reset() {
 
 }  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_MULTI_ARG_H

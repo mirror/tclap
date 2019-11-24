@@ -22,14 +22,15 @@
  *
  *****************************************************************************/
 
-#ifndef TCLAP_UNLABELED_VALUE_ARGUMENT_H
-#define TCLAP_UNLABELED_VALUE_ARGUMENT_H
-
-#include <string>
-#include <vector>
+#ifndef TCLAP_UNLABELED_VALUE_ARG_H
+#define TCLAP_UNLABELED_VALUE_ARG_H
 
 #include <tclap/ValueArg.h>
 #include <tclap/OptionalUnlabeledTracker.h>
+
+#include <string>
+#include <vector>
+#include <list>
 
 namespace TCLAP {
 
@@ -279,5 +280,6 @@ template <class T>
 void UnlabeledValueArg<T>::addToList(std::list<Arg *> &argList) const {
     argList.push_back(const_cast<Arg *>(static_cast<const Arg *const>(this)));
 }
-}
-#endif
+}  // namespace TCLAP
+
+#endif  // TCLAP_UNLABELED_VALUE_ARG_H

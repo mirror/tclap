@@ -25,10 +25,10 @@
 #ifndef TCLAP_SWITCH_ARG_H
 #define TCLAP_SWITCH_ARG_H
 
+#include <tclap/Arg.h>
+
 #include <string>
 #include <vector>
-
-#include <tclap/Arg.h>
 
 namespace TCLAP {
 
@@ -201,17 +201,18 @@ inline void SwitchArg::commonProcessing() {
 }
 
 inline bool SwitchArg::processArg(int *i, std::vector<std::string> &args) {
-    if (_ignoreable && Arg::ignoreRest()) return false;
+    if (_ignoreable && Arg::ignoreRest()) {
+        return false;
+    }
 
-    // if the whole string matches the flag or name string
     if (argMatches(args[*i])) {
+        // The whole string matches the flag or name string
         _setBy = args[*i];
         commonProcessing();
 
         return true;
-    }
-    // if a substring matches the flag as part of a combination
-    else if (combinedSwitchesMatch(args[*i])) {
+    } else if (combinedSwitchesMatch(args[*i])) {
+        // A substring matches the flag as part of a combination
         // check again to ensure we don't misinterpret
         // this as a MultiSwitchArg
         if (combinedSwitchesMatch(args[*i]))
@@ -223,18 +224,16 @@ inline bool SwitchArg::processArg(int *i, std::vector<std::string> &args) {
         // match in the string, otherwise we return true so that other
         // switches in the combination will have a chance to match.
         return lastCombined(args[*i]);
-    } else
-        return false;
+    }
+
+    return false;
 }
 
 inline void SwitchArg::reset() {
     Arg::reset();
     _value = _default;
 }
-//////////////////////////////////////////////////////////////////////
-// End SwitchArg.cpp
-//////////////////////////////////////////////////////////////////////
 
 }  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_SWITCH_ARG_H

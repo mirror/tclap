@@ -55,4 +55,4 @@ inline void OptionalUnlabeledTracker::check(bool req,
 
 }  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_OPTIONAL_UNLABELED_TRACKER_H

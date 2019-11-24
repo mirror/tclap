@@ -31,6 +31,8 @@
 #include <config.h>  // To check for long long
 #endif
 
+#include <string>
+
 // If Microsoft has already typedef'd wchar_t as an unsigned
 // short, then compiles will break because it's as if we're
 // creating ArgTraits twice for unsigned short. Thus...
@@ -56,6 +58,6 @@ void SetString(T &dst, const std::string &src) {
     dst = src;
 }
 
-}  // namespace
+}  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_STANDARD_TRAITS_H

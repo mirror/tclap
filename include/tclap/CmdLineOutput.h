@@ -21,18 +21,18 @@
  *
  *****************************************************************************/
 
-#ifndef TCLAP_CMDLINEOUTPUT_H
-#define TCLAP_CMDLINEOUTPUT_H
-
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <iomanip>
-#include <algorithm>
+#ifndef TCLAP_CMD_LINE_OUTPUT_H
+#define TCLAP_CMD_LINE_OUTPUT_H
 
 #include <tclap/Arg.h>
 #include <tclap/ArgGroup.h>
+
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <string>
+#include <vector>
 
 namespace TCLAP {
 
@@ -92,4 +92,5 @@ inline void removeArgsInArgGroups(std::list<Arg *> &argList,
 }
 
 }  // namespace TCLAP
-#endif
+
+#endif  // TCLAP_CMD_LINE_OUTPUT_H

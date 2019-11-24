@@ -24,8 +24,8 @@
 // This is an internal tclap file, you should probably not have to
 // include this directly
 
-#ifndef TCLAP_ARGTRAITS_H
-#define TCLAP_ARGTRAITS_H
+#ifndef TCLAP_ARG_TRAITS_H
+#define TCLAP_ARG_TRAITS_H
 
 namespace TCLAP {
 
@@ -99,10 +99,10 @@ class ArgTraits {
     // exists by checking the sizeof for the test function (return
     // value must have different sizeof).
     template <typename C>
-    static short test(typename C::ValueCategory *);
+    static short test(typename C::ValueCategory *);  // NOLINT
     template <typename C>
-    static long test(...);
-    static const bool hasTrait = sizeof(test<T>(0)) == sizeof(short);
+    static long test(...);  // NOLINT
+    static const bool hasTrait = sizeof(test<T>(0)) == sizeof(short);  // NOLINT
 
     template <typename C, bool>
     struct DefaultArgTrait {
@@ -118,6 +118,6 @@ public:
     typedef typename DefaultArgTrait<T, hasTrait>::ValueCategory ValueCategory;
 };
 
-}  // namespace
+}  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_ARG_TRAITS_H

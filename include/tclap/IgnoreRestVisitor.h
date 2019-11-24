@@ -44,6 +44,6 @@ public:
      */
     void visit() { Arg::beginIgnoring(); }
 };
-}
+}  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_IGNORE_REST_VISITOR_H

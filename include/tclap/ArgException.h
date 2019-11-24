@@ -165,7 +165,7 @@ public:
 
 class ExitException {
 public:
-    ExitException(int estat) : _estat(estat) {}
+    explicit ExitException(int estat) : _estat(estat) {}
 
     int getExitStatus() const { return _estat; }
 
@@ -175,4 +175,4 @@ private:
 
 }  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_ARG_EXCEPTION_H

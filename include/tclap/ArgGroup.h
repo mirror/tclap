@@ -28,6 +28,7 @@
 #include <tclap/CmdLineInterface.h>
 
 #include <list>
+#include <string>
 
 namespace TCLAP {
 
@@ -183,7 +184,7 @@ public:
     AnyOf() {}
     explicit AnyOf(CmdLineInterface &parser) { parser.add(*this); }
 
-    bool validate() { return false; /* All good */ };
+    bool validate() { return false; /* All good */ }
     bool isExclusive() const { return false; }
     bool isRequired() const { return false; }
 };
@@ -252,4 +253,4 @@ inline int CountVisibleArgs(const ArgGroup &g) {
 
 }  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_ARG_GROUP_H

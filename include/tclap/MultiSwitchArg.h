@@ -26,10 +26,10 @@
 #ifndef TCLAP_MULTI_SWITCH_ARG_H
 #define TCLAP_MULTI_SWITCH_ARG_H
 
+#include <tclap/SwitchArg.h>
+
 #include <string>
 #include <vector>
-
-#include <tclap/SwitchArg.h>
 
 namespace TCLAP {
 
@@ -113,9 +113,6 @@ public:
     void reset();
 };
 
-//////////////////////////////////////////////////////////////////////
-// BEGIN MultiSwitchArg.cpp
-//////////////////////////////////////////////////////////////////////
 inline MultiSwitchArg::MultiSwitchArg(const std::string &flag,
                                       const std::string &name,
                                       const std::string &desc, int init,
@@ -158,8 +155,9 @@ inline bool MultiSwitchArg::processArg(int *i, std::vector<std::string> &args) {
         _checkWithVisitor();
 
         return false;
-    } else
+    } else {
         return false;
+    }
 }
 
 inline std::string MultiSwitchArg::shortID(const std::string &val) const {
@@ -174,10 +172,6 @@ inline void MultiSwitchArg::reset() {
     MultiSwitchArg::_value = MultiSwitchArg::_default;
 }
 
-//////////////////////////////////////////////////////////////////////
-// END MultiSwitchArg.cpp
-//////////////////////////////////////////////////////////////////////
-
 }  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_MULTI_SWITCH_ARG_H

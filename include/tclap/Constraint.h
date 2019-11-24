@@ -73,4 +73,5 @@ public:
 };
 
 }  // namespace TCLAP
-#endif
+
+#endif  // TCLAP_CONSTRAINT_H

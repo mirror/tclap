@@ -21,14 +21,15 @@
  *
  *****************************************************************************/
 
-#ifndef TCLAP_MULTIPLE_UNLABELED_ARGUMENT_H
-#define TCLAP_MULTIPLE_UNLABELED_ARGUMENT_H
-
-#include <string>
-#include <vector>
+#ifndef TCLAP_UNLABELED_MULTI_ARG_H
+#define TCLAP_UNLABELED_MULTI_ARG_H
 
 #include <tclap/MultiArg.h>
 #include <tclap/OptionalUnlabeledTracker.h>
+
+#include <string>
+#include <vector>
+#include <list>
 
 namespace TCLAP {
 
@@ -254,6 +255,6 @@ template <class T>
 void UnlabeledMultiArg<T>::addToList(std::list<Arg *> &argList) const {
     argList.push_back(const_cast<Arg *>(static_cast<const Arg *const>(this)));
 }
-}
+}  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_UNLABELED_MULTI_ARG_H

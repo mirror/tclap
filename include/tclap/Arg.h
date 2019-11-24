@@ -22,12 +22,19 @@
  *
  *****************************************************************************/
 
-#ifndef TCLAP_ARGUMENT_H
-#define TCLAP_ARGUMENT_H
+#ifndef TCLAP_ARG_H
+#define TCLAP_ARG_H
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+
+#include <tclap/sstream.h>
+#include <tclap/ArgException.h>
+#include <tclap/Visitor.h>
+#include <tclap/CmdLineInterface.h>
+#include <tclap/ArgTraits.h>
+#include <tclap/StandardTraits.h>
 
 #include <string>
 #include <vector>
@@ -35,14 +42,6 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdio>
-
-#include <tclap/sstream.h>
-
-#include <tclap/ArgException.h>
-#include <tclap/Visitor.h>
-#include <tclap/CmdLineInterface.h>
-#include <tclap/ArgTraits.h>
-#include <tclap/StandardTraits.h>
 
 namespace TCLAP {
 
@@ -208,7 +207,7 @@ public:
      * The char used as a place holder when SwitchArgs are combined.
      * Currently set to the bell char (ASCII 7).
      */
-    static char blankChar() { return (char)7; }
+    static char blankChar() { return '\a'; }
 
 /**
  * The char that indicates the beginning of a flag.  Defaults to '-', but
@@ -619,4 +618,4 @@ inline void Arg::reset() { _alreadySet = false; }
 
 }  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_ARG_H

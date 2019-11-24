@@ -21,19 +21,20 @@
  *
  *****************************************************************************/
 
-#ifndef TCLAP_STDCMDLINEOUTPUT_H
-#define TCLAP_STDCMDLINEOUTPUT_H
-
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <algorithm>
+#ifndef TCLAP_STD_OUTPUT_H
+#define TCLAP_STD_OUTPUT_H
 
 #include <tclap/CmdLineInterface.h>
 #include <tclap/CmdLineOutput.h>
 #include <tclap/Arg.h>
 #include <tclap/ArgGroup.h>
+
+#include <algorithm>
+#include <iostream>
+#include <list>
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace TCLAP {
 
@@ -134,8 +135,9 @@ inline void StdOutput::failure(CmdLineInterface &_cmd, ArgException &e) {
                   << "   " << progName << " " << Arg::nameStartString()
                   << "help" << std::endl
                   << std::endl;
-    } else
+    } else {
         usage(_cmd);
+    }
 
     throw ExitException(1);
 }
@@ -159,7 +161,7 @@ inline bool cmpSwitch(const char &a, const char &b) {
     return lowa < lowb;
 }
 
-namespace {
+namespace internal {
 inline bool IsVisibleShortSwitch(const Arg &arg) {
     return !(arg.getName() == Arg::ignoreNameString() ||
              arg.isValueRequired() || arg.getFlag() == "") &&
@@ -201,7 +203,7 @@ inline bool CompareOptions(std::pair<const Arg *, bool> a,
 
     return CompareShortID(a.first, b.first);
 }
-}
+}  // namespace internal
 
 /**
  * Usage statements should look like the manual pages.  Options w/o
@@ -220,7 +222,6 @@ inline bool CompareOptions(std::pair<const Arg *, bool> a,
  */
 inline void StdOutput::_shortUsage(CmdLineInterface &_cmd,
                                    std::ostream &os) const {
-    //"usage: f [-aDde] [-b b_arg] [-m m_arg] req1 req2 [opt1 [opt2]]"
     std::list<ArgGroup *> argSets = _cmd.getArgGroups();
 
     std::ostringstream outp;
@@ -263,7 +264,7 @@ inline void StdOutput::_shortUsage(CmdLineInterface &_cmd,
          sit != nonExclusiveGroups.end(); ++sit) {
         for (ArgGroup::iterator it = (*sit)->begin(); it != (*sit)->end();
              ++it) {
-            if (IsVisibleShortSwitch(**it)) {
+            if (internal::IsVisibleShortSwitch(**it)) {
                 switches += (*it)->getFlag();
             }
         }
@@ -280,13 +281,14 @@ inline void StdOutput::_shortUsage(CmdLineInterface &_cmd,
         for (ArgGroup::iterator it = (*sit)->begin(); it != (*sit)->end();
              ++it) {
             Arg &arg = **it;
-            if (IsVisibleLongSwitch(arg)) {
+            if (internal::IsVisibleLongSwitch(arg)) {
                 longSwitches.push_back(&arg);
             }
         }
     }
 
-    std::sort(longSwitches.begin(), longSwitches.end(), CompareShortID);
+    std::sort(longSwitches.begin(), longSwitches.end(),
+              internal::CompareShortID);
     for (std::vector<Arg *>::const_iterator it = longSwitches.begin();
          it != longSwitches.end(); ++it) {
         outp << " [" << (**it).shortID() << ']';
@@ -306,7 +308,7 @@ inline void StdOutput::_shortUsage(CmdLineInterface &_cmd,
             }
         }
 
-        std::sort(args.begin(), args.end(), CompareShortID);
+        std::sort(args.begin(), args.end(), internal::CompareShortID);
         std::string sep = "";
         for (std::vector<Arg *>::const_iterator it = args.begin();
              it != args.end(); ++it) {
@@ -326,7 +328,7 @@ inline void StdOutput::_shortUsage(CmdLineInterface &_cmd,
             Arg &arg = **it;
             int visible = CountVisibleArgs(**sit);
             bool required = arg.isRequired();
-            if (IsVisibleOption(arg)) {
+            if (internal::IsVisibleOption(arg)) {
                 if (visible == 1 && (**sit).isRequired()) {
                     required = true;
                 }
@@ -336,7 +338,7 @@ inline void StdOutput::_shortUsage(CmdLineInterface &_cmd,
         }
     }
 
-    std::sort(options.begin(), options.end(), CompareOptions);
+    std::sort(options.begin(), options.end(), internal::CompareOptions);
     for (std::vector<std::pair<const Arg *, bool> >::const_iterator it =
              options.begin();
          it != options.end(); ++it) {
@@ -441,7 +443,7 @@ inline void StdOutput::spacePrint(std::ostream &os, const std::string &s,
             // find the substring length
             // int stringLen = std::min<int>( len - start, allowedLen );
             // doing it this way to support a VisualC++ 2005 bug
-            using namespace std;
+            using namespace std;  // NOLINT
             int stringLen = min<int>(len - start, allowedLen);
 
             // trim the length so it doesn't end in middle of a word
@@ -484,4 +486,5 @@ inline void StdOutput::spacePrint(std::ostream &os, const std::string &s,
 }
 
 }  // namespace TCLAP
-#endif
+
+#endif  // TCLAP_STD_OUTPUT_H

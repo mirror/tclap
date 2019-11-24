@@ -21,17 +21,18 @@
  *
  *****************************************************************************/
 
-#ifndef TCLAP_VALUESCONSTRAINT_H
-#define TCLAP_VALUESCONSTRAINT_H
+#ifndef TCLAP_VALUES_CONSTRAINT_H
+#define TCLAP_VALUES_CONSTRAINT_H
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-#include <string>
-#include <vector>
 #include <tclap/Constraint.h>
 #include <tclap/sstream.h>
+
+#include <string>
+#include <vector>
 
 namespace TCLAP {
 
@@ -46,7 +47,7 @@ public:
      * Constructor.
      * \param allowed - vector of allowed values.
      */
-    ValuesConstraint(std::vector<T> &allowed);
+    explicit ValuesConstraint(std::vector<T> &allowed);
 
     /**
      * Virtual destructor.
@@ -115,4 +116,4 @@ std::string ValuesConstraint<T>::description() const {
 }
 
 }  // namespace TCLAP
-#endif
+#endif  // TCLAP_VALUES_CONSTRAINT_H

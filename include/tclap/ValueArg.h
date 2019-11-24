@@ -22,14 +22,14 @@
  *
  *****************************************************************************/
 
-#ifndef TCLAP_VALUE_ARGUMENT_H
-#define TCLAP_VALUE_ARGUMENT_H
-
-#include <string>
-#include <vector>
+#ifndef TCLAP_VALUE_ARG_H
+#define TCLAP_VALUE_ARG_H
 
 #include <tclap/Arg.h>
 #include <tclap/Constraint.h>
+
+#include <string>
+#include <vector>
 
 namespace TCLAP {
 
@@ -315,15 +315,17 @@ bool ValueArg<T>::processArg(int *i, std::vector<std::string> &args) {
             else
                 throw(ArgParseException("Missing a value for this argument!",
                                         toString()));
-        } else
+        } else {
             _extractValue(value);
+        }
 
         _alreadySet = true;
         _setBy = flag;
         _checkWithVisitor();
         return true;
-    } else
+    } else {
         return false;
+    }
 }
 
 /**
@@ -366,4 +368,4 @@ void ValueArg<T>::reset() {
 
 }  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_VALUE_ARG_H

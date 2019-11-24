@@ -21,18 +21,18 @@
  *
  *****************************************************************************/
 
-#ifndef TCLAP_DOCBOOKOUTPUT_H
-#define TCLAP_DOCBOOKOUTPUT_H
-
-#include <string>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <algorithm>
+#ifndef TCLAP_DOC_BOOK_OUTPUT_H
+#define TCLAP_DOC_BOOK_OUTPUT_H
 
 #include <tclap/CmdLineInterface.h>
 #include <tclap/CmdLineOutput.h>
 #include <tclap/Arg.h>
+
+#include <algorithm>
+#include <iostream>
+#include <list>
+#include <string>
+#include <vector>
 
 namespace TCLAP {
 
@@ -88,7 +88,7 @@ inline void DocBookOutput::version(CmdLineInterface &_cmd) {
     std::cout << _cmd.getVersion() << std::endl;
 }
 
-namespace {
+namespace internal {
 const char *GroupChoice(const ArgGroup &group) {
     if (!group.showAsGroup()) {
         return "plain";
@@ -100,7 +100,7 @@ const char *GroupChoice(const ArgGroup &group) {
 
     return "opt";
 }
-}
+}  // namespace internal
 
 inline void DocBookOutput::usage(CmdLineInterface &_cmd) {
     std::list<ArgGroup *> argSets = _cmd.getArgGroups();
@@ -137,7 +137,8 @@ inline void DocBookOutput::usage(CmdLineInterface &_cmd) {
          sit != argSets.end(); ++sit) {
         int visible = CountVisibleArgs(**sit);
         if (visible > 1) {
-            std::cout << "<group choice='" << GroupChoice(**sit) << "'>\n";
+            std::cout << "<group choice='" << internal::GroupChoice(**sit)
+                      << "'>\n";
         }
         for (ArgGroup::iterator it = (*sit)->begin(); it != (*sit)->end();
              ++it) {
@@ -306,4 +307,4 @@ inline void DocBookOutput::printLongArg(const ArgGroup &group) const {
 }
 
 }  // namespace TCLAP
-#endif
+#endif  // TCLAP_DOC_BOOK_OUTPUT_H

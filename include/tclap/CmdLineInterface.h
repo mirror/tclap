@@ -22,16 +22,16 @@
  *
  *****************************************************************************/
 
-#ifndef TCLAP_COMMANDLINE_INTERFACE_H
-#define TCLAP_COMMANDLINE_INTERFACE_H
+#ifndef TCLAP_CMD_LINE_INTERFACE_H
+#define TCLAP_CMD_LINE_INTERFACE_H
+
+#include <tclap/ArgContainer.h>
 
 #include <string>
 #include <vector>
 #include <list>
 #include <iostream>
 #include <algorithm>
-
-#include <tclap/ArgContainer.h>
 
 namespace TCLAP {
 
@@ -158,6 +158,6 @@ public:
     virtual void reset() = 0;
 };
 
-}  // namespace
+}  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_CMD_LINE_INTERFACE_H

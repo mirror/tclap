@@ -22,8 +22,8 @@
  *
  *****************************************************************************/
 
-#ifndef TCLAP_CMDLINE_H
-#define TCLAP_CMDLINE_H
+#ifndef TCLAP_CMD_LINE_H
+#define TCLAP_CMD_LINE_H
 
 #include <tclap/SwitchArg.h>
 #include <tclap/MultiSwitchArg.h>
@@ -578,9 +578,9 @@ inline void CmdLine::parse(std::vector<std::string> &args) {
             missingArgsException(missingArgGroups);
         }
 
-        if (requiredCount > _numRequired)
+        if (requiredCount > _numRequired) {
             throw(CmdLineParseException("Too many arguments!"));
-
+        }
     } catch (ArgException &e) {
         // If we're not handling the exceptions, rethrow.
         if (!_handleExceptions) {
@@ -702,4 +702,5 @@ inline void CmdLine::ignoreUnmatched(const bool ignore) {
 ///////////////////////////////////////////////////////////////////////////////
 
 }  // namespace TCLAP
-#endif
+
+#endif  // TCLAP_CMD_LINE_H

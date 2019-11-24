@@ -47,6 +47,6 @@ public:
      */
     virtual void visit() = 0;
 };
-}
+}  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_VISITOR_H

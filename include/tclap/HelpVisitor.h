@@ -70,6 +70,6 @@ public:
         throw ExitException(0);
     }
 };
-}
+}  // namespace TCLAP
 
-#endif
+#endif  // TCLAP_HELP_VISITOR_H
