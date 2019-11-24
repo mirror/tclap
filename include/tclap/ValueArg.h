@@ -204,10 +204,6 @@ public:
      */
     const T &getValue() const { return _value; }
 
-    // TODO(macbishop): Non-const variant is deprecated, don't
-    // use. Remove in next major.
-    T &getValue() { return _value; }
-
     /**
      * A ValueArg can be used as as its value type (T) This is the
      * same as calling getValue()
