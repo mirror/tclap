@@ -95,12 +95,10 @@ inline void DocBookOutput::version(CmdLineInterface& _cmd)
 
 inline void DocBookOutput::usage(CmdLineInterface& _cmd ) 
 {
-	std::list<Arg*> argList = _cmd.getArgList();
 	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
 	std::string progName = _cmd.getProgramName();
 	std::string xversion = _cmd.getVersion();
 	theDelimiter = _cmd.getDelimiter();
-    removeArgsInArgGroups(argList, argSets);
     
 	basename(progName);
 
@@ -141,8 +139,6 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 
 			if (visible == 1 && (**sit).isRequired()) {
                 (*it)->forceRequired();
-				argList.push_front(*it);
-				continue;
 			}
 
             printShortArg((*it));
@@ -151,13 +147,6 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
             std::cout << "</group>" << std::endl;
 		}
 	}
-
-	// rest of args
-    // TODO: See if we can't get rid of this, everything should be in
-    // groups.
-	for (ArgListIterator it = argList.begin(); it != argList.end(); it++)
-		if ((*it)->visibleInHelp())
-			printShortArg((*it));
 
  	std::cout << "</cmdsynopsis>" << std::endl;
 	std::cout << "</refsynopsisdiv>" << std::endl;
@@ -175,6 +164,9 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 	std::cout << "<variablelist>" << std::endl;
 	
     
+    // TODO: This doesn't work correctly with groups. We should just
+    // go over all groups and "printLongArg" them instead. Then we can
+    // apply correct formatting.
 	for (ArgListIterator it = _cmd.getArgList().begin(); it != _cmd.getArgList().end(); it++) {
 		if ((*it)->visibleInHelp()) {
 			printLongArg((*it));
