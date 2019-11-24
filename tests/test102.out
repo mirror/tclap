@@ -15,7 +15,7 @@
 <cmdsynopsis>
 <command>test36</command>
 <arg choice='opt'>-a <replaceable>int</replaceable></arg>
-<group choice='opt'>
+<group choice='plain'>
 <arg choice='opt'>--</arg>
 <arg choice='opt'>--version</arg>
 <arg choice='opt'>-h</arg>

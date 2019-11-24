@@ -97,6 +97,13 @@ public:
         }
     }
 
+    /**
+     * If arguments in this group should show up as grouped in help.
+     */
+    virtual bool showAsGroup() const {
+        return true;
+    }
+
 	/// Returns the argument group's name.
 	const std::string getName() const;
 

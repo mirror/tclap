@@ -93,6 +93,20 @@ inline void DocBookOutput::version(CmdLineInterface& _cmd)
 	std::cout << _cmd.getVersion() << std::endl;
 }
 
+namespace {
+const char * GroupChoice(const ArgGroup &group) {
+    if (!group.showAsGroup()) {
+        return "plain";
+    }
+
+    if (group.isRequired()) {
+        return "req";
+    }
+    
+    return "opt";
+}
+}
+
 inline void DocBookOutput::usage(CmdLineInterface& _cmd ) 
 {
 	std::list<ArgGroup*> argSets = _cmd.getArgGroups();
@@ -128,8 +142,7 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 		 sit != argSets.end(); ++sit) {
 		int visible = CountVisibleArgs(**sit);
 		if (visible > 1) {
-            std::cout << "<group choice='"
-                      << ((**sit).isRequired() ?  "req" : "opt") << "'>\n";
+            std::cout << "<group choice='" << GroupChoice(**sit) << "'>\n";
 		}
 		for (ArgGroup::iterator it = (*sit)->begin();
 			 it != (*sit)->end(); ++it) {

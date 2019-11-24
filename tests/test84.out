@@ -19,7 +19,7 @@
 <arg choice='opt'>-s <replaceable>string</replaceable></arg>
 <arg choice='opt'>-B</arg>
 </group>
-<group choice='opt'>
+<group choice='plain'>
 <arg choice='opt'>--</arg>
 <arg choice='opt'>--version</arg>
 <arg choice='opt'>-h</arg>

@@ -82,6 +82,10 @@ public:
 
         return *this;
     }
+
+    bool showAsGroup() const {
+        return false;
+    }
 };
 
 /**
