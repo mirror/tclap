@@ -1879,8 +1879,23 @@ def GetHeaderGuardCPPVariable(filename):
     return file_path_from_root
 
   file_path_from_root = FixupPathFromRoot()
-  return re.sub(r'[^a-zA-Z0-9]', '_', file_path_from_root).upper() + '_'
+  parts = file_path_from_root.split(os.sep)
+  include = []
+  for part in parts:
+      segment = [part[0]]
+      for c in part[1:]:
+          if c.isupper():
+              segment += ['_', c]
+          else:
+              segment.append(c)
+      include += segment + ['_']
+  
+  return re.sub(r'[^a-zA-Z0-9]', '_', ''.join(include)).upper()[:-1]
 
+def stripPrefix(s, prefix):
+    if s.startswith(prefix):
+        return s[len(prefix):]
+    return s
 
 def CheckForHeaderGuard(filename, clean_lines, error):
   """Checks that the file contains a header guard.
@@ -1933,12 +1948,9 @@ def CheckForHeaderGuard(filename, clean_lines, error):
           cppvar)
     return
 
-  # The guard should be PATH_FILE_H_, but we also allow PATH_FILE_H__
-  # for backward compatibility.
+  # The guard should be TCLAP_FILE_H
   if ifndef != cppvar:
-    error_level = 0
-    if ifndef != cppvar + '_':
-      error_level = 5
+    error_level = 5
 
     ParseNolintSuppressions(filename, raw_lines[ifndef_linenum], ifndef_linenum,
                             error)
