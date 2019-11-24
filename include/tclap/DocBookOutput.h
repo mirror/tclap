@@ -117,26 +117,26 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
     
 	basename(progName);
 
-	std::cout << "<?xml version='1.0'?>" << std::endl;
-	std::cout << "<!DOCTYPE refentry PUBLIC \"-//OASIS//DTD DocBook XML V4.2//EN\"" << std::endl;
-	std::cout << "\t\"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd\">" << std::endl << std::endl;
+	std::cout << "<?xml version='1.0'?>\n";
+	std::cout << "<!DOCTYPE refentry PUBLIC \"-//OASIS//DTD DocBook XML V4.2//EN\"\n";
+	std::cout << "\t\"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd\">\n\n";
 
-	std::cout << "<refentry>" << std::endl;
+	std::cout << "<refentry>\n";
 
-	std::cout << "<refmeta>" << std::endl;
-	std::cout << "<refentrytitle>" << progName << "</refentrytitle>" << std::endl;
-	std::cout << "<manvolnum>1</manvolnum>" << std::endl;
-	std::cout << "</refmeta>" << std::endl;
+	std::cout << "<refmeta>\n";
+	std::cout << "<refentrytitle>" << progName << "</refentrytitle>\n";
+	std::cout << "<manvolnum>1</manvolnum>\n";
+	std::cout << "</refmeta>\n";
 
-	std::cout << "<refnamediv>" << std::endl;
-	std::cout << "<refname>" << progName << "</refname>" << std::endl;
-	std::cout << "<refpurpose>" << _cmd.getMessage() << "</refpurpose>" << std::endl;
-	std::cout << "</refnamediv>" << std::endl;
+	std::cout << "<refnamediv>\n";
+	std::cout << "<refname>" << progName << "</refname>\n";
+	std::cout << "<refpurpose>" << _cmd.getMessage() << "</refpurpose>\n";
+	std::cout << "</refnamediv>\n";
 
-	std::cout << "<refsynopsisdiv>" << std::endl;
-	std::cout << "<cmdsynopsis>" << std::endl;
+	std::cout << "<refsynopsisdiv>\n";
+	std::cout << "<cmdsynopsis>\n";
 
-	std::cout << "<command>" << progName << "</command>" << std::endl;
+	std::cout << "<command>" << progName << "</command>\n";
 
 	for (std::list<ArgGroup*>::iterator sit = argSets.begin();
 		 sit != argSets.end(); ++sit) {
@@ -157,39 +157,39 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
             printShortArg((*it));
 		}
 		if (visible > 1) {
-            std::cout << "</group>" << std::endl;
+            std::cout << "</group>\n";
 		}
 	}
 
- 	std::cout << "</cmdsynopsis>" << std::endl;
-	std::cout << "</refsynopsisdiv>" << std::endl;
+ 	std::cout << "</cmdsynopsis>\n";
+	std::cout << "</refsynopsisdiv>\n";
 
-	std::cout << "<refsect1>" << std::endl;
-	std::cout << "<title>Description</title>" << std::endl;
-	std::cout << "<para>" << std::endl;
-	std::cout << _cmd.getMessage() << std::endl; 
-	std::cout << "</para>" << std::endl;
-	std::cout << "</refsect1>" << std::endl;
+	std::cout << "<refsect1>\n";
+	std::cout << "<title>Description</title>\n";
+	std::cout << "<para>\n";
+	std::cout << _cmd.getMessage() << '\n';
+	std::cout << "</para>\n";
+	std::cout << "</refsect1>\n";
 
-	std::cout << "<refsect1>" << std::endl;
-	std::cout << "<title>Options</title>" << std::endl;
+	std::cout << "<refsect1>\n";
+	std::cout << "<title>Options</title>\n";
 
-	std::cout << "<variablelist>" << std::endl;
+	std::cout << "<variablelist>\n";
 	
 	for (std::list<ArgGroup*>::iterator sit = argSets.begin();
 		 sit != argSets.end(); ++sit) {
         printLongArg(**sit);
     }
 
-	std::cout << "</variablelist>" << std::endl;
-	std::cout << "</refsect1>" << std::endl;
+	std::cout << "</variablelist>\n";
+	std::cout << "</refsect1>\n";
 
-	std::cout << "<refsect1>" << std::endl;
-	std::cout << "<title>Version</title>" << std::endl;
-	std::cout << "<para>" << std::endl;
-	std::cout << xversion << std::endl; 
-	std::cout << "</para>" << std::endl;
-	std::cout << "</refsect1>" << std::endl;
+	std::cout << "<refsect1>\n";
+	std::cout << "<title>Version</title>\n";
+	std::cout << "<para>\n";
+	std::cout << xversion << '\n';
+	std::cout << "</para>\n";
+	std::cout << "</refsect1>\n";
 	
 	std::cout << "</refentry>" << std::endl;
 
@@ -279,6 +279,8 @@ inline void DocBookOutput::printLongArg(const ArgGroup& group) const
 	const std::string lt = "&lt;"; 
 	const std::string gt = "&gt;"; 
 
+    
+
     for (ArgGroup::const_iterator it = group.begin(); it != group.end(); ++it) {
         Arg &a = **it;
         if (!a.visibleInHelp()) {
@@ -289,17 +291,17 @@ inline void DocBookOutput::printLongArg(const ArgGroup& group) const
         substituteSpecialChars(desc,'<',lt);
         substituteSpecialChars(desc,'>',gt);
 
-        std::cout << "<varlistentry>" << std::endl;
+        std::cout << "<varlistentry>\n";
 
         if (!a.getFlag().empty()) {
-            std::cout << "<term>" << std::endl;
+            std::cout << "<term>\n";
             std::cout << "<option>";
             std::cout << a.flagStartChar() << a.getFlag();
-            std::cout << "</option>" << std::endl;
-            std::cout << "</term>" << std::endl;
+            std::cout << "</option>\n";
+            std::cout << "</term>\n";
         }
 
-        std::cout << "<term>" << std::endl;
+        std::cout << "<term>\n";
         std::cout << "<option>";
         std::cout << a.nameStartString() << a.getName();
         if (a.isValueRequired()) {
@@ -314,14 +316,14 @@ inline void DocBookOutput::printLongArg(const ArgGroup& group) const
             std::cout << "<replaceable>" << arg << "</replaceable>";
         }
 
-        std::cout << "</option>" << std::endl;
-        std::cout << "</term>" << std::endl;
+        std::cout << "</option>\n";
+        std::cout << "</term>\n";
 
-        std::cout << "<listitem>" << std::endl;
-        std::cout << "<para>" << std::endl;
-        std::cout << desc << std::endl;
-        std::cout << "</para>" << std::endl;
-        std::cout << "</listitem>" << std::endl;
+        std::cout << "<listitem>\n";
+        std::cout << "<para>\n";
+        std::cout << desc << '\n';
+        std::cout << "</para>\n";
+        std::cout << "</listitem>\n";
 
         std::cout << "</varlistentry>" << std::endl;
     }
