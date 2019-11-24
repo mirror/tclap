@@ -2,4 +2,4 @@
 
 #include <tclap/CmdLine.h>
 
-int main() { }
+int main() {}

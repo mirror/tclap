@@ -12,69 +12,61 @@ string _stringTest;
 string _utest;
 string _ztest;
 
-void parseOptions(int argc, char** argv);
+void parseOptions(int argc, char **argv);
 
-int main(int argc, char** argv)
-{
+int main(int argc, char **argv) {
+    parseOptions(argc, argv);
 
-	parseOptions(argc,argv);
-
-	cout << "for string we got : " << _stringTest<< endl
-		 << "for bool B we got : " << _boolTestB << endl;
-
+    cout << "for string we got : " << _stringTest << endl
+         << "for bool B we got : " << _boolTestB << endl;
 }
 
+void parseOptions(int argc, char **argv) {
+    try {
+        CmdLine cmd("this is a message", '=', "0.99");
+        cmd.ignoreUnmatched(true);
 
-void parseOptions(int argc, char** argv)
-{
-	try {
+        //
+        // Define arguments
+        //
 
-	CmdLine cmd("this is a message", '=', "0.99" );
-	cmd.ignoreUnmatched(true);
+        SwitchArg btest("B", "existTestB", "exist Test B", cmd, false);
 
-	//
-	// Define arguments
-	//
+        ValueArg<string> stest("s", "stringTest", "string test", true, "homer",
+                               "string", cmd);
 
-	SwitchArg btest("B","existTestB", "exist Test B", cmd, false);
+        MultiArg<int> itest("i", "intTest", "multi int test", false, "int",
+                            cmd);
 
-	ValueArg<string> stest("s", "stringTest", "string test", true, "homer",
-					       "string", cmd );
+        MultiArg<float> ftest("f", "floatTest", "multi float test", false,
+                              "float", cmd);
 
-	MultiArg<int> itest("i", "intTest", "multi int test", false,"int", cmd );
+        UnlabeledMultiArg<string> mtest("fileName", "file names", false,
+                                        "fileNameString", cmd);
+        //
+        // Parse the command line.
+        //
+        cmd.parse(argc, argv);
 
-	MultiArg<float> ftest("f", "floatTest", "multi float test", false,"float",
-	                      cmd );
+        //
+        // Set variables
+        //
+        _stringTest = stest.getValue();
+        _boolTestB = btest.getValue();
 
-	UnlabeledMultiArg<string> mtest("fileName","file names", false,
-					                "fileNameString", cmd);
-	//
-	// Parse the command line.
-	//
-	cmd.parse(argc,argv);
+        vector<int> vi = itest.getValue();
+        for (int i = 0; static_cast<unsigned int>(i) < vi.size(); i++)
+            cout << "[-i] " << i << "  " << vi[i] << endl;
 
+        vector<float> vf = ftest.getValue();
+        for (int i = 0; static_cast<unsigned int>(i) < vf.size(); i++)
+            cout << "[-f] " << i << "  " << vf[i] << endl;
 
-	//
-	// Set variables
-	//
-	_stringTest = stest.getValue();
-	_boolTestB = btest.getValue();
+        vector<string> v = mtest.getValue();
+        for (int i = 0; static_cast<unsigned int>(i) < v.size(); i++)
+            cout << "[  ] " << i << "  " << v[i] << endl;
 
-	vector<int> vi = itest.getValue();
-	for ( int i = 0; static_cast<unsigned int>(i) < vi.size(); i++ )
-		cout << "[-i] " << i << "  " <<  vi[i] << endl;
-
-	vector<float> vf = ftest.getValue();
-	for ( int i = 0; static_cast<unsigned int>(i) < vf.size(); i++ )
-		cout << "[-f] " << i << "  " <<  vf[i] << endl;
-
-	vector<string> v = mtest.getValue();
-	for ( int i = 0; static_cast<unsigned int>(i) < v.size(); i++ )
-		cout << "[  ] " << i << "  " <<  v[i] << endl;
-
-	} catch ( ArgException& e )
-	{ cout << "ERROR: " << e.error() << " " << e.argId() << endl; }
+    } catch (ArgException &e) {
+        cout << "ERROR: " << e.error() << " " << e.argId() << endl;
+    }
 }
-
-
-

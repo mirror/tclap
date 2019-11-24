@@ -22,23 +22,22 @@
 
 using namespace TCLAP;
 
-int main(int argc, char** argv)
-{
+int main(int argc, char **argv) {
     CmdLine cmd("");
 
     ValueArg<int> arg0("a", "a_int", "int arg", false, 4711, "int", cmd);
     ValueArg<int> arg1("b", "b_int", "int arg", false, 4711, "int", cmd);
-	arg1.hideFromHelp();
+    arg1.hideFromHelp();
 
-	ValueArg<int> arg2("c", "c_int", "int arg", false, 4711, "int");
-	arg2.hideFromHelp();
-	ValueArg<int> arg3("d", "d_int", "int arg", false, 4711, "int");
-	arg3.hideFromHelp();
+    ValueArg<int> arg2("c", "c_int", "int arg", false, 4711, "int");
+    arg2.hideFromHelp();
+    ValueArg<int> arg3("d", "d_int", "int arg", false, 4711, "int");
+    arg3.hideFromHelp();
 
-	if (argc > 2) {
-		arg2.hideFromHelp(false);
-	}
+    if (argc > 2) {
+        arg2.hideFromHelp(false);
+    }
 
-	cmd.xorAdd(arg2, arg3);
+    cmd.xorAdd(arg2, arg3);
     cmd.parse(argc, argv);
 }

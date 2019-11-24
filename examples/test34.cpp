@@ -26,9 +26,7 @@
 
 using namespace TCLAP;
 
-int main()
-{
-
+int main() {
     ValueArg<int> arg0("a", "a_int", "first int arg", false, 4711, "int");
     ValueArg<int> arg1("b", "b_int", "second int arg", false, 4711, "int");
     ValueArg<int> arg2("a", "a_int", "second int arg", false, 4711, "int");
@@ -38,9 +36,9 @@ int main()
     CmdLine cmd("");
     cmd.add(arg2);
     try {
-	cmd.add(input);
-    } catch(SpecificationException &e) {
-	// Expected
-	std::cout << e.what() << std::endl;
+        cmd.add(input);
+    } catch (SpecificationException &e) {
+        // Expected
+        std::cout << e.what() << std::endl;
     }
 }

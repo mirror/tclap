@@ -34,24 +34,26 @@ using namespace TCLAP;
  * "usage: f [-aDde] [-b b_arg] [-m m_arg] req1 req2 [opt1 [opt2]]\n"
  * "usage: f [-a | -b] [-c [-de] [-n number]]\n"
  */
-int main(int argc, char** argv)
-{
+int main(int argc, char **argv) {
     try {
-      // "usage: f [-aDde] [-b b_arg] [-m m_arg] req1 req2 [opt1 [opt2]]\n"
+        // "usage: f [-aDde] [-b b_arg] [-m m_arg] req1 req2 [opt1 [opt2]]\n"
         CmdLine cmd("");
         SwitchArg a("a", "aopt", "a", cmd);
         SwitchArg d("d", "dopt", "d", cmd);
         SwitchArg D("D", "Dopt", "D", cmd);
         SwitchArg e("e", "eopt", "e", cmd);
-        ValueArg<int> b_arg("b", "barg", "Desc b_arg", false, 4711, "b_arg", cmd);
-        ValueArg<std::string> m_arg("m", "marg", "Desc m_arg", false, "foo", "m_arg", cmd);
+        ValueArg<int> b_arg("b", "barg", "Desc b_arg", false, 4711, "b_arg",
+                            cmd);
+        ValueArg<std::string> m_arg("m", "marg", "Desc m_arg", false, "foo",
+                                    "m_arg", cmd);
         UnlabeledValueArg<int> req1("req1", "req_1", true, 47, "int", cmd);
-        UnlabeledValueArg<std::string> req2("req2", "req_2", true, "bar", "str", cmd);
+        UnlabeledValueArg<std::string> req2("req2", "req_2", true, "bar", "str",
+                                            cmd);
         UnlabeledMultiArg<int> opt1("opt1", "opt_1", false, "int", cmd);
 
         cmd.parse(argc, argv);
-        
-    } catch(SpecificationException &e) {
+
+    } catch (SpecificationException &e) {
         // Expected
         std::cout << e.what() << std::endl;
     }

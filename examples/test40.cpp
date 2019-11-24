@@ -26,15 +26,17 @@
 
 using namespace TCLAP;
 
-int main()
-{
+int main() {
     try {
         CmdLine cmd("");
         OneOf input(cmd);
-        ValueArg<int> arg0("a", "a_int", "first int arg", false, 4711, "int", cmd);
-        ValueArg<int> arg1("b", "b_int", "second int arg", false, 4711, "int", input);
-        ValueArg<int> arg2("a", "a_int", "second int arg", false, 4711, "int", input);
-    } catch(SpecificationException &e) {
+        ValueArg<int> arg0("a", "a_int", "first int arg", false, 4711, "int",
+                           cmd);
+        ValueArg<int> arg1("b", "b_int", "second int arg", false, 4711, "int",
+                           input);
+        ValueArg<int> arg2("a", "a_int", "second int arg", false, 4711, "int",
+                           input);
+    } catch (SpecificationException &e) {
         // Expected
         std::cout << e.what() << std::endl;
     }

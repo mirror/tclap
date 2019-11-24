@@ -34,10 +34,9 @@ using namespace TCLAP;
  * "usage: f [-aDde] [-b b_arg] [-m m_arg] req1 req2 [opt1 [opt2]]\n"
  * "usage: f [-a | -b] [-c [-de] [-n number]]\n"
  */
-int main(int argc, char** argv)
-{
+int main(int argc, char **argv) {
     try {
-      // "usage: f [-a | -b] [-c [-de] [-n number]]\n"
+        // "usage: f [-a | -b] [-c [-de] [-n number]]\n"
         CmdLine cmd("");
         EitherOf aorb(cmd);
         SwitchArg a("a", "aopt", "a", aorb);
@@ -48,7 +47,7 @@ int main(int argc, char** argv)
         SwitchArg d("d", "dopt", "d", other);
         SwitchArg e("e", "eopt", "e", other);
         ValueArg<int> n_arg("n", "narg", "n_arg", false, 4711, "number", other);
-        
+
         OneOf x(cmd);
         SwitchArg f("f", "fopt", "f", x);
         SwitchArg g("", "gopt", "g", x);
@@ -56,8 +55,8 @@ int main(int argc, char** argv)
         UnlabeledValueArg<int> req1("req1", "req_1", true, 47, "int", cmd);
 
         cmd.parse(argc, argv);
-        
-    } catch(SpecificationException &e) {
+
+    } catch (SpecificationException &e) {
         // Expected
         std::cout << e.what() << std::endl;
     }

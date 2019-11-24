@@ -15,83 +15,80 @@ bool _boolTestC;
 string _stringTest;
 string _utest;
 
-void parseOptions(int argc, char** argv);
+void parseOptions(int argc, char **argv);
 
-int main(int argc, char** argv)
-{
+int main(int argc, char **argv) {
+    parseOptions(argc, argv);
 
-	parseOptions(argc,argv);
-
-	cout << "for float we got : " << _floatTest << endl
-		 << "for int we got : " << _intTest<< endl
-		 << "for string we got : " << _stringTest<< endl
-		 << "for ulabeled we got : " << _utest << endl
-		 << "for bool A we got : " << _boolTestA << endl
-		 << "for bool B we got : " << _boolTestB << endl
-		 << "for bool C we got : " << _boolTestC << endl;
-
+    cout << "for float we got : " << _floatTest << endl
+         << "for int we got : " << _intTest << endl
+         << "for string we got : " << _stringTest << endl
+         << "for ulabeled we got : " << _utest << endl
+         << "for bool A we got : " << _boolTestA << endl
+         << "for bool B we got : " << _boolTestB << endl
+         << "for bool C we got : " << _boolTestC << endl;
 }
 
+void parseOptions(int argc, char **argv) {
+    try {
+        CmdLine cmd("this is a message", ' ', "0.99");
 
-void parseOptions(int argc, char** argv)
-{
-	try {
+        //
+        // Define arguments
+        //
 
-	CmdLine cmd("this is a message", ' ', "0.99" );
+        SwitchArg btest("B", "existTestB", "tests for the existence of B",
+                        false);
+        cmd.add(btest);
 
-	//
-	// Define arguments
-	//
+        SwitchArg ctest("C", "existTestC", "tests for the existence of C",
+                        false);
+        cmd.add(ctest);
 
-	SwitchArg btest("B","existTestB", "tests for the existence of B", false);
-	cmd.add( btest );
+        SwitchArg atest("A", "existTestA", "tests for the existence of A",
+                        false);
+        cmd.add(atest);
 
-	SwitchArg ctest("C","existTestC", "tests for the existence of C", false);
-	cmd.add( ctest );
+        ValueArg<string> stest("s", "stringTest", "string test", true, "homer",
+                               "string");
+        cmd.add(stest);
 
-	SwitchArg atest("A","existTestA", "tests for the existence of A", false);
-	cmd.add( atest );
+        ValueArg<int> itest("i", "intTest", "integer test", true, 5, "int");
+        cmd.add(itest);
 
-	ValueArg<string> stest("s","stringTest","string test",true,"homer",
-					       "string");
-	cmd.add( stest );
+        ValueArg<double> ftest("f", "floatTest", "float test", false, 3.7,
+                               "float");
+        cmd.add(ftest);
 
-	ValueArg<int> itest("i", "intTest", "integer test", true, 5, "int");
-	cmd.add( itest );
+        UnlabeledValueArg<string> utest("unTest", "unlabeld test", true,
+                                        "default", "string");
+        cmd.add(utest);
 
-	ValueArg<double> ftest("f", "floatTest", "float test", false, 3.7, "float");
-	cmd.add( ftest );
+        UnlabeledMultiArg<string> mtest("fileName", "file names", false,
+                                        "string");
+        cmd.add(mtest);
 
-	UnlabeledValueArg<string> utest("unTest","unlabeld test", true,
-					                "default","string");
-	cmd.add( utest );
+        //
+        // Parse the command line.
+        //
+        cmd.parse(argc, argv);
 
-	UnlabeledMultiArg<string> mtest("fileName", "file names", false, "string");
-	cmd.add( mtest );
+        //
+        // Set variables
+        //
+        _intTest = itest.getValue();
+        _floatTest = ftest.getValue();
+        _stringTest = stest.getValue();
+        _boolTestB = btest.getValue();
+        _boolTestC = ctest.getValue();
+        _boolTestA = atest.getValue();
+        _utest = utest.getValue();
 
-	//
-	// Parse the command line.
-	//
-	cmd.parse(argc,argv);
+        vector<string> v = mtest.getValue();
+        for (int i = 0; static_cast<unsigned int>(i) < v.size(); i++)
+            cout << i << "  " << v[i] << endl;
 
-	//
-	// Set variables
-	//
-	_intTest = itest.getValue();
-	_floatTest = ftest.getValue();
-	_stringTest = stest.getValue();
-	_boolTestB = btest.getValue();
-	_boolTestC = ctest.getValue();
-	_boolTestA = atest.getValue();
-	_utest = utest.getValue();
-
-	vector<string> v = mtest.getValue();
-	for ( int i = 0; static_cast<unsigned int>(i) < v.size(); i++ )
-		cout << i << "  " <<  v[i] << endl;
-
-	} catch ( ArgException& e )
-	{ cout << "ERROR: " << e.error() << " " << e.argId() << endl; }
+    } catch (ArgException &e) {
+        cout << "ERROR: " << e.error() << " " << e.argId() << endl;
+    }
 }
-
-
-

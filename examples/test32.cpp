@@ -26,8 +26,7 @@
 
 using namespace TCLAP;
 
-int main(int argc, char** argv)
-{
+int main(int argc, char **argv) {
     CmdLine cmd("");
     ValueArg<int> arg0("a", "a_int", "first int arg", false, 4711, "int");
     ValueArg<int> arg1("b", "b_int", "second int arg", false, 4711, "int");
@@ -40,12 +39,12 @@ int main(int argc, char** argv)
     cmd.parse(argc, argv);
 
     if (arg0.isSet()) {
-		std::cout << "a_int was set to: " << arg0.getValue() << std::endl;
+        std::cout << "a_int was set to: " << arg0.getValue() << std::endl;
     }
     if (arg1.isSet()) {
-		std::cout << "b_int was set to: " << arg1.getValue() << std::endl;
+        std::cout << "b_int was set to: " << arg1.getValue() << std::endl;
     }
     if (arg2.isSet()) {
-		std::cout << "str was set to: " << arg2.getValue() << std::endl;
+        std::cout << "str was set to: " << arg2.getValue() << std::endl;
     }
 }

@@ -26,16 +26,15 @@
 
 using namespace TCLAP;
 
-int main()
-{
+int main() {
     ValueArg<int> arg0("a", "a_int", "first int arg", false, 4711, "int");
     ValueArg<int> arg1("a", "a_int", "second int arg", false, 4711, "int");
     EitherOf input;
 
     try {
-	input.add(arg0).add(arg1);
-    } catch(SpecificationException &e) {
-	// Expected
-	std::cout << e.what() << std::endl;
+        input.add(arg0).add(arg1);
+    } catch (SpecificationException &e) {
+        // Expected
+        std::cout << e.what() << std::endl;
     }
 }
