@@ -215,12 +215,6 @@ public:
 	 */
 	virtual std::string longID(const std::string& val="val") const;
 
-	/**
-	 * Once we've matched the first value, then the arg is no longer
-	 * required.
-	 */
-	virtual bool isRequired() const;
-
 	virtual bool allowMore();
 	
 	virtual void reset();
@@ -375,25 +369,6 @@ std::string MultiArg<T>::longID(const std::string& val) const
 {
 	static_cast<void>(val); // Ignore input, don't warn
 	return Arg::longID("<" + _typeDesc + ">") + "  (accepted multiple times)";
-}
-
-/**
- * Once we've matched the first value, then the arg is no longer
- * required.
- */
-template<class T>
-bool MultiArg<T>::isRequired() const
-{
-	if ( _required )
-	{
-		if ( _values.size() > 1 )
-			return false;
-		else
-			return true;
-   	}
-   	else
-		return false;
-
 }
 
 template<class T>

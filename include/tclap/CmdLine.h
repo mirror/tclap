@@ -568,9 +568,19 @@ inline void CmdLine::parse(std::vector<std::string>& args)
 			bool matched = false;
 			for (ArgListIterator it = _argList.begin();
 			     it != _argList.end(); it++) {
-				if ( (*it)->processArg( &i, args ) )
+                Arg &arg = **it;
+                // We check if the argument was already set (e.g., for
+                // a Multi-Arg) since then we don't want to count it
+                // as required again. This is a hack/workaround to
+                // make isRequired() imutable so it can be used to
+                // display help correctly (also it's a good idea).
+                //
+                // TODO: This logic should probably be refactored to
+                // remove this logic from here.
+                bool alreadySet = arg.isSet();
+				if ( arg.processArg( &i, args ) )
 				{
-					requiredCount += (*it)->isRequired() ? 1 : 0;
+					requiredCount += (!alreadySet && arg.isRequired()) ? 1 : 0;
 					matched = true;
 					break;
 				}
