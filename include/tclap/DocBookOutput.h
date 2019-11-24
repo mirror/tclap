@@ -77,12 +77,13 @@ class DocBookOutput : public CmdLineOutput
 		 * \param r - The char to replace. 
 		 * \param x - What to replace r with. 
 		 */
-		void substituteSpecialChars( std::string& s, char r, std::string& x );
-		void removeChar( std::string& s, char r);
-		void basename( std::string& s );
+		void substituteSpecialChars(std::string& s, char r,
+                                    const std::string& x ) const;
+		void removeChar( std::string& s, char r) const;
+		void basename( std::string& s ) const;
 
 		void printShortArg(Arg* it);
-		void printLongArg(Arg* it);
+		void printLongArg(const ArgGroup &it) const;
 
 		char theDelimiter;
 };
@@ -137,7 +138,6 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 
 	std::cout << "<command>" << progName << "</command>" << std::endl;
 
-	// First the ArgGroups
 	for (std::list<ArgGroup*>::iterator sit = argSets.begin();
 		 sit != argSets.end(); ++sit) {
 		int visible = CountVisibleArgs(**sit);
@@ -176,15 +176,10 @@ inline void DocBookOutput::usage(CmdLineInterface& _cmd )
 
 	std::cout << "<variablelist>" << std::endl;
 	
-    
-    // TODO: This doesn't work correctly with groups. We should just
-    // go over all groups and "printLongArg" them instead. Then we can
-    // apply correct formatting.
-	for (ArgListIterator it = _cmd.getArgList().begin(); it != _cmd.getArgList().end(); it++) {
-		if ((*it)->visibleInHelp()) {
-			printLongArg((*it));
-		}
-	}
+	for (std::list<ArgGroup*>::iterator sit = argSets.begin();
+		 sit != argSets.end(); ++sit) {
+        printLongArg(**sit);
+    }
 
 	std::cout << "</variablelist>" << std::endl;
 	std::cout << "</refsect1>" << std::endl;
@@ -208,9 +203,9 @@ inline void DocBookOutput::failure( CmdLineInterface& _cmd,
 	throw ExitException(1);
 }
 
-inline void DocBookOutput::substituteSpecialChars( std::string& s,
-				                                   char r,
-												   std::string& x )
+inline void DocBookOutput::substituteSpecialChars(std::string& s,
+                                                  char r,
+                                                  const std::string& x) const
 {
 	size_t p;
 	while ( (p = s.find_first_of(r)) != std::string::npos )
@@ -220,7 +215,7 @@ inline void DocBookOutput::substituteSpecialChars( std::string& s,
 	}
 }
 
-inline void DocBookOutput::removeChar( std::string& s, char r)
+inline void DocBookOutput::removeChar(std::string& s, char r) const
 {
 	size_t p;
 	while ( (p = s.find_first_of(r)) != std::string::npos )
@@ -229,7 +224,7 @@ inline void DocBookOutput::removeChar( std::string& s, char r)
 	}
 }
 
-inline void DocBookOutput::basename( std::string& s )
+inline void DocBookOutput::basename(std::string& s) const
 {
 	size_t p = s.find_last_of('/');
 	if ( p != std::string::npos )
@@ -279,51 +274,57 @@ inline void DocBookOutput::printShortArg(Arg* a)
 
 }
 
-inline void DocBookOutput::printLongArg(Arg* a)
+inline void DocBookOutput::printLongArg(const ArgGroup& group) const
 {
-	std::string lt = "&lt;"; 
-	std::string gt = "&gt;"; 
+	const std::string lt = "&lt;"; 
+	const std::string gt = "&gt;"; 
 
-	std::string desc = a->getDescription();
-	substituteSpecialChars(desc,'<',lt);
-	substituteSpecialChars(desc,'>',gt);
+    for (ArgGroup::const_iterator it = group.begin(); it != group.end(); ++it) {
+        Arg &a = **it;
+        if (!a.visibleInHelp()) {
+            continue;
+        }
 
-	std::cout << "<varlistentry>" << std::endl;
+        std::string desc = a.getDescription();
+        substituteSpecialChars(desc,'<',lt);
+        substituteSpecialChars(desc,'>',gt);
 
-	if ( !a->getFlag().empty() )
-	{
-		std::cout << "<term>" << std::endl;
-		std::cout << "<option>";
-		std::cout << a->flagStartChar() << a->getFlag();
-		std::cout << "</option>" << std::endl;
-		std::cout << "</term>" << std::endl;
-	}
+        std::cout << "<varlistentry>" << std::endl;
 
-	std::cout << "<term>" << std::endl;
-	std::cout << "<option>";
-	std::cout << a->nameStartString() << a->getName();
-	if ( a->isValueRequired() )
-	{
-		std::string arg = a->shortID();
-		removeChar(arg,'[');
-		removeChar(arg,']');
-		removeChar(arg,'<');
-		removeChar(arg,'>');
-		removeChar(arg,'.');
-		arg.erase(0, arg.find_last_of(theDelimiter) + 1);
-		std::cout << theDelimiter;
-		std::cout << "<replaceable>" << arg << "</replaceable>";
-	}
-	std::cout << "</option>" << std::endl;
-	std::cout << "</term>" << std::endl;
+        if (!a.getFlag().empty()) {
+            std::cout << "<term>" << std::endl;
+            std::cout << "<option>";
+            std::cout << a.flagStartChar() << a.getFlag();
+            std::cout << "</option>" << std::endl;
+            std::cout << "</term>" << std::endl;
+        }
 
-	std::cout << "<listitem>" << std::endl;
-	std::cout << "<para>" << std::endl;
-	std::cout << desc << std::endl;
-	std::cout << "</para>" << std::endl;
-	std::cout << "</listitem>" << std::endl;
+        std::cout << "<term>" << std::endl;
+        std::cout << "<option>";
+        std::cout << a.nameStartString() << a.getName();
+        if (a.isValueRequired()) {
+            std::string arg = a.shortID();
+            removeChar(arg,'[');
+            removeChar(arg,']');
+            removeChar(arg,'<');
+            removeChar(arg,'>');
+            removeChar(arg,'.');
+            arg.erase(0, arg.find_last_of(theDelimiter) + 1);
+            std::cout << theDelimiter;
+            std::cout << "<replaceable>" << arg << "</replaceable>";
+        }
 
-	std::cout << "</varlistentry>" << std::endl;
+        std::cout << "</option>" << std::endl;
+        std::cout << "</term>" << std::endl;
+
+        std::cout << "<listitem>" << std::endl;
+        std::cout << "<para>" << std::endl;
+        std::cout << desc << std::endl;
+        std::cout << "</para>" << std::endl;
+        std::cout << "</listitem>" << std::endl;
+
+        std::cout << "</varlistentry>" << std::endl;
+    }
 }
 
 } //namespace TCLAP

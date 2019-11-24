@@ -50,19 +50,6 @@ exist Test A
 </varlistentry>
 <varlistentry>
 <term>
-<option>-B</option>
-</term>
-<term>
-<option>--sB</option>
-</term>
-<listitem>
-<para>
-exist Test B
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
 <option>-s</option>
 </term>
 <term>
@@ -76,14 +63,27 @@ string test
 </varlistentry>
 <varlistentry>
 <term>
-<option>-h</option>
+<option>-B</option>
 </term>
 <term>
-<option>--help</option>
+<option>--sB</option>
 </term>
 <listitem>
 <para>
-Displays usage information and exits.
+exist Test B
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<option>--</option>
+</term>
+<term>
+<option>--ignore_rest</option>
+</term>
+<listitem>
+<para>
+Ignores the rest of the labeled arguments following this flag.
 </para>
 </listitem>
 </varlistentry>
@@ -99,14 +99,14 @@ Displays version information and exits.
 </varlistentry>
 <varlistentry>
 <term>
-<option>--</option>
+<option>-h</option>
 </term>
 <term>
-<option>--ignore_rest</option>
+<option>--help</option>
 </term>
 <listitem>
 <para>
-Ignores the rest of the labeled arguments following this flag.
+Displays usage information and exits.
 </para>
 </listitem>
 </varlistentry>
