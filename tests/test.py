@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
 import glob
+import os
 import subprocess
+import sys
 from typing import Sequence
 
 def test(tests: Sequence[str], expected_fail: Sequence[str]) -> None:
@@ -24,9 +26,12 @@ def test(tests: Sequence[str], expected_fail: Sequence[str]) -> None:
     print('PASS: %d / FAIL: %d' % (passing, failing))
 
 def build():
-    subprocess.run(['make', '-C', '../examples', '-j', '8'])
+    cpu_count = os.cpu_count() or 1
+    subprocess.run(['make', '-C', '../examples', '-j', str(cpu_count)])
 
 def main():
+    script_dir = os.path.dirname(sys.argv[0])
+    os.chdir(script_dir or '.')
     build()
     with open('expected-failures.txt') as expected_fail:
         test(glob.glob('test*.sh'), expected_fail.readlines())
