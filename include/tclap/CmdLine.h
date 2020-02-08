@@ -222,6 +222,11 @@ private:
      */
     bool _ignoreUnmatched;
 
+	/**
+	 * Ignoring arguments (e.g., after we have seen "--")
+	 */
+	bool _ignoring;
+
 public:
     /**
      * Command line constructor. Defines how the arguments will be
@@ -371,6 +376,10 @@ public:
      * and if false it will behave as normal.
      */
     void ignoreUnmatched(const bool ignore);
+
+	void beginIgnoring() { _ignoring = true; }
+    bool ignoreRest() { return _ignoring; }
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -395,7 +404,8 @@ inline CmdLine::CmdLine(const std::string &m, char delim, const std::string &v,
       _handleExceptions(true),
       _userSetOutput(false),
       _helpAndVersion(help),
-      _ignoreUnmatched(false) {
+      _ignoreUnmatched(false),
+	  _ignoring(false) {
     _constructor();
 }
 
@@ -420,7 +430,7 @@ inline void CmdLine::_constructor() {
     _autoArgs.setParser(*this);
     // add(_autoArgs);
 
-    v = new IgnoreRestVisitor();
+    v = new IgnoreRestVisitor(*this);
     SwitchArg *ignore = new SwitchArg(
         Arg::flagStartString(), Arg::ignoreNameString(),
         "Ignores the rest of the labeled arguments following this flag.", false,
@@ -546,7 +556,8 @@ inline void CmdLine::parse(std::vector<std::string> &args) {
                 // TODO: This logic should probably be refactored to
                 // remove this logic from here.
                 bool alreadySet = arg.isSet();
-                if (arg.processArg(&i, args)) {
+				bool ignore = arg.isIgnoreable() && ignoreRest();
+                if (!ignore && arg.processArg(&i, args)) {
                     requiredCount += (!alreadySet && arg.isRequired()) ? 1 : 0;
                     matched = true;
                     break;
@@ -557,7 +568,7 @@ inline void CmdLine::parse(std::vector<std::string> &args) {
             // switch and if so, then we've actually matched it
             if (!matched && _emptyCombined(args[i])) matched = true;
 
-            if (!matched && !Arg::ignoreRest() && !_ignoreUnmatched)
+            if (!matched && !ignoreRest() && !_ignoreUnmatched)
                 throw(CmdLineParseException(
                     "Couldn't find match "
                     "for argument",

@@ -129,8 +129,6 @@ inline MultiSwitchArg::MultiSwitchArg(const std::string &flag,
 }
 
 inline bool MultiSwitchArg::processArg(int *i, std::vector<std::string> &args) {
-    if (_ignoreable && Arg::ignoreRest()) return false;
-
     if (argMatches(args[*i])) {
         // so the isSet() method will work
         _alreadySet = true;

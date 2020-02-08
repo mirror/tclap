@@ -156,6 +156,19 @@ public:
      * instance can be reused.
      */
     virtual void reset() = 0;
+
+	/**
+     * Begin ignoring arguments since the "--" argument was specified.
+	 * \internal
+     */
+    virtual void beginIgnoring() = 0;
+
+    /**
+     * Whether to ignore the rest.
+	 * \internal
+     */
+    virtual bool ignoreRest() = 0;
+
 };
 
 }  // namespace TCLAP

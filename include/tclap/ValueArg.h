@@ -286,8 +286,6 @@ ValueArg<T>::ValueArg(const std::string &flag, const std::string &name,
  */
 template <class T>
 bool ValueArg<T>::processArg(int *i, std::vector<std::string> &args) {
-    if (_ignoreable && Arg::ignoreRest()) return false;
-
     if (_hasBlanks(args[*i])) return false;
 
     std::string flag = args[*i];

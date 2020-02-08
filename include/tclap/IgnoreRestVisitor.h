@@ -5,6 +5,7 @@
  *  file:  IgnoreRestVisitor.h
  *
  *  Copyright (c) 2003, Michael E. Smoot .
+ *  Copyright (c) 2020, Google LLC
  *  All rights reserved.
  *
  *  See the file COPYING in the top directory of this distribution for
@@ -24,7 +25,7 @@
 #define TCLAP_IGNORE_REST_VISITOR_H
 
 #include <tclap/Visitor.h>
-#include <tclap/Arg.h>
+#include <tclap/CmdLineInterface.h>
 
 namespace TCLAP {
 
@@ -34,15 +35,11 @@ namespace TCLAP {
  */
 class IgnoreRestVisitor : public Visitor {
 public:
-    /**
-     * Constructor.
-     */
-    IgnoreRestVisitor() : Visitor() {}
+    IgnoreRestVisitor(CmdLineInterface &cmdLine) : Visitor(), cmdLine_(cmdLine) {}
+    void visit() { cmdLine_.beginIgnoring(); }
 
-    /**
-     * Sets Arg::_ignoreRest.
-     */
-    void visit() { Arg::beginIgnoring(); }
+private:
+	CmdLineInterface &cmdLine_;
 };
 }  // namespace TCLAP
 

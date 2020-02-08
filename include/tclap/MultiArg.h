@@ -266,8 +266,6 @@ MultiArg<T>::MultiArg(const std::string &flag, const std::string &name,
 
 template <class T>
 bool MultiArg<T>::processArg(int *i, std::vector<std::string> &args) {
-    if (_ignoreable && Arg::ignoreRest()) return false;
-
     if (_hasBlanks(args[*i])) return false;
 
     std::string flag = args[*i];

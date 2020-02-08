@@ -201,10 +201,6 @@ inline void SwitchArg::commonProcessing() {
 }
 
 inline bool SwitchArg::processArg(int *i, std::vector<std::string> &args) {
-    if (_ignoreable && Arg::ignoreRest()) {
-        return false;
-    }
-
     if (argMatches(args[*i])) {
         // The whole string matches the flag or name string
         _setBy = args[*i];

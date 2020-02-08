@@ -63,14 +63,6 @@ private:
     Arg &operator=(const Arg &rhs);
 
     /**
-     * Indicates whether the rest of the arguments should be ignored.
-     */
-    static bool &ignoreRestRef() {
-        static bool ign = false;
-        return ign;
-    }
-
-    /**
      * The delimiter that separates an argument flag/name from the
      * value.
      */
@@ -186,16 +178,6 @@ public:
      * \param argList - The list to add this to.
      */
     virtual void addToList(std::list<Arg *> &argList) const;
-
-    /**
-     * Begin ignoring arguments since the "--" argument was specified.
-     */
-    static void beginIgnoring() { ignoreRestRef() = true; }
-
-    /**
-     * Whether to ignore the rest.
-     */
-    static bool ignoreRest() { return ignoreRestRef(); }
 
     /**
      * The delimiter that separates an argument flag/name from the
