@@ -5,7 +5,7 @@ noinst_PROGRAMS = test1 test2 test3 test4 test5 test6 test7 test8	\
 			test21 test22 test23 test24 test25 test26	\
 			test27 test28 test29 test30 test31 test32	\
 			test33 test34 test35 test36 test38		\
-			test39 test40 test41 test42 test43
+			test39 test40 test41 test42 test43 test44
 
 test1_SOURCES = test1.cpp
 test2_SOURCES = test2.cpp
@@ -49,6 +49,7 @@ test40_SOURCES = test40.cpp
 test41_SOURCES = test41.cpp
 test42_SOURCES = test42.cpp
 test43_SOURCES = test43.cpp
+test44_SOURCES = test44.cpp
 
 AM_CPPFLAGS = -I$(top_srcdir)/include
 
