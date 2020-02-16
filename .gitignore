@@ -4,6 +4,9 @@
 *~
 *#
 *.in
+*.orig
+*.patch
+config/compile
 cov/
 aclocal.m4
 autom4te.cache/
@@ -25,3 +28,4 @@ config/test-driver
 tests/tmp.out
 tests/test*.log
 tests/test*.trs
+
