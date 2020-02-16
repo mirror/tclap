@@ -7,8 +7,8 @@ USAGE:
 
 Where: 
 
-   -n <homer|marge|bart|lisa|maggie>,  --name <homer|marge|bart|lisa
-      |maggie>
+   -n <homer|marge|bart|lisa|maggie>,  --name <homer|marge|bart|lisa|
+      maggie>
      (required) Name to print
 
    --,  --ignore_rest

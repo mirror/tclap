@@ -461,15 +461,13 @@ inline void fmtPrintLine(std::ostream &os, const std::string &s,
         if (to == from) {
             // In case there was no good place to break the string,
             // just break it in the middle of a word at line length.
-            to = from + maxChars;
+            to = from + maxChars - 1;
         }
 
-        /*
         if (s[to] != ' ') {
             // Include delimiter before line break, unless it's a space
             to++;
         }
-        */
 
         os << indentString << s.substr(from, to - from) << '\n';
 

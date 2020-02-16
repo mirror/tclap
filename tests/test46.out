@@ -14,8 +14,8 @@ USAGE:
 
 Where: 
 
-   -n <homer|marge|bart|lisa|maggie>,  --name <homer|marge|bart|lisa
-      |maggie>  (accepted multiple times)
+   -n <homer|marge|bart|lisa|maggie>,  --name <homer|marge|bart|lisa|
+      maggie>  (accepted multiple times)
      (required) Name to print. This is a long, nonsensical message to test
      line wrapping.  Hopefully it works.
 
