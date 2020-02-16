@@ -459,7 +459,7 @@ inline void StdOutput::spacePrint(std::ostream &os, const std::string &s,
 
             // check for newlines
             for (int i = 0; i < stringLen; i++)
-                if (s[start + i] == '\n') stringLen = i + 1;
+                if (s[start + i] == '\n') stringLen = i;
 
             // print the indent
             for (int i = 0; i < indentSpaces; i++) os << " ";
@@ -474,9 +474,17 @@ inline void StdOutput::spacePrint(std::ostream &os, const std::string &s,
 
             os << s.substr(start, stringLen) << std::endl;
 
-            // so we don't start a line with a space
-            while (s[stringLen + start] == ' ' && start < len) start++;
-
+            // if the user put '\n' in the string any spaces are
+            // intentionally and we keep them, otherwise, we don't
+            // want to start a line with a space
+            if ('\n' != s[start + stringLen]) {
+                while (s[start + stringLen] == ' ' && start < len)
+                    start++;
+            }
+            else {
+                // need to skip the user-supplied '\n' as we already printed std::endl
+                ++stringLen;
+            }
             start += stringLen;
         }
     } else {
