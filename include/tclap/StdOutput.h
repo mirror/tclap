@@ -431,65 +431,73 @@ inline void StdOutput::_longUsage(CmdLineInterface &_cmd,
     os.flush();
 }
 
+namespace {
+inline void fmtPrintLine(std::ostream &os, const std::string &s,
+                         int maxWidth, int indentSpaces,
+                         int secondLineOffset) {
+    const std::string splitChars(" ,|");
+    int maxChars = maxWidth - indentSpaces;
+    std::string indentString(indentSpaces, ' ');
+    int from = 0;
+    int to = 0;
+    int end = s.length();
+    for (;;) {
+        if (end - from <= maxChars) {
+            // Rest of string fits on line, just print the remainder
+            os << indentString << s.substr(from) << std::endl;
+            return;
+        }
+
+        // Find the next place where it is good to break the string
+        // (to) by finding the place where it is too late (tooFar) and
+        // taking the previous one.
+        int tooFar = to;
+        while (tooFar - from <= maxChars &&
+               static_cast<std::size_t>(tooFar) != std::string::npos) {
+            to = tooFar;
+            tooFar = s.find_first_of(splitChars, to + 1);
+        }
+
+        if (to == from) {
+            // In case there was no good place to break the string,
+            // just break it in the middle of a word at line length.
+            to = from + maxChars;
+        }
+
+        /*
+        if (s[to] != ' ') {
+            // Include delimiter before line break, unless it's a space
+            to++;
+        }
+        */
+
+        os << indentString << s.substr(from, to - from) << '\n';
+
+        // Avoid printing extra white space at start of a line
+        for (; s[to] == ' '; to++) {}
+        from = to;
+        
+        if (secondLineOffset != 0) {
+            // Adjust offset for following lines
+            indentString.insert(indentString.end(), secondLineOffset, ' ');
+            maxChars -= secondLineOffset;
+            secondLineOffset = 0;
+        }
+    }
+}
+}
+
 inline void StdOutput::spacePrint(std::ostream &os, const std::string &s,
                                   int maxWidth, int indentSpaces,
                                   int secondLineOffset) const {
-    int len = static_cast<int>(s.length());
-
-    if ((len + indentSpaces > maxWidth) && maxWidth > 0) {
-        int allowedLen = maxWidth - indentSpaces;
-        int start = 0;
-        while (start < len) {
-            // find the substring length
-            // int stringLen = std::min<int>( len - start, allowedLen );
-            // doing it this way to support a VisualC++ 2005 bug
-            using namespace std;  // NOLINT
-            int stringLen = min<int>(len - start, allowedLen);
-
-            // trim the length so it doesn't end in middle of a word
-            if (stringLen == allowedLen)
-                while (stringLen >= 0 && s[stringLen + start] != ' ' &&
-                       s[stringLen + start] != ',' &&
-                       s[stringLen + start] != '|')
-                    stringLen--;
-
-            // ok, the word is longer than the line, so just split
-            // wherever the line ends
-            if (stringLen <= 0) stringLen = allowedLen;
-
-            // check for newlines
-            for (int i = 0; i < stringLen; i++)
-                if (s[start + i] == '\n') stringLen = i;
-
-            // print the indent
-            for (int i = 0; i < indentSpaces; i++) os << " ";
-
-            if (start == 0) {
-                // handle second line offsets
-                indentSpaces += secondLineOffset;
-
-                // adjust allowed len
-                allowedLen -= secondLineOffset;
-            }
-
-            os << s.substr(start, stringLen) << std::endl;
-
-            // if the user put '\n' in the string any spaces are
-            // intentionally and we keep them, otherwise, we don't
-            // want to start a line with a space
-            if ('\n' != s[start + stringLen]) {
-                while (s[start + stringLen] == ' ' && start < len)
-                    start++;
-            }
-            else {
-                // need to skip the user-supplied '\n' as we already printed std::endl
-                ++stringLen;
-            }
-            start += stringLen;
-        }
-    } else {
-        for (int i = 0; i < indentSpaces; i++) os << " ";
-        os << s << std::endl;
+    std::stringstream ss(s);
+    std::string line;
+    std::getline(ss, line);
+    fmtPrintLine(os, line, maxWidth, indentSpaces, secondLineOffset);
+    indentSpaces += secondLineOffset;
+    
+    while (std::getline(ss, line)) {
+        fmtPrintLine(os, line, maxWidth, indentSpaces, 0);
     }
 }
 
