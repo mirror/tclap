@@ -6,6 +6,7 @@
 *.in
 *.orig
 *.patch
+*.pyc
 config/compile
 cov/
 aclocal.m4
