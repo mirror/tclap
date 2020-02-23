@@ -17,6 +17,16 @@ def test(target, args, head=None, expect_fail=False):
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT)
     (stdout, _) = test.communicate()
+    if expect_fail:
+        if test.returncode == 0:
+            print 'FAIL'
+            print 'Expected non-zero return code, got', test.returncode
+            sys.exit(1)
+    elif test.returncode != 0:
+        print 'FAIL'
+        print 'Got non-zero return code', test.returncode
+        sys.exit(1)
+
     got = stdout.split('\n')[:head]
     
     with open(test_name + '.out') as inp:

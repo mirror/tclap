@@ -2,4 +2,4 @@
 
 import simple_test
 
-simple_test.test("test21", [])
+simple_test.test("test21", [], expect_fail=True)
