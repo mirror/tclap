@@ -29,4 +29,4 @@ AC_OUTPUT([ Makefile \
 		   msc/Makefile  \
 		   msc/examples/Makefile  \
 		   tests/Makefile], \
-		   [chmod a+x $ac_top_srcdir/tests/*.sh])
+		   [chmod a+x $ac_top_srcdir/tests/*.py])
