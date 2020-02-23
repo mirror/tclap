@@ -2,4 +2,4 @@
 
 import simple_test
 
-simple_test.test("test1", ["-r", "-n", "mike", ])
+simple_test.test("test1", ["-r", "-n", "mike"])

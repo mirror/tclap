@@ -7,12 +7,8 @@ import difflib
 
 def test(target, args, head=None, expect_fail=False):
     test_name = os.path.basename(sys.argv[0])[:-3]
-    example_dir = os.path.normpath(
-        os.path.join(os.path.dirname(sys.argv[0]),
-                     '..',
-                     'examples'))
+    example_dir = os.path.join('..', 'examples')
     test_bin = os.path.join(example_dir, target)
-    
     test = subprocess.Popen([test_bin] + args,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT)
@@ -28,8 +24,8 @@ def test(target, args, head=None, expect_fail=False):
         sys.exit(1)
 
     got = stdout.split('\n')[:head]
-    
-    with open(test_name + '.out') as inp:
+
+    with open(os.path.join(os.path.dirname(sys.argv[0]), test_name) + '.out') as inp:
         want = inp.read().split('\n')
 
     if got == want:
@@ -41,3 +37,11 @@ def test(target, args, head=None, expect_fail=False):
     print 'FAIL'
     print result
     sys.exit(1)
+
+def main():
+    (_, test) = sys.argv
+    script = os.path.join(os.path.dirname(sys.argv[0]), test + '.py')
+    sys.exit(subprocess.call(script))
+
+if __name__ == '__main__':
+    main()
