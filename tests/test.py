@@ -34,7 +34,7 @@ def main():
     os.chdir(script_dir or '.')
     build()
     with open('expected-failures.txt') as expected_fail:
-        test(glob.glob('test*.sh'), expected_fail.readlines())
+        test(glob.glob('test[0-9]*.py'), expected_fail.readlines())
 
 if __name__ == '__main__':
     main()
