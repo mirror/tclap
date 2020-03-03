@@ -1,3 +1,6 @@
+SET( CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${OUTPUT_DIRECTORY}")
+SET( CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${OUTPUT_DIRECTORY}")
+
 # Check we don't define any hard symbols in the headers
 add_executable(test-hard test-hard-1.cpp test-hard-2.cpp)
 target_include_directories(test-hard PUBLIC ../include/)
