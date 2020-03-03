@@ -30,6 +30,7 @@
 #include <tclap/ArgGroup.h>
 
 #include <algorithm>
+#include <cctype>
 #include <iostream>
 #include <list>
 #include <string>
