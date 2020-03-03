@@ -8,7 +8,7 @@ using namespace TCLAP;
 using namespace std;
 
 int _intTest;
-float _floatTest;
+double _floatTest;
 bool _boolTestA;
 bool _boolTestB;
 bool _boolTestC;
