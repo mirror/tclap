@@ -2,8 +2,8 @@ PARSE ERROR: Argument: -a AND -b provided.
              Only one is allowed.
 
 Brief USAGE: 
-   ../examples/test29  [-h] [--version] [-a <int>|-b <int>|-s <str>]
+   test29  [-h] [--version] [-a <int>|-b <int>|-s <str>]
 
 For complete USAGE and HELP type: 
-   ../examples/test29 --help
+   test29 --help
 

@@ -2,8 +2,8 @@ PARSE ERROR:
              Required argument missing: name
 
 Brief USAGE: 
-   ../examples/test21  [/hr] [~~version] /n <string>
+   test21  [/hr] [~~version] /n <string>
 
 For complete USAGE and HELP type: 
-   ../examples/test21 ~~help
+   test21 ~~help
 

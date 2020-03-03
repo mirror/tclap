@@ -1,7 +1,7 @@
 
 USAGE: 
 
-   ../examples/test1  [-hr] [--version] -n <string>
+   test1  [-hr] [--version] -n <string>
 
 
 Where: 

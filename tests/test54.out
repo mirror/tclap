@@ -1,8 +1,8 @@
 
 USAGE: 
 
-   ../examples/test8  [-Bh] [--version] [-f=<float> ...] [-i=<int> ...]
-                      -s=<string> unTest1 unTest2 [fileName ...]
+   test8  [-Bh] [--version] [-f=<float> ...] [-i=<int> ...] -s=<string>
+          unTest1 unTest2 [fileName ...]
 
 
 Where: 

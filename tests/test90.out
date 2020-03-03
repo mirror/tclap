@@ -1,7 +1,7 @@
 
 USAGE: 
 
-   ../examples/test29  [-h] [--version] [-a <int>|-b <int>|-s <str>]
+   test29  [-h] [--version] [-a <int>|-b <int>|-s <str>]
 
 
 Where: 

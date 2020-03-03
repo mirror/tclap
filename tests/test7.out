@@ -1,8 +1,8 @@
 
 USAGE: 
 
-   ../examples/test2  [-ABCh] [--version] [-f <float>] -i <int> -s <string>
-                      unTest [fileName ...]
+   test2  [-ABCh] [--version] [-f <float>] -i <int> -s <string> unTest
+          [fileName ...]
 
 
 Where: 

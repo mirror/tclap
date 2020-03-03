@@ -1,8 +1,7 @@
 
 USAGE: 
 
-   ../examples/test6  [-h] [--version] -n <homer|marge|bart|lisa|maggie>
-                      times
+   test6  [-h] [--version] -n <homer|marge|bart|lisa|maggie> times
 
 
 Where: 

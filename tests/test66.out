@@ -2,8 +2,8 @@ PARSE ERROR:
              Required argument missing: vect
 
 Brief USAGE: 
-   ../examples/test12  [-h] [--version] -v <3D vector> ...
+   test12  [-h] [--version] -v <3D vector> ...
 
 For complete USAGE and HELP type: 
-   ../examples/test12 --help
+   test12 --help
 

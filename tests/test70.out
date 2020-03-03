@@ -1,7 +1,7 @@
 
 USAGE: 
 
-   ../examples/test18  [-h] [--version]
+   test18  [-h] [--version]
 
 
 Where: 

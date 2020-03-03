@@ -1,7 +1,7 @@
 
 USAGE: 
 
-   ../examples/test32  [-h] [--version] {-a <int>|-b <int>|-s <str>}
+   test32  [-h] [--version] {-a <int>|-b <int>|-s <str>}
 
 
 Where: 

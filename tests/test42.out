@@ -1,8 +1,8 @@
 
 USAGE: 
 
-   ../examples/test3  [-Bh] [--version] [-f=<float> ...] [-i=<int> ...]
-                      --stringTest=<string> unTest1 unTest2 [fileName ...]
+   test3  [-Bh] [--version] [-f=<float> ...] [-i=<int> ...]
+          --stringTest=<string> unTest1 unTest2 [fileName ...]
 
 
 Where: 

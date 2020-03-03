@@ -2,9 +2,9 @@ PARSE ERROR:
              Required argument missing: unTest2
 
 Brief USAGE: 
-   ../examples/test3  [-Bh] [--version] [-f=<float> ...] [-i=<int> ...]
-                      --stringTest=<string> unTest1 unTest2 [fileName ...]
+   test3  [-Bh] [--version] [-f=<float> ...] [-i=<int> ...]
+          --stringTest=<string> unTest1 unTest2 [fileName ...]
 
 For complete USAGE and HELP type: 
-   ../examples/test3 --help
+   test3 --help
 
