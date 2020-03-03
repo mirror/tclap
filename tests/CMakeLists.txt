@@ -1,7 +1,7 @@
 SET( CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${OUTPUT_DIRECTORY}")
 SET( CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${OUTPUT_DIRECTORY}")
 
-include(FindPythonInterp)
+find_package(Python3)
 enable_testing()
 
 file(GLOB TEST_FILES test[0-9]*.py)

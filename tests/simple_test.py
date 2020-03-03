@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import os
 import sys
@@ -37,7 +37,7 @@ def test(target, args, head=None, expect_fail=False):
     if got == want:
         print('OK')
         sys.exit(0)
-        
+
     diff = difflib.unified_diff(got, want, fromfile='got', tofile='want')
     result = '\n'.join(diff)
     print('FAIL')
@@ -47,7 +47,7 @@ def test(target, args, head=None, expect_fail=False):
 def main():
     (cmd, test) = sys.argv
     script = os.path.join(os.path.dirname(cmd), test + '.py')
-    sys.exit(subprocess.call(["python", script]))
+    sys.exit(subprocess.call(["python3", script]))
 
 if __name__ == '__main__':
     main()
