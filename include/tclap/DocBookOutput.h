@@ -210,7 +210,8 @@ inline void DocBookOutput::removeChar(std::string &s, char r) const {
 }
 
 inline void DocBookOutput::basename(std::string &s) const {
-    size_t p = s.find_last_of('/');
+	// TODO(macbishop): See if we can make this more robust
+    size_t p = s.find_last_of('/\\');
     if (p != std::string::npos) {
         s.erase(0, p + 1);
     }
