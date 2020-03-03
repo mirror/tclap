@@ -522,7 +522,8 @@ inline void CmdLine::parse(std::vector<std::string> &args) {
     int estat = 0;
 
     try {
-        _progName = args.front();
+		// TODO(macbishop): Maybe store the full name somewhere?
+        _progName = basename(args.front());
         args.erase(args.begin());
 
         int requiredCount = 0;

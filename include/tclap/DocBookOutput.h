@@ -76,7 +76,6 @@ protected:
     void substituteSpecialChars(std::string &s, char r,
                                 const std::string &x) const;
     void removeChar(std::string &s, char r) const;
-    void basename(std::string &s) const;
 
     void printShortArg(Arg *it, bool required);
     void printLongArg(const ArgGroup &it) const;
@@ -107,8 +106,6 @@ inline void DocBookOutput::usage(CmdLineInterface &_cmd) {
     std::string progName = _cmd.getProgramName();
     std::string xversion = _cmd.getVersion();
     theDelimiter = _cmd.getDelimiter();
-
-    basename(progName);
 
     std::cout << "<?xml version='1.0'?>\n";
     std::cout
@@ -206,14 +203,6 @@ inline void DocBookOutput::removeChar(std::string &s, char r) const {
     size_t p;
     while ((p = s.find_first_of(r)) != std::string::npos) {
         s.erase(p, 1);
-    }
-}
-
-inline void DocBookOutput::basename(std::string &s) const {
-	// TODO(macbishop): See if we can make this more robust
-    size_t p = s.find_last_of('/\\');
-    if (p != std::string::npos) {
-        s.erase(0, p + 1);
     }
 }
 
