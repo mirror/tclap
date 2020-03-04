@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
+import argparse
 import os
 import subprocess
-import argparse
+import sys
 
 def build(build_dir, config):
     os.chdir(build_dir)
@@ -10,12 +11,12 @@ def build(build_dir, config):
     ret = subprocess.run(['cmake', '-DCMAKE_BUILD_TYPE=' + config,
                           '..']).returncode
     return ret or subprocess.run(['cmake', '--build', '.', '--config',
-                                  config, '-j', str(cpu_count)])
+                                  config, '-j', str(cpu_count)]).returncode
 
 def run_tests(build_dir, config):
     test_dir = os.path.join(build_dir, 'tests')
     os.chdir(test_dir)
-    subprocess.run(['ctest', '-C', config])
+    return subprocess.run(['ctest', '-C', config]).returncode
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -31,7 +32,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
     cwd = os.getcwd()
     if args.build:
-        build(os.path.normpath(args.build_dir), args.config)
+        ret = build(args.build_dir, args.config)
+        if ret:
+            sys.exit(ret)
 
     os.chdir(cwd)
-    run_tests(os.path.normpath(args.build_dir), args.config)
+    sys.exit(run_tests(args.build_dir, args.config))
