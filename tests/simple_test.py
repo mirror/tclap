@@ -45,10 +45,8 @@ def test(target, args, head=None, expect_fail=False):
     sys.exit(1)
 
 def main():
-    (cmd, test) = sys.argv
+    (cmd, py3, test) = sys.argv
     script = os.path.join(os.path.dirname(cmd), test + '.py')
-    py3 = os.environ.get('CMAKE_PY3_EXECUTABLE', 'python')
-    print('*** Running PY: ' + py3)
     sys.exit(subprocess.call([py3, script]))
 
 if __name__ == '__main__':
