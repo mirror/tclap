@@ -16,7 +16,7 @@ def build(build_dir, config):
 def run_tests(build_dir, config):
     test_dir = os.path.join(build_dir, 'tests')
     os.chdir(test_dir)
-    return subprocess.run(['ctest', '-C', config]).returncode
+    return subprocess.run(['ctest', '-C', config, '-V']).returncode
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
