@@ -5,10 +5,22 @@ project(TCLAP VERSION 1.4.0)
 set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-configure_file(config.h.in config.h)
+include(CheckCXXSourceCompiles)
+check_cxx_source_compiles("#include <strstream>
+int main() { std::istrstream iss; }" TCLAP_HAVE_STRSTREAM)
 
-add_library(tclap INTERFACE)
-target_include_directories(tclap INTERFACE include/)
+check_cxx_source_compiles("#include <sstream>
+int main() { std::istringstream iss; }" TCLAP_HAVE_SSTREAM)
+
+configure_file(config.h.in tclap/TCLAPConfig.h)
+
+add_library(TCLAP INTERFACE)
+target_include_directories(TCLAP INTERFACE include/)
+install(TARGETS TCLAP DESTINATION include)
+install(FILES "${PROJECT_BINARY_DIR}/tclap/TCLAPConfig.h"
+  DESTINATION include/tclap
+  )
 
 add_subdirectory(examples)
 add_subdirectory(tests)
+add_subdirectory(include/tclap)

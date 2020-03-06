@@ -10,3 +10,4 @@ cov/
 docs/Doxyfile
 docs/html/
 build/
+inst/
