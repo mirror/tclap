@@ -1,9 +1,9 @@
 SET( CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${OUTPUT_DIRECTORY}")
 SET( CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${OUTPUT_DIRECTORY}")
 
-SET(gcc_like_cxx "$<COMPILE_LANG_AND_ID:CXX,ARMClang,AppleClang,Clang,GNU>")
-SET(msvc_cxx "$<COMPILE_LANG_AND_ID:CXX,MSVC>")
-
+SET(gcc_like_cxx "$<OR:$<CXX_COMPILER_ID:ARMClang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>")
+SET(msvc_cxx "$<CXX_COMPILER_ID:MSVC>")
+  
 function(default_opts target)
 target_compile_options(${target} PRIVATE
     "$<${gcc_like_cxx}:$<BUILD_INTERFACE:-Wall;-Wextra;-Weffc++>>"
