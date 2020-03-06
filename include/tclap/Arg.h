@@ -25,7 +25,9 @@
 #ifndef TCLAP_ARG_H
 #define TCLAP_ARG_H
 
+#ifdef HAVE_TCLAP_CONFIG_H
 #include <tclap/TCLAPConfig.h>
+#endif
 
 #include <tclap/sstream.h>
 #include <tclap/ArgException.h>

@@ -4,6 +4,7 @@ project(TCLAP VERSION 1.4.0)
 
 set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+add_definitions(-DHAVE_TCLAP_CONFIG_H)
 
 include(CheckCXXSourceCompiles)
 check_cxx_source_compiles("#include <strstream>
