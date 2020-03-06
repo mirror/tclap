@@ -24,10 +24,6 @@
 #ifndef TCLAP_VALUES_CONSTRAINT_H
 #define TCLAP_VALUES_CONSTRAINT_H
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <tclap/Constraint.h>
 #include <tclap/sstream.h>
 
