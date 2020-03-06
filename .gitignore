@@ -11,3 +11,4 @@ docs/Doxyfile
 docs/html/
 build/
 inst/
+.vs/
