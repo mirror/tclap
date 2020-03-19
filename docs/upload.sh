@@ -1,4 +1,4 @@
 #!/bin/bash
 
-rsync -aP html index.html manual.html style.css \
+rsync -aP html index.html manual.html build.html style.css \
       $USER@web.sourceforge.net:/home/project-web/tclap/htdocs/v1.4
