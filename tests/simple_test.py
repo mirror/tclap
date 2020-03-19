@@ -18,7 +18,7 @@ def test(target, args, head=None, expect_fail=False):
     test = subprocess.Popen([test_bin] + args,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT,
-                            text=True)
+                            universal_newlines=True)
     (stdout, _) = test.communicate()
     if expect_fail:
         if test.returncode == 0:
