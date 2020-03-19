@@ -10,8 +10,14 @@ def build(build_dir, config):
     cpu_count = os.cpu_count() or 1
     ret = subprocess.run(['cmake', '-DCMAKE_BUILD_TYPE=' + config,
                           '..']).returncode
-    return ret or subprocess.run(['cmake', '--build', '.', '--config',
-                                  config, '-j', str(cpu_count)]).returncode
+    if ret:
+        return ret
+    
+    ret = subprocess.run(['cmake', '--build', '.', '--config',
+                          config, '-j', str(cpu_count)]).returncode
+    if ret:
+        # Try again, it could be due to cmake not supporting -j
+        return subprocess.run(['cmake', '--build', '.', '--config', config])
 
 def run_tests(build_dir, config):
     test_dir = os.path.join(build_dir, 'tests')
