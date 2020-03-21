@@ -22,6 +22,7 @@ install(FILES "${PROJECT_BINARY_DIR}/tclap/TCLAPConfig.h"
   DESTINATION include/tclap
   )
 
+add_subdirectory(docs)
 add_subdirectory(examples)
 add_subdirectory(tests)
 add_subdirectory(include/tclap)
