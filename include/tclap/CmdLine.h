@@ -179,20 +179,27 @@ protected:
     bool _emptyCombined(const std::string &s);
 
     /**
-     * Perform a delete ptr; operation on ptr when this object is deleted.
+     * Perform a delete ptr; operation on ptr when this object is
+     * deleted.
+     * @internal
      */
-    void deleteOnExit(Arg *ptr);
+    void deleteOnExit(Arg *ptr) { _argDeleteOnExitList.push_back(ptr); }
 
     /**
-     * Perform a delete ptr; operation on ptr when this object is deleted.
+     * Perform a delete ptr; operation on ptr when this object is
+     * deleted.
+     * @internal
      */
-    void deleteOnExit(Visitor *ptr);
+    void deleteOnExit(Visitor *ptr) { _visitorDeleteOnExitList.push_back(ptr); }
 
     /**
-     * Perform a delete ptr; operation on ptr when this object is deleted.
+     * Perform a delete ptr; operation on ptr when this object is
+     * deleted.
+     * @internal
      */
-    void deleteOnExit(ArgGroup *ptr);
+    void deleteOnExit(ArgGroup *ptr) { _argGroupDeleteOnExitList.push_back(ptr); }
 
+    
 private:
     /**
      * Prevent accidental copying.
@@ -303,51 +310,23 @@ public:
      */
     void parse(std::vector<std::string> &args);
 
-    /**
-     *
-     */
-    CmdLineOutput *getOutput();
-
-    /**
-     *
-     */
     void setOutput(CmdLineOutput *co);
 
-    /**
-     *
-     */
-    std::string &getVersion();
+    std::string getVersion() const { return _version; }
 
-    /**
-     *
-     */
-    std::string &getProgramName();
+    std::string getProgramName() const { return _progName; }
 
-    /**
-     *
-     */
-    std::list<Arg *> &getArgList();
-
+    // TOOD: Get rid of getArgList
+    std::list<Arg *> getArgList() const { return _argList; }
     std::list<ArgGroup *> getArgGroups() {
         std::list<ArgGroup *> groups = _argGroups;
         groups.push_back(&_autoArgs);
         return groups;
     }
 
-    /**
-     *
-     */
-    char getDelimiter();
-
-    /**
-     *
-     */
-    std::string &getMessage();
-
-    /**
-     *
-     */
-    bool hasHelpAndVersion();
+    char getDelimiter() const { return _delimiter; }
+    std::string getMessage() const { return _message; }
+    bool hasHelpAndVersion() const { return _helpAndVersion; }
 
     /**
      * Disables or enables CmdLine's internal parsing exception handling.
@@ -362,7 +341,7 @@ public:
      * @retval true Parsing exceptions are handled internally.
      * @retval false Parsing exceptions are propagated to the caller.
      */
-    bool getExceptionHandling() const;
+    bool hasExceptionHandling() const { return _handleExceptions; }
 
     /**
      * Allows the CmdLine object to be reused.
@@ -660,45 +639,18 @@ inline void CmdLine::missingArgsException(
     throw(CmdLineParseException(msg));
 }
 
-inline void CmdLine::deleteOnExit(Arg *ptr) {
-    _argDeleteOnExitList.push_back(ptr);
-}
-
-inline void CmdLine::deleteOnExit(Visitor *ptr) {
-    _visitorDeleteOnExitList.push_back(ptr);
-}
-
-inline void CmdLine::deleteOnExit(ArgGroup *ptr) {
-    _argGroupDeleteOnExitList.push_back(ptr);
-}
-
-inline CmdLineOutput *CmdLine::getOutput() { return _output; }
-
 inline void CmdLine::setOutput(CmdLineOutput *co) {
     if (!_userSetOutput) delete _output;
     _userSetOutput = true;
     _output = co;
 }
 
-inline std::string &CmdLine::getVersion() { return _version; }
-
-inline std::string &CmdLine::getProgramName() { return _progName; }
-
-inline std::list<Arg *> &CmdLine::getArgList() { return _argList; }
-
-inline char CmdLine::getDelimiter() { return _delimiter; }
-
-inline std::string &CmdLine::getMessage() { return _message; }
-
-inline bool CmdLine::hasHelpAndVersion() { return _helpAndVersion; }
-
 inline void CmdLine::setExceptionHandling(const bool state) {
     _handleExceptions = state;
 }
 
-inline bool CmdLine::getExceptionHandling() const { return _handleExceptions; }
-
 inline void CmdLine::reset() {
+    // TODO: This is no longer correct (or perhaps we don't need "reset")
     for (ArgListIterator it = _argList.begin(); it != _argList.end(); it++)
         (*it)->reset();
 
