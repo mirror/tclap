@@ -20,3 +20,6 @@ Do something like:    -n, --name <homer|marge|bart|lisa|maggie> (accepted multip
 
 
 COPY TEST5 AND MAKE REQUIRED TO CHECK THAT WE GET EXCEPTION
+* 1.4 Release
+** TODO Re-format all code with clang-format before release
+** TODO Review all doxy-comments
