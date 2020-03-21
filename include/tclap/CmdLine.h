@@ -41,6 +41,7 @@
 #include <tclap/ValuesConstraint.h>
 
 #include <tclap/ArgGroup.h>
+#include <tclap/DeferDelete.h>
 
 #include <string>
 #include <vector>
@@ -51,18 +52,6 @@
 #include <cstdlib>
 
 namespace TCLAP {
-
-template <typename T>
-void DelPtr(T ptr) {
-    delete ptr;
-}
-
-template <typename C>
-void ClearContainer(C &c) {
-    typedef typename C::value_type value_type;
-    std::for_each(c.begin(), c.end(), DelPtr<value_type>);
-    c.clear();
-}
 
 class StandaloneArgs : public AnyOf {
 public:
@@ -135,25 +124,18 @@ protected:
      */
     char _delimiter;
 
-    /**
-     * A list of Args to be explicitly deleted when the destructor
-     * is called.  At the moment, this only includes the three default
-     * Args.
-     */
-    std::list<Arg *> _argDeleteOnExitList;
 
     /**
-     * A list of Visitors to be explicitly deleted when the destructor
-     * is called.  At the moment, these are the Visitors created for the
-     * default Args.
+     * Add pointers that should be deleted as part of cleanup when
+     * this object is destroyed.
+     * @internal.
      */
-    std::list<Visitor *> _visitorDeleteOnExitList;
+    DeferDelete _deleteOnExit;
 
     /**
-     * A list of ArgGroups to be explicitly deleted when the destructor
-     * is called.
+     * Default output handler if nothing is specified.
      */
-    std::list<ArgGroup *> _argGroupDeleteOnExitList;
+    StdOutput _defaultOutput;
 
     /**
      * Object that handles all output for the CmdLine.
@@ -177,28 +159,6 @@ protected:
      * \param s - The message to be used in the usage.
      */
     bool _emptyCombined(const std::string &s);
-
-    /**
-     * Perform a delete ptr; operation on ptr when this object is
-     * deleted.
-     * @internal
-     */
-    void deleteOnExit(Arg *ptr) { _argDeleteOnExitList.push_back(ptr); }
-
-    /**
-     * Perform a delete ptr; operation on ptr when this object is
-     * deleted.
-     * @internal
-     */
-    void deleteOnExit(Visitor *ptr) { _visitorDeleteOnExitList.push_back(ptr); }
-
-    /**
-     * Perform a delete ptr; operation on ptr when this object is
-     * deleted.
-     * @internal
-     */
-    void deleteOnExit(ArgGroup *ptr) { _argGroupDeleteOnExitList.push_back(ptr); }
-
     
 private:
     /**
@@ -212,12 +172,6 @@ private:
      * (which is all of it).
      */
     void _constructor();
-
-    /**
-     * Is set to true when a user sets the output object. We use this so
-     * that we don't delete objects that are created outside of this lib.
-     */
-    bool _userSetOutput;
 
     /**
      * Whether or not to automatically create help and version switches.
@@ -253,7 +207,7 @@ public:
     /**
      * Deletes any resources allocated by a CmdLine object.
      */
-    virtual ~CmdLine();
+    virtual ~CmdLine() {}
 
     /**
      * Adds an argument to the list of arguments to be parsed.
@@ -376,32 +330,17 @@ inline CmdLine::CmdLine(const std::string &m, char delim, const std::string &v,
       _version(v),
       _numRequired(0),
       _delimiter(delim),
-      _argDeleteOnExitList(),
-      _visitorDeleteOnExitList(),
-      _argGroupDeleteOnExitList(),
-      _output(0),
+      _deleteOnExit(),
+      _defaultOutput(),
+      _output(&_defaultOutput),
       _handleExceptions(true),
-      _userSetOutput(false),
       _helpAndVersion(help),
       _ignoreUnmatched(false),
 	  _ignoring(false) {
     _constructor();
 }
 
-inline CmdLine::~CmdLine() {
-    ClearContainer(_argDeleteOnExitList);
-    ClearContainer(_visitorDeleteOnExitList);
-    ClearContainer(_argGroupDeleteOnExitList);
-
-    if (!_userSetOutput) {
-        delete _output;
-        _output = 0;
-    }
-}
-
 inline void CmdLine::_constructor() {
-    _output = new StdOutput;
-
     Arg::setDelimiter(_delimiter);
 
     Visitor *v;
@@ -414,8 +353,8 @@ inline void CmdLine::_constructor() {
         Arg::flagStartString(), Arg::ignoreNameString(),
         "Ignores the rest of the labeled arguments following this flag.", false,
         v);
-    deleteOnExit(ignore);
-    deleteOnExit(v);
+    _deleteOnExit(ignore);
+    _deleteOnExit(v);
     _autoArgs.add(ignore);
     addToArgList(ignore);
 
@@ -423,14 +362,14 @@ inline void CmdLine::_constructor() {
         v = new HelpVisitor(this, &_output);
         SwitchArg *help = new SwitchArg(
             "h", "help", "Displays usage information and exits.", false, v);
-        deleteOnExit(help);
-        deleteOnExit(v);
+        _deleteOnExit(help);
+        _deleteOnExit(v);
 
         v = new VersionVisitor(this, &_output);
         SwitchArg *vers = new SwitchArg(
             "", "version", "Displays version information and exits.", false, v);
-        deleteOnExit(vers);
-        deleteOnExit(v);
+        _deleteOnExit(vers);
+        _deleteOnExit(v);
 
         // A bit of a hack on the order to make tests easier to fix,
         // to be reverted
@@ -443,7 +382,7 @@ inline void CmdLine::_constructor() {
 
 inline void CmdLine::xorAdd(const std::vector<Arg *> &args) {
     OneOf *group = new OneOf(*this);
-    deleteOnExit(group);
+    _deleteOnExit(group);
 
     for (std::vector<Arg *>::const_iterator it = args.begin(); it != args.end();
          ++it) {
@@ -640,8 +579,6 @@ inline void CmdLine::missingArgsException(
 }
 
 inline void CmdLine::setOutput(CmdLineOutput *co) {
-    if (!_userSetOutput) delete _output;
-    _userSetOutput = true;
     _output = co;
 }
 
