@@ -4,6 +4,9 @@ if DOC
 all:
 	@DOXYGEN@ Doxyfile
 
+manual: manual.xml
+	xsltproc -o manual.html --stringparam html.stylesheet style.css /usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl  manual.xml 
+
 else
 
 all:
