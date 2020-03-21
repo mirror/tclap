@@ -32,12 +32,15 @@ else (DOXYGEN_FOUND)
   message("Doxygen need to be installed to generate the doxygen documentation")
 endif (DOXYGEN_FOUND)
 
+set(DOCBOOK_XSL /usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl)
+
+if (EXISTS ${DOCBOOK_XSL})
 find_package(LibXslt)
 if (LIBXSLT_XSLTPROC_EXECUTABLE)
 add_custom_target( doc_manual ALL
-  COMMAND ${LIBXSLT_XSLTPROC_EXECUTABLE} -o manual.html --stringparam html.stylesheet style.css /usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl  manual.xml
+  COMMAND ${LIBXSLT_XSLTPROC_EXECUTABLE} -o manual.html --stringparam html.stylesheet style.css ${DOCBOOK_XSL}  manual.xml
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Processing manual.xml to HTML"
   VERBATIM)
 endif (LIBXSLT_XSLTPROC_EXECUTABLE)
-     
+endif (EXISTS ${DOCBOOK_XSL})
