@@ -28,9 +28,9 @@ if (DOXYGEN_FOUND)
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Generating API documentation with Doxygen"
         VERBATIM )
-else (DOXYGEN_FOUND)
+else ()
   message("Doxygen need to be installed to generate the doxygen documentation")
-endif (DOXYGEN_FOUND)
+endif ()
 
 set(DOCBOOK_XSL /usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl)
 
@@ -42,5 +42,5 @@ add_custom_target( doc_manual ALL
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Processing manual.xml to HTML"
   VERBATIM)
-endif (LIBXSLT_XSLTPROC_EXECUTABLE)
-endif (EXISTS ${DOCBOOK_XSL})
+endif ()
+endif ()

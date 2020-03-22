@@ -9,7 +9,7 @@ target_compile_options(${target} PRIVATE
     "$<${gcc_like_cxx}:$<BUILD_INTERFACE:-Wall;-Wextra;-Weffc++>>"
     "$<${msvc_cxx}:$<BUILD_INTERFACE:-W3>>"
 )
-endfunction(default_opts)
+endfunction()
 
 function(add_example name)
     add_executable(${name} ${ARGN})
