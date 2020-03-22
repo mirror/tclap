@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 
-project(TCLAP VERSION 1.4.0)
+project(TCLAP VERSION 1.4.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
