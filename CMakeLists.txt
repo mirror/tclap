@@ -6,6 +6,10 @@ set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_definitions(-DHAVE_TCLAP_CONFIG_H)
 
+
+  set(GROK_COMPILE_OPTIONS ${GROK_COMPILE_OPTIONS} -Wall -Wextra -Wconversion -Wunused-parameter)
+
+
 include(CheckCXXSourceCompiles)
 check_cxx_source_compiles("#include <strstream>
 int main() { std::istrstream iss; }" TCLAP_HAVE_STRSTREAM)
