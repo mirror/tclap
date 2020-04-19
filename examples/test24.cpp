@@ -13,7 +13,7 @@ int main() {
 		ValueArg<string> nameArg("nx","name","Name to print",true,
 								 "homer","string");
 		return EXIT_FAILURE;
-    } catch(SpecificationException e) {
+    } catch(SpecificationException &e) {
 		cout << e.what() << std::endl; 	// Expected
     }
 
@@ -21,7 +21,7 @@ int main() {
 		ValueArg<string> nameArg(" ","name","Name to print",true,
 								 "homer","string");
 		return EXIT_FAILURE;
-    } catch(SpecificationException e) {
+    } catch(SpecificationException &e) {
 		cout << e.what() << std::endl; 	// Expected
     }
 
@@ -29,7 +29,7 @@ int main() {
 		ValueArg<string> nameArg("-","name","Name to print",true,
 								 "homer","string");
 		return EXIT_FAILURE;
-    } catch(SpecificationException e) {
+    } catch(SpecificationException &e) {
 		cout << e.what() << std::endl; 	// Expected
     }
 
@@ -37,7 +37,7 @@ int main() {
 		ValueArg<string> nameArg("--","name","Name to print",true,
 								 "homer","string");
 		return EXIT_FAILURE;
-    } catch(SpecificationException e) {
+    } catch(SpecificationException &e) {
 		cout << e.what() << std::endl; 	// Expected
     }
 
@@ -45,7 +45,7 @@ int main() {
 		ValueArg<string> nameArg("n"," ","Name to print",true,
 								 "homer","string");
 		return EXIT_FAILURE;
-    } catch(SpecificationException e) {
+    } catch(SpecificationException &e) {
 		cout << e.what() << std::endl; 	// Expected
     }
 
@@ -53,7 +53,7 @@ int main() {
 		ValueArg<string> nameArg("n","-","Name to print",true,
 								 "homer","string");
 		return EXIT_FAILURE;
-    } catch(SpecificationException e) {
+    } catch(SpecificationException &e) {
 		cout << e.what() << std::endl; 	// Expected
     }
 
@@ -61,7 +61,7 @@ int main() {
 		ValueArg<string> nameArg("n","--","Name to print",true,
 								 "homer","string");
 		return EXIT_FAILURE;
-    } catch(SpecificationException e) {
+    } catch(SpecificationException &e) {
 		cout << e.what() << std::endl; 	// Expected
     }
 }
