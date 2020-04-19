@@ -4,6 +4,7 @@ project(TCLAP VERSION 1.4.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(GROK_COMPILE_OPTIONS ${GROK_COMPILE_OPTIONS} -Wall -Wextra -Wconversion -Wunused-parameter)
 add_definitions(-DHAVE_TCLAP_CONFIG_H)
 
 enable_testing()
