@@ -123,7 +123,7 @@ int main(int argc, char** argv)
 		std::cout &lt;&lt; "My name is: " &lt;&lt; name &lt;&lt; std::endl;
 
 
-	} catch (TCLAP::ArgException &amp;e)  // catch any exceptions
+	} catch (TCLAP::ArgException &amp;e)  // catch exceptions
 	{ std::cerr &lt;&lt; "error: " &lt;&lt; e.error() &lt;&lt; " for arg " &lt;&lt; e.argId() &lt;&lt; std::endl; }
 }
 </programlisting>
