@@ -805,25 +805,69 @@ long as operator&gt;&gt; and operator&lt;&lt; are supported, other types should 
 too, you'll just need to specify the <code class="classname">ArgTraits</code> which 
 tells <span class="emphasis"><em>TCLAP</em></span> how you expect the type to be handled.  
 </p><p>
-For example, assume that you'd like to read one argument on the command line in as a
-<code class="classname">std::pair</code> object.  All you'll need to do is tell 
-<span class="emphasis"><em>TCLAP</em></span> whether to treat <code class="classname">std::pair</code> as a
-String or Value.  StringLike means to treat the string on the command line as a string
-and use it directly, whereas ValueLike means that a value object should be extracted from the 
-string using operator&gt;&gt;.  For <code class="classname">std::pair</code> we'll choose ValueLike.
-To accomplish this, add the following declaration to your file:
+  
+For example, assume that you'd like to read one argument on the
+command line in as a <code class="classname">std::pair</code> object. You need
+to tell <span class="emphasis"><em>TCLAP</em></span> whether to treat
+<code class="classname">std::pair</code> as a String or Value (default).
+StringLike means to treat the string on the command line as a string
+and use it directly (by assignment operator), whereas ValueLike means
+that a value object should be extracted from the string using
+operator&gt;&gt;. For <code class="classname">std::pair</code> we'll choose
+ValueLike. Here is an example of how to do this for int,double pair
+(see <code class="filename">test30.cpp</code>):
 
 </p><pre class="programlisting">
+#include "tclap/CmdLine.h"
+#include &lt;iostream&gt;
+#include &lt;utility&gt;
 
-  template&lt;class T, class U&gt;
-  struct ArgTraits&lt;std::pair&lt;T, U&gt;&gt; {
-    typedef ValueLike ValueCategory;
-  };
+using namespace TCLAP;
+
+// We need to tell TCLAP how to parse our pair, we assume it will be
+// given as two arguments separated by whitespace.
+std::istream &amp;operator&gt;&gt;(std::istream &amp;is, std::pair&lt;int, double&gt; &amp;p) {
+  return is &gt;&gt; p.first &gt;&gt; p.second;
+}
+
+// Make it easy to print values of our type.
+std::ostream &amp;operator&lt;&lt;(std::ostream &amp;os, const std::pair&lt;int, double&gt; &amp;p) {
+  return os &lt;&lt; p.first &lt;&lt; ' ' &lt;&lt; p.second;
+}
+
+// Our pair can now be used as any other type.
+int main(int argc, char **argv) {
+  CmdLine cmd("test pair argument");
+  ValueArg&lt;std::pair&lt;int, double&gt; &gt; parg("p", "pair", "int,double pair",
+                                         true,
+                                         std::make_pair(0, 0.0),
+                                         "int,double",
+                                         cmd);
+  cmd.parse(argc, argv);
+  std::cout &lt;&lt; parg.getValue() &lt;&lt; std::endl;
+}
 
 </pre><p>
 
-For complete examples see the files <code class="filename">test11.cpp</code> 
-and <code class="filename">test12.cpp</code> in the examples directory.
+<span class="emphasis"><em>Important:</em></span> When specifying the argument on the command line it
+needs to be given as a single argument, that is by quoting it. For
+example, <code class="code">./test30 -p "1 2.3"</code>.
+</p><p>
+If you do not want to provide operator&gt;&gt;, you can instead use
+operator= by defining the type as
+<code class="classname">StringLike</code>. A complete example is given in
+<code class="filename">test11.cpp</code>, but the main difference is you need
+to tell TCLAP to assign to the type using operator=. This is done by
+defining it as <code class="classname">StringLike</code> as shown below:
+
+</p><pre class="programlisting">
+namespace TCLAP {
+template&lt;&gt;
+struct ArgTraits&lt;Vect3D&gt; {
+    typedef StringLike ValueCategory;
+};
+}
+</pre><p>
 </p></div><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="CHANGING_STARTSTRINGS"></a>I want to use Windows-style flags like "/x" and "/y"...</h2></div></div></div><p>
 It is traditional in Posix environments that the "-" and "--" strings are used to signify
 the beginning of argument flags and long argument names. However, other environments,

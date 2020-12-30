@@ -1022,25 +1022,71 @@ too, you'll just need to specify the <classname>ArgTraits</classname> which
 tells <emphasis>TCLAP</emphasis> how you expect the type to be handled.  
 </para>
 <para>
-For example, assume that you'd like to read one argument on the command line in as a
-<classname>std::pair</classname> object.  All you'll need to do is tell 
-<emphasis>TCLAP</emphasis> whether to treat <classname>std::pair</classname> as a
-String or Value.  StringLike means to treat the string on the command line as a string
-and use it directly, whereas ValueLike means that a value object should be extracted from the 
-string using operator&gt;&gt;.  For <classname>std::pair</classname> we'll choose ValueLike.
-To accomplish this, add the following declaration to your file:
+  
+For example, assume that you'd like to read one argument on the
+command line in as a <classname>std::pair</classname> object. You need
+to tell <emphasis>TCLAP</emphasis> whether to treat
+<classname>std::pair</classname> as a String or Value (default).
+StringLike means to treat the string on the command line as a string
+and use it directly (by assignment operator), whereas ValueLike means
+that a value object should be extracted from the string using
+operator&gt;&gt;. For <classname>std::pair</classname> we'll choose
+ValueLike. Here is an example of how to do this for int,double pair
+(see <filename>test30.cpp</filename>):
 
 <programlisting>
+#include "tclap/CmdLine.h"
+#include &lt;iostream&gt;
+#include &lt;utility&gt;
 
-  template&lt;class T, class U&gt;
-  struct ArgTraits&lt;std::pair&lt;T, U&gt;&gt; {
-    typedef ValueLike ValueCategory;
-  };
+using namespace TCLAP;
+
+// We need to tell TCLAP how to parse our pair, we assume it will be
+// given as two arguments separated by whitespace.
+std::istream &amp;operator&gt;&gt;(std::istream &amp;is, std::pair&lt;int, double&gt; &amp;p) {
+  return is &gt;&gt; p.first &gt;&gt; p.second;
+}
+
+// Make it easy to print values of our type.
+std::ostream &amp;operator&lt;&lt;(std::ostream &amp;os, const std::pair&lt;int, double&gt; &amp;p) {
+  return os &lt;&lt; p.first &lt;&lt; ' ' &lt;&lt; p.second;
+}
+
+// Our pair can now be used as any other type.
+int main(int argc, char **argv) {
+  CmdLine cmd("test pair argument");
+  ValueArg&lt;std::pair&lt;int, double&gt; &gt; parg("p", "pair", "int,double pair",
+                                         true,
+                                         std::make_pair(0, 0.0),
+                                         "int,double",
+                                         cmd);
+  cmd.parse(argc, argv);
+  std::cout &lt;&lt; parg.getValue() &lt;&lt; std::endl;
+}
 
 </programlisting>
 
-For complete examples see the files <filename>test11.cpp</filename> 
-and <filename>test12.cpp</filename> in the examples directory.
+<emphasis>Important:</emphasis> When specifying the argument on the command line it
+needs to be given as a single argument, that is by quoting it. For
+example, <code>./test30 -p "1 2.3"</code>.
+</para>
+
+<para>
+If you do not want to provide operator&gt;&gt;, you can instead use
+operator= by defining the type as
+<classname>StringLike</classname>. A complete example is given in
+<filename>test11.cpp</filename>, but the main difference is you need
+to tell TCLAP to assign to the type using operator=. This is done by
+defining it as <classname>StringLike</classname> as shown below:
+
+<programlisting>
+namespace TCLAP {
+template&lt;&gt;
+struct ArgTraits&lt;Vect3D&gt; {
+    typedef StringLike ValueCategory;
+};
+}
+</programlisting>
 </para>
 </sect1>
 
