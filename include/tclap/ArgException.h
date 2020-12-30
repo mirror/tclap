@@ -185,6 +185,18 @@ class SpecificationException : public ArgException
 
 };
 
+/**
+ * Thrown when TCLAP thinks the program should exit.
+ * 
+ * For example after parse error this exception will be thrown (and
+ * normally caught). This allows any resource to be clened properly
+ * before exit.
+ * 
+ * If exception handling is disabled (CmdLine::setExceptionHandling),
+ * this exception will propagate to the call site, allowing the
+ * program to catch it and avoid program termination, or do it's own
+ * cleanup. See for example, https://sourceforge.net/p/tclap/bugs/29.
+ */
 class ExitException {
 public:
 	ExitException(int estat) : _estat(estat) {}
