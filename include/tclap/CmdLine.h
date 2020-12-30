@@ -458,8 +458,14 @@ inline void CmdLine::parse(std::vector<std::string>& args)
 {
 	bool shouldExit = false;
 	int estat = 0;
-
 	try {
+        if (args.empty()) {
+            // https://sourceforge.net/p/tclap/bugs/30/
+            throw CmdLineParseException("The args vector must not be empty, "
+                                        "the first entry should contain the "
+                                        "program's name.");
+        }
+
 		_progName = args.front();
 		args.erase(args.begin());
 
