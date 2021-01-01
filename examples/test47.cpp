@@ -3,11 +3,8 @@
 // Shows how to use a pair as a "custom type". Note that the argument
 // flag must be specified, like -p "1 2.3" (with quotes).
 
-#include "tclap/CmdLine.h"
 #include <iostream>
 #include <utility>
-
-using namespace TCLAP;
 
 // We need to tell TCLAP how to parse our pair, we assume it will be
 // given as two arguments separated by whitespace.
@@ -19,6 +16,10 @@ std::istream &operator>>(std::istream &is, std::pair<int, double> &p) {
 std::ostream &operator<<(std::ostream &os, const std::pair<int, double> &p) {
   return os << p.first << ' ' << p.second;
 }
+
+#include "tclap/CmdLine.h"
+
+using namespace TCLAP;
 
 // Our pair can now be used as any other type.
 int main(int argc, char **argv) {
