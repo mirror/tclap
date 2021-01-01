@@ -30,7 +30,7 @@
 	<surname>Aarno</surname>
     </author>
 
-	<author>
+    <author>
 	<firstname>Michael</firstname>
 	<surname>Smoot</surname>
 	<othername role='mi'>E</othername>
@@ -205,8 +205,9 @@ Where:
 This example shows a number of different properties of the
 library...
 <itemizedlist>
-<listitem>Arguments can appear in any order (...mostly, 
-<link linkend="COMPLICATIONS"> more</link> on this later).</listitem>
+  <listitem>
+    Arguments can appear in any order (...mostly, <link linkend="COMPLICATIONS"> more</link> on this later).
+</listitem>
 
 <listitem>The <parameter>help</parameter>, <parameter>version</parameter> 
 and <parameter>--</parameter> <classname>SwitchArg</classname>s
@@ -218,8 +219,6 @@ be displayed, and <parameter>--</parameter> or
 <parameter>--ignore_rest</parameter> will cause the
 remaining labeled arguments to be ignored. These switches are
 included by default on every command line. You can <link linked="NO_HELP_VERSION">disable this functionality</link> if desired (although we don't recommend it).
-How we generate the behavior behind these flags is described 
-<link linkend="VISITORS"> later</link>.
 </listitem>
 
 <listitem>If there is an error parsing the command line (e.g. a required
@@ -265,10 +264,9 @@ the type of argument. Some possible values include:
 <itemizedlist>
 <listitem>A boolean value indicating whether the Arg is required or not.  </listitem>
 <listitem>A default value.</listitem>
-<listitem>A <link linkend="DESCRIPTION_EXCEPTIONS">description</link> of the type of value expected.</listitem>
+<listitem>A description of the type of value expected.</listitem>
 <listitem>A <link linkend="CONSTRAINT">constraint</link> on the value expected.</listitem>
 <listitem>The CmdLine instance that the Arg should be added to.</listitem>
-<listitem>A <link linkend="VISITORS">Visitor</link>.</listitem>
 </itemizedlist>
 </listitem>
 <listitem>See the <ulink url="html/index.html">API Documentation</ulink> for more detail.</listitem>
@@ -695,32 +693,31 @@ option on the command line. The help output is updated accordingly.
 <sect1 id="CONSTRAINT">
 <title>I want to constrain the values allowed for a particular 
 argument...</title>
+
 <para>
-<emphasis>Interface Change!!!</emphasis> Sorry folks, but we've changed
-the interface since version 1.0.X for constraining <classname>Arg</classname>s.
-Constraints are now hidden behind the <classname>Constraint</classname> 
-interface.  To
-constrain an <classname>Arg</classname> simply implement the interface
-and specify the new class in the constructor as before.
+For example, one might wish to allow only integers greater than 0. In
+this case, simply create a class that implements the
+<classname>Constraint&lt;int&gt;</classname> interface and checks
+whether the value parsed is greater than 0 (done in the
+<methodname>check()</methodname> method) and create your
+<classname>Arg</classname> with your new
+<classname>Constraint</classname>.
 </para>
 
 <para>
-You can still constrain <classname>Arg</classname>s based on
-a list of values.  Instead of adding a <classname>vector</classname> of
-allowed values to the <classname>Arg</classname> directly, 
-create a <classname>ValuesConstraint</classname> object
-with a <classname>vector</classname> of values and add that to the 
-<classname>Arg</classname>. The <classname>Arg</classname> constructors
-have been modified accordingly.
+  <emphasis>TCLAP</emphasis> provides a simple way to constrain the
+  allowed values to a list of values. Simply create a
+  <classname>ValuesConstraint</classname> object with a
+  <classname>vector</classname> of values and add that to the
+  <classname>Arg</classname>.
 </para>
 
 <para>
-When the value for the 
-<classname>Arg</classname> is parsed,
-it is checked against the list of values specified in the
-<classname>ValuesConstraint</classname>. 
-If the value is in the list then it is accepted. If
-not, then an exception is thrown. Here is a simple example:
+When the value for the <classname>Arg</classname> is parsed, it is
+checked against the list of values specified in the
+<classname>ValuesConstraint</classname>.  If the value is in the list
+then it is accepted. If not, then an exception is thrown. Here is a
+simple example:
 
 <programlisting>
 		vector&lt;string&gt; allowed;
@@ -743,16 +740,6 @@ allowed list using operator&lt;&lt; for the specified type. The
 help/usage for the <classname>Arg</classname> therefore lists the 
 allowable values.  Because of this, you might want to keep the list 
 relatively small, however there is no limit on this.
-</para>
-
-<para>
-Obviously, a list of allowed values isn't always the best way to
-constrain things. For instance, one might wish to allow only
-integers greater than 0. In this case, simply create a class that
-implements the <classname>Constraint&lt;int&gt;</classname> interface and
-checks whether the value parsed is greater than 0 (done in the
-<methodname>check()</methodname> method) and create your 
-<classname>Arg</classname> with your new <classname>Constraint</classname>. 
 </para>
 </sect1>
 
@@ -1025,11 +1012,8 @@ ValueLike. Here is an example of how to do this for int,double pair
 (see <filename>test47.cpp</filename>):
 
 <programlisting>
-#include "tclap/CmdLine.h"
 #include &lt;iostream&gt;
 #include &lt;utility&gt;
-
-using namespace TCLAP;
 
 // We need to tell TCLAP how to parse our pair, we assume it will be
 // given as two arguments separated by whitespace.
@@ -1041,6 +1025,9 @@ std::istream &amp;operator&gt;&gt;(std::istream &amp;is, std::pair&lt;int, doubl
 std::ostream &amp;operator&lt;&lt;(std::ostream &amp;os, const std::pair&lt;int, double&gt; &amp;p) {
   return os &lt;&lt; p.first &lt;&lt; ' ' &lt;&lt; p.second;
 }
+
+#include "tclap/CmdLine.h"
+using namespace TCLAP;
 
 // Our pair can now be used as any other type.
 int main(int argc, char **argv) {
@@ -1119,103 +1106,7 @@ int main(int argc, char** argv)
 
 </chapter>
 
-<chapter id="NOTES">
-<title>Notes</title>
-<para>
-Like all good rules, there are many exceptions.... 
-</para>
-
-<sect1 id="DESCRIPTION_EXCEPTIONS">
-<title>Type Descriptions</title>
-<para>
-Ideally this library would use RTTI to return a human readable name
-of the type declared for a particular argument. Unfortunately, at
-least for <command>g++</command>, the names returned aren't 
-particularly useful.
-</para>
-</sect1>
-<sect1 id="VISITORS">
-<title>Visitors</title>
-
-<para>
-Disclaimer: Almost no one will have any use for 
-<classname>Visitor</classname>s, they were
-added to provide special handling for default arguments. Nothing
-that <classname>Visitor</classname>s do couldn't be accomplished 
-by the user after the
-command line has been parsed. If you're still interested, keep
-reading...
-</para>
-
-<para>
-Some of you may be wondering how we get the <parameter>--help</parameter>,
-<parameter>--version</parameter> and <parameter>--</parameter> 
-arguments to do their thing without mucking up the 
-<classname>CmdLine</classname> code with lots of <emphasis>if</emphasis>
-statements and type checking. This is accomplished by using a
-variation on the Visitor Pattern. Actually, it may not be a Visitor
-Pattern at all, but that's what inspired me.
-</para>
-
-<para>
-If we want some argument to do some sort of special handling,
-besides simply parsing a value, then we add a <classname>Visitor</classname>
-pointer to the <classname>Arg</classname>. More specifically, we add a
-<emphasis>subclass</emphasis> of the <classname>Visitor</classname> 
-class. Once the argument has been successfully parsed, the 
-<classname>Visitor</classname> for that argument is
-called. Any data that needs to be operated on is declared in the
-<classname>Visitor</classname> constructor and then operated on in the
-<methodname>visit()</methodname> method. A <classname>Visitor</classname> 
-is added to an <classname>Arg</classname> as the last argument in its 
-declaration. This may sound
-complicated, but it is pretty straightforward. Let's see an
-example.
-</para>
-
-<para>
-Say you want to add an <parameter>--authors</parameter> flag to a program that
-prints the names of the authors when present. First subclass
-<classname>Visitor</classname>:
-
-<programlisting>
-
-#include "Visitor.h"
-#include &lt;string&gt;
-#include &lt;iostream&gt;
-
-class AuthorVisitor : public Visitor
-{
-        protected:
-                string _author;
-        public:
-                AuthorVisitor(const string&amp; name ) : Visitor(), _author(name) {} ;
-                void visit() { cout &lt;&lt; "AUTHOR:  " &lt;&lt; _author &lt;&lt; endl;  exit(0); };
-};
-
-</programlisting>
-
-Now include this class definition somewhere and go about creating
-your command line. When you create the author switch, add the
-<classname>AuthorVisitor</classname> pointer as follows:
-
-<programlisting>
-
-                SwitchArg author("a","author","Prints author name", false, 
-                                         new AuthorVisitor("Homer J. Simpson") );
-                cmd.add( author );
-
-</programlisting>
-
-Now, any time the <parameter>-a</parameter> or 
-<parameter>--author</parameter> flag is specified,
-the program will print the author name, Homer J. Simpson and exit
-without processing any further (as specified in the 
-<methodname>visit()</methodname> method). 
-</para>
-</sect1>
-
-<sect1 id="MORE_INFO">
+<chapter id="MORE_INFO">
 <title>More Information</title>
 <para>
 For more information, look at the <ulink url="html/index.html"> 
@@ -1227,6 +1118,5 @@ distribution.
 <emphasis>Happy coding!</emphasis>
 </para>
 
-</sect1>
 </chapter>
 </book>
