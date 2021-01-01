@@ -24,10 +24,10 @@
 #ifndef TCLAP_STD_OUTPUT_H
 #define TCLAP_STD_OUTPUT_H
 
-#include <tclap/CmdLineInterface.h>
-#include <tclap/CmdLineOutput.h>
 #include <tclap/Arg.h>
 #include <tclap/ArgGroup.h>
+#include <tclap/CmdLineInterface.h>
+#include <tclap/CmdLineOutput.h>
 
 #include <algorithm>
 #include <cctype>
@@ -433,9 +433,8 @@ inline void StdOutput::_longUsage(CmdLineInterface &_cmd,
 }
 
 namespace {
-inline void fmtPrintLine(std::ostream &os, const std::string &s,
-                         int maxWidth, int indentSpaces,
-                         int secondLineOffset) {
+inline void fmtPrintLine(std::ostream &os, const std::string &s, int maxWidth,
+                         int indentSpaces, int secondLineOffset) {
     const std::string splitChars(" ,|");
     int maxChars = maxWidth - indentSpaces;
     std::string indentString(indentSpaces, ' ');
@@ -473,9 +472,10 @@ inline void fmtPrintLine(std::ostream &os, const std::string &s,
         os << indentString << s.substr(from, to - from) << '\n';
 
         // Avoid printing extra white space at start of a line
-        for (; s[to] == ' '; to++) {}
+        for (; s[to] == ' '; to++) {
+        }
         from = to;
-        
+
         if (secondLineOffset != 0) {
             // Adjust offset for following lines
             indentString.insert(indentString.end(), secondLineOffset, ' ');
@@ -484,7 +484,7 @@ inline void fmtPrintLine(std::ostream &os, const std::string &s,
         }
     }
 }
-}
+}  // namespace
 
 inline void StdOutput::spacePrint(std::ostream &os, const std::string &s,
                                   int maxWidth, int indentSpaces,
@@ -494,7 +494,7 @@ inline void StdOutput::spacePrint(std::ostream &os, const std::string &s,
     std::getline(ss, line);
     fmtPrintLine(os, line, maxWidth, indentSpaces, secondLineOffset);
     indentSpaces += secondLineOffset;
-    
+
     while (std::getline(ss, line)) {
         fmtPrintLine(os, line, maxWidth, indentSpaces, 0);
     }
