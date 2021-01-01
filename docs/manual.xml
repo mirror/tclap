@@ -6,8 +6,8 @@
   - 
   -  file:  manual.xml
   - 
-  -  Copyright (c) 2003, 2004 Michael E. Smoot .
-  -  Copyright (c) 2017 Google LLC.
+  -  Copyright (c) 2003-2012 Michael E. Smoot .
+  -  Copyright (c) 2017-2021 Google LLC.
   -  All rights reserved.
   - 
   -  See the file COPYING in the top directory of this distribution for
@@ -24,24 +24,31 @@
   -->
 <book>
 <bookinfo>
-<title>Templatized C++ Command Line Parser Manual</title>
-    <author>
-	<firstname>Michael</firstname>
-	<surname>Smoot</surname>
-	<othername role='mi'>E</othername>
-    </author>
-    <copyright>
-	<year>2003,2004,2005,2006,2009,2011,2012</year>
-	<holder>Michael E. Smoot</holder>
-    </copyright>
-
+<title>Templatized C++ Command Line Parser Manual (v1.4)</title>
     <author>
 	<firstname>Daniel</firstname>
 	<surname>Aarno</surname>
     </author>
+
+	<author>
+	<firstname>Michael</firstname>
+	<surname>Smoot</surname>
+	<othername role='mi'>E</othername>
+    </author>
+
     <copyright>
-	<year>2017</year>
+	<year>2017-2021</year>
 	<holder>Google LLC</holder>
+    </copyright>
+
+    <copyright>
+	<year>2012-2016</year>
+	<holder>Daniel Aarno</holder>
+    </copyright>
+	
+    <copyright>
+	<year>2003-2012</year>
+	<holder>Michael E. Smoot</holder>
     </copyright>
 </bookinfo>
 
