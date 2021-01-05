@@ -92,7 +92,7 @@ TESTS = test1.sh \
 		test90.sh \
 		test91.sh
 
-EXTRA_DIST = $(TESTS) \
+EXTRA_DIST = $(TESTS)    simple-test.sh \
 			 test1.out \
 			 test2.out \
 			 test3.out \
