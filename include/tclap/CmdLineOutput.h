@@ -35,6 +35,12 @@
 #include <vector>
 
 namespace TCLAP {
+const char PATH_SEPARATOR =
+#ifdef _WIN32
+	'\\';
+#else
+	'/';
+#endif
 
 class CmdLineInterface;
 class ArgException;
@@ -91,19 +97,22 @@ inline void removeArgsInArgGroups(std::list<Arg *> &argList,
     }
 }
 
+inline std::string removeSuffix(std::string s, const std::string &suffix) {
+	ssize_t start = s.length() - suffix.length();
+	if (start >= 0 && s.substr(start) == suffix) {
+		return s.substr(0, start);
+	}
+
+	return s;
+}
+
 inline std::string basename(std::string s) {
-    // TODO(macbishop): See if we can make this more robust
-    size_t p = s.find_last_of("/\\");
+    size_t p = s.find_last_of(PATH_SEPARATOR);
     if (p != std::string::npos) {
         s.erase(0, p + 1);
     }
 
-    p = s.rfind(".exe");
-    if (p == s.length() - 4) {
-        s.erase(s.length() - 4);
-    }
-
-    return s;
+	return removeSuffix(s, ".exe");
 }
 
 }  // namespace TCLAP
