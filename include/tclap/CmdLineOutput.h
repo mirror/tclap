@@ -28,6 +28,7 @@
 #include <tclap/ArgGroup.h>
 
 #include <algorithm>
+#include <cstddef>
 #include <iomanip>
 #include <iostream>
 #include <list>
@@ -98,7 +99,7 @@ inline void removeArgsInArgGroups(std::list<Arg *> &argList,
 }
 
 inline std::string removeSuffix(std::string s, const std::string &suffix) {
-	ssize_t start = s.length() - suffix.length();
+	std::ptrdiff_t start = s.length() - suffix.length();
 	if (start >= 0 && s.substr(start) == suffix) {
 		return s.substr(0, start);
 	}
