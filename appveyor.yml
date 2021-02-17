@@ -1,0 +1,51 @@
+version: 1.2.2.{build}
+
+image: Visual Studio 2017
+
+branches:
+  only:
+    - master
+    - /feat\/.*/
+    - /hf\/.*/
+
+configuration: Release
+
+platform:
+  - x86
+
+install:
+  - ps:
+      Start-FileDownload 'https://github.com/danmar/cppcheck/releases/download/1.88/cppcheck-1.88-x64-Setup.msi';
+      msiexec /passive /i cppcheck-1.88-x64-Setup.msi
+
+before_build:
+  - ps: nuget restore msc/tclap-beta.sln
+
+build:
+  project: msc/tclap-beta.sln
+  parallel: true
+  verbosity: normal
+
+test:
+  assemblies:
+    only:
+      - msc\test\bin\Release\tclap.test.dll
+
+after_test:
+  - ps: Compress-Archive -Force -Path include -DestinationPath tclap-include_$env:APPVEYOR_BUILD_VERSION.zip
+
+artifacts:
+  - path: tclap-include_$(APPVEYOR_BUILD_VERSION).zip
+
+deploy:
+  - provider: BinTray
+    username: salchint
+    api_key:
+      secure: e+XJ/CLKhXIFu9dxngMS1D2L1T+mSCHecvIV/O/2Sb0LCMBWer7zGDsTZFFqyIey
+    subject: salchint
+    repo: tclap
+    package: tclap
+    artifact: /.*\.zip/
+    publish: true
+    override: true
+
