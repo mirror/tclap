@@ -1,3 +1,4 @@
+.NOTPARALLEL:
 
 if DOC
 
@@ -5,8 +6,6 @@ all:
 	@DOXYGEN@ Doxyfile
 
 manual: manual.xml
-	cp $(abs_srcdir)/index.html $(abs_builddir)
-	cp $(abs_srcdir)/style.css $(abs_builddir)
 	xsltproc -o $(abs_builddir)/manual.html --stringparam html.stylesheet style.css /usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl  $(abs_srcdir)/manual.xml
 else
 
@@ -20,11 +19,11 @@ docdir = ${datadir}/doc/${PACKAGE}
 
 install-data-local :
 	$(mkdir_p) $(DESTDIR)$(docdir)
-	cp -R $(abs_builddir)/html $(DESTDIR)$(docdir)
+	cp -R html $(DESTDIR)$(docdir)
 
 uninstall-local :
-	chmod -R o+w $(DESTDIR)$(docdir)
-	rm -rf $(DESTDIR)$(docdir)
+	chmod -R o+w $(DESTDIR)$(docdir)/html
+	rm -rf $(DESTDIR)$(docdir)/html
 
 dist-hook :
 	$(mkdir_p) $(distdir)
