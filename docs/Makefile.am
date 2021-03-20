@@ -5,7 +5,9 @@ all:
 	@DOXYGEN@ Doxyfile
 
 manual: manual.xml
-	xsltproc -o manual.html --stringparam html.stylesheet style.css /usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl  manual.xml 
+	cp $(abs_srcdir)/index.html $(abs_builddir)
+	cp $(abs_srcdir)/style.css $(abs_builddir)
+	xsltproc -o $(abs_builddir)/manual.html --stringparam html.stylesheet style.css /usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl  $(abs_srcdir)/manual.xml
 else
 
 all:
