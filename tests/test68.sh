@@ -4,4 +4,4 @@
 # handling doesn't get fooled if the delimiter
 # is in the string
 # success  
-./simple-test.sh `basename $0 .sh` test13
+`dirname $0`/simple-test.sh `basename $0 .sh` test13

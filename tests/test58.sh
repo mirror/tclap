@@ -1,3 +1,3 @@
 #!/bin/sh
 # success
-./simple-test.sh `basename $0 .sh` test9
+`dirname $0`/simple-test.sh `basename $0 .sh` test9
