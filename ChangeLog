@@ -1,3 +1,7 @@
+2021-03-20 macbishop
+        * Patch release for 1.2 (v1.2.4)
+          - No code changes, fixes to documentation and build system only.
+	
 2021-01-06 00:01 macbishop
 	* Minor release for 1.2 branch (v1.2.3):
 	  - v1.2 is now in maintanance mode, 1.4 is the development version
