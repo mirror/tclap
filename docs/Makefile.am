@@ -6,7 +6,6 @@ all:
 
 manual: manual.xml
 	xsltproc -o manual.html --stringparam html.stylesheet style.css /usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl  manual.xml 
-
 else
 
 all:
@@ -19,7 +18,7 @@ docdir = ${datadir}/doc/${PACKAGE}
 
 install-data-local :
 	$(mkdir_p) $(DESTDIR)$(docdir)
-	cp -R $(abs_srcdir)/html $(DESTDIR)$(docdir)
+	cp -R $(abs_builddir)/html $(DESTDIR)$(docdir)
 
 uninstall-local :
 	chmod -R o+w $(DESTDIR)$(docdir)
@@ -27,7 +26,7 @@ uninstall-local :
 
 dist-hook :
 	$(mkdir_p) $(distdir)
-	cp -R $(abs_srcdir)/html $(distdir)
+	cp -R $(abs_builddir)/html $(distdir)
 
 clean-local:
 	$(RM) -rf $(abs_builddir)/html/*
