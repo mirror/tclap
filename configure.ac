@@ -1,7 +1,7 @@
-AC_CONFIG_AUX_DIR(config)
 AC_INIT([tclap], [1.2.4])
-AM_CONFIG_HEADER(config/config.h)
+AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_SRCDIR([examples/test1.cpp])
+AM_CONFIG_HEADER(config/config.h)
 AM_INIT_AUTOMAKE
 AC_PROG_CXX
 AC_CXX_HAVE_SSTREAM
