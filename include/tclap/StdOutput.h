@@ -31,6 +31,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <cstddef>
 #include <iostream>
 #include <list>
 #include <string>
@@ -436,11 +437,11 @@ namespace {
 inline void fmtPrintLine(std::ostream &os, const std::string &s, int maxWidth,
                          int indentSpaces, int secondLineOffset) {
     const std::string splitChars(" ,|");
-    int maxChars = maxWidth - indentSpaces;
+    size_t maxChars = std::max(maxWidth - indentSpaces, 0);
     std::string indentString(indentSpaces, ' ');
-    int from = 0;
-    int to = 0;
-    int end = s.length();
+    size_t from = 0;
+    size_t to = 0;
+    size_t end = s.length();
     for (;;) {
         if (end - from <= maxChars) {
             // Rest of string fits on line, just print the remainder
@@ -451,9 +452,8 @@ inline void fmtPrintLine(std::ostream &os, const std::string &s, int maxWidth,
         // Find the next place where it is good to break the string
         // (to) by finding the place where it is too late (tooFar) and
         // taking the previous one.
-        int tooFar = to;
-        while (tooFar - from <= maxChars &&
-               static_cast<std::size_t>(tooFar) != std::string::npos) {
+        size_t tooFar = to;
+        while (tooFar - from <= maxChars && tooFar != std::string::npos) {
             to = tooFar;
             tooFar = s.find_first_of(splitChars, to + 1);
         }
