@@ -19,6 +19,12 @@ if [ ! -f "$TCLAP_DIR/test_runner.py" ]; then
     echo "$TCLAP_DIR doesn't look like a TCLAP dir"
 fi
 
-FILES="AUTHORS ChangeLog CMakeLists.txt config.h.in COPYING docs examples include INSTALL NEWS README tests"
+FILES="AUTHORS ChangeLog CMakeLists.txt config.h.in COPYING docs examples include INSTALL NEWS README tests \
+      unittests"
 
-rsync -r --chmod=ugo+r,go-w --exclude "__*__" $FILES $DEST
+for FIL in $FILES; do
+    rsync -r --chmod=ugo+r,go-w --exclude "__*__" "$TCLAP_DIR/$FIL" "$DEST/"
+done
+
+# Include generated docs for users without Doxygen.
+rsync -r --chmod=ugo+r,go-w --exclude "__*__" "$TCLAP_DIR/build/docs/html" "$DEST/docs/"
