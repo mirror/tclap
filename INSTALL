@@ -17,16 +17,17 @@ executed from the root TCLAP directory).
 
 mkdir build
 cd build
-cmake ..
+cmake  ..
 cmake --build .
-cmake --install . [--prefix CMAKE_INSTALL_PREFIX]
+cmake --install .
 
 This will try to detect some parameters for your system and create a
 configuration file to match it. The last command will install the
 headers in the default install location (requires CMake 3.15 or
-later), you can specify an alternative install location with the
---prefix flag. For earlier versions you can use the platform install
-command (e.g., `make install`).
+later). For earlier versions you can use the platform install command
+(e.g., `make install`). To install in an alternative location,
+substitute `cmake ..` above with:
+`cmake -DCMAKE_INSTALL_PREFIX=</your/install/prefix> ..`.
 
 After TCLAP has been installed, you can use it by adding the install
 location to your compilers include path and define HAVE_TCLAP_CONFIG_H
