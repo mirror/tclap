@@ -23,31 +23,30 @@
 #ifndef __TESTING_H__
 #define __TESTING_H__
 
-#define ERROR(t, w) {				\
-  t << w;					\
-  t.error();					\
-}
+#define ERROR(t, w) \
+    {               \
+        t << w;     \
+        t.error();  \
+    }
 
 class Testing {
 public:
-  template <typename T>
-  Testing& operator<<(const T &v) {
-    msg_ << v;
-    return *this;
-  }
+    template <typename T>
+    Testing &operator<<(const T &v) {
+        msg_ << v;
+        return *this;
+    }
 
-  void error() {
-    errors_++;
-    std::cout << msg_.str() << std::endl;
-  }
+    void error() {
+        errors_++;
+        std::cout << msg_.str() << std::endl;
+    }
 
-  int errorCount() const {
-    return errors_;
-  }
+    int errorCount() const { return errors_; }
 
 private:
-  int errors_;
-  std::ostringstream msg_;
+    int errors_;
+    std::ostringstream msg_;
 };
 
 #endif
