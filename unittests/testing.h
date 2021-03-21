@@ -31,6 +31,8 @@
 
 class Testing {
 public:
+    Testing() : errors_(0), msg_() {}
+
     template <typename T>
     Testing &operator<<(const T &v) {
         msg_ << v;
