@@ -21,9 +21,23 @@ configure_file(config.h.in tclap/TCLAPConfig.h)
 add_library(TCLAP INTERFACE)
 target_include_directories(TCLAP INTERFACE include/)
 install(TARGETS TCLAP DESTINATION include)
-install(FILES "${PROJECT_BINARY_DIR}/tclap/TCLAPConfig.h"
+install(FILES ${PROJECT_BINARY_DIR}/tclap/TCLAPConfig.h
   DESTINATION include/tclap
   )
+
+if(DOC_INSTALL_DIR)
+else()
+  if(WIN32)
+    set(DOC_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/doc)
+  else()
+    set(DOC_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/doc/tclap)
+  endif()
+endif()
+
+install(DIRECTORY ${PROJECT_BINARY_DIR}/docs/html
+  DESTINATION ${DOC_INSTALL_DIR})
+install(FILES ${PROJECT_BINARY_DIR}/docs/index.html ${PROJECT_BINARY_DIR}/docs/manual.html
+  ${PROJECT_BINARY_DIR}/docs/style.css DESTINATION ${DOC_INSTALL_DIR})
 
 add_subdirectory(docs)
 add_subdirectory(examples)
