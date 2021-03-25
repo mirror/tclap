@@ -1,3 +1,3 @@
 #!/bin/sh
 # failure
-`dirname $0`/simple-test.sh `basename $0 .sh` test3 -i=9a -i=1 -s=asdf asdf asdf
+./test_wrapper $srcdir/test31.out ../examples/test3 '-i=9a -i=1 -s=asdf asdf asdf'

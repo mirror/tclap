@@ -1,3 +1,3 @@
 #!/bin/sh
 # success
-`dirname $0`/simple-test.sh `basename $0 .sh` test2 -i 10 -s hello goodbye -- -hv one two
+./test_wrapper $srcdir/test9.out ../examples/test2 '-i 10 -s hello goodbye -- -hv one two'

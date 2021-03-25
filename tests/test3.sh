@@ -1,3 +1,3 @@
 #!/bin/sh
 # success
-`dirname $0`/simple-test.sh `basename $0 .sh` test1 -n mike -r
+./test_wrapper $srcdir/test3.out ../examples/test1 '-n mike -r'

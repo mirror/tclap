@@ -1,3 +1,3 @@
 #!/bin/sh
 # success
-`dirname $0`/simple-test.sh `basename $0 .sh` test6 --help 
+./test_wrapper $srcdir/test45.out ../examples/test6 '--help'

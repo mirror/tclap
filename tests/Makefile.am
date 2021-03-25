@@ -1,4 +1,5 @@
-.NOTPARALLEL:
+check_PROGRAMS = test_wrapper
+test_wrapper_SOURCES = test_wrapper.cpp
 
 TESTS = test1.sh \
 		test2.sh \
@@ -92,7 +93,7 @@ TESTS = test1.sh \
 		test90.sh \
 		test91.sh
 
-EXTRA_DIST = $(TESTS)    simple-test.sh \
+EXTRA_DIST = $(TESTS) \
 			 test1.out \
 			 test2.out \
 			 test3.out \
@@ -184,5 +185,3 @@ EXTRA_DIST = $(TESTS)    simple-test.sh \
 			 test89.out \
 			 test90.out \
 			 test91.out
-
-CLEANFILES = tmp.out

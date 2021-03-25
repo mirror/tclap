@@ -1,3 +1,3 @@
 #!/bin/sh
 # success
-`dirname $0`/simple-test.sh `basename $0 .sh` test4 -BA --Bs asdf
+./test_wrapper $srcdir/test19.out ../examples/test4 '-BA --Bs asdf'

@@ -1,3 +1,3 @@
 #!/bin/sh
 # failure
-`dirname $0`/simple-test.sh `basename $0 .sh` test2 -i 10 -s hello -f nine
+./test_wrapper $srcdir/test12.out ../examples/test2 '-i 10 -s hello -f nine'

@@ -1,3 +1,3 @@
 #!/bin/sh
 # success
-`dirname $0`/simple-test.sh `basename $0 .sh` test21 ~~reverse /n mike
+./test_wrapper $srcdir/test78.out ../examples/test21 '~~reverse /n mike'

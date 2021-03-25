@@ -1,3 +1,3 @@
 #!/bin/sh
 # success
-`dirname $0`/simple-test.sh `basename $0 .sh` test2 --version
+./test_wrapper $srcdir/test8.out ../examples/test2 '--version'

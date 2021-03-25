@@ -1,3 +1,3 @@
 #!/bin/sh
 # failure
-`dirname $0`/simple-test.sh `basename $0 .sh` test5 -a fdsa -b asdf -c fdas
+./test_wrapper $srcdir/test22.out ../examples/test5 '-a fdsa -b asdf -c fdas'

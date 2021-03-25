@@ -1,3 +1,3 @@
 #!/bin/sh
 # failure
-`dirname $0`/simple-test.sh `basename $0 .sh` test9 -VVV -N --noise -rr
+./test_wrapper $srcdir/test60.out ../examples/test9 '-VVV -N --noise -rr'

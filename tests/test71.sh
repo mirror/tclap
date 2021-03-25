@@ -1,3 +1,3 @@
 #!/bin/sh
 # success test hex
-`dirname $0`/simple-test.sh `basename $0 .sh` test19 -i 0xA
+./test_wrapper $srcdir/test71.out ../examples/test19 '-i 0xA'

@@ -1,3 +1,3 @@
 #!/bin/sh
 # failure
-`dirname $0`/simple-test.sh `basename $0 .sh` test6 -n homer 6 
+./test_wrapper $srcdir/test36.out ../examples/test6 '-n homer 6'

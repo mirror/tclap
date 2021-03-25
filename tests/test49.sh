@@ -1,3 +1,3 @@
 #!/bin/sh
 # failure
-`dirname $0`/simple-test.sh `basename $0 .sh` test8  -s bbb homer marge bart -- -hv two
+./test_wrapper $srcdir/test49.out ../examples/test8 '-s bbb homer marge bart -- -hv two'
