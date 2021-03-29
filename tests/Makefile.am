@@ -1,3 +1,4 @@
+AM_CPPFLAGS = -I$(top_srcdir)/include
 check_PROGRAMS = test_wrapper
 test_wrapper_SOURCES = test_wrapper.cpp
 
