@@ -6,6 +6,27 @@
 #include <string>
 #include <tclap/CmdLine.h>
 
+
+class TmpFile {
+public:
+  TmpFile() : name_(std::tmpnam(NULL)), stream_() {}
+  ~TmpFile() {
+    if (stream_.is_open()) {
+      stream_.close();
+      std::remove(name_.c_str());
+    }
+  }
+  const std::string &name() const { return name_; }
+  std::ifstream &stream() {
+    stream_ = std::ifstream(name_, std::ifstream::binary | std::ifstream::ate);
+    return stream_;
+  }
+
+private:
+  std::string name_;
+  std::ifstream stream_;
+};
+
 /**
  * \brief Runs a command with given parameters and compares its output to
  * stdout with the contents of a given reference file.
@@ -35,21 +56,17 @@ int main(int argc, char *argv[]) {
       cmd += " " + params.getValue();
     }
 
-    std::string tmp = std::tmpnam(NULL);
-    cmd += " > " + tmp + " 2>&1";
+    TmpFile tmpFile;
+    cmd += " > " + tmpFile.name() + " 2>&1";
     int unused = std::system(cmd.c_str());
 
     /* Compare against contents of reference file. */
-    std::ifstream f_tmp(tmp, std::ifstream::binary | std::ifstream::ate);
+    std::ifstream &f_tmp = tmpFile.stream();
     std::ifstream f_ref(refFile.getValue(), std::ifstream::binary | std::ifstream::ate);
     if (f_tmp.fail() || f_ref.fail()) {
-      f_tmp.close();
-      std::remove(tmp.c_str());
       return 2; // One of the files fail.
     }
     if (f_tmp.tellg() != f_ref.tellg()) {
-      f_tmp.close();
-      std::remove(tmp.c_str());
       return 3; // Files have different sizes.
     }
     f_tmp.seekg(0, std::ifstream::beg);
@@ -57,8 +74,6 @@ int main(int argc, char *argv[]) {
     bool bEqual = std::equal(std::istreambuf_iterator<char>(f_tmp.rdbuf()),
                              std::istreambuf_iterator<char>(),
                              std::istreambuf_iterator<char>(f_ref.rdbuf()));
-    f_tmp.close();
-    std::remove(tmp.c_str());
     result = bEqual ? 0 : 4; // 4 = Files to not compare equal.
   } catch (TCLAP::ArgException &e) {
     std::cerr << e.what() << std::endl;
