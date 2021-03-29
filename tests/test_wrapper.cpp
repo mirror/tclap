@@ -19,7 +19,9 @@ public:
   }
   const std::string &name() const { return name_; }
   std::ifstream &stream() {
-    stream_ = std::ifstream(name_, std::ifstream::binary | std::ifstream::ate);
+    if (!stream_.is_open()) {
+      stream_.open(name_, std::ifstream::binary | std::ifstream::ate);
+    }
     return stream_;
   }
 
