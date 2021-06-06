@@ -82,10 +82,7 @@ protected:
 public:
     /**
      * Labeled ValueArg constructor.
-     * You could conceivably call this constructor with a blank flag,
-     * but that would make you a bad person.  It would also cause
-     * an exception to be thrown.   If you want an unlabeled argument,
-     * use the other constructor.
+     * 
      * \param flag - The one character flag that identifies this
      * argument on the command line.
      * \param name - A one word name for the argument.  Can be
@@ -109,10 +106,7 @@ public:
 
     /**
      * Labeled ValueArg constructor.
-     * You could conceivably call this constructor with a blank flag,
-     * but that would make you a bad person.  It would also cause
-     * an exception to be thrown.   If you want an unlabeled argument,
-     * use the other constructor.
+     *
      * \param flag - The one character flag that identifies this
      * argument on the command line.
      * \param name - A one word name for the argument.  Can be
@@ -138,10 +132,7 @@ public:
 
     /**
      * Labeled ValueArg constructor.
-     * You could conceivably call this constructor with a blank flag,
-     * but that would make you a bad person.  It would also cause
-     * an exception to be thrown.   If you want an unlabeled argument,
-     * use the other constructor.
+     *
      * \param flag - The one character flag that identifies this
      * argument on the command line.
      * \param name - A one word name for the argument.  Can be
@@ -165,10 +156,7 @@ public:
 
     /**
      * Labeled ValueArg constructor.
-     * You could conceivably call this constructor with a blank flag,
-     * but that would make you a bad person.  It would also cause
-     * an exception to be thrown.   If you want an unlabeled argument,
-     * use the other constructor.
+     *
      * \param flag - The one character flag that identifies this
      * argument on the command line.
      * \param name - A one word name for the argument.  Can be
