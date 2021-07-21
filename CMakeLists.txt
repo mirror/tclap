@@ -39,8 +39,18 @@ install(DIRECTORY ${PROJECT_BINARY_DIR}/docs/html
 install(FILES ${PROJECT_BINARY_DIR}/docs/index.html ${PROJECT_BINARY_DIR}/docs/manual.html
   ${PROJECT_BINARY_DIR}/docs/style.css DESTINATION ${DOC_INSTALL_DIR})
 
-add_subdirectory(docs)
-add_subdirectory(examples)
+option(BUILD_EXAMPLES "Build examples" ON)
+option(BUILD_UNITTESTS "Build unit tests" ON)
+option(BUILD_DOC "Build documentation" ON)
+
+if(BUILD_DOC)
+	add_subdirectory(docs)
+endif()
+if(BUILD_EXAMPLES)
+	add_subdirectory(examples)
+endif()
 add_subdirectory(tests)
-add_subdirectory(unittests)
+if(BUILD_UNITTESTS)
+	add_subdirectory(unittests)
+endif()
 add_subdirectory(include/tclap)

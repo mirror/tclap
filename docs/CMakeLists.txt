@@ -1,5 +1,3 @@
-option(BUILD_DOC "Build documentation" ON)
-
 function(add_file path)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/${path} ${CMAKE_CURRENT_BINARY_DIR}/${path})
 endfunction()
