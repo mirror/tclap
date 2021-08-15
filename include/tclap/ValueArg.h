@@ -253,7 +253,7 @@ private:
   /**
    * Prevent accidental copying
    */
-  ValueArg<T>(const ValueArg<T>& rhs);
+  ValueArg(const ValueArg<T>& rhs);
   ValueArg<T>& operator=(const ValueArg<T>& rhs);
 };
 
