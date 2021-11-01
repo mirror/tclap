@@ -1,3 +1,8 @@
+2021-11-01 macbishop
+	* Patch release for 1.2 (v1.2.5)
+	  - Fixes compilation issue with GCC 11 and later
+	  - Improvements to test framework
+
 2021-03-20 macbishop
         * Patch release for 1.2 (v1.2.4)
           - No code changes, fixes to documentation and build system only.
