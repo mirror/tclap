@@ -266,6 +266,7 @@ bool UnlabeledMultiArg<T>::processArg(int *i, std::vector<std::string>& args)
 	*/
 
 	_alreadySet = true;
+	this->_checkWithVisitor();
 
 	return true;
 }
