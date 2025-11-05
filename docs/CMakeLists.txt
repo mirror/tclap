@@ -1,3 +1,29 @@
+if(DOC_INSTALL_DIR)
+else()
+  if(WIN32)
+    set(DOC_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/doc)
+  else()
+    set(DOC_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/doc/tclap)
+  endif()
+endif()
+
+if(BUILD_PACKAGE)
+	include(CPackComponent)
+	cpack_add_component(doc
+		DISPLAY_NAME "documentation"
+		DESCRIPTION "Documentation files for TCLAP"
+	)
+endif()
+
+install(DIRECTORY ${PROJECT_BINARY_DIR}/docs/html
+  DESTINATION ${DOC_INSTALL_DIR}
+  COMPONENT doc
+)
+install(FILES ${PROJECT_BINARY_DIR}/docs/index.html ${PROJECT_BINARY_DIR}/docs/manual.html
+  ${PROJECT_BINARY_DIR}/docs/style.css DESTINATION ${DOC_INSTALL_DIR}
+  COMPONENT doc
+)
+
 function(add_file path)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/${path} ${CMAKE_CURRENT_BINARY_DIR}/${path})
 endfunction()

@@ -1,44 +1,46 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.7...3.14)
+
+# These must be set before we reach the 'project' directive so that CMake can use
+# them to make toolchain selections during the 'configure' phase.
+set(CMAKE_CXX_STANDARD 98)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 project(TCLAP VERSION 1.4.0 LANGUAGES CXX)
 set("PROJECT_DESCRIPTION" "A header-only templatized C++ command line parser library")
 set("PROJECT_HOMEPAGE_URL" "https://sourceforge.net/projects/tclap/")
 
-set(CMAKE_CXX_STANDARD 98)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-add_definitions(-DHAVE_TCLAP_CONFIG_H)
+# Determine if we are a standalone project or a dependency (not the master CMakeLists)
+# Using option makes it simple for a consumer to set the value prior to including.
+# NOTE: CMake 3.21+ handles this thru 'PROJECT_IS_TOP_LEVEL' or 'TCLAP_IS_TOP_LEVEL')
+# See: https://cmake.org/cmake/help/latest/command/project.html#synopsis
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+	option(TCLAP_STANDALONE_BUILD "Build TCLAP as a standalone library/package" ON)
+else()
+	option(TCLAP_STANDALONE_BUILD "BUILD TCLAP as a standalone library/package" OFF)
+endif()
+message(VERBOSE "TCLAP_STANDALONE_BUILD: ${TCLAP_STANDALONE_BUILD}")
 
-enable_testing()
-include(CTest)
-include(CPackComponent)
-include(GNUInstallDirs)
-include(CMakePackageConfigHelpers)
-string(REPLACE "/${CMAKE_LIBRARY_ARCHITECTURE}" "" CMAKE_INSTALL_LIBDIR_ARCHIND "${CMAKE_INSTALL_LIBDIR}")
+# Identify what we need to build/include.
+option(BUILD_EXAMPLES "Build examples" ${TCLAP_STANDALONE_BUILD})
+option(BUILD_TESTS "Build TCLAP tests" ${TCLAP_STANDALONE_BUILD})
+option(BUILD_UNITTESTS "Build unit tests" ${TCLAP_STANDALONE_BUILD})
+option(BUILD_DOC "Build documentation" ${TCLAP_STANDALONE_BUILD})
+option(BUILD_PACKAGE "Build package" ${TCLAP_STANDALONE_BUILD})
 
-include(CheckCXXSourceCompiles)
-check_cxx_source_compiles("#include <strstream>
-int main() { std::istrstream iss; }" TCLAP_HAVE_STRSTREAM)
-
-check_cxx_source_compiles("#include <sstream>
-int main() { std::istringstream iss; }" TCLAP_HAVE_SSTREAM)
-
-set(GENERATED_CONFIG_NAME "TCLAPConfig.h")
-set(GENERATED_CONFIG_BUILD_DIR "${PROJECT_BINARY_DIR}/tclap")
-set(GENERATED_CONFIG_BUILD_PATH "${GENERATED_CONFIG_BUILD_DIR}/${GENERATED_CONFIG_NAME}")
-
-configure_file(config.h.in "${GENERATED_CONFIG_BUILD_PATH}")
-
-cpack_add_component(lib
-	DISPLAY_NAME "library"
-	DESCRIPTION "The header-only library"
-	REQUIRED
-)
+if(BUILD_TESTS OR BUILD_UNITTESTS)
+  enable_testing()
+  include(CTest)
+endif()
 
 add_library(TCLAP INTERFACE)
 target_include_directories(TCLAP INTERFACE
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
 )
+target_compile_definitions(TCLAP INTERFACE -DHAVE_TCLAP_CONFIG_H)
+
+# Generate a config file.
+include (cmake/ConfigH.cmake)
 
 install(TARGETS TCLAP EXPORT TCLAP
   INCLUDES
@@ -49,108 +51,30 @@ install(FILES "${GENERATED_CONFIG_BUILD_PATH}"
   COMPONENT lib
 )
 
-
-if(DOC_INSTALL_DIR)
-else()
-  if(WIN32)
-    set(DOC_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/doc)
-  else()
-    set(DOC_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/doc/tclap)
-  endif()
-endif()
-
-cpack_add_component(doc
-	DISPLAY_NAME "documentation"
-	DESCRIPTION "Documentation files for TCLAP"
-)
-
-install(DIRECTORY ${PROJECT_BINARY_DIR}/docs/html
-  DESTINATION ${DOC_INSTALL_DIR}
-  COMPONENT doc
-)
-install(FILES ${PROJECT_BINARY_DIR}/docs/index.html ${PROJECT_BINARY_DIR}/docs/manual.html
-  ${PROJECT_BINARY_DIR}/docs/style.css DESTINATION ${DOC_INSTALL_DIR}
-  COMPONENT doc
-)
-
-option(BUILD_EXAMPLES "Build examples" ON)
-option(BUILD_UNITTESTS "Build unit tests" ON)
-option(BUILD_DOC "Build documentation" ON)
-
-if(BUILD_DOC)
-	add_subdirectory(docs)
-endif()
-if(BUILD_EXAMPLES)
-	add_subdirectory(examples)
-endif()
-add_subdirectory(tests)
-if(BUILD_UNITTESTS)
-	add_subdirectory(unittests)
-endif()
-add_subdirectory(include/tclap)
-
-set(PackagingTemplatesDir "${CMAKE_CURRENT_SOURCE_DIR}/packaging")
-
-
-set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
-set(CPACK_PACKAGE_VENDOR "tclap developers")
-set(CPACK_PACKAGE_DESCRIPTION "${PROJECT_DESCRIPTION}")
-set(CPACK_DEBIAN_PACKAGE_NAME "${CPACK_PACKAGE_NAME}")
-set(CPACK_RPM_PACKAGE_NAME "${CPACK_PACKAGE_NAME}")
-set(CPACK_PACKAGE_HOMEPAGE_URL "${PROJECT_HOMEPAGE_URL}")
-set(CPACK_PACKAGE_MAINTAINER "${CPACK_PACKAGE_VENDOR}")
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "${CPACK_PACKAGE_MAINTAINER}")
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYING")
-set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README")
-
-set(CPACK_DEBIAN_LIB_PACKAGE_NAME "lib${PROJECT_NAME}-dev")
-set(CPACK_DEBIAN_LIB_PACKAGE_DEPENDS "libc6-dev")
-set(CPACK_DEBIAN_LIB_PACKAGE_SUGGESTS "cmake, pkg-config, pkg-conf")
-
-set(CPACK_DEBIAN_DOC_PACKAGE_NAME "${PROJECT_NAME}-dev")
-
-set(CPACK_RPM_LIB_PACKAGE_NAME "lib${PROJECT_NAME}-devel")
-set(CPACK_RPM_LIB_PACKAGE_SUGGESTS "${CPACK_DEBIAN_PACKAGE_SUGGESTS}")
-
-set(CPACK_RPM_DOC_PACKAGE_NAME "${PROJECT_NAME}-doc")
-
-set(CPACK_DEB_COMPONENT_INSTALL ON)
-set(CPACK_RPM_COMPONENT_INSTALL ON)
-set(CPACK_NSIS_COMPONENT_INSTALL ON)
-set(CPACK_DEBIAN_COMPRESSION_TYPE "xz")
-
-set(PKGCONFIG_NAME "tclap")
-set(PKG_CONFIG_FILE_NAME "${CMAKE_CURRENT_BINARY_DIR}/${PKGCONFIG_NAME}.pc")
-configure_file("${PackagingTemplatesDir}/pkgconfig.pc.in" "${PKG_CONFIG_FILE_NAME}" @ONLY)
-install(FILES "${PKG_CONFIG_FILE_NAME}"
-  DESTINATION "${CMAKE_INSTALL_LIBDIR_ARCHIND}/pkgconfig"
-  COMPONENT lib
-)
-
-set(CONFIG_FILE_NAME_WITHOUT_EXT "${PROJECT_NAME}Config")
-set(CMAKE_CONFIG_VERSION_FILE_NAME "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_FILE_NAME_WITHOUT_EXT}-version.cmake")
-set(CMAKE_CONFIG_FILE_NAME "${CONFIG_FILE_NAME_WITHOUT_EXT}.cmake")
-set(CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR_ARCHIND}/cmake/${PROJECT_NAME}")
-
-install(EXPORT TCLAP
-  NAMESPACE TCLAP::
-  FILE "${CMAKE_CONFIG_FILE_NAME}"
-  DESTINATION "${CMAKE_CONFIG_DESTINATION}"
-  COMPONENT lib
-)
-
 if(${CMAKE_VERSION} VERSION_GREATER "3.14")
 	set(OPTIONAL_ARCH_INDEPENDENT "ARCH_INDEPENDENT")
 endif()
 
-write_basic_package_version_file("${CMAKE_CONFIG_VERSION_FILE_NAME}"
-    COMPATIBILITY AnyNewerVersion
-    ${OPTIONAL_ARCH_INDEPENDENT}
-)
+message(VERBOSE "TCLAP BUILD_DOC is ${BUILD_DOC}")
+if(BUILD_DOC)
+	add_subdirectory(docs)
+endif()
+message(VERBOSE "TCLAP BUILD_EXAMPLES is ${BUILD_EXAMPLES}")
+if(BUILD_EXAMPLES)
+	add_subdirectory(examples)
+endif()
+message(VERBOSE "TCLAP BUILD_TESTS is ${BUILD_TESTS}")
+if(BUILD_TESTS)
+	add_subdirectory(tests)
+endif()
+message(VERBOSE "TCLAP BUILD_UNITTESTS is ${BUILD_UNITTESTS}")
+if(BUILD_UNITTESTS)
+	add_subdirectory(unittests)
+endif()
 
-install(FILES "${CMAKE_CONFIG_VERSION_FILE_NAME}"
-  DESTINATION "${CMAKE_CONFIG_DESTINATION}"
-  COMPONENT lib
-)
+add_subdirectory(include/tclap)
 
-include(CPack)
+message(VERBOSE "TCLAP BUILD_PACKAGE is ${BUILD_PACKAGE}")
+if(BUILD_PACKAGE)
+	include(cmake/Package.cmake)
+endif()
